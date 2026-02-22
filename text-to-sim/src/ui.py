@@ -336,9 +336,8 @@ def show_feedback_screen():
 def show_introduction_screen():
     from .auth import validate_openai_api_key
 
-    st.markdown("# LLM Sandbox")
-    st.markdown("### An intelligent chatbot powered by Graph RAG and FAISS RAG technology")
-    st.markdown("Combines vector search with knowledge graphs for enhanced document understanding.")
+    st.markdown("# Power Flow Agent")
+    st.markdown("### PowerFlow-Agent: Tool-Augmented LLM for Text-to-Power-Flow Simulation")
     st.markdown("---")
     st.markdown("### 🔑 Get Started")
     st.info("To use this chatbot, you'll need an OpenAI API key. [Get your API key here](https://platform.openai.com/api-keys)")

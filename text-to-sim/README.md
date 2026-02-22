@@ -66,7 +66,7 @@ Set the following environment variables (in `.env` or your shell):
 - `NEO4J_URI` – Neo4j connection URI (e.g., `bolt://localhost:7687`)
 - `NEO4J_USER` – Neo4j username
 - `NEO4J_PASSWORD` – Neo4j password
-- `CONDA_ENV_PATH` – Path to the `conda` executable
+- `CONDA_ENV_PATH` (optional) – Conda env location hint used to resolve Python (supports env prefix, `bin` dir, python path, or conda path). If unset, the app uses the current Streamlit Python interpreter.
 
 **Note**: You'll enter your OpenAI API key directly in the application interface for security.
 

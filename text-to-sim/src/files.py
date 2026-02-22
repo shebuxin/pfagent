@@ -2,11 +2,64 @@ import os
 import re
 import subprocess
 import sys
+import shutil
 from typing import Dict, List
 
 import streamlit as st
 from rich import print as rprint
 from streamlit.runtime.uploaded_file_manager import UploadedFile
+
+
+def resolve_python_executable() -> str:
+    """
+    Resolve the Python executable used for code execution/install.
+    Priority:
+    1) CONDA_ENV_PATH (supports env prefix, bin dir, python path, or conda path)
+    2) CONDA_PREFIX/bin/python
+    3) Current Streamlit interpreter (sys.executable)
+    4) python3/python from PATH
+    """
+    candidates: List[str] = []
+    conda_env_path = os.environ.get("CONDA_ENV_PATH")
+
+    if conda_env_path:
+        raw_path = os.path.abspath(os.path.expanduser(conda_env_path))
+        if os.path.isdir(raw_path):
+            if os.path.basename(raw_path) == "bin":
+                candidates.append(os.path.join(raw_path, "python"))
+            candidates.append(os.path.join(raw_path, "bin", "python"))
+        else:
+            basename = os.path.basename(raw_path)
+            if basename.startswith("python"):
+                candidates.append(raw_path)
+            if basename in {"conda", "mamba", "micromamba"}:
+                candidates.append(os.path.join(os.path.dirname(raw_path), "python"))
+
+    conda_prefix = os.environ.get("CONDA_PREFIX")
+    if conda_prefix:
+        candidates.append(os.path.join(os.path.abspath(os.path.expanduser(conda_prefix)), "bin", "python"))
+
+    if sys.executable:
+        candidates.append(sys.executable)
+
+    for cmd in ("python3", "python"):
+        from_path = shutil.which(cmd)
+        if from_path:
+            candidates.append(from_path)
+
+    seen = set()
+    unique_candidates = []
+    for path in candidates:
+        if path not in seen:
+            seen.add(path)
+            unique_candidates.append(path)
+
+    for path in unique_candidates:
+        if path and os.path.exists(path) and os.access(path, os.X_OK):
+            return path
+
+    # Final fallback so error message is explicit if execution fails.
+    return "python3"
 
 
 def detect_file_operations(code: str) -> List[str]:
@@ -54,6 +107,9 @@ def save_uploaded_file(uploaded_file: UploadedFile, target_path: str):
 def execute_python_code(code: str) -> str:
     """Execute Python code safely and return output"""
     try:
+        python_bin_path = resolve_python_executable()
+        rprint(f"Using Python executable: {python_bin_path}")
+
         detected_files = detect_file_operations(code)
         file_mappings = {}
         missing_files = []
@@ -71,17 +127,23 @@ def execute_python_code(code: str) -> str:
                 rprint(f"Extracted dependencies: {deps_match.group(1)}")
                 for dep in deps_match.group(1).split('\n')[0].split(','):
                     try:
-                        pip_path = os.path.join(os.environ.get("CONDA_ENV_PATH", ""), "bin", "pip")
-                        subprocess.run([pip_path, "install", dep.strip()], check=True, capture_output=True, text=True)
+                        dep_name = dep.strip()
+                        if not dep_name:
+                            continue
+                        subprocess.run(
+                            [python_bin_path, "-m", "pip", "install", dep_name],
+                            check=True,
+                            capture_output=True,
+                            text=True,
+                        )
                     except Exception as e:
-                        rprint(f"Failed to install dependency {dep.strip()}: {str(e)}")
+                        rprint(f"Failed to install dependency {dep_name}: {str(e)}")
 
         code_hash = hash(code)
         code_path = os.path.join("code_executions", f"{st.session_state.session_id}", "data", f"exec_code_{code_hash}.py")
         with open(code_path, "w") as f:
             f.write(code)
         
-        python_bin_path = os.path.join(os.environ.get("CONDA_ENV_PATH", ""), "bin", "python")
         result = subprocess.run(
             [python_bin_path, f"exec_code_{code_hash}.py"],
             cwd=f"./code_executions/{st.session_state.session_id}/data",

@@ -32,6 +32,7 @@ from src.documents import (
 )
 from src.files import (
     display_file_section,
+    get_files_in_directory,
     save_uploaded_file,
 )
 
@@ -110,12 +111,13 @@ def main():
         # Chatbot type selection
         chatbot_type = st.selectbox(
             "Select Agent Type",
-            options=["GraphRAG", "RAG", "No RAG"],
+            options=["GraphRAG", "Base OpenAI", "Fine-tuned", "Fine-tuned + RAG"],
             index=0,
             help="Choose the type of agent:\n"
                  "• GraphRAG: Uses knowledge graphs + vector search (requires Neo4j)\n"
-                 "• RAG: Uses only vector search with FAISS\n"
-                 "• No RAG: Simple OpenAI agent without document processing"
+                 "• Base OpenAI: Uses your base OpenAI model without document retrieval\n"
+                 "• Fine-tuned: Uses your fine-tuned model without document retrieval\n"
+                 "• Fine-tuned + RAG: Uses your fine-tuned model with FAISS retrieval"
         )
         
         # Store chatbot type in session state
@@ -124,10 +126,12 @@ def main():
         # Show info about selected chatbot type
         if chatbot_type == "GraphRAG":
             st.info("🔗 **GraphRAG**: Combines vector search with knowledge graphs for enhanced understanding")
-        elif chatbot_type == "RAG":
-            st.info("🔍 **RAG**: Uses vector similarity search to find relevant information from documents")
-        else:  # No RAG
-            st.info("💬 **No RAG**: Simple conversation without document context")
+        elif chatbot_type == "Fine-tuned + RAG":
+            st.info("🔍 **Fine-tuned + RAG**: Uses FAISS retrieval with your fine-tuned model")
+        elif chatbot_type == "Fine-tuned":
+            st.info("🧪 **Fine-tuned**: Uses your fine-tuned model without document retrieval")
+        else:  # Base OpenAI
+            st.info("💬 **Base OpenAI**: Uses a base OpenAI model without document retrieval")
         
         st.markdown("---")
         st.markdown("## 🔍 Code Compilation Checking")
@@ -224,8 +228,8 @@ def main():
         
         st.markdown("---")
         
-        # Document upload section (only show for RAG/GraphRAG)
-        if st.session_state.get('chatbot_type', 'GraphRAG') in ['RAG', 'GraphRAG']:
+        # Document upload section (only show for RAG-enabled modes)
+        if st.session_state.get('chatbot_type', 'GraphRAG') in ['GraphRAG', 'Fine-tuned + RAG']:
             st.markdown("# 📁 Document Upload")
         
             uploaded_files = st.file_uploader(
@@ -375,8 +379,8 @@ def main():
                         except Exception as e:
                             st.error(f"❌ Error: {str(e)}")
         else:
-            # Show info when No RAG is selected
-            st.info("💬 **No RAG Mode Selected**: Document upload is not available in No RAG mode. Switch to 'RAG' or 'GraphRAG' to enable document processing.")
+            # Show info when a non-RAG mode is selected
+            st.info("💬 **Non-RAG Mode Selected**: Document upload is not available. Switch to 'Fine-tuned + RAG' or 'GraphRAG' to enable document processing.")
         
         # Status display
         if st.session_state.documents_processed:
@@ -491,7 +495,7 @@ def main():
     
     # Main chat interface
     if not st.session_state.chatbot:
-        st.markdown("# LLM Sandbox")
+        st.markdown("# Power Flow Agent")
         st.markdown("**Ready to chat! Initialize the agent to get started.**")
         st.info("ℹ️ Please initialize the agent using the sidebar")
         return
@@ -506,7 +510,7 @@ def main():
             st.caption(f"🔑 {masked_key}")
     
     with col2:
-        st.markdown("# LLM Sandbox")
+        st.markdown("# Power Flow Agent")
         st.caption("Ask me anything about your documents")
         
         # Show pending error fix status
@@ -581,11 +585,27 @@ def main():
     if submitted and user_input.strip():
         with st.spinner("Generating..."):
             try:
+                runtime_data_dir = f"./code_executions/{st.session_state.session_id}/data"
+                runtime_files = get_files_in_directory(runtime_data_dir)
+
+                # Provide runtime file context so the model can generate code against uploaded case files.
+                contextual_user_input = user_input
+                if runtime_files:
+                    available_files = "\n".join(f"- {name}" for name in runtime_files)
+                    contextual_user_input = (
+                        f"{user_input}\n\n"
+                        "Runtime file context:\n"
+                        f"- Working directory for execution: {runtime_data_dir}\n"
+                        "- Uploaded files available during execution:\n"
+                        f"{available_files}\n"
+                        "- Use these filenames directly in generated Python code when needed."
+                    )
+
                 # Get response from chatbot (async)
                 loop = asyncio.new_event_loop()
                 asyncio.set_event_loop(loop)
                 response = loop.run_until_complete(
-                    st.session_state.chatbot.chat(user_input)
+                    st.session_state.chatbot.chat(contextual_user_input)
                 )
                 loop.close()
                 
