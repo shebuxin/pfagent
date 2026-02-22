@@ -1,0 +1,31 @@
+[project]
+name = "chatbot"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "davia>=0.1.13",
+    "faiss-cpu>=1.11.0",
+    "fastapi>=0.115.12",
+    "jinja2>=3.1.6",
+    "langchain>=0.3.25",
+    "langchain-community>=0.3.24",
+    "langchain-core>=0.3.61",
+    "langchain-openai>=0.3.18",
+    "neo4j>=5.28.1",
+    "networkx>=3.4.2",
+    "numpy>=2.2.6",
+    "openai>=1.82.0",
+    "pinecone-client>=6.0.0",
+    "pyfiglet>=1.0.3",
+    "pypdf2>=3.0.1",
+    "python-dotenv>=1.1.0",
+    "rich>=14.0.0",
+    "scipy>=1.15.3",
+    "sentence-transformers>=4.1.0",
+    "streamlit>=1.45.1",
+    "streamlit-ace>=0.1.1",
+    "tiktoken>=0.9.0",
+    "watchdog>=6.0.0",
+]

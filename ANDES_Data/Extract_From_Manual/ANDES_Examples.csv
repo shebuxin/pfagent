@@ -1,0 +1,606 @@
+Code Description,Prompt Examples,Code Snippet
+Import the andes library and get_case function for loading test cases,"How do I import the andes library and get_case function?,Show me how to import andes and get_case from andes.utils.paths.","import andes
+from andes.utils.paths import get_case"
+Configure the verbosity level for andes logging to INFO,"How do I set the logging verbosity level in andes?,Show me how to configure andes logging to INFO level.",andes.config_logger(stream_level=20)
+Run a power flow simulation using ANDES on the Kundur full test case with default settings.,"How do I run a power flow simulation in ANDES?,Power flow simulation example using andes.run,Run power flow on the Kundur test case","ss = andes.run(get_case('kundur/kundur_full.xlsx'), default_config=True)"
+Configure and run a time-domain simulation for 10 seconds using the TDS module.,"How to run a time-domain simulation in ANDES?,Set simulation end time and execute TDS.run(),Time-domain simulation example for 10 seconds","ss.TDS.config.tf = 10
+# simulate for 10 seconds
+ss.TDS.run()"
+Check the exit code after running simulations to ensure all operations completed successfully.,"How do I check the exit status in ANDES?,Check ss.exit_code after simulation,Exit code example in ANDES",ss.exit_code
+Check the plotter object in a time-domain simulation,"How can I verify if the plotter object ss.TDS.plt was created?,Check the type of ss.TDS.plt",ss.TDS.plt
+Manually load the time-domain plotter,"How do I manually load the plotter object if automatic detection fails?,Load the TDS plotter manually",ss.TDS.load_plotter()
+Export simulation results to a CSV file,"How to export simulation data to CSV?,Export TDS results to a CSV file",ss.TDS.plt.export_csv()
+Plot generator speed variables by index,"How to plot all generator speed variables by index?,Plot indices (5,6,7,8) with TDS plotter","fig, ax = ss.TDS.plt.plot((5, 6, 7, 8))"
+Find indices of omega variables,"How to find indices of omega variables using plotter?,Locate omega indices in TDS data",ss.TDS.plt.find('omega')
+Plot omega variables using found indices,"How to plot omega variables using found indices?,Plot omega variables from indices","fig, ax = ss.TDS.plotter.plot(ss.TDS.plotter.find('omega')[0])"
+Plot a model variable directly,"How to plot a model variable directly?,Plot GENROU.omega using TDS plotter","fig, ax = ss.TDS.plt.plot(ss.GENROU.omega)"
+Plot selected elements of a model variable,"How to plot a subset of GENROU.omega variables?,Plot elements 0 and 3 of GENROU.omega","fig, ax = ss.TDS.plt.plot(ss.GENROU.omega, a=(0, 3))"
+Add a curve to an existing figure with custom linestyle,"How to add a curve with custom linestyle to existing figure?,Plot a new curve on existing figure with linestyle","fig, ax = ss.TDS.plt.plot(ss.GENROU.omega, a=(1,), fig=fig, ax=ax, linestyles=['-.'])"
+Plot with a custom Y-axis label,"How to set a custom Y-axis label in TDS plot?,Plot with ylabel 'Generator speed [p.u.]'","fig, ax = ss.TDS.plotter.plot((5, 6, 7, 8), ylabel='Generator speed [p.u.]')"
+Plot with custom legend names,"How to specify custom legend names in plot?,Plot with yheader ['Spd 1','Spd 2','Spd 3','Spd 4']","fig, ax = ss.TDS.plotter.plot((5, 6, 7, 8), ylabel='Generator speed [p.u.]', yheader=['Spd 1', 'Spd 2', 'Spd 3', 'Spd 4'])"
+Plot with scaling function to convert per unit to Hz,"How to scale y values using a lambda function?,Plot with ycalc lambda to convert to 60 Hz","fig, ax = ss.TDS.plotter.plot((5, 6, 7, 8), ycalc=lambda x: 60 * x)"
+Plot in greyscale with grid,"How to plot in greyscale with grid lines?,Plot with greyscale=True and grid=True","fig, ax = ss.TDS.plotter.plot((5, 6, 7, 8), ycalc=lambda x: 60 * x, greyscale=True, grid=True)"
+Save plot figure to a file,"How to save the plot to a PNG file?,Plot and save figure using savefig=True","fig, ax = ss.TDS.plotter.plot((5, 6, 7, 8), savefig=True)"
+Display help for the plotter.plot method,"How to view available arguments for ss.TDS.plotter.plot?,Show help for plot method",help(ss.TDS.plotter.plot)
+Cleanup generated example output files using the Andes misc command,"How do I clean up all example output files from Andes?,Cleanup example outputs in Andes",! andes misc -C
+Remove the generated example plot image file,"How can I remove the generated plot image file?,Delete the kundur_full_out_1.png file",!rm kundur_full_out_1.png
+Import Andes library and configure logger,"How do I import the Andes library and configure its logger?,Load the Andes package and set up logging","import andes
+from andes.utils.paths import get_case
+andes.config_logger()"
+Configure pandas to display all rows and columns,"How can I configure pandas to show all rows and columns?,Set pandas display options to none for max rows and columns","import pandas as pd
+pd.options.display.max_columns = None
+pd.options.display.max_rows = None"
+Load system from an ANDES XLSX file using andes.run,"How do I load a system from an ANDES XLSX file?,Load system from xlsx using andes.run","ss = andes.run(get_case('kundur/kundur_full.xlsx'),
+default_config=True)
+# one can remove `default_config=True` to use custom config file"
+Load a test case without setup using andes.load,"How to load a test case without setup?,Use andes.load with setup=False","ss = andes.load(get_case('kundur/kundur_full.xlsx'),
+default_config=True,
+setup=False)"
+Toggle the connectivity status of a line,"How to toggle the connectivity status of a line?,Alter line parameter u for Line_3","ss.Line.alter('u', 'Line_3', 0)"
+Set up the system and run power flow calculation,"How to set up the system and run power flow?,Run power flow after setup","ss.setup()
+ss.PFlow.run()"
+Load a power system from PSS/E RAW and DYR files using ANDES,"How do I load a PSS/E RAW and DYR file in ANDES?,Example of loading raw and dyr files in ANDES,andes.run raw and dyr example","raw_path = get_case('kundur/kundur.raw')
+dyr_path = get_case('kundur/kundur_full.dyr')
+ss = andes.run(raw_path, addfile=dyr_path, default_config=True)"
+Access the machine starting time constant parameter of a generator,"How to access a generator's machine starting time constant in ANDES?,Example of retrieving ss.GENROU.M,Get generator parameter M in ANDES",ss.GENROU.M
+Get the per-unit converted values of parameter M for all GENROU devices.,"How do I access the converted per-unit values of M for GENROU machines?,Retrieve per-unit M values for GENROU model",ss.GENROU.M.v
+Get the original input values of parameter M for all GENROU devices.,"How do I access the original input values of M for GENROU machines?,Retrieve original M input values for GENROU model",ss.GENROU.M.vin
+View the original input parameters of GENROU devices as a pandas DataFrame.,"How to view original input parameters of GENROU as a DataFrame?,Show GENROU original parameters table",ss.GENROU.cache.df_in
+View the converted per-unit parameters of GENROU devices as a cached DataFrame.,"How to view converted per-unit parameters of GENROU as a DataFrame?,Show GENROU converted parameters table",ss.GENROU.cache.df
+Get the original input value of M for a specific GENROU device.,"How to retrieve original M value for GENROU_1?,Get original input M for a unit","ss.GENROU.get(\""M\"", \""GENROU_1\"", attr='vin')"
+Alter the original input value of M for GENROU_1 to 10.,"How to change M of GENROU_1 to 10?,Modify M parameter for a specific GENROU device","ss.GENROU.alter(\""M\"", \""GENROU_1\"", 10)"
+Save the current system with altered parameters to an Excel file.,"How to save the system to an Excel file after alterations?,Export system data to new_system.xlsx","andes.io.xlsx.write(ss, 'new_system.xlsx', overwrite=True)"
+Alter the pref0 ConstService of a PVD1 device with idx 'PVD_1'.,"How to update pref0 for PVD_1?,Modify pref0 constant service for a PVD1 device","ss.PVD1.alter('pref0', 'PVD_1', 0.005)"
+Alter the pref0 ConstService for PVD_1 using keyword arguments.,"How to use keyword arguments to update pref0 for PVD1?,Change pref0 with keywords for PVD1","ss.PVD1.alter(src='pref0', idx='PVD_1', value=0.005)"
+Update the first element of the pref0 parameter array in-place.,"How to update the first element of pref0 directly?,In-place assignment for pref0 first index",ss.PVD1.pref0.v[0] = 0.005
+Alter the pref0 parameter for all PVD1 devices to 0.005.,"How to set pref0 to 0.005 for all PVD1 devices?,Bulk update pref0 for all PVD1 units","ss.PVD1.alter('pref0', ss.PVD1.idx.v, 0.005)"
+In-place update of all elements of the pref0 parameter array.,"How to update all elements of pref0 in-place?,In-place assignment for all pref0 values",ss.PVD1.pref0.v[:] = 0.005
+Illustration of an out-of-place assignment (not recommended) for pref0.,"What happens if I assign pref0 out-of-place?,Example of incorrect pref0 assignment",ss.PVD1.pref0.v = 0.005
+Illustration of an out-of-place assignment using multiplication with ones array (not recommended).,"Example of out-of-place assignment for pref0 using numpy,Illustrate incorrect array reassignment pref0",ss.PVD1.pref0.v = 0.005 * np.ones_line(ss.PVD1.pref0.v)
+Refresh the cached DataFrame views for GENROU parameters.,"How to refresh the cache for GENROU parameter DataFrames?,Update cached parameter view for GENROU",ss.GENROU.cache.refresh()
+Generate a new DataFrame of GENROU parameters without overwriting the cache.,"How to get a fresh DataFrame of GENROU parameters?,Build a new parameters DataFrame for GENROU",ss.GENROU.as_df()
+Retrieve bus voltage magnitudes from the last power flow solution,"How can I get the bus voltage magnitudes from the power flow solution?,Show me all bus voltage magnitudes.","ss.Bus.v.v
+array([1.
+, 1.
+, 1.
+, 1.
+, 0.98337472,
+0.96908585, 0.9562181 , 0.95400018, 0.96856366, 0.98377143])"
+Check the type of the bus voltage variable,"How do I determine the type of ss.Bus.v?,What is the type of the bus voltage variable?","type(ss.Bus.v)
+andes.core.var.Algeb"
+Access the algebraic bus voltage values using dae.y and indices,"How can I access bus voltage values via ss.dae.y using variable indices?,Retrieve bus voltage values from ss.dae.y.","ss.dae.y[ss.Bus.v.a]
+array([1.
+, 1.
+, 1.
+, 1.
+, 0.98337472,
+0.96908585, 0.9562181 , 0.95400018, 0.96856366, 0.98377143])"
+Run a time-domain simulation and view the summary,"How do I run a time-domain simulation in ss.TDS?,Execute ss.TDS.run() to simulate.","ss.TDS.run()
+-> Time Domain Simulation Summary:
+Sparse Solver: KLU
+Simulation time: 0.0-20.0 s.
+Fixed step size: h=33.33 ms. Shrink if not converged.
+Initialization for dynamics completed in 0.0489 seconds.
+Initialization was successful.
+0%|
+| 0/100 [00:00<?, ?%/s]
+<Toggle Toggle_1>: Line.Line_8 status changed to 0 at t=2.0 sec.
+Simulation completed in 1.1192 seconds.
+Outputs to ""kundur_out.lst"" and ""kundur_out.npz"".
+Outputs written in 0.0226 seconds.
+True"
+Inspect the time series object,"How do I view the DAE time series object?,Display ss.dae.ts after simulation.","ss.dae.ts
+<andes.variables.dae.DAETimeSeries at 0x7f7bc75c1b50>"
+Get the shape of the time stamps array,"How do I check the shape of the time stamps array?,What is ss.dae.ts.t.shape?","ss.dae.ts.t.shape
+(603,)"
+Get the shape of the variables array,"How do I check the shape of the variables array?,What is ss.dae.ts.xy.shape?","ss.dae.ts.xy.shape
+# x-axis is for time stamps, and y-axis is for variables
+(603, 201)"
+Determine the number of variables using xy_name,"How many variables are in the time series?,What is len(ss.dae.xy_name)?",len(ss.dae.xy_name)
+Enable storage of discontinuous states before simulation,"How do I enable storing of discontinuous states in time series?,Set TDS to store z values.",ss.TDS.config.store_z = 1.
+Unpack the simulation results into a dataframe,"How do I unpack time series into a dataframe?,Call ss.dae.ts.unpack(df=True).",ss.dae.ts.unpack(df=True)
+Extract rotor speed (omega) time series for GENROU,"How can I extract rotor speed time series for GENROU?,Retrieve omega from ss.dae.ts.x.","omega = ss.dae.ts.x[:, ss.GENROU.omega.a]"
+Extract generator bus voltages time series,"How do I extract generator bus voltages over time?,Retrieve ss.dae.ts.y[:, ss.GENROU.v.a].","ss.dae.ts.y[:, ss.GENROU.v.a]
+array([[1.
+, 1.
+, 1.
+, 1.
+],
+[1.
+, 1.
+, 1.
+, 1.
+],
+[1.
+, 1.
+, 1.
+, 1.
+],
+...,
+[1.00240968, 1.00148908, 0.99526693, 1.00007159],
+[1.00249935, 1.00159007, 0.99515528, 0.99997846],
+[1.00259067, 1.0016924 , 0.99504062, 0.999883
+])"
+Plot time series data for omega,"How can I plot the rotor speed time series?,Use ss.TDS.plt.plot_data to plot omega.","ss.TDS.plt.plot_data(ss.dae.ts.t, omega )
+(<Figure size 480x320 with 1 Axes>, <AxesSubplot:>)"
+Run the IEEE 14-bus fault test case using andes.run.,"How do I run the IEEE 14-bus fault test case in andes?,andes.run example for fault simulations,How to execute a simulation for a fault test case?","ss = andes.run(get_case(""ieee14/ieee14_fault.xlsx""))"
+"Load a case without automatic setup and then manually set it up, useful for adding devices before setup.","How to load a case without automatic setup in andes?,andes.load example with setup=False,How do I manually set up a system after loading in andes?","ss = andes.load(.., setup=False) and ss.setup()"
+List all Fault devices in the simulation as a DataFrame.,"How to view all Fault devices in andes?,andes.Fault.as_df example,Show me how to list Fault devices.",ss.Fault.as_df()
+Alter the clearing time ('tc') parameter of the Fault device with idx 1 to 1.05 seconds.,"How to change the clearing time of a fault device in andes?,Example of ss.Fault.alter for updating fault duration,How do I update a fault parameter in andes?","ss.Fault.alter('tc', 1, 1.05)
+# arguments are `src`, `idx`, `value`"
+List Fault devices again to verify the updated clearing time.,"How to verify the updated fault parameter in andes?,andes.Fault.as_df after altering a parameter,How to check Fault devices after modification?",ss.Fault.as_df()
+Cleanup Andes example output files,"How do I remove all example output files with Andes CLI?,Clean up example outputs in Andes",!andes misc -C
+Delete the new_system.xlsx file,"How to delete the new_system.xlsx file?,Remove Excel file new_system.xlsx using shell command",!rm new_system.xlsx
+Import the andes library and configure the logger to WARNING level (30).,"How do I import andes and set the log level to WARNING?,andes.config_logger example","import andes
+andes.config_logger(30)"
+Generate all model equations in an Andes System without multiprocessing,"How do I inspect all model equations in Andes?,andes.System prepare nomp example,generate equations without multiprocessing in Andes","ss = andes.System()
+ss.prepare(nomp=True)"
+Generate equations only for the GENCLS model in an Andes System,"How do I prepare equations for a specific model in Andes?,andes prepare GENCLS example,generate GENCLS model equations in Andes","ss = andes.System()
+ss.GENCLS.prepare()"
+List all supported models in an Andes System,"How do I list all supported models in Andes?,andes supported_models example,print supported models in Andes System",print(ss.supported_models())
+Print the documentation string for the GENCLS model,"How do I check the documentation for a SynGen model instance?,How can I print the documentation of the GENCLS model?",print(ss.GENCLS.doc())
+Pretty print all symbols of the GENCLS model,"How do I view all symbols of a model?,Show me how to pretty print the variable symbols of the GENCLS model",ss.GENCLS.syms.xy
+Display the state variables of the GENCLS model,"How can I list the state variables of the model?,Show me the states of the GENCLS model",ss.GENCLS.states
+Display the algebraic variables of the GENCLS model,"How can I list the algebraic variables of the model?,Show me the algebraic variables of the GENCLS model",ss.GENCLS.algebs
+Show the differential equations of the GENCLS model,"How do I print the differential equations of the model?,How can I inspect the 'f' equations of GENCLS?",ss.GENCLS.syms.f
+Show the algebraic equations of the GENCLS model,"How do I print the algebraic equations of the model?,How can I inspect the 'g' equations of GENCLS?",ss.GENCLS.syms.g
+Show the Jacobian of the differential equations f of GENCLS,"How do I view the df/dxy of the model?,How can I get the Jacobian of the differential equations for GENCLS?",ss.GENCLS.syms.df
+Show the Jacobian of the algebraic equations g of GENCLS,"How do I view the dg/dxy of the model?,How can I get the Jacobian of the algebraic equations for GENCLS?",ss.GENCLS.syms.dg
+List the services provided by the GENCLS model,"How can I list the services of a model?,Show me the services of the GENCLS model",ss.GENCLS.services
+Show the service equations s of the GENCLS model,"How do I print the service equations of the model?,How can I inspect the 's' equations of GENCLS?",ss.GENCLS.syms.s
+Run eigenvalue analysis using andes.run with routine 'eig',"How do I run eigenvalue analysis in Andes?,Example of eigenvalue analysis with andes.run,Show me how to perform an eigenvalue analysis using Andes Python API","import numpy as np
+import andes
+from andes.utils.paths import list_cases, get_case
+case_path = get_case('kundur/kundur_full.xlsx')
+Pass the routine name EIG or eig to andes.run.
+ss = andes.run(case_path, routine='eig')
+Working directory: ""/home/hacui/repos/andes/examples""
+> Loaded config from file ""/home/hacui/.andes/andes.rc""
+> Loaded generated Python code in ""/home/hacui/.andes/pycode"".
+Parsing input file ""/home/hacui/repos/andes/andes/cases/kundur/kundur_full.
+,→xlsx""...
+Input file parsed in 0.1985 seconds.
+System internal structure set up in 0.0309 seconds.
+-> System connectivity check results:
+No islanded bus detected.
+System is interconnected.
+Each island has a slack bus correctly defined and enabled.
+-> Power flow calculation
+Numba: Off
+Sparse solver: KLU
+Solution method: NR method
+Power flow initialized in 0.0042 seconds.
+0: |F(x)| = 14.9282832
+1: |F(x)| = 3.608627841
+2: |F(x)| = 0.1701107882
+3: |F(x)| = 0.002038626956
+4: |F(x)| = 3.745104027e-07
+Converged in 5 iterations in 0.0070 seconds.
+Report saved to ""kundur_full_out.txt"" in 0.0010 seconds.
+Initialization for dynamics completed in 0.0301 seconds.
+Initialization was successful.
+-> Eigenvalue Analysis:
+Positive
+Zeros
+Negative
+Eigenvalue analysis finished in 0.0051 seconds.
+Report saved to ""kundur_full_eig.txt"".
+-> Single process finished in 0.5363 seconds."
+Plot eigenvalues of a state-space system in the s-domain,"How do I plot eigenvalues in the s-domain?,Plot the eigenvalues of a state-space system,Show me how to plot eigenvalues in the s-domain",ss.EIG.plot()
+Read and print the contents of the saved eigenvalue analysis report file,"How do I read and display the contents of 'kundur_full_eig.txt' in Python?,Show me Python code to open and print the ANDES report file.,How can I load the report saved to 'kundur_full_eig.txt' into a Jupyter notebook?","with open('kundur_full_eig.txt', 'r') as f:
+    print(f.read())"
+Study of system stability by sweeping EXDC2.KA parameter and plotting root loci of eigenvalues,"How to sweep EXDC2.KA and plot root loci of eigenvalues?,Parameter sweep and root loci plot example for system stability analysis,ss.EIG parameter sweep of EXDC2.KA with root loci plot","ret = ss.EIG.sweep(ss.EXDC2.KA, 1, np.linspace(20, 200, 10))
+ss.EIG.plot_root_loci(ret, range(30, 51), left=-3, ymax=4, ymin=-4)"
+Remove generated PNG image files and clean up miscellaneous example output files,"How do I clean up generated PNG files?,How can I remove saved PNG images and other example output files?,Cleanup example output files","!rm -v *.png
+!andes misc -C"
+Batch creation of cases in Andes by varying PQ load and saving multiple case files,"How do I create cases in batch using Andes?,Show an example of batch creating cases with varying PQ load in Andes,How to save multiple case files with different load conditions in Andes?","import andes
+import numpy as np
+from andes.utils.paths import get_case
+andes.config_logger(stream_level=30)
+# brief logging
+# create directory for output cases
+!rm -rf batch_cases
+!mkdir -p batch_cases
+kundur = get_case('kundur/kundur_full.xlsx')
+ss = andes.load(kundur)
+We demonstrate running the Kundur's system under different loading conditions.
+Cases are created by modifying the p0 of PQ with idx == PQ_0.
+As always, input parameters can be inspected by accessing Model.as_df(vin=True).
+p0_base = ss.PQ.get('p0', ""PQ_0"")
+Create 3 cases so that the load increases from p0_base to 1.2 * p0_base.
+N_CASES = 3
+# Note: increase `N_CASES` as necessary
+p0_values = np.linspace(p0_base, 1.2 * p0_base, N_CASES)
+for value in p0_values:
+ss.PQ.alter('p0', 'PQ_0', value)
+file_name = f'batch_cases/kundur_p_{value:.2f}.xlsx'
+andes.io.dump(ss, 'xlsx', file_name, overwrite=True)"
+Change the Python working directory to 'batch_cases' and list its contents,"How do I change the working directory to batch_cases in Python?,How can I list the files in the batch_cases directory using a shell command in Jupyter?","import os
+# change the Python working directory
+os.chdir('batch_cases')
+!ls -la"
+Run batch cases from command line with default CPU usage,"How do I run multiple .xlsx cases using Andes from the command line?,How to execute batch processing of .xlsx files with andes run?",!andes run *.xlsx -r tds
+Run batch cases from command line limiting number of CPUs,"How to specify the number of CPUs for andes run?,How do I limit CPU usage when running batch cases with Andes?",!andes run *.xlsx -r tds --ncpu 4
+Run batch cases using the Andes Python API and return all system instances,"How to run batch processing with the Andes Python API?,How to use andes.run with pool=True to get system instances?","systems = andes.run('*.xlsx', routine='tds', pool=True, verbose=10)"
+Access and inspect the system instances returned by Andes API,"How do I access the first system returned by andes.run?,How can I inspect the list of system instances from andes.run?","systems[0]
+systems"
+Plot TDS results (generator speed) using Andes plotter,"How to plot TDS omega results using Andes?,How to use the plotter to visualize generator speed?","ss = systems[0]
+systems[0].TDS.plotter.plot(ss.GENROU.omega, latex=False)
+systems[2].TDS.plotter.plot(ss.GENROU.omega, latex=False)"
+Clean up the working directory after batch processing,"How do I clean up after Andes examples?,What commands remove the Andes example directories?","!andes misc -C
+!rm -rf batch_cases"
+Import libraries for batch power flow and time-domain calculations in memory,"Show me how to import modules for in-memory batch processing with andes,How do I import andes, numpy and matplotlib for batch power flow and time-domain analysis?,What imports are needed for batch processing in memory?","import andes
+import numpy as np
+from matplotlib import pyplot as plt"
+Batch power flow calculation for the Kundur system with different load levels,"How do I calculate power flow for the Kundur system at different load levels?,Show me an example of batch power flow calculation using the Kundur system","kundur = andes.utils.get_case('kundur/kundur_full.xlsx')
+ss = andes.run(kundur,
+    no_output=True,
+    default_config=True,
+    verbose=30,
+    # set logging level to WARNING
+)
+ss.PQ.as_df(vin=True)"
+Sweep active power ranges for PQ_0 and PQ_1 loads and compute voltage magnitudes.,"How can I sweep active power values for multiple loads and run power flow?,Show me code to iterate through load power ranges and retrieve voltage results.","n_samples = 3
+# Note: increase `n_samples` for higher data resolution
+pq0_values = np.linspace(10, 12, n_samples)
+pq1_values = np.linspace(12, 18, n_samples)
+v_results = np.zeros((ss.Bus.n, n_samples ** 2))
+idx = 0
+for ii in pq0_values:
+    ss.PQ.alter(""p0"", ""PQ_0"", ii)
+    for jj in pq1_values:
+        ss.PQ.alter(""p0"", ""PQ_1"", jj)
+        ss.PFlow.run()
+        v_results[:, idx] = ss.dae.y[ss.Bus.v.a]
+        idx += 1"
+Plot voltage magnitude results for each bus using matplotlib.,"How do I plot the voltage results with matplotlib?,Show me code to plot v_results for all buses.","lines = plt.plot(v_results)
+xl = plt.xlabel('Bus Name')
+yl = plt.ylabel('Voltage [p.u.]')
+tk = plt.xticks(np.arange(ss.Bus.n), ss.Bus.name.v)"
+Batch time-domain simulation for multiple line trip events using Toggle devices in Andes,"How do I run batch time-domain simulations for each line trip event in Andes?,Show an example of batch processing time-domain simulations with toggles for line trips.,Provide code to simulate line trip scenarios in batch mode using Andes.","kundur = andes.utils.get_case('kundur/kundur_full.xlsx')
+ss = andes.load(kundur, setup=False)
+idxes = ss.Line.idx.v
+ss.Toggle.as_df()
+results = dict()
+for idx in idxes:
+    ss = andes.load(kundur, setup=False)
+    ss.add('Toggle', dict(model=""Line"", dev=idx, t=1.0))
+    ss.add('Toggle', dict(model=""Line"", dev=idx, t=1.1))
+    ss.setup()
+    # no `ss.add()` calls are allowed after setup()
+    ss.Toggle.alter('u', 1, 0.0)
+    # disable the existing Toggle with idx=1
+    ss.PFlow.run()
+    ss.TDS.config.tf = 5
+    # simulate for 5 seconds to save time
+    ss.TDS.config.no_tqdm = 1
+    # disable progress bar printing
+    ss.TDS.run()
+    results[idx] = ss
+
+for idx, ss in results.items():
+    ss.TDS.plt.plot(ss.GENROU.omega, title=f'{idx} trip', latex=False, dpi=80)
+!rm -rf batch_cases/"
+Set up and run the Kundur power system case in ANDES and disable a Toggle,"How do I set up and run a Kundur case in ANDES?,Provide example code for loading the Kundur case and disabling a Toggle,Show how to run the Kundur test case and alter a Toggle setting using ANDES","import andes
+from andes.utils import get_case
+kundur = get_case('kundur/kundur_full.xlsx')
+ss = andes.run(kundur)
+# disable the Toggle in this case
+ss.Toggle.alter('u', 1, 0)"
+Configure the simulation's first stop time to 1 second by setting ss.TDS.config.tf,"How do I set the first stop time in ss.TDS.config.tf?,How to simulate to t=1 sec with ss.TDS.config.tf?,Show me code to set the simulation stop time to 1 second","# simulate to t=1 sec
+# specify the first stop in `ss.TDS.config.tf`
+ss.TDS.config.tf = 1"
+Run the time domain simulation,"How do I run the time domain simulation?,How to execute a simulation run in ss.TDS?,Run the simulation using ss.TDS.run",ss.TDS.run()
+Print the documentation of the TGOV1 model,"How do I view the documentation for the TGOV1 model?,print TGOV1 documentation",print(ss.TGOV1.doc())
+Retrieve the current paux0 setpoints for the TGOV1 model,"How can I check the current paux0 setpoints for TGOV1?,get TGOV1.paux0.v values",ss.TGOV1.paux0.v
+Set the paux0 setpoint for the first TGOV1 instance using in-place assignment,"How do I change the paux0 setpoint for the first TGOV1 generator to 0.05?,set TGOV1.paux0.v[0] to 0.05",ss.TGOV1.paux0.v[0] = 0.05
+Set the paux0 setpoint using the alter() method,"How do I use the alter() method to change the paux0 setpoint?,ss.TGOV1.alter example","ss.TGOV1.alter('paux0', 1, 0.05)"
+Configure the simulation final time to 2 seconds,"How do I set the simulation end time to 2 seconds?,configure simulation final time",ss.TDS.config.tf = 2
+Run the time-domain simulation,"How do I run the time-domain simulation?,run time-domain simulation",ss.TDS.run()
+Plot the paux output of the TGOV1 model,"How do I plot the paux output of the TGOV1 model?,plot TGOV1.paux",ss.TDS.plotter.plot(ss.TGOV1.paux)
+Plot the final output power (pout) of the TGOV1 model,"How do I plot the final output power (pout) of the TGOV1 model?,plot TGOV1.pout",ss.TDS.plotter.plot(ss.TGOV1.pout)
+Plot the generator rotor speed,"How do I plot the generator rotor speed ω?,plot generator speed ss.GENROU.omega",ss.TDS.plotter.plot(ss.GENROU.omega)
+"Clear auxiliary power setpoint and set new simulation end time, then run simulation","How do I clear an auxiliary power setpoint and run a simulation?,Set new setpoints and ending time in Andes simulation","# method 1: use in-place assignment again
+ss.TGOV1.paux0.v[0] = 0.
+# method 2: use ``ss.TGOV1.alter()``
+# ss.TGOV1.alter('paux0', 1, 0)
+# set the new ending time to 10 sec.
+ss.TDS.config.tf = 10
+ss.TDS.run()"
+Plot auxiliary power and generator speed over time,"Plot TGOV1 auxiliary power time series,Plot generator rotor speed in Andes","ss.TDS.plotter.plot(ss.TGOV1.paux)
+ss.TDS.plotter.plot(ss.GENROU.omega)"
+Clean up example output files,"Remove Andes example output files,Clean up simulation output files",!andes misc -C
+Import required libraries and configure logging for the load frequency control example,"Show me the load frequency control example in Andes,How do I trip a generator and restore frequency by load shedding in Andes?","import andes
+import numpy as np
+andes.config_logger(stream_level=20)"
+Tripping a generator in the IEEE 14-bus system,"How do I trip a generator in the IEEE 14-bus system using Andes?,Example of loading the IEEE 14-bus system and preparing for generator tripping,Andes Python API: tripping a generator in IEEE 14-bus test case","# using the IEEE 14-bus model as an example.
+# The example here contains a variety of models: generators, exciters, turbine governors, and PSS
+# To speed up, one can remove unneeded ones, e.g., PSS
+ieee14_raw = andes.get_case(""ieee14/ieee14.raw"")
+ieee14_dyr = andes.get_case(""ieee14/ieee14.dyr"")
+# use `andes.load` to load the test system
+# Need to set `setup=False` to be able to add new Toggles that turns off generators.
+ss = andes.load(ieee14_raw, addfile=ieee14_dyr, setup=False)"
+Add a Toggle that disconnects the generator GENROU_2 at t=1 second and initialize the system,"How do I add a Toggle to disconnect a generator at a specific time?,How can I set up a Toggle for generator trip and initialize the simulation?","# Add a Toggle that disconnects `GENROU_2` at t=1 s
+ss.add(""Toggle"", dict(model='SynGen', dev=""GENROU_2"", t=1.0))
+'Toggle_3'
+# Call setup manually
+ss.setup()
+IEEEST <IEEEST_1> added BusFreq <BusFreq_1> linked to bus <3.0>
+ST2CUT <ST2CUT_2> added BusFreq <BusFreq_2> linked to bus <1.0>
+ST2CUT <ST2CUT_3> added BusFreq <BusFreq_3> linked to bus <2.0>
+System internal structure set up in 0.0750 seconds.
+True"
+Check the status of all Toggle devices as a DataFrame,"How to display all toggles in a DataFrame?,How do I verify the toggle settings?","# double check that Toggles are set up correctly
+# Check `u` of the Toggles - the first two line switches are disabled, and the generator trip is enabled
+ss.Toggle.as_df()"
+Disable predefined line switches in the system,"How do I disable existing line switches?,How to set toggle activation values to disable line switches?","# disable existing line switches
+# The IEEE 14-bus system contains predefined line switches. Disabling them to study generator trip only.
+ss.Toggle.u.v[[0, 1]] = 0"
+"Configure the PQ model for constant power, disable PQ-to-Z conversion, and run power flow","How to configure PQ model parameters and run a power flow calculation?,Show me how to disable PQ-to-Z conversion and execute power flow.","# calculate power flow
+# use constant power model for PQ (we will come back to this later)
+ss.PQ.config.p2p = 1
+ss.PQ.config.q2q = 1
+ss.PQ.config.p2z = 0
+ss.PQ.config.q2z = 0
+# turn off under-voltage PQ-to-Z conversion
+ss.PQ.pq2z = 0
+ss.PFlow.run()"
+"Set simulation end time, disable stability criteria, and run a time-domain simulation","How to configure and run a time-domain simulation with custom criteria?,How do I set simulation stop time and run TDS without angle separation criteria?","# set the first simulation stop and run it
+ss.TDS.config.tf = 20
+ss.TDS.config.criteria = 0
+# temporarily turn off stability criteria based on angle separation
+ss.TDS.run()"
+Load the plotter and plot the frequency response of online generators,"How to plot generator frequency response?,How to use TDS plotter to visualize generator omega?","# Show the frequency response of online generators
+# Refer to `plot` documentation by using `help(ss.TDS.plt.plot)` and `help(ss.TDS.plt.plot_data)`
+ss.TDS.load_plotter()
+ss.TDS.plt.plot(ss.GENROU.omega,
+a=(0, 2, 3, 4),
+ytimes=60,
+)"
+Inspect PV device power flow input data as a pandas DataFrame,"How do I inspect the power flow inputs of PV devices?,Show me how to display PV parameters as a dataframe in Andes.,What command displays PV data as a DataFrame?",ss.PV.as_df()
+Print the PQ model equation documentation,"How do I view the documentation for the PQ model equations?,Show me how to print the PQ component documentation.,What command prints ss.PQ.doc()?",print(ss.PQ.doc())
+Extract active power from the power flow solution into a NumPy array,"How can I retrieve Ppf values from the PQ component as a NumPy array?,Example of copying active power Ppf into a NumPy array.,How to make a copy of active power from the power flow solution?","# active power from power flow solution - make a copy
+Ppf = np.array(ss.PQ.Ppf.v)
+Ppf"
+"Reload the system, add a generator trip event, configure the PQ model, and run power flow simulation","How to simulate a generator trip in Andes and run power flow?,Example code to reload system, trip GENROU_2 at t=1s and run PFlow.,How do I add a Toggle for GENROU_2 and run ss.PFlow.run()?","ss = andes.load(ieee14_raw, addfile=ieee14_dyr, setup=False)
+ss.add(""Toggle"", dict(model='SynGen', dev=""GENROU_2"", t=1.0))
+ss.setup()
+ss.Toggle.u.v[[0, 1]] = 0
+ss.PQ.config.p2p = 1
+ss.PQ.config.q2q = 1
+ss.PQ.config.p2z = 0
+ss.PQ.config.q2z = 0
+ss.PQ.pq2z = 0
+ss.PFlow.run()"
+"Configure simulation end time to 2 seconds, disable stability criteria based on angle separation, and run time-domain simulation.","How do I set the simulation end time in ANDES?,How can I disable stability criteria and run a time-domain simulation?","ss.TDS.config.tf = 2.0
+ss.TDS.config.criteria = 0
+# temporarily turn off stability criteria based on angle separation
+ss.TDS.run()"
+Retrieve the current active power flow values (Ppf) for all buses.,"How do I get the Ppf values for all buses in ANDES?,How to retrieve active power flows before load shedding?",ss.PQ.Ppf.v
+Define load buses to shed and find their PQ indices.,"How do I specify load buses and get their indices for load shedding?,How to find PQ indices by bus numbers?","shed_buses = [2, 3, 4, 5, 6, 9]
+# find the `idx` of the loads on these buses
+pq_shed_idx = ss.PQ.find_idx(keys='bus', values=shed_buses)"
+Get Ppf values for specified load indices before shedding.,"How to retrieve Ppf values for specific loads?,How do I use ss.PQ.get to get Ppf values?","pq_p = ss.PQ.get(src='Ppf', idx=pq_shed_idx, attr='v')"
+Compute new Ppf values by subtracting the load shedding amount and update them in the PQ object.,"How do I adjust load values for shedding and set them?,How to update PQ attributes after load calculation?","pq_p_new = pq_p - 0.4 / len(shed_buses)
+ss.PQ.set(src='Ppf', idx=pq_shed_idx, attr='v', value=pq_p_new)"
+Verify the updated active power flow values after load shedding.,"How do I check the Ppf values after updating?,How to verify updated Ppf in ANDES?",ss.PQ.Ppf.v
+"Configure simulation to 10 seconds, run it, and plot generator rotor speeds over time.","How do I run a 10-second time-domain simulation and plot generator speed?,How to plot generator rotor speeds after simulation in ANDES?","ss.TDS.config.tf = 10
+ss.TDS.run()
+ss.TDS.plt.plot(ss.GENROU.omega,
+a=(0, 2, 3, 4),
+ytimes=60,
+)"
+Remove generated example output files using the ANDES miscellaneous command.,"How to clean up example files in ANDES?,How do I remove output files using andes misc?",!andes misc -C
+Profiling with Python CProfiler in Andes: import library and obtain case path,"How do I profile with Python CProfiler using Andes?,Show me how to import Andes and get a case path for kundur_full.xlsx,Example of profiling setup with Python CProfiler in Andes","import andes
+from andes.utils.paths import get_case
+case_path = get_case(""kundur/kundur_full.xlsx"")"
+Cleanup command example when no output file exists,"How do I run the cleanup command in Andes?,andes misc -C example,Remove temporary files using Andes misc","!andes misc -C
+No output file found in the working directory."
+Import the MATPOWER interface functions from the andes library,"How do I import the MATPOWER interface from andes?,Show me how to import start_instance, to_matpower, and from_matpower from andes.interop.matpower.,What is the code to import the MATPOWER interface in Andes?","import andes
+from andes.interop.matpower import (start_instance,
+to_matpower, from_matpower)"
+Create an Octave/MATLAB instance,"How do I create an Octave/MATLAB instance?,Start an Octave/MATLAB session",m = start_instance()
+Convert an example ANDES system to a MATPOWER case and run power flow,"Convert to MATPOWER,How do I convert an ANDES system example to a MATPOWER case?,How can I run a power flow on a MATPOWER case using ANDES?","ss = andes.system.example()
+# load an ieee14 example case
+mpc = to_matpower(m, 'mpc', ss)
+m.eval(""runpf(mpc)"")"
+Retrieve the MATPOWER case solution from the M object,"How do I retrieve the solution from MATPOWER using the M file interface?,Show me how to pull the mpc solution in MATPOWER.","mpc_sol = m.pull(""mpc"")
+# retrieve the solution"
+Save the MATPOWER case to a .m file from Octave/MATLAB,"How can I save a MATPOWER case to a .m file?,How do I use savecase in MATPOWER to export a case file?","m.eval(""savecase('case14_andes.m', mpc)"")"
+Convert a MATPOWER m object to a system in mpc format using from_matpower.,"How do I convert a MATPOWER case to a system in Python?,Example of using from_matpower with m and 'mpc' arguments,Convert a MATPOWER object to a system using from_matpower","system = from_matpower(m, 'mpc')"
+Pull data from an Oct2Py MATPOWER object using m.pull().,"Show how to use m.pull() with an Oct2Py MATPOWER object.,How can I pull data from a MATPOWER object?,Example of m.pull() usage",m.pull()
+Call the internal _matpower function to construct an mpc dict from individual MATPOWER fields.,"How do I use the internal _matpower to build an mpc dict?,Example of calling from _matpower() to read MATPOWER fields,Convert MATPOWER data to mpc dict with _matpower()",from _matpower()
+Load dynamic data from Excel and perform power flow and time-domain simulations.,"How can I load dynamic data from an Excel file only and run simulations using andes.io.xlsx?,Show an example of reading dynamic-only data from an Excel file and running PFlow and TDS.","from andes.io import xlsx
+xlsx.read(system, andes.get_case('ieee14/ieee14_dyn_only.xlsx'))
+<andes.system.System at 0x7f8684043520>
+system.setup()
+system.PFlow.run()
+system.TDS.run()
+0%|
+| 0/100 [00:00<?, ?%/s]
+<Fault 1>: Applying fault on Bus (idx=7) at t=1.0 sec.
+<Fault 1>: Clearing fault on Bus (idx=7) at t=1.03333 sec.
+True
+system.TDS.plt.plot(system.GENROU.omega)
+(<Figure size 600x400 with 1 Axes>, <AxesSubplot:xlabel='Time [s]'>)"
+Run a time-domain simulation with fault cases using andes.run.,"How do I run a TDS simulation on an IEEE 14-bus fault case Excel file using andes.run?,Example of running time-domain simulation on ieee14_fault.xlsx with andes.run.","ss = andes.run(andes.get_case(\""ieee14/ieee14_fault.xlsx\""),
+routine='tds', verbose=30,
+no_output=True, default_config=True)
+0%|
+| 0/100 [00:00<?, ?%/s]
+<Fault 1>: Applying fault on Bus (idx=9) at t=1.0 sec.
+<Fault 1>: Clearing fault on Bus (idx=9) at t=1.1 sec.
+-> Single process finished in 0.7220 seconds.
+ss.TDS.plt.plot(ss.GENROU.omega)
+(<Figure size 600x400 with 1 Axes>, <AxesSubplot:xlabel='Time [s]'>)"
+Setup ANDES to pandapower interface: import libraries and configure logger,"How do I import and configure the ANDES to pandapower interface in Python?,Show example imports and logger configuration for pandapower interface with ANDES.","import andes
+from andes.interop.pandapower import to_pandapower, \
+    make_link_table, runopp_map, add_gencost
+andes.config_logger(20)
+import pandapower as pp
+import numpy as np
+import pandas as pd
+from math import pi"
+"Load an IEEE14 case from Excel using ANDES for pandapower conversion without modifying the original ssa, set voltage toggle parameters, and perform system setup.","Show me how to load an IEEE14 case in ANDES for pandapower conversion without modifying the original ssa.,Example of loading a case using andes.load with setup=False and default_config=True.,ANDES pandapower interface load case example.","ssa = andes.load(andes.get_case('ieee14/ieee14_ieeet1.xlsx'),
+setup=False,
+no_output=True,
+default_config=True)
+ssa.Toggle.u.v = [0, 0]
+ssa.setup()
+ss0 = andes.load(andes.get_case('ieee14/ieee14_ieeet1.xlsx'),
+setup=False,
+no_output=True,
+default_config=True)
+ss0.Toggle.u.v = [0, 0]
+ss0.setup()"
+Convert ADNES system ssa to pandapower network.,"Convert ADNES system ssa to pandapower net,How to convert an ADNES system to a pandapower net?,to_pandapower(ss0)",ssp = to_pandapower(ss0)
+Add generator cost data to the pandapower network.,"Add generator cost data to ssp,How to add generator cost data to ssp?,add_gencost(ssp, gen_cost)","gen_cost = np.array([
+[2, 0, 0, 3, 0.0430293, 20, 0],
+[2, 0, 0, 3, 0.25,
+20, 0],
+[2, 0, 0, 3, 0.01,
+40, 0],
+[2, 0, 0, 3, 0.01,
+40, 0],
+[2, 0, 0, 3, 0.01,
+40, 0]
+])
+add_gencost(ssp, gen_cost)"
+Inspect the pandapower network object.,"Inspect the pandapower net ssp,Show pandapower network ssp,ssp",ssp
+Run power flow using SSA PFlow,"How to run power flow using SSA?,ssa power flow run example",ssa.PFlow.run()
+Extract generator and slack bus results from SSA into a pandas DataFrame,"Extract SSA PV and slack results to DataFrame,SSA result DataFrame example","# ssa
+ssa_res_gen = pd.DataFrame(columns=['name', 'p_mw', 'q_mvar', 'va_degree', 'vm_pu'])
+ssa_res_gen['name'] = ssa.PV.as_df()['name']
+ssa_res_gen['p_mw'] = ssa.PV.p.v * ssa.config.mva
+ssa_res_gen['q_mvar'] = ssa.PV.q.v * ssa.config.mva
+ssa_res_gen['va_degree'] = ssa.PV.a.v * 180 / pi
+ssa_res_gen['vm_pu'] = ssa.PV.v.v
+ssa_res_slack = pd.DataFrame([[ssa.Slack.name.v[0], ssa.Slack.p.v[0] * ssa.config.mva, ssa.Slack.q.v[0] * ssa.config.mva, ssa.Slack.a.v[0] * 180 / pi, ssa.Slack.v.v[0]]], columns=ssa_res_gen.columns)
+ssa_res_gen = pd.concat([ssa_res_gen, ssa_res_slack]).reset_index(drop=True)"
+Run pandapower power flow and concatenate generation results with SSA,"Run pandapower and compare with SSA,Concatenate SSA and pandapower generation DataFrames","# ssp
+pp.runpp(ssp)
+ssp_res_gen = pd.concat([ssp.gen['name'], ssp.res_gen], axis=1)
+res_gen_concat = pd.concat([ssa_res_gen, ssp_res_gen], axis=1)"
+Extract bus voltage and angle results from SSA and pandapower and concatenate,"Compare bus voltages SSA vs pandapower,Bus results DataFrame for SSA and pandapower","# ssa
+ssa_pf_bus = ssa.Bus.as_df()[['name']].copy()
+ssa_pf_bus['v_andes'] = ssa.Bus.v.v
+ssa_pf_bus['a_andes'] = ssa.Bus.a.v * 180 / pi
+# ssp
+ssp_pf_bus = ssa.Bus.as_df()[['name']].copy()
+ssp_pf_bus['v_pp'] = ssp.res_bus['vm_pu']
+ssp_pf_bus['a_pp'] = ssp.res_bus['va_degree']
+pf_bus_concat = pd.concat([ssa_pf_bus, ssp_pf_bus], axis=1)"
+Round and display the combined generation comparison table,"Round res_gen_concat output,Display rounded generation comparison table",res_gen_concat.round(4)
+Round the pf_bus_concat DataFrame to 4 decimal places,"How do I round the pf_bus_concat DataFrame to 4 decimal places?,Can you show me how to round pf_bus_concat values to 4 decimal places?",pf_bus_concat.round(4)
+Prepare link table and assign static generators for OPF,"How to prepare link table for OPF in ADNES?,Assign static generators for OPF dispatch","# Asign the StaticGen with OPF, in this case, all the SynGen are GENROU
+link_table = make_link_table(ssa)
+link_table"
+Enable inline plotting in Jupyter notebooks using matplotlib,"How to enable inline plots in Jupyter notebooks?,Enable matplotlib inline in Jupyter","import matplotlib
+%matplotlib inline
+import matplotlib
+%matplotlib inline"
+Configure and run time-domain simulation for 2 seconds in ADNES,"How to run a 2s time-domain simulation in ADNES?,Run TDS in ADNES for 2 seconds","ssa.TDS.config.tf = 2
+ssa.TDS.run()
+ssa.TDS.plt.plot(ssa.GENROU.Pe)"
+Get OPF results from pandapower and map to ssp_res,"How to get OPF results from pandapower?,Retrieve OPF results and convert to p.u.","ssp_res = runopp_map(ssp, link_table)
+ssp_res"
+Update TurbineGov pref0 values based on OPF results and retrieve the updated values.,"How do I set and get TurbineGov pref0 values from pandas result arrays?,How to dispatch OPF results into the SSA model for TurbineGov pref0?,Show code to update and retrieve TurbineGov pref0 using ssp_res data.","ssa_gov_idx = list(ssp_res['gov_idx'][~ssp_res['gov_idx'].isna()])
+ssa.TurbineGov.set(src='pref0', idx=ssa_gov_idx, attr='v', value=ssp_res['p
+,→'][~ssp_res['gov_idx'].isna()])
+ssa.TurbineGov.get(src='pref0', idx=ssa_gov_idx, attr='v')
+array([0.49999998, 0.41274963, 0.34426
+, 0.49587786, 0.50000031])"
+Configure and run the time-domain simulation (TDS) for 50 seconds.,"How to configure and run the TDS simulation for 50 seconds?,Example of running TDS to 50s with pandapower SSA.,How to set the simulation end time to 50s and execute it?","ssa.TDS.config.tf = 50
+ssa.TDS.run()
+0%|
+| 0/100 [00:00<?, ?%/s]
+Simulation to t=50.00 sec completed in 1.9001 seconds.
+True"
+Plot the GENROU active power output from the TDS results.,"How do I plot the GENROU active power over time?,Example of using ssa.TDS.plt.plot to visualize generator output.,Show how to plot the simulation results for GENROU.Pe.","ssa.TDS.plt.plot(ssa.GENROU.Pe)
+(<Figure size 640x480 with 1 Axes>, <AxesSubplot:xlabel='Time [s]'>)"
+Import andes and pypowsybl modules and load the IEEE 14 bus linetrip case using andes.get_case.,"How do I import andes and pypowsybl and load the IEEE14 linetrip case?,Show me how to load a test case in andes using get_case.,Example of loading an IEEE 14 bus case with andes.","import andes
+import pypowsybl as pp
+from andes.interop.pypowsybl import to_pypowsybl
+ss = andes.load(andes.get_case(""ieee14/ieee14_linetrip.xlsx""))"
+Convert to a pypowsybl network and run AC load flow,"How do I convert to a pypowsybl network?,How do I run an AC power flow in pypowsybl?,Example of converting and running power flow in pypowsybl","n = to_pypowsybl(ss)
+results = pp.loadflow.run_ac(n)"
+Draw the diagram for the whole network,"How do I draw the diagram for the whole network?,Example of get_network_area_diagram usage,pypowsybl network diagram example",n.get_network_area_diagram()
+Draw the single line diagram for a specific bus (bus 6),"How do I draw the single line diagram for a specific bus?,Example of get_single_line_diagram usage,Draw SLD for bus 6","n.get_single_line_diagram(""VL6"")"
+TGOV1ModelAlt __init__ implementation defining the turbine governor model using direct state and algebraic equations.,"How do I implement the TGOV1 turbine governor model using equations in TGOV1ModelAlt?,Provide the Python __init__ code for TGOV1ModelAlt with state and algebraic equations.,Show example code for the TGOV1 governor model using direct equation definitions.","def __init__(self, system, config):
+    # 1. Declare parameters from case file inputs.
+    self.R = NumParam(info='Turbine governor droop',
+                      non_zero=True, ipower=True)
+    # Other parameters are omitted.
+    # 2. Declare external variables from generators.
+    self.omega = ExtState(src='omega',
+                          model='SynGen',
+                          indexer=self.syn,
+                          info='Generator speed')
+    self.tm = ExtAlgeb(src='tm',
+                       model='SynGen',
+                       indexer=self.syn,
+                       e_str='u*(pout-tm0)',
+                       info='Generator torque input')
+    # 3. Declare initial values from generators.
+    self.tm0 = ExtService(src='tm',
+                          model='SynGen',
+                          indexer=self.syn,
+                          info='Initial torque input')
+    # 4. Declare variables and equations.
+    self.pref = Algeb(info='Reference power input',
+                      v_str='tm0*R',
+                      e_str='tm0*R-pref')
+    self.wd = Algeb(info='Generator under speed',
+                    e_str='(1-omega)-wd')
+    self.pd = Algeb(info='Droop output',
+                   v_str='tm0',
+                   e_str='(wd+pref)/R-pd')
+    self.LG_x = State(info='State in the lag TF',
+                      v_str='pd',
+                      e_str='LG_lim_zi*(pd-LG_x)/T1')
+    self.LG_lim = AntiWindup(u=self.LG_x,
+                             lower=self.VMIN,
+                             upper=self.VMAX)
+    self.LL_x = State(info='State in the lead-lag TF',
+                      v_str='LG_x',
+                      e_str='(LG_x-LL_x)/T3')
+    self.LL_y = Algeb(info='Lead-lag Output',
+                      v_str='LG_x',
+                      e_str='T2/T3*(LG_x-LL_x)+LL_x-LL_y')
+    self.pout = Algeb(info='Turbine output power',
+                      v_str='tm0',
+                      e_str='(LL_y+Dt*wd)-pout')"
+TGOV1Model __init__ implementation using modeling blocks (LagAntiWindup and LeadLag) for the turbine governor model.,"How do I implement the TGOV1 governor model using library blocks in TGOV1Model?,Provide example code for TGOV1 with LagAntiWindup and LeadLag blocks.,Show the Python __init__ code for TGOV1Model using modeling blocks.","def __init__(self, system, config):
+    TGBase.__init__(self, system, config)
+    self.gain = ConstService(v_str='u/R')
+    self.pref = Algeb(info='Reference power input',
+                      tex_name='P_{ref}',
+                      v_str='tm0 * R',
+                      e_str='tm0 * R - pref',
+                     )
+    self.wd = Algeb(info='Generator under speed',
+                    unit='p.u.',
+                    tex_name=r'\omega_{dev}',
+                    v_str='0',
+                    e_str='(wref - omega) - wd',
+                   )
+    self.pd = Algeb(info='Pref plus under speed times gain',
+                    unit='p.u.',
+                    tex_name=""P_d"",
+                    v_str='u * tm0',
+                    e_str='u*(wd + pref + paux) * gain - pd')
+    self.LAG = LagAntiWindup(u=self.pd,
+                             K=1,
+                             T=self.T1,
+                             lower=self.VMIN,
+                             upper=self.VMAX,
+                            )
+    self.LL = LeadLag(u=self.LAG_y,
+                      T1=self.T2,
+                      T2=self.T3,
+                     )
+    self.pout.e_str = '(LL_y + Dt * wd) - pout'"
+Define the PSSBase class and its constructor,"How to define PSSBase Model subclass,Example of PSSBase constructor in andes","class PSSBase(Model):
+    def __init__(self, system, config):
+        super().__init__(system, config)"

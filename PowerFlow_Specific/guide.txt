@@ -1,0 +1,110 @@
+To begin using ANDES, import the package at the top of your Python script with ```import andes```. ANDES uses an XLSX-based case file to describe power‑system components, so you will need to provide the path to your case -- either a standard example like ```ieee39_base.xlsx``` or a custom file that follows the ANDES workbook conventions. You can load the case without immediately configuring it by calling: 
+
+```
+ssa = andes.load(
+    case_path,          # path to your .xlsx file
+    setup=False,        # postpone automatic setup
+    no_output=True,     # suppress intermediate printouts
+    default_config=False  # override built‑in settings if needed
+)
+```
+
+Once the case is loaded, prepare the network and device models by invoking ```ssa.setup()```. This step reads each worksheet (named for a device model, such as “PV” or “Bus”), parses the first row as parameter names, and loads every subsequent row as an instance of that model with its corresponding values. After setup, ANDES has constructed the internal system representation and is ready for simulation.
+
+To run a steady‑state power‑flow analysis, call the power‑flow solver via ```ssa.PFlow.run()```. When the calculation finishes, you can inspect results by querying attributes of the ```ssa``` object. For example, ```ssa.PV.p.v``` returns the active‑power outputs of all PV buses, while ```ssa.Slack.q.v``` yields the reactive‑power injections at the slack bus. Bus voltages and angles are available through ```ssa.Bus.v.v``` and ```ssa.Bus.a.v```, respectively.
+
+ANDES’s XLSX format maps directly to these Python attributes: the workbook name becomes an attribute on ```ssa```, each column header maps to a sub‑attribute (e.g., ```p``` for active power), and accessing ```.v``` returns the numeric values rather than internal handles. Thus, ```ssa.PV.p.v``` means: take the system object ```ssa```, select the PV‑model worksheet, access its “p” parameter column, and retrieve the array of values.
+
+If you need to extend your network -- say, by adding a custom generator or line -- you must do so before calling ```ssa.setup()```. For instance, you could define a new PV instance in code:
+
+```
+ssa.PV.add(
+    id="PV_custom",
+    bus=5,
+    p0=100.0,
+    v0=1.0
+)
+```
+
+After adding components, simply rerun ```ssa.setup()``` and ```ssa.PFlow.run()``` to include the new devices in your simulation. If you’ve already executed a case and want to modify it, reload your original XLSX file, apply your additions, and repeat the setup and run steps.
+
+
+########################################################################################################################################################################################################
+
+
+# Introduction
+
+To use ANDES, you should first import the andes package:
+
+```
+import andes
+```
+
+Next, load your case file (which can be a custom XLSX) by calling ```andes.load()```. For example:
+
+```
+ssa = andes.load(
+    case_path,         # Path to your .xlsx file (e.g., "ieee39_base.xlsx")
+    setup=False,       # Delay automatic setup
+    no_output=True,    # Suppress intermediate output
+    default_config=False  # Override default configurations
+)
+```
+
+After loading, prepare the simulation by invoking the ```setup()``` method on the system object:
+
+```
+ssa.setup()
+```
+
+Once the case is set up, run a power-flow analysis with:
+
+```
+ssa.PFlow.run()
+```
+
+You can then check results. For instance, to print PV bus power:
+
+```
+print(ssa.PV.p.v)  # Active power at PV buses
+```
+
+
+# ANDES XLSX Format
+
+The ANDES case file uses multiple workbooks (sheets), each named after a device model. In each sheet:
+* The first row lists parameter names (columns).
+* Each subsequent row represents an instance of that model, with its parameter values under the corresponding columns.
+
+When you evaluate an attribute like ```ssa.PV.p.v```:
+* ssa is the top-level system object.
+* PV selects the worksheet (model) named "PV"
+* p refers to the "p" parameter (column) in that sheet.
+* v returns the numeric values of that parameter (instead of an internal pointer).
+
+
+# Adding New Components
+
+You can also add new components programmatically, but only before calling ```ssa.setup()```. To extend the network, reload your case or use the existing ```ssa``` object and add your components:
+
+```
+# Example: Add a custom PV generator
+ssa.add(model="PV", param_dict=dict(bus=15, 
+                                    idx='15', 
+                                    p0=0.5, 
+                                    q0=0.2,
+                                    pmax=5,
+                                    pmin=0,
+                                    qmax=2,
+                                    qmin=-2,
+                                    v0=1.0,
+                                    ))
+
+# Then re-setup and rerun:
+ssa.setup()
+ssa.PFlow.run()
+```
+
+If you’ve already run a case and need to modify it, simply reload the original file and repeat the load, setup, and run steps with your additions.
+
+

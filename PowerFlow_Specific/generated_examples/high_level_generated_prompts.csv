@@ -1,0 +1,197 @@
+Question,File Path to Answer
+How can I check the overall operating condition of the test grid?,powerflow-ex1.py
+I want a summary of the power system's current performance,powerflow-ex1.py
+Provide an overview of the network's operational status,powerflow-ex1.py
+What's the health status of the power system?,powerflow-ex1.py
+Can I get key performance metrics for the test network?,powerflow-ex1.py
+How is the system behaving under the current scenario?,powerflow-ex1.py
+Summarize the system's operational overview,powerflow-ex1.py
+Can you provide an overview of the system's operational status?,powerflow-ex2.py
+What's the current health of the electrical network?,powerflow-ex2.py
+Give me a summary of the grid's performance.,powerflow-ex2.py
+Is the network operating within expected parameters?,powerflow-ex2.py
+Show me the overall condition of the power system.,powerflow-ex2.py
+Outline the system's current operating behavior.,powerflow-ex2.py
+Provide a high-level status report of the electricity network.,powerflow-ex2.py
+How is the grid functioning right now?,powerflow-ex2.py
+How can I update the network model with additional demand and renewable generation to check its performance?,powerflow-ex3.py
+How can I see the system’s status after adding new loads and generation units?,powerflow-ex3.py
+How do I assess the grid’s behavior when new consumption and generation are included?,powerflow-ex3.py
+How can I incorporate extra load and solar generation and then evaluate the overall condition?,powerflow-ex3.py
+What’s the procedure to modify the network with a new consumer and generator and run a status check?,powerflow-ex3.py
+How can I integrate additional demand and renewable supply into the power network to review its health?,powerflow-ex3.py
+How can I test the grid’s response to a uniform 10% load increase?,powerflow-ex4.py
+What’s the process for setting up and simulating a standard grid model with increased demand?,powerflow-ex4.py
+How do I perturb load levels in a power system model and run a simulation?,powerflow-ex4.py
+Can you demonstrate how to apply a fixed percentage load change to a test case and assess the outcome?,powerflow-ex4.py
+How do I evaluate a power network’s condition under scaled-up demand?,powerflow-ex4.py
+"Show me how to load a standard grid case, adjust loads by 10%, and simulate its performance.",powerflow-ex4.py
+How would the system respond to a uniform increase in demand and targeted tweaks at key points?,powerflow-ex5.py
+Can you provide an overview of the network’s performance after scaling up loads globally and locally?,powerflow-ex5.py
+What’s the health of the grid when overall demand is nudged up by 10% and specific nodes are adjusted?,powerflow-ex5.py
+Summarize the system behavior after uniformly boosting demands and modifying select load points.,powerflow-ex5.py
+How does the network condition change under a minor increase in overall and selective demands?,powerflow-ex5.py
+How can I adjust source references and get an overview of the system performance?,powerflow-ex6.py
+Show me the network status after tuning generation settings.,powerflow-ex6.py
+What is the grid health after updating energy source contributions?,powerflow-ex6.py
+Provide a summary of the system condition following source adjustments.,powerflow-ex6.py
+How do I change generator outputs and assess the network behavior?,powerflow-ex6.py
+Offer an overview of the power system after modifying supply setpoints.,powerflow-ex6.py
+What's the operational status of the grid once source parameters are updated?,powerflow-ex6.py
+How can I view the system performance after adjusting generation references?,powerflow-ex6.py
+How can I adjust the system's reference conditions and get a summary of its status?,powerflow-ex7.py
+How do I update the baseline operating parameters and then review the network's performance?,powerflow-ex7.py
+Can I change the core setpoints and see the resulting system overview?,powerflow-ex7.py
+How do I modify the system’s operating setpoint and obtain an updated condition report?,powerflow-ex7.py
+What’s the procedure to reset key operational values and view the updated system health?,powerflow-ex7.py
+Show me an overview of the system's load demand,powerflow-ex8.py
+Provide the network load summary,powerflow-ex8.py
+Give me the current demand distribution,powerflow-ex8.py
+Display the system's power consumption overview,powerflow-ex8.py
+What's the load status for the test grid?,powerflow-ex8.py
+I’d like to see the network demand profile,powerflow-ex8.py
+Could you summarize the grid's load condition?,powerflow-ex8.py
+Present a snapshot of the system’s demand,powerflow-ex8.py
+How can I get an overview of the network model and its current status?,powerflow-ex9.py
+Provide a summary of the system data sheets and operating condition.,powerflow-ex9.py
+Show me the overall condition of the test grid.,powerflow-ex9.py
+How do I inspect the model structure and view its present performance?,powerflow-ex9.py
+Give me an overview of the system data and a snapshot of its status.,powerflow-ex9.py
+I’d like a high-level summary of the network data and operating state.,powerflow-ex9.py
+Summarize the condition of the grid based on the latest model data.,powerflow-ex9.py
+How can I load the network information and review its overall health?,powerflow-ex9.py
+Give me an overview of the network’s generation and load assets,powerflow-ex10.py
+What’s the total count of generators and loads in the system,powerflow-ex10.py
+Provide a summary count of generators and loads in the power network,powerflow-ex10.py
+How many generation and demand points are in the system,powerflow-ex10.py
+I need a high-level summary of the number of generation and load components,powerflow-ex10.py
+What is the range of generation capacity in the network?,powerflow-ex11.py
+Can you summarize the smallest and largest generators in the system?,powerflow-ex11.py
+Show me the extremes of generator sizes across the grid.,powerflow-ex11.py
+Give me an overview of the minimum and maximum generator capacity.,powerflow-ex11.py
+What are the highest and lowest generation capacities present?,powerflow-ex11.py
+Provide the bounds on generator ratings in the system.,powerflow-ex11.py
+Tell me the largest and smallest power units available.,powerflow-ex11.py
+Summarize the capacity extremes of all generators.,powerflow-ex11.py
+Which point in the network is at its peak level?,powerflow-ex12.py
+Identify the location with peak system status.,powerflow-ex12.py
+Where does the system reach its maximum level?,powerflow-ex12.py
+Which area in the network shows the highest operating value?,powerflow-ex12.py
+Show me the section with the strongest indication.,powerflow-ex12.py
+Which part of the network exhibits the most elevated condition?,powerflow-ex12.py
+Identify where the system reaches its maximum status.,powerflow-ex12.py
+Which area demonstrates the highest measurement in the system?,powerflow-ex12.py
+Which generator is contributing the most output?,powerflow-ex13.py
+Identify the generator with the highest performance in the system.,powerflow-ex13.py
+Which plant is operating at its highest level right now?,powerflow-ex13.py
+Show me the generator currently delivering the most capacity.,powerflow-ex13.py
+Find the generator with the maximum contribution to the network.,powerflow-ex13.py
+Which generator is running at the highest output level?,powerflow-ex13.py
+How can I obtain a system overview of component counts before and after modifications?,powerflow-ex14.py
+Provide a snapshot of the system's status before and after adding new assets.,powerflow-ex14.py
+How do I summarize the system configuration changes when new elements are integrated?,powerflow-ex14.py
+Show me the condition of the system resources before and after an update.,powerflow-ex14.py
+What is the high-level overview of the system composition pre- and post-modification?,powerflow-ex14.py
+Where in the network are the operating conditions most and least extreme?,powerflow-ex15.py
+Which areas show the greatest variation in system performance?,powerflow-ex15.py
+Identify the locations with the highest and lowest system states.,powerflow-ex15.py
+Highlight the points with maximum deviation in operating conditions.,powerflow-ex15.py
+What is the range of system conditions across the network?,powerflow-ex15.py
+Which network locations represent the extremes of system behavior?,powerflow-ex15.py
+Which nodes are operating at the extremes in the network?,powerflow-ex16.py
+What is the maximum disparity in node behavior?,powerflow-ex16.py
+Identify the points with the highest and lowest operating conditions.,powerflow-ex16.py
+Where does the system show its greatest divergence?,powerflow-ex16.py
+What's the range of operational states across all nodes?,powerflow-ex16.py
+Which areas of the network are most out of alignment?,powerflow-ex16.py
+What's the spread between the highest and lowest node performance?,powerflow-ex16.py
+Show me the network's operational limits and extremes.,powerflow-ex16.py
+What are the extremal nodes based on overall system condition?,powerflow-ex16.py
+Where are the biggest and smallest operating values located?,powerflow-ex16.py
+Which generator is contributing the least to the system?,powerflow-ex17.py
+Identify the generator with the lowest power contribution.,powerflow-ex17.py
+Which unit is underperforming in terms of generation?,powerflow-ex17.py
+Find the generator with the smallest output.,powerflow-ex17.py
+Which generator is currently the weakest in output performance?,powerflow-ex17.py
+Which generator has the lowest output in the test grid?,powerflow-ex18.py
+Identify the generator contributing the least to system performance.,powerflow-ex18.py
+Provide an overview of generator outputs and highlight the smallest one.,powerflow-ex18.py
+Which generator is currently underperforming in the network?,powerflow-ex18.py
+Show me the generator with the minimal contribution in the system.,powerflow-ex18.py
+How can I get an overview of the initial voltage conditions of all generators?,powerflow-ex19.py
+I’d like a summary of the startup voltage profile for each generator,powerflow-ex19.py
+Provide a report on the voltage status of every generator at initialization,powerflow-ex19.py
+Show me the initial voltage overview for the generating units,powerflow-ex19.py
+How do I summarize the voltage levels across all generators at the start,powerflow-ex19.py
+Give me the initial voltage health check for all generation sources,powerflow-ex19.py
+What is the overall status of the network loads?,powerflow-ex20.py
+Provide an overview of load performance in the system.,powerflow-ex20.py
+Summarize the initial condition of all loads.,powerflow-ex20.py
+Assess the load health of the grid at startup.,powerflow-ex20.py
+What is the system’s initial load condition?,powerflow-ex20.py
+Can you summarize the system's starting power output?,powerflow-ex21.py
+What is the baseline power level of the network?,powerflow-ex21.py
+How does the system's initial power generation look?,powerflow-ex21.py
+Provide an overview of the network's initial energy supply.,powerflow-ex21.py
+What’s the system’s initial power status?,powerflow-ex21.py
+List all node identifiers in the system.,powerflow-ex22.py
+Show me an overview of the network's nodes.,powerflow-ex22.py
+Provide a list of all nodes in the grid.,powerflow-ex22.py
+What are the names of every node in the network?,powerflow-ex22.py
+Give me a summary of all system nodes.,powerflow-ex22.py
+Can I get an overview of generator performance in the grid?,powerflow-ex23.py
+What is the current status of the system’s power generation?,powerflow-ex23.py
+Provide a summary of all generation outputs.,powerflow-ex23.py
+What’s the performance overview of the generators?,powerflow-ex23.py
+Give me a snapshot of the generation health.,powerflow-ex23.py
+How are the generation units operating?,powerflow-ex23.py
+Summarize the generation activity in the network.,powerflow-ex23.py
+Where are the system’s highest and lowest operating conditions?,powerflow-ex24.py
+Give an overview of the system’s maximum and minimum performance points.,powerflow-ex24.py
+Which areas of the network reach peak and trough operational values?,powerflow-ex24.py
+Identify the extreme operational points in the system.,powerflow-ex24.py
+Show the locations with the highest and lowest system levels.,powerflow-ex24.py
+Highlight the maximum and minimum conditions within the network.,powerflow-ex24.py
+Where does the network operate at its strongest and weakest points?,powerflow-ex24.py
+What are the extreme operational metrics across the system?,powerflow-ex24.py
+How can I monitor the system’s operational condition to spot any issues?,powerflow-ex25.py
+Is the network operating within safe bounds?,powerflow-ex25.py
+Can I get an overview of the system’s health regarding voltage anomalies?,powerflow-ex25.py
+How do I detect if there are any operational violations in the network?,powerflow-ex25.py
+Summarize the current status of the power system and any concerns.,powerflow-ex25.py
+What is the overall performance state of the network?,powerflow-ex25.py
+How can I check if the system is within its acceptable operating range?,powerflow-ex25.py
+How can I get an overview of the system's generation capacity status?,powerflow-ex28.py
+Can you show me the status of generator performance and spare capacity?,powerflow-ex28.py
+What is the health status of the energy producers and their remaining margins?,powerflow-ex28.py
+Could you summarize generation usage and available capacity?,powerflow-ex28.py
+How can I report on current generation load and spare capacity?,powerflow-ex28.py
+What is the network generation capacity status?,powerflow-ex28.py
+How can I check the spare generation capability in the system?,powerflow-ex28.py
+Is the power system operating within its safety limits?,powerflow-ex27.py
+How can I detect if the network exceeds predefined operating bounds?,powerflow-ex27.py
+Check whether the overall system condition stays within normal margins.,powerflow-ex27.py
+How can I verify that the grid’s operational state is within acceptable thresholds?,powerflow-ex27.py
+Is the system’s behavior within its defined performance limits?,powerflow-ex27.py
+How can I perform a high-level check for out-of-bound conditions in the network?,powerflow-ex27.py
+Determine if the current operational metrics of the grid are within safety margins.,powerflow-ex27.py
+Summarize whether the system is operating within its normal operating range.,powerflow-ex27.py
+What is the range between the system's highest and lowest operating conditions?,powerflow-ex26.py
+"Where does the system reach its peak and lowest operational levels, and how far apart are they?",powerflow-ex26.py
+Provide an overview of the maximum and minimum operating condition values and their difference.,powerflow-ex26.py
+Identify the points of greatest and least operational intensity in the network and their span.,powerflow-ex26.py
+Summarize the extremal operating conditions and the gap between them.,powerflow-ex26.py
+How can I monitor the system for any voltage limit violations after changes?,powerflow-ex29.py
+What's the overall voltage condition of the network when new demand is added?,powerflow-ex29.py
+Is the grid operating within acceptable voltage boundaries after modifications?,powerflow-ex29.py
+Give me an overview of the network's voltage performance under altered load.,powerflow-ex29.py
+How do I detect abnormal voltage behavior following load adjustments?,powerflow-ex29.py
+Can I get a summary of voltage compliance after updating system loads?,powerflow-ex29.py
+Which areas of the network exceed voltage thresholds after changes?,powerflow-ex29.py
+How can I review the network’s performance after introducing additional demand?,powerflow-ex30.py
+What’s the overall system status when I increase demand on the grid?,powerflow-ex30.py
+Provide an overview of the power system’s behavior after adding new demand.,powerflow-ex30.py
+Summarize the grid condition following a change in demand levels.,powerflow-ex30.py
+How do I assess the power network health after modifying demand?,powerflow-ex30.py
+Show me the system performance when extra demand is applied.,powerflow-ex30.py
+How can I evaluate the system condition after a demand update?,powerflow-ex30.py

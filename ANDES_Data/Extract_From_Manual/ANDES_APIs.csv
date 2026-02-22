@@ -1,0 +1,294 @@
+Function Description,Function Name,Function Parameters
+System class for power system data and methods.,andes.system,
+Variable package with classes for numerical DAE.,andes.variables,
+Return an andes.system.System object for the ieee14_linetrip.xlsx as an example.,andes.system.example,"setup,no_output,**kwargs"
+"Point NumPy arrays without OWNDATA (termed ""view arrays"" here) to the source array.",andes.system.fix_view_arrays,system
+"Helper function to import generated pycode in the following priority: a user-provided path from CLI, ~/.andes/pycode, or <andes_package_root>/pycode.",andes.system.import_pycode,user_pycode_path
+Load config from an rc-formatted file.,andes.system.load_config_rc,conf_path
+Helper function for reloading an existing module and its submodules.,andes.system.reload_submodules,module_name
+Storage class for existing models.,andes.system.ExistingModels,
+System contains models and routines for modeling and simulation.,andes.system.System,"case,name,config,config_path,default_config,options,no_undill,autogen_stale,**kwargs"
+Add a device instance for an existing model. This method calls the add method of model and registers the device idx to group.,andes.system.System.add,"model,param_dict,**kwargs"
+Return system data as a dict where the keys are model names and values are dicts. Each dict has parameter names as keys and corresponding data in an array as values.,andes.system.System.as_dict,"vin,skip_empty"
+Perform per unit value conversion.,andes.system.System.calc_pu_coeff,
+Call methods on the given models.,andes.system.System.call_models,"method,models,*args,**kwargs"
+Collect config data from models.,andes.system.System.collect_config,
+Collect indices into BackRef for all models.,andes.system.System.collect_ref,
+Perform connectivity check for system.,andes.system.System.connectivity,info
+Clear equation arrays in DAE and model variables.,andes.system.System.e_clear,models
+Call the differential equation update method for models in sequence.,andes.system.System.f_update,models
+"Collect equation values into the DAE arrays. Additionally, resets differential equations associated with variables pegged by anti-windup limiters.",andes.system.System.fg_to_dae,
+Add dependent devices for all model based on DeviceFinder.,andes.system.System.find_devices,
+Find models with at least one of the flags as True.,andes.system.System.find_models,"flag,skip_zero"
+Set an ipysheet object back to model.,andes.system.System.from_ipysheet,"model,sheet,vin"
+Reset algebraic mismatches for islanded buses.,andes.system.System.g_islands,
+Call the algebraic equation update method for models in sequence.,andes.system.System.g_update,models
+Get all discrete status flags in a numpy array. Values are written to dae.z in place.,andes.system.System.get_z,models
+Import all groups classes defined in models/group.py.,andes.system.System.import_groups,
+Import and instantiate models as System member attributes.,andes.system.System.import_models,
+Import routines as defined in routines/__init__.py.,andes.system.System.import_routines,
+Initialize the variables for each of the specified models.,andes.system.System.init,"models,routine"
+Set gy diagonals to eps for a and v variables of islanded buses.,andes.system.System.j_islands,
+Call the Jacobian update method for models in sequence.,andes.system.System.j_update,"models,info"
+Update equation-dependent limiter discrete components by calling l_check_eq of models. This function must be called after differential equation updates.,andes.system.System.l_update_eq,"models,init,niter"
+Update variable-based limiter discrete states by calling l_update_var of models. This function must be called before any equation evaluation.,andes.system.System.l_update_var,"models,niter,err"
+Retrieve values for ExtParam for the given models.,andes.system.System.link_ext_param,model
+Trigger precompilation for the given models.,andes.system.System.precompile,"models,nomp,ncpu"
+Generate numerical functions from symbolically defined models.,andes.system.System.prepare,"quick,incremental,models,nomp,ncpu"
+Reload a new case in the same System object.,andes.system.System.reload,"case,**kwargs"
+Remove PyCapsule objects in solvers.,andes.system.System.remove_pycapsule,
+Reset to the state after reading data and setup (before power flow).,andes.system.System.reset,force
+Update variable services by calling s_update_post of models. This function is called at the end of System.init().,andes.system.System.s_update_post,models
+Update variable services by calling s_update_var of models. This function must be called before any equation evaluation after limiter update function l_update_var.,andes.system.System.s_update_var,models
+"Save all system, model, and routine configurations to an rc-formatted file.",andes.system.System.save_config,"file_path,overwrite"
+Set addresses for differential and algebraic variables.,andes.system.System.set_address,models
+Set configuration for the System object. Config for models and routines are passed directly to their constructors.,andes.system.System.set_config,config
+"Set variable names for differential and algebraic variables, right-hand side of external equations, and discrete flags.",andes.system.System.set_dae_names,models
+Process and store the sub-indices for outputs in dae.xy.,andes.system.System.set_output_subidx,models
+Set arrays (v and e) for internal variables to access dae arrays in place.,andes.system.System.set_var_arrays,"models,inplace,alloc"
+Set up system for studies.,andes.system.System.setup,
+Store non-inplace adders and setters for variables and equations.,andes.system.System.store_adder_setter,models
+Store existing models in System.existing.,andes.system.System.store_existing,
+Store differential variables with check_init == False.,andes.system.System.store_no_check_init,models
+Collect and store the sparsity pattern of Jacobian matrices.,andes.system.System.store_sparse_pattern,models
+Store event switching time in a sorted Numpy array in System.switch_times and an OrderedDict System.switch_dict.,andes.system.System.store_switch_times,"models,eps"
+Print out system summary.,andes.system.System.summary,
+Return the support group names and model names in a table.,andes.system.System.supported_models,export
+Invoke the actions associated with switch times.,andes.system.System.switch_action,models
+Return an ipysheet object for editing in Jupyter Notebook.,andes.system.System.to_ipysheet,"model,vin"
+"Reload generated function functions, from either the $HOME/.andes/pycode folder.",andes.system.System.undill,autogen_stale
+Copy variables values from models to System.dae.,andes.system.System.vars_to_dae,model
+Copy variable values from System.dae to models.,andes.system.System.vars_to_models,
+"Class for storing numerical values of the DAE system, including variables, equations and first order derivatives (Jacobian matrices).",andes.variables.dae.DAE,system
+DAE time series data.,andes.variables.dae.DAETimeSeries,[dae]
+Initialize DAE with given system.,DAE.__init__,system
+Allocate empty lists for names for the given size.,DAE.alloc_or_extend_names,
+Build sparse matrices with stored patterns.,DAE.build_pattern,name
+Reset equation and variable arrays to empty.,DAE.clear_arrays,
+Resets equation arrays to empty.,DAE.clear_fg,
+Clear stored triplets.,DAE.clear_ijv,
+Drop the TimeSeries data and create a new one.,DAE.clear_ts,
+Reset variable arrays to empty.,DAE.clear_xy,
+Reset status arrays to empty.,DAE.clear_z,
+Helper function for getting the list of variable names based on the array name.,DAE.get_name,arr
+Get the size of an array or sparse matrix based on name.,DAE.get_size,name
+Debug helper to print array values and names. Values below tol will not be displayed.,DAE.print_array,"name,values=None,tol=None"
+Interface for requesting addresses for a model.,DAE.request_address,"array_name,ndevice,nvar,collate=False"
+Reset array sizes to zero and clear all arrays.,DAE.reset,
+"Resize arrays to the new sizes m and n, and o.",DAE.resize_arrays,
+Restore all sparse matrices to the sparsity pattern filled with zeros and non-zero constants.,DAE.restore_sparse,names=None
+Helper function for setting time in-place.,DAE.set_t,t
+Store values for the current time step to the TimeSeries storage.,DAE.store,
+Store the sparse pattern triplets.,DAE.store_sparse_ijv,"name,row,col,val"
+Dump the variable name lst file.,DAE.write_lst,lst_path
+Write TDS data into NumPy uncompressed format.,DAE.write_npy,file_path
+Write TDS data into NumPy compressed format.,DAE.write_npz,file_path
+Initialize DAETimeSeries with optional DAE object.,DAETimeSeries.__init__,dae=None
+Get time-series data for variables or their associated equations.,DAETimeSeries.get_data,"base_vars,a=None,rhs=False"
+Reset the internal storage and erase all data.,DAETimeSeries.reset,
+Unpack dict-stored data into arrays and/or dataframes.,DAETimeSeries.unpack,"df=False,attr=None,warn_empty=True"
+Construct pandas DataFrames from stored data.,DAETimeSeries.unpack_df,attr
+Unpack dict data into numpy arrays.,DAETimeSeries.unpack_np,"attr,warn_empty=True"
+Add suffix to a full file name.,add_suffix,"fullname,suffix"
+Initialize File Manager with case and options.,FileMan.__init__,"case=None,**kwargs"
+Return the original full path or search in case file path for relative names.,FileMan.get_fullpath,fullname=None
+Perform the input and output setup for file manager.,FileMan.set,"case=None,**kwargs"
+Report information for the given system.,report_info,system
+Initialize Report object for system.,Report.__init__,system
+Update report values based on requested content.,Report.update,
+Write report to file.,Report.write,
+Decorator that ensures the connection is active before calling the init or run method of a BaseRoutine derived class. It calls the act method on self.system.conn to activate the connection before proceeding.,andes.routines.base.check_conn_before_init,func
+"Base routine class that provides references to system, config, and solver.",andes.routines.base.BaseRoutine,"system=None,config=None"
+Routine documentation interface.,andes.routines.base.BaseRoutine.doc,"max_width=78,export='plain'"
+Routine initialization interface.,andes.routines.base.BaseRoutine.init,
+Report interface.,andes.routines.base.BaseRoutine.report,**kwargs
+Routine main entry point.,andes.routines.base.BaseRoutine.run,**kwargs
+Summary interface.,andes.routines.base.BaseRoutine.summary,**kwargs
+Test if a system is stable by comparing the maximum rotor angle difference with a threshold.,andes.routines.criteria.deltadelta,"delta,diff_limit"
+Backward Euler's integration method.,andes.routines.daeint.BackEuler,"*args,**kwargs"
+Build full Jacobian matrix Ac for Trapezoid method.,andes.routines.daeint.BackEuler.calc_jac,"tds,gxs,gys"
+Calculate the residual of algebraized differential equations.,andes.routines.daeint.BackEuler.calc_q,"x,f,Tf,h,x0,f0"
+Integrate with Implicit Trapezoidal Method (ITM) to the current time.,andes.routines.daeint.BackEuler.step,tds
+Base class for implicit iterative methods.,andes.routines.daeint.ImplicitIter,"*args,**kwargs"
+Build full Jacobian matrix Ac for Trapezoid method.,andes.routines.daeint.ImplicitIter.calc_jac,"tds,gxs,gys"
+Calculate the residual of algebraized differential equations.,andes.routines.daeint.ImplicitIter.calc_q,"x,f,Tf,h,x0,f0"
+Integrate with Implicit Trapezoidal Method (ITM) to the current time.,andes.routines.daeint.ImplicitIter.step,tds
+Trapezoidal methods class.,andes.routines.daeint.Trapezoid,"*args,**kwargs"
+Build full Jacobian matrix Ac for Trapezoid method.,andes.routines.daeint.Trapezoid.calc_jac,"tds,gxs,gys"
+Calculate the residual of algebraized differential equations.,andes.routines.daeint.Trapezoid.calc_q,"x,f,Tf,h,x0,f0"
+Integrate with Implicit Trapezoidal Method (ITM) to the current time.,andes.routines.daeint.Trapezoid.step,tds
+Eigenvalue analysis routine.,andes.routines.eig.EIG,"system,config"
+Return state matrix and store to self.As.,andes.routines.eig.EIG.calc_As,dense=True
+Calculate eigenvalues and right eigen vectors.,andes.routines.eig.EIG.calc_eig,As
+Compute participation factor of states in eigenvalues.,andes.routines.eig.EIG.calc_pfactor,As
+Routine documentation interface.,andes.routines.eig.EIG.doc,"max_width,export"
+Export state matrix to a <CaseName>_As.mat file with the variable name As.,andes.routines.eig.EIG.export_mat,
+Find the indices of states associated with zero time constants in x.,andes.routines.eig.EIG.find_zero_states,
+Routine initialization interface.,andes.routines.eig.EIG.init,
+Plot utility for eigenvalues in the S domain.,andes.routines.eig.EIG.plot,"mu,fig,ax,left,right,ymin,ymax"
+Plot the root loci.,andes.routines.eig.EIG.plot_root_loci,"results,eig_indices,ax"
+Post processing of eigenvalues.,andes.routines.eig.EIG.post_process,
+Save eigenvalue analysis reports.,andes.routines.eig.EIG.report,x_name
+Routine main entry point.,andes.routines.eig.EIG.run,"*args,**kwargs"
+Return statistics of results in a string.,andes.routines.eig.EIG.stats,
+Print out a summary to logger.info.,andes.routines.eig.EIG.summary,
+Parameter sweep for root loci plot.,andes.routines.eig.EIG.sweep,"params,idxes,values"
+Calculate eigenvalues and right eigen vectors. This function is a wrapper to np.linalg.eig. Results are returned but not stored to EIG.,EIG.calc_eig,As=None
+"Compute participation factor of states in eigenvalues. Each row in the participation factor correspond to one state, and each column correspond to one mode.",EIG.calc_pfactor,As=None
+Routine documentation interface.,EIG.doc,"max_width=78,export='plain'"
+"Export state matrix to a <CaseName>_As.mat file with the variable name As, where <CaseName> is the test case name. State variable names are stored in variables x_name and x_tex_name.",EIG.export_mat,
+Find the indices of states associated with zero time constants in x.,EIG.find_zero_states,
+Routine initialization interface.,EIG.init,
+Plot utility for eigenvalues in the S domain.,EIG.plot,"mu=None,fig=None,ax=None,left=-6,right=0.5,ymin=-8,ymax=8,damping=0.05,line_width=0.5,s=40,dpi=None,figsize=None,base_color='black',show=True,latex=True,style='default'"
+Plot the root loci. Markers increase in size for the first parameter through the last.,EIG.plot_root_loci,"results,eig_indices,ax=None,dpi=None,figsize=None,draw_line=False,arrow_threshold=0.2,**kwargs"
+Post processing of eigenvalues.,EIG.post_process,
+Save eigenvalue analysis reports.,EIG.report,"x_name=None,**kwargs"
+Routine main entry point.,EIG.run,"*args,**kwargs"
+Return statistics of results in a string.,EIG.stats,
+Print out a summary to logger.info.,EIG.summary,
+Parameter sweep for root loci plot.,EIG.sweep,"params,idxes,values"
+Initialize the power flow calculation routine.,PFlow.__init__,"system=None,config=None"
+Routine documentation interface.,PFlow.doc,"max_width=78,export='plain'"
+Evaluate the limiters and residual equations.,PFlow.fg_update,
+Routine initialization interface.,PFlow.init,"*args,**kwargs"
+Full Newton-Krylov method from SciPy.,PFlow.newton_krylov,verbose=True
+Solve the power flow problem using iterative Newton's method.,PFlow.nr_solve,
+Solve a single iteration step using the Newton-Raphson method.,PFlow.nr_step,
+Write power flow report to a plain-text file.,PFlow.report,
+Solve the power flow using the selected method.,PFlow.run,**kwargs
+Output a summary for the PFlow routine.,PFlow.summary,
+Initialize the time-domain simulation routine.,TDS.__init__,"system=None,config=None"
+Calculate the time step size during the TDS.,TDS.calc_h,resume=False
+Check stability criteria.,TDS.check_criteria,
+Checks if is an event time and perform switch if true.,TDS.do_switch,
+Routine documentation interface.,TDS.doc,"max_width=78,export='plain'"
+Perform one round of evaluation for one iteration step.,TDS.fg_update,"models,init=False"
+Routine initialization interface.,TDS.init,"*args,**kwargs"
+Initialize a resumed simulation.,TDS.init_resume,
+Integrate for the step size of self.h using implicit trapezoid method.,TDS.itm_step,
+Manually load a plotter into TDS.plotter.,TDS.load_plotter,
+Report interface.,TDS.report,**kwargs
+Reset internal states to pre-init condition.,TDS.reset,
+TODO: rewind to a past time.,TDS.rewind,t
+Run time-domain simulation using numerical integration.,TDS.run,"no_summary=False,from_csv=None,**kwargs"
+Save the simulation data into two files: a .lst file and a .npz file. This function saves the output regardless of the files.no_output flag.,TDS.save_output,npz=True
+Set DAE solution method.,TDS.set_method,name='trapezoid'
+Send out initialization variables and process init from modules.,TDS.streaming_init,
+"Sync, handle and streaming for each integration step.",TDS.streaming_step,
+Print out a summary of TDS options to logger.info.,TDS.summary,
+Test if the TDS initialization is successful. This function updates dae.f and dae.g and checks if the residuals are zeros.,TDS.test_init,
+The ANDES plotting tool.,andes.plot,
+Plot eigenvalues.,andes.plot.eig_plot,"name,args"
+Parse command-line input for Y indices and return a list of indices.,andes.plot.parse_y,"y,upper,lower=0"
+Set the font for matplotlib.,andes.plot.set_font,"family='serif',size=12,style='normal',weight='normal'"
+Enable LaTeX for matplotlib based on the with_latex option and dvipng availability.,andes.plot.set_latex,
+Set matplotlib style.,andes.plot.set_style,style='default'
+TDS plot main function based on the new TDSData class.,andes.plot.tdsplot,"filename,y,x=(0,),to_csv=False,find=None,xargs=None,exclude=None,**kwargs"
+Data container for loading and plotting results from Andes time-domain simulation.,andes.plot.TDSData,"full_name=None,mode='file',dae=None,path=None"
+Plot with bqplot. Experimental and incomplete.,andes.plot.TDSData.bqplot_data,"xdata,ydata,xheader=None,yheader=None,xlabel=None,ylabel=None,left=None,right=None,ymin=None,ymax=None,legend=True,grid=False,fig=None,dpi=None,line_width=1.0,greyscale=False,savefig=None,save_format=None,title=None,**kwargs"
+Convert to pandas.DataFrame.,andes.plot.TDSData.data_to_df,
+Export to a csv file.,andes.plot.TDSData.export_csv,"path=None,idx=None,header=None,formatted=False,sort_idx=True,fmt='%.18e'"
+Return variable names and indices matching query.,andes.plot.TDSData.find,"query,exclude=None,formatted=False,idx_only=False"
+Get the internal plot_data function for the specified backend.,andes.plot.TDSData.get_call,backend=None
+Return a list of the variable names at the given indices.,andes.plot.TDSData.get_header,"idx,formatted=False"
+Return the variable values at the given indices.,andes.plot.TDSData.get_values,idx
+Guess the event starting time from the input data by checking when the values start to change.,andes.plot.TDSData.guess_event_time,
+Load from DAE time series.,andes.plot.TDSData.load_dae,
+Load the lst file into internal data structures and count the number of variables.,andes.plot.TDSData.load_lst,
+"Load the npy, zpy or legacy csv file into the internal data structure.",andes.plot.TDSData.load_npy_or_csv,"delimiter=','"
+Panoramic view of variables of a given model instance.,andes.plot.TDSData.panoview,"mdl,vars,ncols=3,idx=None,a=None,figsize=None,**kwargs"
+Entry function for plotting.,andes.plot.TDSData.plot,"yidx,xidx=(0,),a=None,ytimes=None,ycalc=None,left=None,right=None,ymin=None,ymax=None,xlabel=None,ylabel=None,xheader=None,yheader=None,legend=None,grid=False,greyscale=False,latex=True,dpi=None,line_width=1.0,font_size=12,savefig=None,save_format=None,show=True,title=None,linestyles=None,use_bqplot=False,hline1=None,hline2=None,vline1=None,vline2=None,hline=None,vline=None,fig=None,ax=None,backend=None,set_xlim=True,set_ylim=True,autoscale=False,legend_bbox=None,legend_loc=None,legend_ncol=1,figsize=None,color=None,**kwargs"
+Plot lines for the supplied data and options.,andes.plot.TDSData.plot_data,"xdata,ydata,xheader=None,yheader=None,xlabel=None,ylabel=None,linestyles=None,left=None,right=None,ymin=None,ymax=None,legend=None,grid=False,fig=None,ax=None,latex=True,dpi=None,line_width=1.0,font_size=12,greyscale=False,savefig=None,save_format=None,show=True,title=None,hline1=None,hline2=None,vline1=None,hline=None,vline=None,vline2=None,set_xlim=True,set_ylim=True,autoscale=False,figsize=None,legend_bbox=None,legend_loc=None,legend_ncol=1,mask=True,color=None,style='default',**kwargs"
+Plot multiple subfigures in one figure.,andes.plot.TDSData.plotn,"nrows,ncols,yidxes,xidxes=None,dpi=None,**kwargs"
+Dump the System data into the requested output format.,andes.io.dump,"system,output_format,full_path=None,overwrite=False,**kwargs"
+Helper function to get the output extension for the given output format.,andes.io.get_output_ext,out_format
+Guess the input format based on extension and content and store it in system.files.input_format.,andes.io.guess,system
+Parse input file with the given format from system.files.input_format.,andes.io.parse,system
+Read a file-like object and return a list of split lines.,andes.io.read_file_like,infile
+Read a JSON file with ANDES model data into an empty system.,andes.io.json.read,"system,infile"
+Test lines of a JSON input file for ANDES model data.,andes.io.json.testlines,infile
+Write loaded ANDES system data into a JSON file.,andes.io.json.write,"system,outfile,skip_empty=True,overwrite=None,**kwargs"
+Parse a MATPOWER file and return a dictionary with the data.,andes.io.matpower.m2mpc,infile
+Load an mpc dict into an empty ANDES system.,andes.io.matpower.mpc2system,"mpc,system"
+Read a MATPOWER data file into mpc and build ANDES device elements.,andes.io.matpower.read,"system,file"
+Convert data from an ANDES system to an mpc dict.,andes.io.matpower.system2mpc,system
+Test if a file is in the MATPOWER format.,andes.io.matpower.testlines,infile
+Return the number of lines based on the block index in the RAW file.,andes.io.psse.get_block_lines,"b,mdata"
+Read a PSS/E RAW file in v32/v33 formats into the system.,andes.io.psse.read,"system,file"
+Read an additional PSS/E dyr file and load into the system.,andes.io.psse.read_add,"system,file"
+Sort supported PSSE models so that model names are ordered by dependency.,andes.io.psse.sort_psse_models,"dyr_yaml,system"
+Check the RAW file for frequency base.,andes.io.psse.testlines,infile
+Initialize the ANDES streaming interface with the given system.,andes.io.streaming.Streaming.__init__,system
+"Build Varheader, Idxvgs and SysParam after power flow routine.",andes.io.streaming.Streaming.build_init,
+Connect to the DiME 2 server.,andes.io.streaming.Streaming.connect,
+Send a DONE signal when the simulation completes.,andes.io.streaming.Streaming.finalize,
+Handle parameter altering events.,andes.io.streaming.Streaming.handle_alter,Alter
+"Handle Fault, Breaker, Syn and Load events.",andes.io.streaming.Streaming.handle_event,Event
+Record variable requests from modules.,andes.io.streaming.Streaming.record_module_init,"name,init_var"
+"Broadcast Varheader, Idxvgs and SysParam to DiME clients after power flow.",andes.io.streaming.Streaming.send_init,recepient='all'
+Sync until the queue is empty and handle queued commands.,andes.io.streaming.Streaming.sync_and_handle,
+Transpose a MATLAB-style row array.,andes.io.streaming.Streaming.transpose_matlab_row,a
+Stream results from the last step to modules.,andes.io.streaming.Streaming.vars_to_modules,
+Broadcast all PMU and BusFreq measurements in pmudata.,andes.io.streaming.Streaming.vars_to_pmu,
+Dump tabular data to a text file with specified formatting.,andes.io.txt.dump_data,"text,header,rowname,data,file,width=18,precision=5"
+Read an xlsx file with ANDES model data into an empty system.,andes.io.xlsx.read,"system,infile"
+Test if a file is an ANDES xlsx model data file.,andes.io.xlsx.testlines,infile
+Write loaded ANDES system data into an xlsx file.,andes.io.xlsx.write,"system,outfile,skip_empty=True,overwrite=None,add_book=None,**kwargs"
+Decorator for functions that require GridCal.,andes.interop.gridcal.require_gridcal,f
+Convert an ANDES system to a GridCal grid.,andes.interop.gridcal.to_gridcal,"ssa,verify=True,tol=1e-06"
+Retrieve a MATPOWER mpc case from a MATLAB/Octave instance.,andes.interop.matpower.from_matpower,"m,varname,system=None"
+Decorator for functions that require matpower.,andes.interop.matpower.require_matpower,f
+Send an ANDES case to a running MATLAB instance.,andes.interop.matpower.to_matpower,"m,varname,system"
+Add cost function to converted pandapower net ssp.,andes.interop.pandapower.add_gencost,"ssp,gen_cost"
+Build the table for devices in a group in an ANDES System.,andes.interop.pandapower.build_group_table,"ssa,group,columns,mdl_name=[]"
+Build the Generation Shift Factor matrix of a pandapower net.,andes.interop.pandapower.make_GSF,"ppn,verify=True,using_sparse_solver=False"
+"Build the link table for generators and generator controllers in an ANDES System, including SynGen and DG for now.",andes.interop.pandapower.make_link_table,ssa
+Decorator for functions that require pandapower.,andes.interop.pandapower.require_pandapower,f
+Run OPF in pandapower using pp.runopp() and map results back to ANDES based on the link table.,andes.interop.pandapower.runopp_map,"ssp,link_table,**kwargs"
+Convert an ANDES system to a pandapower network for power flow studies.,andes.interop.pandapower.to_pandapower,"ssa,ctrl=[],verify=True,tol=1e-06"
+Decorator for functions that require pypowsybl.,andes.interop.pypowsybl.require_pypowsybl,f
+Convert an ANDES system to a pypowsybl network.,andes.interop.pypowsybl.to_pypowsybl,ss
+ANDES command-line interface and argument parsers.,andes.cli,
+Main entry point for the ANDES CLI and scripting interfaces.,andes.main,
+Utility functions for loading andes stock test cases,andes.utils.paths,
+Utility functions for saving and loading snapshots.,andes.utils.snapshot,
+Support for Jupyter widgets.,andes.utils.widgets,
+Create a parser for the command-line interface.,andes.cli.create_parser,
+Entry point of the ANDES command-line interface.,andes.cli.main,
+Log the ANDES command-line preamble at the logging.INFO level.,andes.cli.preamble,
+Configure an ANDES logger with a FileHandler and a StreamHandler.,andes.main.config_logger,"stream_level=20,stream=True,file=True,log_file='andes.log',log_path=None,file_level=10"
+TODO: show some demonstrations from CLI.,andes.main.demo,**kwargs
+Quick documentation from command-line.,andes.main.doc,"attribute=None,list_supported=False,config=False,**kwargs"
+Edit the Andes config file which occurs first in the search path.,andes.main.edit_conf,edit_config: str | bool | None = ''
+Find the file paths of the FileHandlers.,andes.main.find_log_path,lg
+Load a case and set up a system without running routine. Return a system.,andes.main.load,"case,codegen=False,setup=True,use_input_path=True,**kwargs"
+Miscellaneous commands.,andes.main.misc,"edit_config='',save_config='',show_license=False,clean=True,recursive=False,overwrite=None,version=False,**kwargs"
+Wrapper for the plot tool.,andes.main.plot,"*args,**kwargs"
+Run code generation.,andes.main.prepare,"quick=False,incremental=False,models=None,precompile=False,nomp=False,**kwargs"
+Print out Andes license to stdout.,andes.main.print_license,
+"Remove the outputs generated by Andes, including power flow reports _out.txt, time-domain list _out.lst and data _out.dat, eigenvalue analysis report _eig.txt.",andes.main.remove_output,recursive=False
+Entry point to run ANDES routines.,andes.main.run,"filename,input_path='',verbose=20,mp_verbose=30,ncpu=1,pool=False,cli=False,codegen=False,shell=False,**kwargs"
+Run single simulation case for the given full path.,andes.main.run_case,"case,routine='pflow',profile=False,convert='',convert_all='',add_book=None,codegen=False,autogen_stale=True,remove_pycapsule=False,**kwargs"
+Save the Andes config to a file at the path specified by save_config.,andes.main.save_conf,"config_path=None,overwrite=None,**kwargs"
+Run unit tests.,andes.main.selftest,"quick=False,extra=False,**kwargs"
+Set logging level for the given type of handler.,andes.main.set_logger_level,"lg,type_to_set,level"
+Print version info for ANDES and dependencies.,andes.main.versioninfo,
+Return the path to the folder of the ANDES package.,andes.utils.paths.andes_root,
+Return the root path to the stock cases.,andes.utils.paths.cases_root,
+Confirm overwriting a file.,andes.utils.paths.confirm_overwrite,"outfile,overwrite=None"
+Return the path to a stock case for a given path relative to andes/cases.,andes.utils.paths.get_case,"rpath,check=True"
+Return the path of the config file to be loaded.,andes.utils.paths.get_config_path,file_name='andes.rc'
+Return the path to $HOME/.andes.,andes.utils.paths.get_dot_andes_path,
+Get the directory for the log file.,andes.utils.paths.get_log_dir,
+Get the path to the pycode folder.,andes.utils.paths.get_pycode_path,"pycode_path=None,mkdir=False"
+List stock cases under a given folder relative to andes/cases.,andes.utils.paths.list_cases,"rpath='.',no_print=False"
+Return the root path to the stock cases.,andes.utils.paths.tests_root,
+"Initialize a DisplayablePath with path, parent_path, and is_last.",andes.utils.paths.DisplayablePath.__init__,"path,parent_path,is_last"
+Return the displayable representation of the path.,andes.utils.paths.DisplayablePath.displayable,
+Generate a tree of DisplayablePath objects starting from root.,andes.utils.paths.DisplayablePath.make_tree,"root,parent=None,is_last=False,criteria=None"
+Load an ANDES snapshot and return a System object.,andes.utils.snapshot.load_ss,path: str
+Save a system with all internal states as a snapshot.,andes.utils.snapshot.save_ss,"path: str,system: andes.system.System"
+Use ipysheet to edit parameters of one model.,andes.utils.widgets.edit_sheet,"system,model: str"
+Edit a loaded ANDES System with ipywidgets.,andes.utils.widgets.edit_system,system
+Callback for the Close botton. Closes ipywidget objects.,andes.utils.widgets.on_close,b
+Callback for the Update button. Sets new parameters back to System.,andes.utils.widgets.on_update,b

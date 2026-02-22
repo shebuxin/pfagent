@@ -1,0 +1,368 @@
+Question,File Path to Answer
+"How can I run a power-flow on the IEEE 39 bus system using the andes library and print PV and slack bus power, bus voltages, angles, and line phase angles?",powerflow-ex1.py
+"Write a Python script that loads ieee39_base.xlsx with andes, sets up and runs a power flow, then displays active/reactive power for PV and Slack buses, bus voltages and angles, and phase angles for each line.",powerflow-ex1.py
+"I have an Excel file called ieee39_base.xlsx—show me how to use andes to load it, perform a power flow, and print key results for the PV buses, slack bus, all system buses, and transmission lines.",powerflow-ex1.py
+"Show me code that uses andes to run a PFlow simulation on the IEEE39 model and then prints PV bus P and Q, Slack bus P and Q, bus voltages/angles, plus from/to angles on every line.",powerflow-ex1.py
+"Please provide a short script that loads an IEEE-39 Excel case, runs a power flow with andes, and outputs PV and slack bus powers, bus voltage magnitudes and angles, and line angle data.",powerflow-ex1.py
+"Using Python and the andes package, how do I read in ieee39_base.xlsx, skip default configs, perform a power flow, and print out the results for PV, slack, bus voltages/angles, and line angles?",powerflow-ex1.py
+"Give me an example of running a power-flow analysis on an IEEE 39 bus system in Python, then printing out all PV bus active/reactive powers, slack bus results, bus voltages & angles, and transmission line phase angles.",powerflow-ex1.py
+"I need a script to load an IEEE 39 case from the current directory, run a power flow with andes (no extra output), and then report PV and slack bus power, bus V and angle, and line angle attributes.",powerflow-ex1.py
+"Could you demonstrate how to use the andes library to set up and run a power flow on the IEEE39 Excel model and print key outputs for generators, slack, buses, and lines?",powerflow-ex1.py
+"Run a power-flow simulation with andes on an Excel-based IEEE39 network and display PV bus P/Q, slack bus P/Q, bus voltages/angles, and line phase angles.",powerflow-ex1.py
+"Load the IEEE-39 case from 'ieee39_base.xlsx' in Python using andes, perform a PFlow, and print the PV/reactive outputs, voltages, angles, and line angles.",powerflow-ex1.py
+"Quick example: use andes to load an Excel file for IEEE39, run PFlow, and print PV bus, slack bus, bus, and line results.",powerflow-ex1.py
+"Write a Python script that loads an IEEE 39-bus case from an Excel file using the andes library, runs a power-flow analysis, and prints PV bus P and Q, slack bus P and Q, bus voltages, and angles.",powerflow-ex2.py
+"I have an 'ieee39_base.xlsx' file in my current working directory. Show me how to import it into andes, run a power flow, and display the PV and slack bus powers plus all bus voltage magnitudes and angles.",powerflow-ex2.py
+Give me a simple example of using andes to perform a power flow on an IEEE39 system and then print out the PV bus and slack bus active/reactive power and all bus voltages and angles.,powerflow-ex2.py
+"How can I use andes in Python to load a power system from Excel, run PFlow.run(), and output P/Q for PV and slack buses as well as the voltage profile and angle vector for all buses?",powerflow-ex2.py
+"Provide code that finds its own folder, loads 'ieee39_base.xlsx' into andes without default configs or printed output, executes the power flow, and then prints key results for PV, slack, and every bus.",powerflow-ex2.py
+"Show me a quick script that sets up an andes simulation for IEEE 39, suppresses intermediate output, runs a power flow, and prints the PV/Slack bus powers and bus voltages and phases.",powerflow-ex2.py
+"I need to load an IEEE 39-bus network in Excel format, run a load flow in andes, and then see the PV bus P and Q, slack bus P and Q, plus voltage magnitudes and angles for all buses. How would that look in Python?",powerflow-ex2.py
+"Could you demonstrate how to import andes, locate an Excel case file in the working directory, call the PFlow solver, and then print out the PV and slack bus results along with bus voltages and angles?",powerflow-ex2.py
+"Give me code that uses os.getcwd() to find an Excel file, loads it with andes.load(...), runs the power flow, and prints the arrays ssa.PV.p.v, ssa.PV.q.v, ssa.Slack.p.v, ssa.Slack.q.v, ssa.Bus.v.v, and ssa.Bus.a.v.",powerflow-ex2.py
+"Briefly show how to run a power-flow simulation on IEEE39 in andes and print the bus data of interest (PV, slack, voltages, angles).",powerflow-ex2.py
+"Write an example with andes where you load an IEEE 39 Excel case, turn off default config, run power flow, and display the PV bus P/Q, slack bus P/Q, and all bus voltage and angle values.",powerflow-ex2.py
+"How would I script a full PF run in andes for the 39-bus system and extract and print PV bus active/reactive power, slack bus power, and the full bus voltage and angle vectors?",powerflow-ex2.py
+"Using ANDES, load the IEEE 39-bus case from the Excel file, add a PQ load to bus 2 and a PV generator to bus 15, then run the power flow.",powerflow-ex3.py
+"Give me Python code to import the IEEE39 system, insert a new load and PV generator, set it up without default configs, and run PFlow in ANDES.",powerflow-ex3.py
+I want to add a new load and generator to the IEEE 39-bus case in Andes and run a steady-state power flow—show me how.,powerflow-ex3.py
+How do I programmatically inject an extra PQ load at bus 2 and a PV gen at bus 15 into the IEEE39 network and solve for power flow?,powerflow-ex3.py
+"Write a script that uses andes.load with setup=False, adds a load and PV gen, then calls setup() and executes PFlow.run().",powerflow-ex3.py
+"Load ieee39.xlsx into ANDES, add a PQ model on bus 2 (0.5 MW, 0.2 Mvar) and a PV model on bus 15 (0.5 MW, 0.2 Mvar, Pmax=5, Pmin=0, Qmax=2, Qmin=-2, V0=1.0), then run power flow.",powerflow-ex3.py
+Add new components to the IEEE 39-bus example in ANDES and run a simulation.,powerflow-ex3.py
+"Andes: load case, add PQ load and PV generator, then run a PFlow.",powerflow-ex3.py
+Demonstrate setting up and running a static power flow on the IEEE39 network with one extra load and one extra PV generator in Python.,powerflow-ex3.py
+"Can you show me a Python example where we load the IEEE39 bus case, turn off automatic setup, add components manually, and execute the power flow analysis?",powerflow-ex3.py
+Can you show me how to tweak the voltage states of PQ buses in an IEEE39 case using andes and run a power-flow simulation?,powerflow-ex4.py
+"I need to load the IEEE 39-bus system in Python, increase PQ load voltages by 10%, run a load flow, and see the results.",powerflow-ex4.py
+"Write a script that imports the IEEE39 case into andes, perturbs p0 and q0 voltages by 1.1×, executes the power-flow, and prints out the new values.",powerflow-ex4.py
+"How do I use andes to load the IEEE39 network, scale the voltage of both p0 and q0 PQ nodes by 10%, and then perform a power-flow analysis?",powerflow-ex4.py
+Let’s bump the PQ bus voltages by 10% and execute the power flow—provide the code.,powerflow-ex4.py
+"Using the andes library, load the IEEE39 Excel file, set both p0 and q0 voltage magnitudes to 110% of their originals, run PFlow, and display the updated voltages.",powerflow-ex4.py
+"Can you give me an example of setting up an andes simulation, modifying PQ voltage states by a factor of 1.1, running the solver, and printing the outputs?",powerflow-ex4.py
+"Show a minimal Python example that loads IEEE 39, adjusts PQ voltages up ten percent, runs power flow, and prints the results.",powerflow-ex4.py
+I want to slightly increase the voltage variables in a loaded andes case before running the power-flow. How can I do that?,powerflow-ex4.py
+"Provide code to load the IEEE 39-bus case without default config, manually call setup(), scale PQ voltage states p0 and q0 by 10%, run the simulation, and print the voltages.",powerflow-ex4.py
+"Could you demonstrate loading an IEEE39 case in andes, scaling voltage states of the PQ loads by 10%, then running power flow and showing the new values?",powerflow-ex4.py
+"Generate a Python snippet using andes to load a case, perturb PQ load voltages by 10%, execute PFlow.run(), and output the new bus voltages.",powerflow-ex4.py
+"How can I load the IEEE 39-bus case in andes, boost all PQ load voltages by 10%, tweak a couple of specific bus voltages, run a power-flow, and print the new voltages?",powerflow-ex5.py
+"Use andes to import the IEEE39 Excel file, scale active and reactive PQ loads up by 10%, change voltages for two particular loads by their indices, then execute a PFlow and show the results.",powerflow-ex5.py
+"I need a Python script that reads ieee39.xlsx with andes, increases PQ load powers by 10%, modifies certain loads by index (e.g. PQ_1 and PQ_10), runs power flow, and prints the updated v values.",powerflow-ex5.py
+"Write code using andes to set up the IEEE39 case, amplify both p0 and q0 voltage states by 1.1, adjust loads at indexes ['PQ_1','PQ_10'] to custom values, then run and print the PF.",powerflow-ex5.py
+"Show me how to import andes, load the IEEE 39 case, uniformly boost PQ voltages by 10%, override voltages for two loads, run a simulation, and output p0.v and q0.v.",powerflow-ex5.py
+"Quick example: load IEEE39 in andes, multiply all PQ voltages by 1.1, set PQ_1 and PQ_10 voltages to [8,4] for p0 and [2,1] for q0, then run and show updated results.",powerflow-ex5.py
+"Load the ieee39.xlsx case with no default config, scale up the PQ bus voltage states by 1.1, change two load voltages via their indices to specific numbers, run ssa.PFlow, and print.",powerflow-ex5.py
+"Can you write a script that uses andes.load to import ieee39.xlsx with setup=True, no_output, default_config off, then 10% increase on PQ voltages, index-based overrides, and a power-flow run?",powerflow-ex5.py
+"How do I modify the voltage attribute of PQ loads in andes? I want to raise p0.v and q0.v by 10%, set two specific bus voltages, run the PF, and display the new voltages.",powerflow-ex5.py
+"Please provide code to load the IEEE 39-bus case in andes, ramp up both active and reactive load voltages by 10%, patch specific loads at indices 1 and 10 with new values, execute a PFlow, and print the outcomes.",powerflow-ex5.py
+"I’d like an example that uses andes to read the IEEE39 spreadsheet, boosts PQ loads’ v states by 10%, updates PQ_1 and PQ_10 voltages manually, then runs power-flow and prints p0.v/q0.v.",powerflow-ex5.py
+"Create a snippet that loads ieee39.xlsx in andes, sets up the simulation, scales PQ bus voltage states by factor 1.1, applies custom voltage arrays to two load indices, runs pflow, and prints results.",powerflow-ex5.py
+"How can I load the IEEE39 system in Python with andes, change the P and Q setpoints on certain PV buses (for example buses 1 and 2), run a power flow, and then print the updated values?",powerflow-ex6.py
+"Write a script using andes and numpy to import the IEEE 39-bus Excel file, manually set up the simulation, change the p0.v and q0.v for PV buses with idx [1,2] to [5,7] and [2,2.5], run PFlow, and display the results.",powerflow-ex6.py
+"Load ieee39.xlsx in andes with setup disabled, then set new active and reactive power references for PV slack buses, run power flow, and print the final PV.p0.v and PV.q0.v.",powerflow-ex6.py
+"Need code to modify generator setpoints in the IEEE 39-bus case using andes, then execute power flow and show updated setpoint arrays.",powerflow-ex6.py
+"Use andes to load an IEEE39 grid case (with no default config), change PV bus power values, simulate power flow, and output updated bus generator voltages.",powerflow-ex6.py
+"Python: import andes case, modify P and Q for PV buses, run the PFlow simulation, and print new PV power values.",powerflow-ex6.py
+"I want to load the IEEE 39 bus test system in andes, adjust the power reference of PV buses 1 and 2, run a power flow, and see the changes in p0 and q0 arrays.",powerflow-ex6.py
+"Import the IEEE 39-bus test case from the Excel file, manually call setup, update PV setpoints for buses 1 and 2, run the PFlow solver, print the modified p0.v and q0.v.",powerflow-ex6.py
+"Script to load the IEEE 39 bus system via andes, customize PV generator active/reactive setpoints, execute the power-flow calculation, and print the new values.",powerflow-ex6.py
+"Load a grid case in andes, skip automatic setup, set up manually, change P and Q values on the PV buses, run power flow, and display the updated values.",powerflow-ex6.py
+"Import case, tweak PV buses, run PF, output new values.",powerflow-ex6.py
+"Using andes, load the IEEE39 case, change the voltage references of PV slack buses, run the simulation, and report the results.",powerflow-ex6.py
+"How can I use the andes library to load the IEEE 39-bus Excel case, set the slack bus voltage magnitude to 1 p.u. and angle to 0°, run a power‐flow, and print the updated slack bus values?",powerflow-ex7.py
+"Write a Python script that imports andes and numpy, loads ieee39/ieee39.xlsx, updates the Slack bus setpoints (V=1 and angle=0), runs PFlow, and displays Slack.v0.v and Slack.a0.v.",powerflow-ex7.py
+"Using andes, load the IEEE39 case, configure the slack bus voltage to 1 and its angle to 0, execute a power-flow simulation, and output the new slack bus voltage and phase.",powerflow-ex7.py
+"I have ieee39/ieee39.xlsx—show me how to load it with andes, change the Slack bus magnitude to 1 and angle to 0, run the power flow, and print the results.",powerflow-ex7.py
+"In Python, load the IEEE 39-bus test case with andes, update the slack bus voltage and angle setpoints, run the load-flow, and display the slack bus voltages.",powerflow-ex7.py
+"Load the IEEE 39-bus network in andes with no default config, set Slack.v0=1 and Slack.a0=0, run PFlow, and print the slack bus values.",powerflow-ex7.py
+"Could you demonstrate how to update the voltage magnitude and angle on the slack bus of the IEEE39 case using andes, run a power-flow, and show the output?",powerflow-ex7.py
+"Quick request: using andes, load the IEEE39 Excel case, set slack bus V=1 p.u. and angle=0°, run PF, and print Slack.v0.v and Slack.a0.v.",powerflow-ex7.py
+"I need a code example that loads ieee39/ieee39.xlsx in andes, sets the slack bus voltage magnitude to 1 and phase angle to 0, runs the power-flow solver, and prints the slack bus results.",powerflow-ex7.py
+"Show me how to import andes, load the IEEE 39-bus Excel file, update the slack bus setpoints to V=1 and angle=0, run the simulation, and display the updated slack bus values.",powerflow-ex7.py
+How can I use andes to load the IEEE 39-bus case from its Excel file and then display the PQ loads as a DataFrame?,powerflow-ex8.py
+"Write Python code that loads the ieee39.xlsx case in andes with setup disabled and no output, then prints the PQ table.",powerflow-ex8.py
+Load the IEEE 39-bus test system in andes and show me the PQ load table in pandas format.,powerflow-ex8.py
+"I need to import andes, load the IEEE 39-bus case without auto-setup or default config, and then output the PQ DataFrame.",powerflow-ex8.py
+Show a snippet that loads an Excel case in andes (ieee39/ieee39.xlsx) and prints its PQ.as_df() table.,powerflow-ex8.py
+"Write a script to load the IEEE39 bus case using andes.load, turn off setup and printing, and then display the PQ table as a DataFrame.",powerflow-ex8.py
+Could you load the IEEE 39-bus network using andes.get_case and then print out the PQ load table?,powerflow-ex8.py
+"Use the andes library to load the IEEE 39-bus Excel data, disable default config and output, and dump the PQ table.",powerflow-ex8.py
+Demonstrate how to disable setup in andes.load for the IEEE 39 system and then print the PQ table as a DataFrame.,powerflow-ex8.py
+I want to see the point loads in the IEEE 39 test case. Load the case in andes and show the PQ DataFrame.,powerflow-ex8.py
+"How do I load an Excel workbook in pandas, list all of its sheets and column headers, run a power flow with andes, and then retrieve the values from the 7th column of the first sheet?",powerflow-ex9.py
+"I have an IEEE 39-bus Excel file. Could you write a Python script that prints each sheet’s name and headers, runs a PFlow simulation using andes, and then extracts the .v array from the seventh header of the first sheet?",powerflow-ex9.py
+"Please provide a script to read 'ieee39_base.xlsx' into pandas, display each sheet’s columns, execute andes.load and PFlow, and finally get the 7th column’s values from the first sheet.",powerflow-ex9.py
+"Give me a Python example that uses pd.read_excel to load all sheets, prints out the columns for each one, initializes andes without default configs, runs PFlow, and pulls the seventh field’s data from the first sheet.",powerflow-ex9.py
+"Load an .xlsx workbook, enumerate sheet names and headers, run a power flow analysis, and grab the seventh header’s .v vector.",powerflow-ex9.py
+"Show how to parse an Excel file, list sheet names and column lists, run an andes PFlow sim, then fetch one column's data.",powerflow-ex9.py
+"Script for listing all sheets and headers in an Excel file, performing an andes power-flow run, and retrieving a column vector.",powerflow-ex9.py
+"How to read an Excel workbook, extract the 7th column name of the first sheet, run a simulation, and print that column’s values?",powerflow-ex9.py
+"Using pandas and andes, read an IEEE bus data workbook, show its sheets, do a power flow, and then print the values in the 7th column of the first page.",powerflow-ex9.py
+"Write code to load 'ieee39_base.xlsx', list sheet names and their columns, perform PFlow, and print the seventh header’s v array from the first sheet.",powerflow-ex9.py
+"I want to scan an Excel workbook, list its sheet names and column headers, run an andes power flow model on it, and then extract the 7th header’s data from the first tab.",powerflow-ex9.py
+"Help me build a Python pipeline: read Excel, inspect sheets and headers, initialize andes, run PFlow, and retrieve the first sheet's seventh column.",powerflow-ex9.py
+"Load the IEEE 39 bus case using andes, run a power flow, and count how many generators and loads there are.",powerflow-ex10.py
+"Using Python, import andes and numpy, load and set up the IEEE39 case without default settings or output, run the power flow, and print the total number of PV and Slack generators and PQ load entries.",powerflow-ex10.py
+"How can I load an IEEE 39 system in andes, execute a power flow, and display generator and load counts?",powerflow-ex10.py
+"Write a script that uses andes.load on the 'ieee39.xlsx' file with setup=False, no_output=True, and default_config=False, then calls setup(), runs PFlow.run(), then prints the number of generators (PV plus Slack) and number of loads.",powerflow-ex10.py
+Show me code to find out how many generators and loads are in the IEEE 39 bus system after running a power flow with andes.,powerflow-ex10.py
+Create a Python program to perform a power flow on the ieee39 case and report counts of generators and loads. Use andes and numpy.,powerflow-ex10.py
+"I need a script that initializes an andes simulation for the IEEE 39 bus, suppresses outputs, and returns the generator and PQ bus count.",powerflow-ex10.py
+"Generate Python code that loads the IEEE39 Excel case, runs the simulation, and prints total generator and load numbers.",powerflow-ex10.py
+"Using andes, how do I disable default config, set up the IEEE 39 case, run power flow, and get the count of pmin for PV and Slack generators as well as loads from PQ?",powerflow-ex10.py
+Power flow in andes: count generators and loads.,powerflow-ex10.py
+"Write a Python script that loads the IEEE-39 bus case in Andes, runs a power‐flow simulation, and prints the highest and lowest generator MVA ratings.",powerflow-ex11.py
+I want to analyze the maximum and minimum generation capacities from the IEEE 39-bus system using Andes. Could you show me how?,powerflow-ex11.py
+"Load the IEEE39 test system with Andes, perform a power flow, concatenate the PV and slack bus MVA ratings, and print max/min values.",powerflow-ex11.py
+"Can you show an example in Python that loads an IEEE39 case in Andes, runs a PFlow study, and finds the largest and smallest generator capacities using NumPy?",powerflow-ex11.py
+"How can I load an IEEE 39 bus test in Andes, run a power‐flow, and compute the extreme generator Sn values?",powerflow-ex11.py
+"Import the IEEE39 case file, run the power‐flow using Andes, then compute and display the max and min capacities among all generators.",powerflow-ex11.py
+"Need a script: use andes.load to initialize an IEEE39 case from an Excel file, run PFlow, then use NumPy to compute the highest and lowest generator capacities.",powerflow-ex11.py
+"Could you write code to load ieee39.xlsx into Andes, set it up, run PFlow, then use NumPy to calculate and print the max and min generator sizes?",powerflow-ex11.py
+"Show a Python snippet that loads the IEEE 39‐bus system with no default config, runs the PFlow, and outputs the max and min generator capacities.",powerflow-ex11.py
+"I'm interested in using Andes with the IEEE39 case to find the MVA range of generators. Provide the code to load the case, run PFlow, and print out the range.",powerflow-ex11.py
+Get the maximum and minimum generator capacity from the IEEE39 case using Andes and NumPy.,powerflow-ex11.py
+Print out the smallest and largest MVA ratings of all generators after running a power flow on the IEEE-39 system with Andes.,powerflow-ex11.py
+"Write a Python script that uses the andes package to load the IEEE 39-bus case, run a power flow, and then print out the bus UID and voltage magnitude of the bus with the highest voltage.",powerflow-ex12.py
+"I have the IEEE39 network in an Excel file—load it with andes, run a powerflow, find which bus is at the highest voltage (p.u.), and display its UID and voltage value using numpy.",powerflow-ex12.py
+Use andes to run a power‐flow on the IEEE 39‐bus system and then identify and print the bus identifier for the maximum voltage magnitude in per unit.,powerflow-ex12.py
+How can I find which bus has the highest voltage after running a power flow on the IEEE 39‐bus case with andes?,powerflow-ex12.py
+"Provide code that loads the IEEE39 case via andes, executes PFlow, collects all bus voltages, and outputs the UID and value of the max-voltage bus.",powerflow-ex12.py
+"Load the IEEE39/ieee39.xlsx case in andes (with setup and no_output flags), run the power‐flow, then use numpy to find and print the bus with the highest voltage magnitude.",powerflow-ex12.py
+"Just load the IEEE 39 bus test case, run power flow, grab voltage magnitudes, and print out which bus UID has the peak voltage.",powerflow-ex12.py
+Could you help me write a script using andes and numpy to run a powerflow on ieee39 and report the bus with the highest voltage (UID and value)?,powerflow-ex12.py
+"Develop a Python code snippet that loads the IEEE39 network via andes.get_case, sets up the simulation, runs PFlow, and then determines and prints the maximum voltage bus using numpy argmax.",powerflow-ex12.py
+"Need a short Python example: load the IEEE 39‐bus system, do a PF, then find and display the bus ID (UID) with the highest voltage magnitude in p.u.",powerflow-ex12.py
+"How can I use the Andes library in Python to load the IEEE 39‐bus test case, run a power‐flow, and find which generator has the highest MW output?",powerflow-ex13.py
+"Give me a Python example that reads ieee39.xlsx with andes, executes a load flow, and prints the name and megawatts of the generator producing the most power.",powerflow-ex13.py
+"I need code to set up the IEEE39 case using andes, run PFlow, combine PV and slack outputs, convert to MW, and display the top generator.",powerflow-ex13.py
+"Show a script that loads the IEEE 39‐bus system with andes, runs a power‐flow analysis, and identifies the generator with the maximum active power.",powerflow-ex13.py
+"Load the IEEE39 case in andes, run power‐flow, and then output which generator is operating at the highest MW and its value.",powerflow-ex13.py
+Write Python code using andes and numpy to perform a load flow on ieee39.xlsx and print out the generator name and MW with the highest P.,powerflow-ex13.py
+"In andes, after running PFlow on the IEEE 39-bus system, how do I pick the generator with the highest output and show its power in MW?",powerflow-ex13.py
+I want to find out which generator in the IEEE39 test case has the largest active power injection after a power‐flow. Can you show me?,powerflow-ex13.py
+Provide a short Python snippet that uses andes to run a PF on the IEEE39 case and then reports the top generator by MW output.,powerflow-ex13.py
+"How do I load the IEEE 39‐bus case, run a power‐flow with andes, and then determine and print the name and megawatt output of the strongest generator?",powerflow-ex13.py
+Demonstrate how to run a power‐flow on the IEEE39 system using andes and numpy and then extract and print the maximum generator power in MW.,powerflow-ex13.py
+"I need a script that loads ieee39.xlsx, runs a power‐flow via andes, concatenates PV and slack generator outputs, finds the max, and prints its name and MW.",powerflow-ex13.py
+"Load the IEEE 39-bus case in Python with andes, run a power-flow, count the generators and loads, then add a PQ load at bus 2 and a PV generator at bus 15, rerun the power-flow, and print the before-and-after counts.",powerflow-ex14.py
+"Using andes and numpy, import the ieee39.xlsx case without setup, call setup(), run PFlow, print total PV+Slack generators and PQ loads, reload the case, add a new PQ model on bus 2 (p0=0.5, q0=0.2) and a PV model on bus 15 (p0=0.5, q0=0.2, pmax=5, pmin=0, qmax=2, qmin=-2, v0=1.0), then rerun and print updated totals.",powerflow-ex14.py
+"Simulate IEEE39 PF, count devices, add a load and solar plant, recount.",powerflow-ex14.py
+"How can I load an IEEE39 network in andes, run a power-flow, tally generators and loads, then inject a new load at bus 2 and a PV generator at bus 15 before rerunning and comparing counts?",powerflow-ex14.py
+"Write a Python script that imports the IEEE39 case from Excel, disables default settings, sets up the case, runs a PFlow, prints the number of generators and loads, then reloads andes, adds a PQ and PV element, runs PFlow again, and prints the new counts.",powerflow-ex14.py
+"Show me an andes example where you load a grid, run power flow, print component counts, then add and remove models.",powerflow-ex14.py
+"Add a PQ load to bus 2 and a PV generator to bus 15 in the IEEE39 system using andes, and display how the count of loads and generators changes after a power flow run.",powerflow-ex14.py
+"Could you demonstrate reading the IEEE39 case file with no outputs, performing setup and power flow, outputting counts, then recreating the case, adding new PQ and PV resources, and outputting updated counts in Python?",powerflow-ex14.py
+"In Python, use andes.get_case to load ieee39.xlsx, skip automatic setup, run PFlow manually after setup, count PV/Slack and PQ devices, then add a PQ model on bus 2 and a PV model on bus 15, run PFlow again, and report the counts.",powerflow-ex14.py
+"Short: simulate IEEE39 PF, count gen/load, add new load+gen, recount.",powerflow-ex14.py
+"Please write code to load the IEEE39 network, run PFlow, tally components, then append a PQ load and PV generator, run PFlow again, and print before/after totals.",powerflow-ex14.py
+"Tutorial request: load IEEE39 case in andes, run PF, count generators and loads, then reinitialize, add a PQ injection at bus 2 and a PV unit at bus 15, rerun PF, and show the changes.",powerflow-ex14.py
+"How can I load the IEEE 39-bus test system in ANDES, run a power flow, and determine which buses have the highest and lowest voltage angle in radians?",powerflow-ex15.py
+Write a Python script using the andes library to run a PFlow on the IEEE39 case and print the UIDs of the buses with the max and min voltage angles.,powerflow-ex15.py
+"Please use ANDES to load ieee39, execute a power-flow, and find and display the difference between the maximum and minimum bus angles.",powerflow-ex15.py
+"Load the IEEE 39-bus case, run the power flow, then retrieve all bus voltage angles, identify the largest and smallest ones, and print their bus IDs and the angle difference.",powerflow-ex15.py
+Get bus angle extremes with ANDES and numpy,powerflow-ex15.py
+Find the bus with the largest voltage angle and the bus with the smallest voltage angle after simulating IEEE 39 in ANDES.,powerflow-ex15.py
+"Using andes and numpy, calculate and print the maximum bus angle difference for the IEEE 39 system.",powerflow-ex15.py
+Run a power flow on the IEEE39 case and show me which bus UIDs have the highest and lowest voltage angles.,powerflow-ex15.py
+Show me how to simulate the IEEE39 system in ANDES and report the bus IDs for the extreme voltage angles.,powerflow-ex15.py
+I want to know the spread of voltage angles in the IEEE39 test system.,powerflow-ex15.py
+Produce a report of the highest and lowest bus voltage angle values from a power flow run on IEEE39.,powerflow-ex15.py
+"After running a power flow in ANDES, how do I extract the bus angle vector and find the max and min values?",powerflow-ex15.py
+Help me identify which buses have the extreme voltage angles in the IEEE39 test case loaded via ANDES.,powerflow-ex15.py
+"Write code to load a case, run pflow and find max and min values from an array of angles.",powerflow-ex15.py
+"Give me a complete script that loads an IEEE39 grid file, executes a power flow, and uses numpy to find argmax and argmin of bus angles.",powerflow-ex15.py
+"Using ANDES, how do I map from bus index positions to UID and identify the buses with extreme angles?",powerflow-ex15.py
+Bus angle analysis for IEEE39,powerflow-ex15.py
+"Load the IEEE 39 bus case, run a PFlow with no output, and give me a summary of the angle differences between the most separated buses.",powerflow-ex15.py
+Script to determine bus angle extremes with the ANDES API,powerflow-ex15.py
+"Calculate and print the UIDs, values, and difference between the largest and smallest voltage angles after a PFlow on IEEE39.",powerflow-ex15.py
+"Load the IEEE 39-bus test case in ANDES, run a power-flow simulation, and print the bus UIDs with the highest and lowest voltage angles in degrees, along with their angle difference.",powerflow-ex16.py
+"Using python, load the IEEE39 case from Excel with andes, run PFlow, convert all bus voltage angles to degrees, and identify which bus has the maximum and minimum angles and how far apart they are.",powerflow-ex16.py
+How can I run a power flow on the IEEE39 system in ANDES and find the buses with the largest and smallest voltage phase angles (in °) and display their IDs?,powerflow-ex16.py
+"Write a script that reads an Excel grid case, performs a load flow, and then finds and reports the bus with the max and min voltage angles in degrees, showing their unique IDs.",powerflow-ex16.py
+I want to calculate which buses in the IEEE39 network have the most positive and most negative voltage angles after a PFlow. Show their UIDs and the angle difference.,powerflow-ex16.py
+"Just give me code that loads ieee39.xlsx in andes, executes a PFlow, grabs bus.a.v, turns it into degrees, then prints the buses with the highest and lowest angles and the delta.",powerflow-ex16.py
+"Can you demonstrate how to load the IEEE 39-bus case using andes, run the power-flow, convert the voltage angles to degrees, and output the two extreme buses and the total angle spread?",powerflow-ex16.py
+"Using andes and numpy, find and print out the UIDs and values of the buses with the maximum and minimum voltage angles (in deg) after running a power-flow on IEEE39.",powerflow-ex16.py
+"Please provide a Python example that loads a spreadsheet-based grid case, executes pf, extracts bus voltage angles, and lists the top and bottom bus angles plus their ID-based difference.",powerflow-ex16.py
+"Load the IEEE39 system in ANDES, run the power-flow solver, then identify and report the buses with highest/lowest angles (in °) and compute the angle gap.",powerflow-ex16.py
+"I need a snippet to import a bus case from Excel, perform a power flow, convert output angles to degrees, and find the bus IDs at the extremes of that angle distribution.",powerflow-ex16.py
+"Power-flow the IEEE39 Excel model using andes, retrieve all bus phase angles in degrees, determine which two buses have the largest separation, and print their UIDs and angles.",powerflow-ex16.py
+How do I run a power‐flow on the IEEE 39‐bus test system using the andes library and then identify the generator with the lowest MW output?,powerflow-ex17.py
+"Write a Python script that loads the IEEE39 case in andes, executes a PFlow, and prints the name and MW of the least loaded generator.",powerflow-ex17.py
+I need to find out which generator in the IEEE39 network has the smallest active power output—show me how to do that in code.,powerflow-ex17.py
+"Using andes and numpy, load the IEEE® 39 bus case, run the load flow, and output the minimum generator output in MW along with its name.",powerflow-ex17.py
+"Can you demonstrate how to get the per‐unit power of all PV and slack generators for an IEEE39 case, convert them to MW, find the minimum, and display which generator it is?",powerflow-ex17.py
+Find the generator with the lowest output in MW after running a power flow on IEEE39.,powerflow-ex17.py
+"Show me a snippet that loads an IEEE39 XLSX file, performs a power‐flow, and reports the least active power generator.",powerflow-ex17.py
+I’m interested in identifying the smallest‐running generator in an IEEE39 power‐flow simulation—how would I code that?,powerflow-ex17.py
+"Quick script: load IEEE39, run PF, find min generator output.",powerflow-ex17.py
+Identify the generator with minimum active power output on the IEEE39 system.,powerflow-ex17.py
+Calculate and print the name and MW value of the lowest-output generator in the IEEE‐39 bus power flow using andes.,powerflow-ex17.py
+"In one go, load the IEEE39 case, run the load-flow, and print the weakest generator by output.",powerflow-ex17.py
+"How can I load the IEEE 39‐bus case in Python, run a power flow, and print the generator with the lowest reactive power output in Mvar?",powerflow-ex18.py
+"Using andes and numpy, find out which generator has the smallest Q output in the IEEE39 system and display its name and Mvar value.",powerflow-ex18.py
+Identify the generator with the minimum reactive power after a power‐flow on the IEEE39 case.,powerflow-ex18.py
+"Load the IEEE39 Excel case, run PFlow, then report the PV or slack generator that has the lowest reactive injection and its magnitude in Mvar.",powerflow-ex18.py
+"Write a script that opens the IEEE 39‐bus model, executes a power‐flow, and tells me which gen is producing the least reactive power in Mvar.",powerflow-ex18.py
+Which generator in the IEEE39 test system has the lowest Q output? Show its name and reactive output in Mvar.,powerflow-ex18.py
+"In Python, run a power‐flow on the IEEE 39‐bus network and find the generator with the minimum Q output, reporting its Mvar value.",powerflow-ex18.py
+"Please pull in the IEEE39 case via andes, perform PFlow, then compute and print the generator name with the smallest reactive power (Mvar).",powerflow-ex18.py
+I need to determine the generator with the lowest reactive power injection from an IEEE 39‐bus case using andes. Provide the full code.,powerflow-ex18.py
+"Show me how to load the IEEE39 bus system, run a power flow, gather PV and slack Q values, convert them to Mvar, find the minimum, and print the corresponding generator name and value.",powerflow-ex18.py
+"Using andes.get_case, run a power flow on the IEEE 39‐bus Excel file and programmatically identify and display the generator that has the lowest reactive power in Mvar.",powerflow-ex18.py
+"Give me a Python example that reads the IEEE39 case spreadsheet, performs PFlow with andes.PFlow.run(), then concatenates PV and slack Q outputs, finds the minimum in Mvar, and prints the generator’s name and value.",powerflow-ex18.py
+How can I use Andes to run a power flow on the PJM 5-bus case and then print the initial voltages of all generators?,powerflow-ex19.py
+"Write a Python script that loads the '5bus/pjm5bus.xlsx' case in andes, runs PFlow, concatenates PV and slack‐bus v0 values with NumPy, and prints them.",powerflow-ex19.py
+"Show me a simple example of loading a 5-bus test system in andes, solving the load flow, and outputting the starting voltage magnitudes for every generator.",powerflow-ex19.py
+I need to extract the v0 voltage arrays for PV and Slack generators after running an andes power flow and display them together.,powerflow-ex19.py
+"Could you provide code that imports andes and numpy, loads the pjm5bus case, runs PFlow, reads v0_pv and v0_slack, merges them, and prints the result?",powerflow-ex19.py
+Briefly demonstrate how to run a PFlow in andes for a 5-bus network and print the per‐unit initial voltages of all gens.,powerflow-ex19.py
+How do I read and combine v0 values from PV‐type and Slack‐type generators using andes and numpy after a power flow run?,powerflow-ex19.py
+"Andes tutorial: load the 5bus.pjm5bus.xlsx case, execute PFlow, grab v0 values for PV and slack, and print them in one array.",powerflow-ex19.py
+Give me a snippet that prints 'Initial Voltage for All Generators:' followed by the concatenated v0 arrays for PV and Slack buses.,powerflow-ex19.py
+I want a short Python example showing how to run a power flow in andes and then retrieve and display generator voltages.,powerflow-ex19.py
+"Can you show a code sample loading the PJM 5-bus case with andes, solving the power flow, and printing the initial generator voltage vector?",powerflow-ex19.py
+"Example of using andes.load, PFlow.run(), reading ssa.PV.v0.v and ssa.Slack.v0.v, combining with np.concatenate, and printing the output.",powerflow-ex19.py
+Need a script that runs andes.PFlow on a 5-bus file and prints out a NumPy array of v0 voltages for all generators.,powerflow-ex19.py
+"Please help me write code to load a test case in andes, perform power flow, collect initial v0 from both PV and slack, and display it.",powerflow-ex19.py
+"How to import andes, run the power flow on '5bus/pjm5bus.xlsx', concatenate PV and slack voltage results, and print them using numpy?",powerflow-ex19.py
+"Write a Python program using the Andes library to load the 'GBnetwork.xlsx' case, run a power flow, and print the initial per-unit voltages of all PQ loads.",powerflow-ex20.py
+"How do I import an Excel case in Andes, execute a power flow analysis, and extract the v0 voltage values for PQ-type loads?",powerflow-ex20.py
+"Show me code that uses andes.load() to open GBnetwork.xlsx, runs PFlow, and then prints ssa.PQ.v0.v.",powerflow-ex20.py
+"Using the Andes API, load the GBnetwork power system from an Excel file, run the PFlow solver, and display the initial voltage for every load.",powerflow-ex20.py
+Demonstrate how to retrieve per-unit load voltages after running a power flow in andes.,powerflow-ex20.py
+python andes PFlow run PQ v0 voltages,powerflow-ex20.py
+"Andes: load case, run power flow, print load voltages.",powerflow-ex20.py
+I have a GBnetwork Excel case in andes; how do I run PFlow on it and get all PQ load voltages?,powerflow-ex20.py
+"Quick example: read andes case from Excel, solve, and print initial load voltage values.",powerflow-ex20.py
+"Load an Excel-based power system in the Andes library, run its power flow, and output the initial voltages for PQ loads.",powerflow-ex20.py
+"How can I load an EI_33 Excel case in andes and run a power-flow analysis, then display the slack bus power?",powerflow-ex21.py
+"I need a Python snippet that reads the EI_33 grid data, executes power flow with andes, and prints out the initial slack bus generation.",powerflow-ex21.py
+"Write a script to import andes, load the 'ei/EI_33.xlsx' case, run PFlow, and print the slack bus p0 values.",powerflow-ex21.py
+"Show me how to use andes to load a case file, perform a power‐flow calculation, and extract the slack‐bus power and print it.",powerflow-ex21.py
+"In Python, load ‘ei/EI_33.xlsx’ into andes, run the power flow, and output the initial power of each slack component.",powerflow-ex21.py
+Can you demonstrate how to get the per‐unit slack bus generation from an andes power flow?,powerflow-ex21.py
+"Example code for reading an Excel case in andes, running PFlow, and printing slack‐bus initial power.",powerflow-ex21.py
+Give me a short Python example that uses andes to calculate and print the slack bus power for the EI_33 system.,powerflow-ex21.py
+I want to run a power‐flow on the EI_33 case using andes and then display the slack generator’s p0 value—how would I do that?,powerflow-ex21.py
+"Provide a Python snippet: import andes, load the EI_33 case, run PFlow, fetch ssa.Slack.p0.v, and print it.",powerflow-ex21.py
+Tell me how to print the initial power for all slack‐bus components after running a PFlow in andes.,powerflow-ex21.py
+"Write code to load ‘ei/EI_33.xlsx’ with andes.get_case, run ssa.PFlow, and print the slack‐bus gen power.",powerflow-ex21.py
+Write a Python script using the andes library to load an IEEE14 case from an Excel file and print all bus names after running a power flow.,powerflow-ex22.py
+How can I use andes to load the ieee14_full.xlsx case and list the bus names in Python?,powerflow-ex22.py
+"Using the andes package, load the IEEE 14 bus system (ieee14/ieee14_full.xlsx), run PFlow, and output the bus name array.",powerflow-ex22.py
+Give me a short Python example that loads the IEEE14 test case with andes and prints each bus name.,powerflow-ex22.py
+Load a power network case and show all bus names.,powerflow-ex22.py
+"I want a Python snippet that imports andes, loads the IEEE14 Excel case, runs power flow, and prints the bus names.",powerflow-ex22.py
+Show me how to extract bus names from an IEEE 14 power system using the andes API in Python.,powerflow-ex22.py
+How do I get a list of all bus names from the ieee14_full.xlsx case using andes?,powerflow-ex22.py
+"Quick example: andes.load ieee14 case, pflow run, print bus names.",powerflow-ex22.py
+"In Python, load the 'ieee14_full.xlsx' sheet with andes, execute PFlow, then print the names of all buses.",powerflow-ex22.py
+Use andes to retrieve the bus name vector from a power flow case.,powerflow-ex22.py
+Print out only the bus names from an IEEE 14 bus system with andes.,powerflow-ex22.py
+Give me code to load the IEEE14 power flow case and list bus names.,powerflow-ex22.py
+Let's extract the bus names from the IEEE14 case after running a power flow in andes.,powerflow-ex22.py
+"Write a Python script using the andes library to load the Kundur full system from the provided Excel file, run a power flow, and display the PV and slack bus active/reactive power values.",powerflow-ex23.py
+"How can I use andes to import an Excel case of the Kundur network, perform a load flow, and print out all generator active and reactive power?",powerflow-ex23.py
+"Show me code that loads kundur_full.xlsx with andes, runs ssa.PFlow, then prints PV and Slack bus P and Q, and finally lists power outputs for every generator.",powerflow-ex23.py
+I need a quick example in Python on how to run a power flow in andes and then output the active and reactive power for both PV and slack buses.,powerflow-ex23.py
+"Using the andes package, load a case from kundur/kundur_full.xlsx, execute the power flow calculation, and print active/reactive results for all generators.",powerflow-ex23.py
+"Give me a simple script that imports the Kundur test system into andes, runs the PFlow analysis, and prints out P and Q for PV and slack machines.",powerflow-ex23.py
+Could you demonstrate how to load a Kundur Excel test case in andes and then show the PV bus and slack bus power injections?,powerflow-ex23.py
+"Write a snippet that loads a case file, runs andes’s load flow, and prints generator powers, especially highlighting PV and Slack buses.",powerflow-ex23.py
+"Need a Python example: read an Excel power system case into andes, solve the load flow and display the generator active/reactive power values.",powerflow-ex23.py
+"Please provide code to load kundur_full.xlsx, run ssa.PFlow.run(), then print ssa.PV.p.v, ssa.PV.q.v, ssa.Slack.p.v and ssa.Slack.q.v.",powerflow-ex23.py
+Give me a code snippet to run a power flow on the Kundur system in andes and print the active and reactive output for each generator.,powerflow-ex23.py
+"How do I import an andes case from an Excel file, run a static power flow, and output the P and Q values for PV and slack buses in Python?",powerflow-ex23.py
+"Write a Python script that uses the andes library to load the PJM 5-bus Excel case, run a power flow, and then print which bus has the maximum and minimum voltage in per unit.",powerflow-ex24.py
+How can I use andes and numpy in Python to perform a load flow on '5bus/pjm5bus.xlsx' and output the highest and lowest bus voltage values along with their bus numbers?,powerflow-ex24.py
+"I need code that opens the 5bus PJM case with andes, runs the PFlow calculation, finds the bus with the largest voltage and the one with the smallest voltage, and prints both.",powerflow-ex24.py
+"Show me how to load a case from andes.get_case, solve the PFlow, then extract Bus.v and Bus.idx to determine and print the max and min voltages.",powerflow-ex24.py
+"Generate a Python example that loads '5bus/pjm5bus.xlsx' using andes.load, executes PFlow.run(), and prints the bus IDs for max/min voltages formatted to four decimal places.",powerflow-ex24.py
+"In Python, using the andes package, run a power flow on the 5-bus system and display the per-unit voltage extreme values with their corresponding bus indices.",powerflow-ex24.py
+Could you provide a short Python snippet employing andes to run a power flow on the PJM5 bus system and then identify the highest and lowest bus voltages?,powerflow-ex24.py
+I want to run an andes power flow on the PJM 5-bus Excel file and then use numpy to find and print the max and min voltage magnitudes and their bus numbers.,powerflow-ex24.py
+"Please write code that performs a PFlow with andes, grabs the voltage vector, uses numpy nanargmax/nanargmin, and prints out which buses have the maximum and minimum voltage.",powerflow-ex24.py
+"Sample code needed: load '5bus/pjm5bus.xlsx' via andes library, execute power flow, extract bus voltages, and report the bus indices with the highest and lowest voltages.",powerflow-ex24.py
+"Demonstrate how to run a load flow in andes for a five-bus case, then use numpy to determine the extreme values in the voltage vector and print those results.",powerflow-ex24.py
+"How do I script a power flow analysis on the PJM five-bus network using andes, then compute and display the buses with the maximum and minimum voltage levels?",powerflow-ex24.py
+"How do I use the ANDES library in Python to load a Kundur case from Excel, run a power flow, and then flag any bus voltages outside 0.95 to 1.05 p.u.?",powerflow-ex25.py
+"Write a Python script that reads a power system case file, runs a load flow with ANDES, and prints the bus IDs and voltages for any nodes that exceed the limits of 1.05 p.u. or drop below 0.95 p.u.",powerflow-ex25.py
+"I want to check voltage violations in my power flow results. Could you show me how to load the Kundur case with ANDES, run PFlow, and then loop through the bus voltages to report any outliers?",powerflow-ex25.py
+"Using ANDES and NumPy, generate code that identifies the maximum and minimum bus voltages after a power flow, and prints a summary if any values fall outside predefined per-unit limits.",powerflow-ex25.py
+Show me a quick way to detect and list all buses with voltage violations after running ANDES.PFlow.run().,powerflow-ex25.py
+"Hey, can you help me create a small Python program that checks each bus voltage against a 0.95–1.05 p.u. window and prints the results?",powerflow-ex25.py
+"In Python, after running ssa.PFlow.run() with ANDES, how can I find which bus has the highest and lowest voltage and then report any violations of my voltage thresholds?",powerflow-ex25.py
+"I need code to load an Excel-based Kundur network in ANDES, run the power flow, and alert me if any bus voltage goes out of the range 0.95–1.05 p.u., listing the offending bus numbers and their voltages.",powerflow-ex25.py
+"Please write a script that prints “No Voltage Violations Found” if all bus voltages are within limits, or otherwise lists each bus and its voltage if it’s outside 0.95 to 1.05 p.u.",powerflow-ex25.py
+"Could you give me a Python example that uses ANDES to load a case, run a power flow, then uses numpy.nanargmax and nanargmin to check for voltage violations?",powerflow-ex25.py
+"Create code to load the kundur_full.xlsx case, run the PFlow, and then check bus_voltages against V_MIN and V_MAX, printing a custom message for each violation.",powerflow-ex25.py
+How can I detect bus voltage issues in ANDES after a load flow and summarize any violations in a formatted output?,powerflow-ex25.py
+"Write a concise Python function that takes a list of bus voltages and their IDs, compares them to limits, and prints out which ones are out of range.",powerflow-ex25.py
+"Give me an example of checking per-unit voltage limits in a power system analysis using ANDES and numpy, with clear printouts when there are violations.",powerflow-ex25.py
+Briefly show how to flag voltage violations in a power flow solution using ANDES in Python.,powerflow-ex25.py
+"Could you show me a Python script that loads a power system case from an Excel file using andes, runs a power flow, and prints out P, Q, and apparent power for the slack generators along with their remaining capacity?",powerflow-ex28.py
+"I have an Excel file EI_33.xlsx for a power flow study. How can I use numpy and andes in Python to calculate each slack bus generator’s real, reactive, and apparent power and print how much capacity is left?",powerflow-ex28.py
+"Write code that reads an .xlsx case with andes, executes PFlow, then loops through slack generators to compute S=√(P²+Q²) and the remaining MVA margin.",powerflow-ex28.py
+"Load a network case in Python with andes, run the PFlow, extract slack generator data, calculate apparent power and available headroom, and display the results.",powerflow-ex28.py
+"Can you give me a short script that does a power flow on EI_33.xlsx using andes, then prints slack bus P, Q, |S|, Sn, and the unused capacity?",powerflow-ex28.py
+I need to calculate the slack bus generators’ loading margins after a power flow. Show me how to do it in Python with andes and numpy.,powerflow-ex28.py
+"Please provide an example of running a power flow on an Excel case using andes and computing each slack generator’s real, reactive, and apparent power along with the difference to their nameplate rating.",powerflow-ex28.py
+"Show some Python code that uses andes to load a grid model from an Excel file, performs a power flow, and reports the slack generators’ P, Q, S and remaining MVA.",powerflow-ex28.py
+"How to extract slack generator values (P, Q, Sn) from an andes power flow result and compute their apparent power and spare capacity using numpy?",powerflow-ex28.py
+"Write a Python snippet using andes to load EI_33.xlsx, run PFlow, and for each slack generator calculate and print P, Q, apparent power and margin.",powerflow-ex28.py
+"I have a Kundur test case. How can I use Andes to load it, run a power flow, and check the largest difference in bus voltage angles?",powerflow-ex27.py
+"Write a Python script that opens an Andes case from an Excel file, runs PFlow, and then calculates the max and min bus angles and tells me if they exceed 45 degrees (pi/4).",powerflow-ex27.py
+How do I find the maximum bus angle gap in radians after running a power flow with Andes?,powerflow-ex27.py
+"Please generate code that loads the 'kundur_full.xlsx' case with Andes, executes a power flow, and outputs the bus ID and value of the maximum and minimum angles along with the gap.",powerflow-ex27.py
+Calculate the bus angle spread from the Kundur system in Andes and raise a warning if it goes beyond 30°.,powerflow-ex27.py
+Use NumPy to identify the buses with the highest and lowest voltage angles in an Andes powerflow result and compare the difference to pi/4.,powerflow-ex27.py
+I need to plot the maximum and minimum bus voltage angles using Andes and check if they exceed an upper bound.,powerflow-ex27.py
+"Load a power system case in Andes, run PFlow, extract Bus.a.v and Bus.idx.v, compute max/min and gap, print results, and compare gap to np.pi/4.",powerflow-ex27.py
+Can you help me write code that prints which bus has the highest angle and which has the lowest angle after a power flow run?,powerflow-ex27.py
+"Using Andes and NumPy, write a script that loads a case, runs PFlow, finds index of max and min bus angles, calculates the difference, and prints a message if it's over pi/4.",powerflow-ex27.py
+I want to verify that the bus angle difference in the Kundur case does not exceed 0.7854 radians. Could you write a Python snippet for that?,powerflow-ex27.py
+"Quick script: load case, run PFlow, find bus angle difference, check against threshold, print correct or incorrect.",powerflow-ex27.py
+Calculate maximum and minimum flow for each branch in a network and compute the percentage of actual flow relative to each branch’s capacity.,powerflow-ex26.py
+"Write a Python function that takes a list of branches with 'rating' and 'actual_flow' fields and returns their min flow, max flow, and percentage utilization.",powerflow-ex26.py
+"I have power line branches with ratings and measured flows. Give me code to find the branch with highest flow, the one with lowest flow, and compute actual_flow/rating for each.",powerflow-ex26.py
+"How can I get max, min, and percent flow from a set of branches in JavaScript?",powerflow-ex26.py
+"In R, using a data frame of branch IDs, ratings, and flows, calculate the minimum flow, maximum flow, and the flow as a percentage of rating for each row.",powerflow-ex26.py
+"Show me a script that outputs the branch with maximum flow, the branch with minimum flow, and adds a column for percent utilization.",powerflow-ex26.py
+"Need code to summarize branch utilization: highest flow, lowest flow, and actual flow divided by branch rating times 100.",powerflow-ex26.py
+"Using pandas, find the max and min values in the 'flow' column and create a new column 'percent_flow' equal to flow divided by rating.",powerflow-ex26.py
+"Write a function to loop over network branches, determine the max flow, min flow, and percentage of capacity used by each branch.",powerflow-ex26.py
+"Please provide Java code that calculates for each branch the minimum flow, maximum flow, and the flow/rating ratio as a percent.",powerflow-ex26.py
+How to compute branch flow extremes and percent utilization in a single SQL query?,powerflow-ex26.py
+"I’m looking for a snippet that reads branch flows, prints the max and min flows, and shows each branch’s flow as a percentage of its rating.",powerflow-ex26.py
+"Using the andes library in Python, load the Kundur case, add a PQ load at bus 2, run a power flow, and print any bus voltages outside 0.95–1.05 p.u.",powerflow-ex29.py
+"Write a Python script that adds a 60 MW/100 MVAr load at bus 2 in an Andes model, executes the power flow, and reports any voltage violations.",powerflow-ex29.py
+"How can I import an Excel grid case, insert a new load, run PFlow with Andes, and flag buses with under/over‐voltage?",powerflow-ex29.py
+"Show me code to load kundur_full.xlsx using andes.get_case, add a new PQ load, run the load flow, and list any buses below 0.95 or above 1.05 p.u.",powerflow-ex29.py
+Can you provide an example of programmatically adding a load and checking voltage limits in Andes?,powerflow-ex29.py
+"I need a general script that, after modifying loads or generation, automatically checks for voltage violations in the base case.",powerflow-ex29.py
+Demonstrate how to detect under‐voltage or over‐voltage issues after adding a load in an Andes power flow study.,powerflow-ex29.py
+"Write a short Python snippet to find the max and min bus voltages with numpy, compare them to 0.95–1.05 p.u., and print violations.",powerflow-ex29.py
+"How would I set up an Andes model, add a new PQ element at bus 2, run PFlow, and then display any buses outside specified voltage bounds?",powerflow-ex29.py
+Add a new load or generation to a network and verify with Python/Andes that all bus voltages remain within 0.95 and 1.05 per unit.,powerflow-ex29.py
+"Short code: import andes, load the Kundur case, add a load, run power flow, and check for voltage violations.",powerflow-ex29.py
+I want to test if tripping a load causes voltage issues. How can I automate this with Andes and report any violations?,powerflow-ex29.py
+Provide a Python example using andes.load and ssa.PFlow.run() that prints 'Voltage Violations Found' when limits are exceeded.,powerflow-ex29.py
+How can I use Andes and numpy to list every bus with a voltage outside the 0.95–1.05 p.u. range after network changes?,powerflow-ex29.py
+"Write a Python script using the andes library to load the IEEE 39-bus case from an Excel file, add a PQ load of 60 MW and 100 MVAr at bus 2, then run a power-flow and print the active/reactive power and the PQ table.",powerflow-ex30.py
+"How can I import an andes network, add a new PQ load on bus 2 with p0=60 MW and q0=100 MVAr, set up the simulation, run a power-flow, and display the results?",powerflow-ex30.py
+"Load the GBnetwork case in andes without automatic setup, insert a PQ model at bus 2 with specified p0 and q0, then call setup, run the PFlow, and print out the PQ bus data.",powerflow-ex30.py
+"Show me a simple example in Python that uses andes: load the 39-bus system, add a 60 MW/100 MVAr load at bus 2, run a power-flow, and output the results.",powerflow-ex30.py
+"Could you give me a code snippet to load an Excel-based andes case, disable default config, add a new load at bus 2, and then perform a power-flow analysis?",powerflow-ex30.py
+"I want to add a custom PQ load to the IEEE 39-bus network using andes—how do I load the case, append the load, call setup, run PFlow, and print the PQ table?",powerflow-ex30.py
+"Demonstrate in Python how to import andes, load an Excel network case, use no_output and setup flags, then add a PQ bus component and run a load flow.",powerflow-ex30.py
+"Write a script that loads the 39-bus network from GBnetwork/GBnetwork.xlsx with andes, adds a new PQ load (bus 2, 60 MW, 100 MVAr), runs a power-flow, and prints the bus powers and PQ DataFrame.",powerflow-ex30.py
+"In andes, how do I programmatically add a 60 MW/100 MVAr load at bus 2 of the IEEE 39-bus system and then solve the load flow?",powerflow-ex30.py
+"Provide code to import the andes library, load an Excel grid case without setup, add a PQ load entry, execute the setup and PFlow, and display the load results.",powerflow-ex30.py
+Add a new PQ load at bus 2 in the GBnetwork case and run a power-flow with andes—show the complete Python commands.,powerflow-ex30.py
+"Give me a minimal example showing how to extend a built-in andes case by adding a PQ load, setting up the model, running PFlow, and printing the output.",powerflow-ex30.py
+"What's the code to load the IEEE39.xlsx case in andes, add a 60 MW/100 MVAr load to bus 2, then perform and print a power-flow solution?",powerflow-ex30.py
+"How do I append a PQ device to an andes study instance, set up the network, and execute a PFlow in Python?",powerflow-ex30.py
+"Show a complete Python workflow using andes: load GBnetwork.xlsx, disable automatic configuration, add a PQ load, run setup, solve PF, and print results.",powerflow-ex30.py
