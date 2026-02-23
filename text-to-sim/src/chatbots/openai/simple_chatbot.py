@@ -13,6 +13,8 @@ import re
 import ast
 
 from dotenv import load_dotenv
+from src.few_shot import build_andes_few_shot_section
+from src.andes_case_catalog import get_andes_builtin_case_paths, suggest_andes_case_paths
 load_dotenv(override=True)
 
 # Configure logging
@@ -51,7 +53,7 @@ def check_python_code_compilation(code: str) -> Tuple[bool, str]:
     except Exception as e:
         return False, f"Compilation Error: {str(e)}"
 
-def validate_response_code(response: str) -> Tuple[bool, List[str]]:
+def validate_response_code(response: str, user_context: str = "") -> Tuple[bool, List[str]]:
     """
     Validate all Python code blocks in a response.
     Returns (all_valid, error_messages)
@@ -69,8 +71,101 @@ def validate_response_code(response: str) -> Tuple[bool, List[str]]:
         if not is_valid:
             all_valid = False
             error_messages.append(f"Code block {i+1}: {error_msg}")
+
+        rule_errors = validate_andes_case_loading(code, user_context=user_context)
+        if rule_errors:
+            all_valid = False
+            for rule_error in rule_errors:
+                error_messages.append(f"Code block {i+1}: {rule_error}")
     
     return all_valid, error_messages
+
+
+def extract_uploaded_files_from_context(user_context: str) -> List[str]:
+    """Extract uploaded filenames from runtime context injected by the app."""
+    if not user_context:
+        return []
+
+    uploaded_files: List[str] = []
+    in_uploaded_section = False
+    for raw_line in user_context.splitlines():
+        line = raw_line.strip()
+        if "Uploaded files available during execution" in line:
+            in_uploaded_section = True
+            continue
+
+        if not in_uploaded_section:
+            continue
+
+        if not line.startswith("- "):
+            if line:
+                in_uploaded_section = False
+            continue
+
+        candidate = line[2:].strip()
+        lower_candidate = candidate.lower()
+        if lower_candidate.startswith("use these filenames"):
+            continue
+        if lower_candidate.startswith("case-loading rule"):
+            continue
+        if lower_candidate.startswith("preferred uploaded-case template"):
+            continue
+        if "." not in candidate:
+            continue
+        uploaded_files.append(candidate)
+
+    return uploaded_files
+
+
+def validate_andes_case_loading(code: str, user_context: str = "") -> List[str]:
+    """Validate common ANDES case-loading mistakes."""
+    errors: List[str] = []
+    uploaded_files = extract_uploaded_files_from_context(user_context)
+    uploaded_file_set = {os.path.basename(name) for name in uploaded_files}
+
+    if re.search(r"\bimport\s+anodes\b", code) or re.search(r"\banodes\.", code):
+        errors.append("Use 'andes' package, not 'anodes'.")
+
+    get_case_args = re.findall(r'andes\.get_case\(\s*["\']([^"\']+)["\']\s*\)', code)
+    invalid_uploaded_args = set()
+    if uploaded_file_set and get_case_args:
+        for arg in get_case_args:
+            arg_basename = os.path.basename(arg)
+            if arg_basename in uploaded_file_set:
+                errors.append(
+                    f"Uploaded case '{arg_basename}' must be loaded directly with andes.load(...), "
+                    "not andes.get_case(...)."
+                )
+                invalid_uploaded_args.add(arg)
+                break
+            if "/" not in arg and "\\" not in arg and arg_basename.lower().endswith((".xlsx", ".xls", ".csv")):
+                errors.append(
+                    "When uploaded files are available, do not call andes.get_case('<filename>'). "
+                    "Use andes.load('<exact_filename>', ...)."
+                )
+                invalid_uploaded_args.add(arg)
+                break
+
+    builtin_case_paths = set(get_andes_builtin_case_paths())
+    if builtin_case_paths and get_case_args:
+        for arg in get_case_args:
+            if arg in invalid_uploaded_args:
+                continue
+            normalized_arg = arg.replace("\\", "/")
+            if normalized_arg not in builtin_case_paths:
+                suggestions = suggest_andes_case_paths(normalized_arg, max_suggestions=3)
+                if suggestions:
+                    errors.append(
+                        f"'{arg}' is not a valid ANDES built-in case path for andes.get_case(...). "
+                        f"Try one of: {', '.join(suggestions)}."
+                    )
+                else:
+                    errors.append(
+                        f"'{arg}' is not a valid ANDES built-in case path for andes.get_case(...). "
+                        "Use an exact relative path under andes/cases."
+                    )
+
+    return errors
 
 class SimpleChatbot:
     """Simple chatbot using only OpenAI without RAG"""
@@ -119,6 +214,15 @@ Code Quality Requirements:
 - Make sure import statements are valid
 - Test variable names and function calls for typos
 
+ANDES Case Loading Rules:
+- For ANDES built-in cases, use: andes.load(andes.get_case("path/to/case"), ...)
+- For user-uploaded cases, do NOT use andes.get_case(...). Use the exact uploaded filename directly in andes.load(...), for example: andes.load("ieee39.xlsx", ...)
+- Never guess or rename uploaded filenames.
+- Preferred uploaded-case template:
+  script_dir = os.getcwd()
+  case = os.path.join(script_dir, "<exact_uploaded_filename>")
+  ssa = andes.load(case, setup=True, no_output=True, log=False)
+
 {custom_instructions}
 """)
 
@@ -152,7 +256,10 @@ Code Quality Requirements:
                 # Check if code compilation checking is enabled
                 if self.config.code_compilation_check:
                     # Validate any Python code in the response
-                    is_valid, error_messages = validate_response_code(response.content[0].get("text", "") if isinstance(response.content, list) else response.content)
+                    is_valid, error_messages = validate_response_code(
+                        response.content[0].get("text", "") if isinstance(response.content, list) else response.content,
+                        user_context=user_message,
+                    )
                     
                     if not is_valid and retry_count < max_retries:
                         # Create error feedback message
@@ -202,9 +309,17 @@ Please fix these errors and provide a corrected response with syntactically vali
 
     def load_system_prompt(self, session_id: str = None, custom_instructions: str = ""):
         """Load system prompt with custom instructions"""
+        few_shot_section = build_andes_few_shot_section()
+        extra_sections = []
+        if few_shot_section:
+            extra_sections.append(few_shot_section)
+        if custom_instructions.strip():
+            extra_sections.append(f"Additional Instructions:\n{custom_instructions}")
+        combined_sections = "\n\n".join(extra_sections)
+
         # Prepare the base system message with custom instructions
         base_system_message = self._system_message.content.format(
-            custom_instructions=f"\n\nAdditional Instructions:\n{custom_instructions}" if custom_instructions.strip() else ""
+            custom_instructions=f"\n\n{combined_sections}" if combined_sections else ""
         )
         
         self.system_message = base_system_message

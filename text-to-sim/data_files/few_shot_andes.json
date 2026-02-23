@@ -1,0 +1,56 @@
+{
+  "version": "1.0",
+  "description": "Few-shot templates for ANDES code generation in Power Flow Agent.",
+  "examples": [
+    {
+      "id": "builtin_ieee14_voltage_summary",
+      "tags": [
+        "builtin_case",
+        "andes",
+        "powerflow"
+      ],
+      "user": "Generate runnable Python code only. Use ANDES built-in IEEE 14 case, run power flow, and report slack bus voltage and top-3 highest bus voltages.",
+      "assistant": "```python\n# required_dependencies: andes,numpy\nimport andes\nimport numpy as np\n\nssa = andes.load(\n    andes.get_case(\"ieee14/ieee14.raw\"),\n    setup=True,\n    no_output=True,\n    log=False,\n)\nssa.PFlow.run()\n\nv = ssa.Bus.v.v\nbus = ssa.Bus.idx.v\n\nslack_bus = int(ssa.Slack.bus.v[0])\nslack_idx = np.where(bus == slack_bus)[0][0]\nprint(f\"Slack Bus {slack_bus}: V={v[slack_idx]:.4f} p.u.\")\n\ntop3 = np.argsort(v)[-3:][::-1]\nprint(\"Top 3 buses by voltage magnitude:\")\nfor i in top3:\n    print(f\"Bus {int(bus[i])}: {v[i]:.4f} p.u.\")\n```"
+    },
+    {
+      "id": "uploaded_case_ieee39_voltage_plot",
+      "tags": [
+        "uploaded_case",
+        "andes",
+        "plot"
+      ],
+      "user": "Generate runnable Python code only. Use uploaded file ieee39.xlsx in current directory, run power flow, print min/max voltage bus, and plot voltage profile.",
+      "assistant": "```python\n# required_dependencies: andes,numpy,matplotlib,pandas\nimport andes\nimport numpy as np\nimport matplotlib.pyplot as plt\nimport os\n\n# Uploaded case: use exact filename directly, not andes.get_case(...)\nscript_dir = os.getcwd()\ncase = os.path.join(script_dir, \"ieee39.xlsx\")\nif not os.path.exists(case):\n    raise FileNotFoundError(f\"Missing uploaded case file: {case}\")\n\nssa = andes.load(case, setup=True, no_output=True, log=False)\nssa.PFlow.run()\n\nv = ssa.Bus.v.v\nbus = ssa.Bus.idx.v\nmax_i = int(np.argmax(v))\nmin_i = int(np.argmin(v))\n\nprint(f\"Bus {int(bus[max_i])} has highest voltage: {v[max_i]:.4f} p.u.\")\nprint(f\"Bus {int(bus[min_i])} has lowest voltage: {v[min_i]:.4f} p.u.\")\n\nos.makedirs(\"output\", exist_ok=True)\nplt.figure(figsize=(10, 4))\nplt.plot(bus, v, marker=\"o\")\nplt.xlabel(\"Bus ID\")\nplt.ylabel(\"Voltage Magnitude (p.u.)\")\nplt.title(\"IEEE39 Voltage Profile\")\nplt.grid(True, alpha=0.3)\nplt.tight_layout()\nplt.savefig(\"output/ieee39_voltage_profile.png\", dpi=150)\nplt.show()\n```"
+    },
+    {
+      "id": "uploaded_case_minimal_load_template",
+      "tags": [
+        "uploaded_case",
+        "andes",
+        "load_template"
+      ],
+      "user": "Generate runnable Python code only. Load my uploaded case ieee39.xlsx and run power flow.",
+      "assistant": "```python\n# required_dependencies: andes\nimport andes\nimport os\n\nscript_dir = os.getcwd()\ncase = os.path.join(script_dir, \"ieee39.xlsx\")\n\nif not os.path.exists(case):\n    raise FileNotFoundError(f\"Missing uploaded case file: {case}\")\n\nssa = andes.load(case, setup=True, no_output=True, log=False)\nssa.PFlow.run()\n```"
+    },
+    {
+      "id": "modify_case_add_load_before_setup",
+      "tags": [
+        "andes",
+        "topology_change",
+        "ordering_rule"
+      ],
+      "user": "Generate runnable Python code only. Add one new PQ load to kundur_full case and check whether any bus violates [0.95, 1.05] p.u.",
+      "assistant": "```python\n# required_dependencies: andes,numpy\nimport andes\nimport numpy as np\n\nV_MIN = 0.95\nV_MAX = 1.05\n\nssa = andes.load(\n    andes.get_case(\"kundur/kundur_full.xlsx\"),\n    setup=False,\n    no_output=True,\n    log=False,\n)\n\n# Add new load before setup\nssa.add(\n    model=\"PQ\",\n    param_dict={\n        \"bus\": 2,\n        \"idx\": \"PQ_NEW_1\",\n        \"p0\": 60 / ssa.config.mva,\n        \"q0\": 100 / ssa.config.mva,\n    },\n)\n\nssa.setup()\nssa.PFlow.run()\n\nbus_v = ssa.Bus.v.v\nbus_id = ssa.Bus.idx.v\nviol = [(int(i), float(v)) for i, v in zip(bus_id, bus_v) if v < V_MIN or v > V_MAX]\n\nif not viol:\n    print(\"No voltage violations found.\")\nelse:\n    print(\"Voltage violations:\")\n    for i, v in viol:\n        print(f\"Bus {i}: {v:.4f} p.u.\")\n```"
+    },
+    {
+      "id": "builtin_case_branch_loading",
+      "tags": [
+        "builtin_case",
+        "andes",
+        "line_metrics"
+      ],
+      "user": "Generate runnable Python code only. Use pjm5bus built-in case, run power flow, and print top-5 most loaded lines by apparent power ratio.",
+      "assistant": "```python\n# required_dependencies: andes,numpy\nimport andes\nimport numpy as np\n\nssa = andes.load(\n    andes.get_case(\"5bus/pjm5bus.json\"),\n    setup=True,\n    no_output=True,\n    log=False,\n)\nssa.PFlow.run()\n\nline_ids = ssa.Line.idx.v\np1 = ssa.Line.p1.e\nq1 = ssa.Line.q1.e\nsn = ssa.Line.Sn.v\n\ns = np.sqrt(np.square(p1) + np.square(q1))\nratio = np.where(sn > 0, s / sn, 0.0)\norder = np.argsort(ratio)[::-1][:5]\n\nprint(\"Top loaded lines:\")\nfor i in order:\n    print(f\"Line {int(line_ids[i])}: S={s[i]:.4f}, Sn={sn[i]:.4f}, loading={ratio[i]*100:.2f}%\")\n```"
+    }
+  ]
+}

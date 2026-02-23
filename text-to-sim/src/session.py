@@ -60,6 +60,8 @@ def initialize_session_state():
         st.session_state.code_compilation_check = True
     if 'max_compilation_retries' not in st.session_state:
         st.session_state.max_compilation_retries = 2
+    if 'active_andes_case' not in st.session_state:
+        st.session_state.active_andes_case = None
 
 
 def register_session_cleanup():

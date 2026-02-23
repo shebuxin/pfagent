@@ -324,6 +324,7 @@ def show_feedback_screen():
             st.session_state.code_reset_counters = {}
             st.session_state.pending_error_fix = []
             st.session_state.code_analyses = {}  # Clear AI analyses
+            st.session_state.active_andes_case = None
             st.session_state.persistent_docs = set()
             st.session_state.session_docs = set()
             st.balloons()

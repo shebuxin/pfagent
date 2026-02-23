@@ -176,6 +176,7 @@ def main():
         if st.button("🚀 Initialize Agent", type="primary", use_container_width=True):
             with st.spinner(f"Initializing {chatbot_type} agent..."):
                 st.session_state.session_id = str(uuid4())
+                st.session_state.active_andes_case = None
                 
                 # Create chatbot based on selected type
                 chatbot = create_chatbot(
@@ -441,8 +442,8 @@ def main():
         if st.session_state.session_id and st.session_state.chatbot:
             display_file_section("📥 My Files", f"./code_executions/{st.session_state.session_id}/data", "file")
 
-            # Output Files Section  
-            # display_file_section("📤 Output Files", f"./code_executions/{st.session_state.session_id}/data/output", "output")
+            # Output Files Section
+            display_file_section("📤 Output Files", f"./code_executions/{st.session_state.session_id}/data/output", "output")
             
             st.markdown("---")
             
@@ -461,6 +462,7 @@ def main():
             st.session_state.code_reset_counters = {}
             st.session_state.pending_error_fix = []
             st.session_state.code_analyses = {}  # Clear AI analyses
+            st.session_state.active_andes_case = None
             st.success("Chat cleared!")
         
         # End Session button
@@ -598,8 +600,24 @@ def main():
                         f"- Working directory for execution: {runtime_data_dir}\n"
                         "- Uploaded files available during execution:\n"
                         f"{available_files}\n"
-                        "- Use these filenames directly in generated Python code when needed."
+                        "- Use these filenames directly in generated Python code when needed.\n"
+                        "- Case-loading rule: if using an uploaded file, load it directly with andes.load(\"<exact_filename>\", ...), and do NOT wrap it with andes.get_case(...).\n"
+                        "- Case-loading rule: only use andes.get_case(...) for ANDES built-in benchmark cases.\n"
+                        "- Preferred uploaded-case template: script_dir=os.getcwd(); case=os.path.join(script_dir, \"<exact_filename>\"); ssa=andes.load(case, setup=True, no_output=True, log=False)"
                     )
+
+                active_case = st.session_state.get("active_andes_case")
+                if active_case and isinstance(active_case, dict):
+                    active_source = active_case.get("source", "")
+                    active_value = active_case.get("value", "")
+                    if active_source and active_value:
+                        contextual_user_input = (
+                            f"{contextual_user_input}\n\n"
+                            "ANDES continuity context:\n"
+                            f"- Last successfully executed case source: {active_source}\n"
+                            f"- Last successfully executed case identifier: {active_value}\n"
+                            "- If the user is asking a follow-up (for example: plot/summarize/analyze) and does not specify a new case, reuse this same case."
+                        )
 
                 # Get response from chatbot (async)
                 loop = asyncio.new_event_loop()
