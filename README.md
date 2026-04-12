@@ -15,7 +15,7 @@ The repository currently has three major responsibilities:
 
 Technical framework:
 
-![PFAgent technical framework](paper/framework.png)
+![PFAgent technical framework](docs/framework.png)
 
 ## Repository Layout
 
