@@ -1,0 +1,8 @@
+Write one complete runnable Python script only, inside a single ```python block.
+Use the built-in IEEE 14 full case.
+Run power flow and report the 4 lowest-voltage buses.
+- The script must end by printing exactly one line that starts with RESULT_JSON=
+- The JSON object must contain these keys: selected_bus_ids, selected_voltages.
+- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.
+- Round float values in RESULT_JSON to 6 decimals.
+- `selected_bus_ids` and `selected_voltages` should represent the lowest-voltage buses in ascending voltage order.

@@ -1,0 +1,150 @@
+{
+  "blueprint": "threshold_slack_add_extremes",
+  "case_family": "ieee14",
+  "case_source": "uploaded",
+  "scenario_id": "scenario_020",
+  "source_case_path": "ieee14/ieee14_full.xlsx",
+  "turns": [
+    {
+      "actual_result_json": {
+        "lowest_bus_ids": [
+          3,
+          4
+        ],
+        "lowest_voltages": [
+          1.01,
+          1.011403
+        ],
+        "selected_bus_ids": [
+          1,
+          2,
+          6,
+          7,
+          8,
+          9
+        ],
+        "selected_count": 6,
+        "threshold": 1.02
+      },
+      "artifact_passed": true,
+      "artifact_paths": [],
+      "artifact_score": 5.0,
+      "code": "# required_dependencies: andes,json\nimport andes\nimport json\nimport os\nimport numpy as np\n\ndef _round_float(value):\n    return round(float(value), 6)\n\ncwd = os.getcwd()\ncase = os.path.join(cwd, \"verify_ieee14_020.xlsx\")\nssa = andes.load(case, setup=False, no_output=True)\n\nssa.setup()\nssa.PFlow.run()\n\nbus_ids = np.asarray(ssa.Bus.idx.v)\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nthreshold = 1.02\nmask = bus_v > threshold\ntop_k = 2\nrank_indices = np.argsort(bus_v)[:top_k]\nresult = {\n    \"threshold\": _round_float(threshold),\n    \"selected_bus_ids\": [int(value) for value in bus_ids[mask]],\n    \"selected_count\": int(np.sum(mask)),\n    \"lowest_bus_ids\": [int(bus_ids[i]) for i in rank_indices],\n    \"lowest_voltages\": [_round_float(bus_v[i]) for i in rank_indices],\n}\nprint(\"RESULT_JSON=\" + json.dumps(result, sort_keys=True))",
+      "continuity_score": 15.0,
+      "execution_output": "STDOUT:\nRESULT_JSON={\"lowest_bus_ids\": [3, 4], \"lowest_voltages\": [1.01, 1.011403], \"selected_bus_ids\": [1, 2, 6, 7, 8, 9], \"selected_count\": 6, \"threshold\": 1.02}\n\n",
+      "execution_passed": true,
+      "execution_score": 20.0,
+      "expected_result_json": {
+        "lowest_bus_ids": [
+          3,
+          4
+        ],
+        "lowest_voltages": [
+          1.01,
+          1.011403
+        ],
+        "selected_bus_ids": [
+          1,
+          2,
+          6,
+          7,
+          8,
+          9
+        ],
+        "selected_count": 6,
+        "threshold": 1.02
+      },
+      "failure_categories": [],
+      "format_score": 10.0,
+      "format_valid": true,
+      "grounding_score": 25.0,
+      "issues": [],
+      "prompt": "Write one complete runnable Python script only, inside a single ```python block.\nUse my uploaded file verify_ieee14_020.xlsx from the current working directory.\nRun power flow, count all buses above 1.020 p.u., and also return the two lowest-voltage buses.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: threshold, selected_bus_ids, selected_count, lowest_bus_ids, lowest_voltages.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.\n- `selected_bus_ids` should list every bus above the threshold.\n- `lowest_bus_ids` should contain exactly two buses in ascending voltage order.\n\nRuntime file context:\n- Working directory for execution: verification/artifacts_recheck_20260403_parallel/fine_tuned/20260403_162926/raw/fine_tuned/scenario_020/turn_01/workspace\n- Uploaded files available during execution:\n- verify_ieee14_020.xlsx\n- Use this exact filename directly in andes.load(...).\n- Do not wrap the uploaded filename with andes.get_case(...).\n",
+      "response": "```python\n# required_dependencies: andes,json\nimport andes\nimport json\nimport os\nimport numpy as np\n\ndef _round_float(value):\n    return round(float(value), 6)\n\ncwd = os.getcwd()\ncase = os.path.join(cwd, \"verify_ieee14_020.xlsx\")\nssa = andes.load(case, setup=False, no_output=True)\n\nssa.setup()\nssa.PFlow.run()\n\nbus_ids = np.asarray(ssa.Bus.idx.v)\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nthreshold = 1.02\nmask = bus_v > threshold\ntop_k = 2\nrank_indices = np.argsort(bus_v)[:top_k]\nresult = {\n    \"threshold\": _round_float(threshold),\n    \"selected_bus_ids\": [int(value) for value in bus_ids[mask]],\n    \"selected_count\": int(np.sum(mask)),\n    \"lowest_bus_ids\": [int(bus_ids[i]) for i in rank_indices],\n    \"lowest_voltages\": [_round_float(bus_v[i]) for i in rank_indices],\n}\nprint(\"RESULT_JSON=\" + json.dumps(result, sort_keys=True))\n```",
+      "result_json_parse_error": null,
+      "score_total": 100.0,
+      "semantic_passed": true,
+      "semantic_score": 25.0,
+      "turn_id": 1,
+      "turn_passed": true,
+      "used_template_fallback": false
+    },
+    {
+      "actual_result_json": {
+        "selected_count": 0,
+        "slack_bus": 1,
+        "slack_setpoint": 1.025,
+        "slack_voltage": 1.025
+      },
+      "artifact_passed": true,
+      "artifact_paths": [],
+      "artifact_score": 5.0,
+      "code": "# required_dependencies: andes,json\nimport andes\nimport json\nimport os\nimport numpy as np\n\ndef _round_float(value):\n    return round(float(value), 6)\n\ncwd = os.getcwd()\ncase = os.path.join(cwd, \"verify_ieee14_020.xlsx\")\nssa = andes.load(case, setup=False, no_output=True)\n\nssa.setup()\nslack_setpoint = 1.025\nssa.Slack.set(src=\"v0\", idx=[ssa.Slack.idx.v[0]], attr=\"v\", value=[slack_setpoint])\nssa.PFlow.run()\n\nbus_ids = np.asarray(ssa.Bus.idx.v)\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nslack_bus = int(ssa.Slack.bus.v[0])\nslack_index = int(np.where(bus_ids == slack_bus)[0][0])\nslack_voltage = _round_float(bus_v[slack_index])\nthreshold = 1.005\nresult = {\n    \"slack_bus\": slack_bus,\n    \"slack_setpoint\": _round_float(1.025),\n    \"slack_voltage\": slack_voltage,\n    \"selected_count\": int(np.sum(bus_v < threshold)),\n}\nprint(\"RESULT_JSON=\" + json.dumps(result, sort_keys=True))",
+      "continuity_score": 15.0,
+      "execution_output": "STDOUT:\nRESULT_JSON={\"selected_count\": 0, \"slack_bus\": 1, \"slack_setpoint\": 1.025, \"slack_voltage\": 1.025}\n\n",
+      "execution_passed": true,
+      "execution_score": 20.0,
+      "expected_result_json": {
+        "selected_count": 0,
+        "slack_bus": 1,
+        "slack_setpoint": 1.025,
+        "slack_voltage": 1.025
+      },
+      "failure_categories": [],
+      "format_score": 10.0,
+      "format_valid": true,
+      "grounding_score": 25.0,
+      "issues": [],
+      "prompt": "Next follow-up: rebuild the script for the updated study, code only.\nKeep using the same uploaded study file from earlier in this conversation.\nKeep the same study, set the slack-bus voltage target to 1.025, rerun power flow, and report the slack bus voltage plus how many buses fall below 1.005 p.u.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: slack_bus, slack_setpoint, slack_voltage, selected_count.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.\n\nRuntime file context:\n- Working directory for execution: verification/artifacts_recheck_20260403_parallel/fine_tuned/20260403_162926/raw/fine_tuned/scenario_020/turn_02/workspace\n- Uploaded files available during execution:\n- verify_ieee14_020.xlsx\n- Use this exact filename directly in andes.load(...).\n- Do not wrap the uploaded filename with andes.get_case(...).\n",
+      "response": "```python\n# required_dependencies: andes,json\nimport andes\nimport json\nimport os\nimport numpy as np\n\ndef _round_float(value):\n    return round(float(value), 6)\n\ncwd = os.getcwd()\ncase = os.path.join(cwd, \"verify_ieee14_020.xlsx\")\nssa = andes.load(case, setup=False, no_output=True)\n\nssa.setup()\nslack_setpoint = 1.025\nssa.Slack.set(src=\"v0\", idx=[ssa.Slack.idx.v[0]], attr=\"v\", value=[slack_setpoint])\nssa.PFlow.run()\n\nbus_ids = np.asarray(ssa.Bus.idx.v)\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nslack_bus = int(ssa.Slack.bus.v[0])\nslack_index = int(np.where(bus_ids == slack_bus)[0][0])\nslack_voltage = _round_float(bus_v[slack_index])\nthreshold = 1.005\nresult = {\n    \"slack_bus\": slack_bus,\n    \"slack_setpoint\": _round_float(1.025),\n    \"slack_voltage\": slack_voltage,\n    \"selected_count\": int(np.sum(bus_v < threshold)),\n}\nprint(\"RESULT_JSON=\" + json.dumps(result, sort_keys=True))\n```",
+      "result_json_parse_error": null,
+      "score_total": 100.0,
+      "semantic_passed": true,
+      "semantic_score": 25.0,
+      "turn_id": 2,
+      "turn_passed": true,
+      "used_template_fallback": false
+    },
+    {
+      "actual_result_json": {
+        "added_load_idx": "PQ_VERIFY_020_B",
+        "max_bus": 6,
+        "max_voltage": 1.03,
+        "min_bus": 3,
+        "min_voltage": 1.01,
+        "total_pq_count": 12
+      },
+      "artifact_passed": true,
+      "artifact_paths": [],
+      "artifact_score": 5.0,
+      "code": "# required_dependencies: andes,json\nimport andes\nimport json\nimport os\nimport numpy as np\n\ndef _round_float(value):\n    return round(float(value), 6)\n\ncwd = os.getcwd()\ncase = os.path.join(cwd, \"verify_ieee14_020.xlsx\")\nssa = andes.load(case, setup=False, no_output=True)\n\nssa.add(\n    \"PQ\",\n    param_dict={\n        \"bus\": 5,\n        \"idx\": \"PQ_VERIFY_020_B\",\n        \"p0\": 0.014,\n        \"q0\": 0.009,\n    },\n)\n\nssa.setup()\nslack_setpoint = 1.025\nssa.Slack.set(src=\"v0\", idx=[ssa.Slack.idx.v[0]], attr=\"v\", value=[slack_setpoint])\nssa.PFlow.run()\n\nbus_ids = np.asarray(ssa.Bus.idx.v)\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nmax_index = int(np.argmax(bus_v))\nmin_index = int(np.argmin(bus_v))\nresult = {\n    \"max_bus\": int(bus_ids[max_index]),\n    \"max_voltage\": _round_float(bus_v[max_index]),\n    \"min_bus\": int(bus_ids[min_index]),\n    \"min_voltage\": _round_float(bus_v[min_index]),\n}\nresult[\"added_load_idx\"] = \"PQ_VERIFY_020_B\"\nresult[\"total_pq_count\"] = int(len(ssa.PQ.idx.v))\nprint(\"RESULT_JSON=\" + json.dumps(result, sort_keys=True))",
+      "continuity_score": 15.0,
+      "execution_output": "STDOUT:\nRESULT_JSON={\"added_load_idx\": \"PQ_VERIFY_020_B\", \"max_bus\": 6, \"max_voltage\": 1.03, \"min_bus\": 3, \"min_voltage\": 1.01, \"total_pq_count\": 12}\n\n",
+      "execution_passed": true,
+      "execution_score": 20.0,
+      "expected_result_json": {
+        "added_load_idx": "PQ_VERIFY_020_B",
+        "max_bus": 6,
+        "max_voltage": 1.03,
+        "min_bus": 3,
+        "min_voltage": 1.01,
+        "total_pq_count": 12
+      },
+      "failure_categories": [],
+      "format_score": 10.0,
+      "format_valid": true,
+      "grounding_score": 25.0,
+      "issues": [],
+      "prompt": "Please keep the conversation context and send one new complete script only.\nKeep the adjusted slack-bus setting from the last turn.\nAlso add a new PQ load before setup at bus 5 with idx 'PQ_VERIFY_020_B', p0=0.014, and q0=0.009.\nRerun power flow and report the maximum-voltage bus, minimum-voltage bus, and the total number of PQ loads now present.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: added_load_idx, max_bus, max_voltage, min_bus, min_voltage, total_pq_count.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.\n\nRuntime file context:\n- Working directory for execution: verification/artifacts_recheck_20260403_parallel/fine_tuned/20260403_162926/raw/fine_tuned/scenario_020/turn_03/workspace\n- Uploaded files available during execution:\n- verify_ieee14_020.xlsx\n- Use this exact filename directly in andes.load(...).\n- Do not wrap the uploaded filename with andes.get_case(...).\n",
+      "response": "```python\n# required_dependencies: andes,json\nimport andes\nimport json\nimport os\nimport numpy as np\n\ndef _round_float(value):\n    return round(float(value), 6)\n\ncwd = os.getcwd()\ncase = os.path.join(cwd, \"verify_ieee14_020.xlsx\")\nssa = andes.load(case, setup=False, no_output=True)\n\nssa.add(\n    \"PQ\",\n    param_dict={\n        \"bus\": 5,\n        \"idx\": \"PQ_VERIFY_020_B\",\n        \"p0\": 0.014,\n        \"q0\": 0.009,\n    },\n)\n\nssa.setup()\nslack_setpoint = 1.025\nssa.Slack.set(src=\"v0\", idx=[ssa.Slack.idx.v[0]], attr=\"v\", value=[slack_setpoint])\nssa.PFlow.run()\n\nbus_ids = np.asarray(ssa.Bus.idx.v)\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nmax_index = int(np.argmax(bus_v))\nmin_index = int(np.argmin(bus_v))\nresult = {\n    \"max_bus\": int(bus_ids[max_index]),\n    \"max_voltage\": _round_float(bus_v[max_index]),\n    \"min_bus\": int(bus_ids[min_index]),\n    \"min_voltage\": _round_float(bus_v[min_index]),\n}\nresult[\"added_load_idx\"] = \"PQ_VERIFY_020_B\"\nresult[\"total_pq_count\"] = int(len(ssa.PQ.idx.v))\nprint(\"RESULT_JSON=\" + json.dumps(result, sort_keys=True))\n```",
+      "result_json_parse_error": null,
+      "score_total": 100.0,
+      "semantic_passed": true,
+      "semantic_score": 25.0,
+      "turn_id": 3,
+      "turn_passed": true,
+      "used_template_fallback": false
+    }
+  ],
+  "uploaded_filename": "verify_ieee14_020.xlsx"
+}

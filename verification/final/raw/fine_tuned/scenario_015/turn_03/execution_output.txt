@@ -1,0 +1,9 @@
+STDERR:
+Traceback (most recent call last):
+  File "/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/fine_tuned/20260403_162926/raw/fine_tuned/scenario_015/turn_03/workspace/generated_code.py", line 50, in <module>
+    ssa.PQ.add(
+  File "/home/bshe/miniconda3/envs/pfagent/lib/python3.11/site-packages/andes/core/model/modeldata.py", line 149, in add
+    idx = kwargs['idx']
+          ~~~~~~^^^^^^^
+KeyError: 'idx'
+

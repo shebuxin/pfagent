@@ -1,0 +1,1112 @@
+{
+  "total_scenarios": 26,
+  "passed_scenarios": 26,
+  "failed_scenarios": 0,
+  "total_turns": 78,
+  "passed_turns": 78,
+  "failed_turns": 0,
+  "results": [
+    {
+      "scenario_id": "generalized_scenario_001",
+      "family": "rank_add_scale_plot",
+      "case_key": "builtin_ieee14",
+      "passed": true,
+      "turn_results": [
+        {
+          "turn_id": 1,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"selected_bus_ids\": [6, 2, 8, 1], \"selected_voltages\": [1.03, 1.03, 1.03, 1.03], \"slack_bus\": 1, \"slack_voltage\": 1.03}",
+          "actual_stdout": "RESULT_JSON={\"selected_bus_ids\": [6, 2, 8, 1], \"selected_voltages\": [1.03, 1.03, 1.03, 1.03], \"slack_bus\": 1, \"slack_voltage\": 1.03}",
+          "stderr": "",
+          "artifact_files": []
+        },
+        {
+          "turn_id": 2,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"added_load_bus\": 10, \"added_load_idx\": \"GFT_001_A\", \"min_bus\": 3, \"min_voltage\": 1.01, \"selected_bus_ids\": [3, 4, 10], \"selected_count\": 3, \"threshold\": 1.014}",
+          "actual_stdout": "RESULT_JSON={\"added_load_bus\": 10, \"added_load_idx\": \"GFT_001_A\", \"min_bus\": 3, \"min_voltage\": 1.01, \"selected_bus_ids\": [3, 4, 10], \"selected_count\": 3, \"threshold\": 1.014}",
+          "stderr": "",
+          "artifact_files": []
+        },
+        {
+          "turn_id": 3,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"max_bus\": 6, \"max_voltage\": 1.03, \"min_bus\": 4, \"min_voltage\": 1.009571, \"plot_file\": \"generalized_001_turn3_line.png\", \"scale_factor\": 1.045}",
+          "actual_stdout": "RESULT_JSON={\"max_bus\": 6, \"max_voltage\": 1.03, \"min_bus\": 4, \"min_voltage\": 1.009571, \"plot_file\": \"generalized_001_turn3_line.png\", \"scale_factor\": 1.045}",
+          "stderr": "",
+          "artifact_files": [
+            "generalized_001_turn3_line.png"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario_id": "generalized_scenario_002",
+      "family": "rank_add_scale_plot",
+      "case_key": "uploaded_ieee14",
+      "passed": true,
+      "turn_results": [
+        {
+          "turn_id": 1,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"selected_bus_ids\": [6, 2, 8, 1, 7], \"selected_voltages\": [1.03, 1.03, 1.03, 1.03, 1.022471], \"slack_bus\": 1, \"slack_voltage\": 1.03}",
+          "actual_stdout": "RESULT_JSON={\"selected_bus_ids\": [6, 2, 8, 1, 7], \"selected_voltages\": [1.03, 1.03, 1.03, 1.03, 1.022471], \"slack_bus\": 1, \"slack_voltage\": 1.03}",
+          "stderr": "",
+          "artifact_files": []
+        },
+        {
+          "turn_id": 2,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"added_load_bus\": 9, \"added_load_idx\": \"GFT_002_A\", \"min_bus\": 3, \"min_voltage\": 1.01, \"selected_bus_ids\": [3, 4], \"selected_count\": 2, \"threshold\": 1.012}",
+          "actual_stdout": "RESULT_JSON={\"added_load_bus\": 9, \"added_load_idx\": \"GFT_002_A\", \"min_bus\": 3, \"min_voltage\": 1.01, \"selected_bus_ids\": [3, 4], \"selected_count\": 2, \"threshold\": 1.012}",
+          "stderr": "",
+          "artifact_files": []
+        },
+        {
+          "turn_id": 3,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"max_bus\": 6, \"max_voltage\": 1.03, \"min_bus\": 3, \"min_voltage\": 1.01, \"plot_file\": \"generalized_002_turn3_line.png\", \"scale_factor\": 0.985}",
+          "actual_stdout": "RESULT_JSON={\"max_bus\": 6, \"max_voltage\": 1.03, \"min_bus\": 3, \"min_voltage\": 1.01, \"plot_file\": \"generalized_002_turn3_line.png\", \"scale_factor\": 0.985}",
+          "stderr": "",
+          "artifact_files": [
+            "generalized_002_turn3_line.png"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario_id": "generalized_scenario_003",
+      "family": "rank_add_scale_plot",
+      "case_key": "builtin_ieee39",
+      "passed": true,
+      "turn_results": [
+        {
+          "turn_id": 1,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"selected_bus_ids\": [36, 35, 30, 19], \"selected_voltages\": [1.0635, 1.0493, 1.0475, 1.042357], \"slack_bus\": 39, \"slack_voltage\": 1.03}",
+          "actual_stdout": "RESULT_JSON={\"selected_bus_ids\": [36, 35, 30, 19], \"selected_voltages\": [1.0635, 1.0493, 1.0475, 1.042357], \"slack_bus\": 39, \"slack_voltage\": 1.03}",
+          "stderr": "",
+          "artifact_files": []
+        },
+        {
+          "turn_id": 2,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"added_load_bus\": 20, \"added_load_idx\": \"GFT_003_A\", \"min_bus\": 7, \"min_voltage\": 0.929972, \"selected_bus_ids\": [3, 7, 8], \"selected_count\": 3, \"threshold\": 0.975}",
+          "actual_stdout": "RESULT_JSON={\"added_load_bus\": 20, \"added_load_idx\": \"GFT_003_A\", \"min_bus\": 7, \"min_voltage\": 0.929972, \"selected_bus_ids\": [3, 7, 8], \"selected_count\": 3, \"threshold\": 0.975}",
+          "stderr": "",
+          "artifact_files": []
+        },
+        {
+          "turn_id": 3,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"max_bus\": 36, \"max_voltage\": 1.0635, \"min_bus\": 7, \"min_voltage\": 0.92622, \"plot_file\": \"generalized_003_turn3_line.png\", \"scale_factor\": 1.03}",
+          "actual_stdout": "RESULT_JSON={\"max_bus\": 36, \"max_voltage\": 1.0635, \"min_bus\": 7, \"min_voltage\": 0.92622, \"plot_file\": \"generalized_003_turn3_line.png\", \"scale_factor\": 1.03}",
+          "stderr": "",
+          "artifact_files": [
+            "generalized_003_turn3_line.png"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario_id": "generalized_scenario_004",
+      "family": "rank_add_scale_plot",
+      "case_key": "uploaded_ieee39",
+      "passed": true,
+      "turn_results": [
+        {
+          "turn_id": 1,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"selected_bus_ids\": [36, 35, 30, 19, 31], \"selected_voltages\": [1.0635, 1.0493, 1.0475, 1.042357, 1.04], \"slack_bus\": 39, \"slack_voltage\": 1.03}",
+          "actual_stdout": "RESULT_JSON={\"selected_bus_ids\": [36, 35, 30, 19, 31], \"selected_voltages\": [1.0635, 1.0493, 1.0475, 1.042357, 1.04], \"slack_bus\": 39, \"slack_voltage\": 1.03}",
+          "stderr": "",
+          "artifact_files": []
+        },
+        {
+          "turn_id": 2,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"added_load_bus\": 15, \"added_load_idx\": \"GFT_004_A\", \"min_bus\": 7, \"min_voltage\": 0.929959, \"selected_bus_ids\": [7, 8], \"selected_count\": 2, \"threshold\": 0.968}",
+          "actual_stdout": "RESULT_JSON={\"added_load_bus\": 15, \"added_load_idx\": \"GFT_004_A\", \"min_bus\": 7, \"min_voltage\": 0.929959, \"selected_bus_ids\": [7, 8], \"selected_count\": 2, \"threshold\": 0.968}",
+          "stderr": "",
+          "artifact_files": []
+        },
+        {
+          "turn_id": 3,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"max_bus\": 36, \"max_voltage\": 1.0635, \"min_bus\": 7, \"min_voltage\": 0.924119, \"plot_file\": \"generalized_004_turn3_line.png\", \"scale_factor\": 1.045}",
+          "actual_stdout": "RESULT_JSON={\"max_bus\": 36, \"max_voltage\": 1.0635, \"min_bus\": 7, \"min_voltage\": 0.924119, \"plot_file\": \"generalized_004_turn3_line.png\", \"scale_factor\": 1.045}",
+          "stderr": "",
+          "artifact_files": [
+            "generalized_004_turn3_line.png"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario_id": "generalized_scenario_005",
+      "family": "rank_add_scale_plot",
+      "case_key": "builtin_gbnetwork",
+      "passed": true,
+      "turn_results": [
+        {
+          "turn_id": 1,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"selected_bus_ids\": [724, 723, 808, 641, 810, 728], \"selected_voltages\": [1.057603, 1.057478, 1.057286, 1.05608, 1.056073, 1.055688], \"slack_bus\": 431, \"slack_voltage\": 1.05}",
+          "actual_stdout": "RESULT_JSON={\"selected_bus_ids\": [724, 723, 808, 641, 810, 728], \"selected_voltages\": [1.057603, 1.057478, 1.057286, 1.05608, 1.056073, 1.055688], \"slack_bus\": 431, \"slack_voltage\": 1.05}",
+          "stderr": "",
+          "artifact_files": []
+        },
+        {
+          "turn_id": 2,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"added_load_bus\": 12, \"added_load_idx\": \"GFT_005_A\", \"min_bus\": 1773, \"min_voltage\": 0.94351, \"selected_bus_ids\": [266, 643, 671, 790, 791, 792, 804, 806, 807, 857, 866, 871, 942, 955, 1282, 1310, 1311, 1312, 1313, 1314, 1316, 1317, 1318, 1319, 1320, 1362, 1363, 1364, 1365, 1366, 1489, 1490, 1492, 1639, 1640, 1641, 1651, 1654, 1773, 1936, 2123], \"selected_count\": 41, \"threshold\": 0.955}",
+          "actual_stdout": "RESULT_JSON={\"added_load_bus\": 12, \"added_load_idx\": \"GFT_005_A\", \"min_bus\": 1773, \"min_voltage\": 0.94351, \"selected_bus_ids\": [266, 643, 671, 790, 791, 792, 804, 806, 807, 857, 866, 871, 942, 955, 1282, 1310, 1311, 1312, 1313, 1314, 1316, 1317, 1318, 1319, 1320, 1362, 1363, 1364, 1365, 1366, 1489, 1490, 1492, 1639, 1640, 1641, 1651, 1654, 1773, 1936, 2123], \"selected_count\": 41, \"threshold\": 0.955}",
+          "stderr": "",
+          "artifact_files": []
+        },
+        {
+          "turn_id": 3,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"max_bus\": 808, \"max_voltage\": 1.05703, \"min_bus\": 1773, \"min_voltage\": 0.940849, \"plot_file\": \"generalized_005_turn3_line.png\", \"scale_factor\": 1.02}",
+          "actual_stdout": "RESULT_JSON={\"max_bus\": 808, \"max_voltage\": 1.05703, \"min_bus\": 1773, \"min_voltage\": 0.940849, \"plot_file\": \"generalized_005_turn3_line.png\", \"scale_factor\": 1.02}",
+          "stderr": "",
+          "artifact_files": [
+            "generalized_005_turn3_line.png"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario_id": "generalized_scenario_006",
+      "family": "rank_add_scale_plot",
+      "case_key": "uploaded_gbnetwork",
+      "passed": true,
+      "turn_results": [
+        {
+          "turn_id": 1,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"selected_bus_ids\": [724, 723, 808, 641, 810], \"selected_voltages\": [1.057603, 1.057478, 1.057286, 1.05608, 1.056073], \"slack_bus\": 431, \"slack_voltage\": 1.05}",
+          "actual_stdout": "RESULT_JSON={\"selected_bus_ids\": [724, 723, 808, 641, 810], \"selected_voltages\": [1.057603, 1.057478, 1.057286, 1.05608, 1.056073], \"slack_bus\": 431, \"slack_voltage\": 1.05}",
+          "stderr": "",
+          "artifact_files": []
+        },
+        {
+          "turn_id": 2,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"added_load_bus\": 100, \"added_load_idx\": \"GFT_006_A\", \"min_bus\": 1773, \"min_voltage\": 0.94351, \"selected_bus_ids\": [266, 643, 671, 790, 791, 792, 804, 806, 807, 857, 866, 871, 942, 955, 1310, 1311, 1312, 1313, 1314, 1316, 1317, 1318, 1362, 1364, 1365, 1366, 1489, 1492, 1773, 2123], \"selected_count\": 30, \"threshold\": 0.948}",
+          "actual_stdout": "RESULT_JSON={\"added_load_bus\": 100, \"added_load_idx\": \"GFT_006_A\", \"min_bus\": 1773, \"min_voltage\": 0.94351, \"selected_bus_ids\": [266, 643, 671, 790, 791, 792, 804, 806, 807, 857, 866, 871, 942, 955, 1310, 1311, 1312, 1313, 1314, 1316, 1317, 1318, 1362, 1364, 1365, 1366, 1489, 1492, 1773, 2123], \"selected_count\": 30, \"threshold\": 0.948}",
+          "stderr": "",
+          "artifact_files": []
+        },
+        {
+          "turn_id": 3,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"max_bus\": 724, \"max_voltage\": 1.058033, \"min_bus\": 2123, \"min_voltage\": 0.944518, \"plot_file\": \"generalized_006_turn3_line.png\", \"scale_factor\": 0.99}",
+          "actual_stdout": "RESULT_JSON={\"max_bus\": 724, \"max_voltage\": 1.058033, \"min_bus\": 2123, \"min_voltage\": 0.944518, \"plot_file\": \"generalized_006_turn3_line.png\", \"scale_factor\": 0.99}",
+          "stderr": "",
+          "artifact_files": [
+            "generalized_006_turn3_line.png"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario_id": "generalized_scenario_007",
+      "family": "rank_add_scale_plot",
+      "case_key": "builtin_ei33",
+      "passed": true,
+      "turn_results": [
+        {
+          "turn_id": 1,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"selected_bus_ids\": [118167, 164893, 320002, 320001], \"selected_voltages\": [1.11442, 1.11105, 1.093495, 1.093345], \"slack_bus\": 100042, \"slack_voltage\": 1.01}",
+          "actual_stdout": "RESULT_JSON={\"selected_bus_ids\": [118167, 164893, 320002, 320001], \"selected_voltages\": [1.11442, 1.11105, 1.093495, 1.093345], \"slack_bus\": 100042, \"slack_voltage\": 1.01}",
+          "stderr": "",
+          "artifact_files": []
+        },
+        {
+          "turn_id": 2,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"added_load_bus\": 100007, \"added_load_idx\": \"GFT_007_A\", \"min_bus\": 196119, \"min_voltage\": 0.864354, \"selected_bus_ids\": [164915, 196119], \"selected_count\": 2, \"threshold\": 0.9}",
+          "actual_stdout": "RESULT_JSON={\"added_load_bus\": 100007, \"added_load_idx\": \"GFT_007_A\", \"min_bus\": 196119, \"min_voltage\": 0.864354, \"selected_bus_ids\": [164915, 196119], \"selected_count\": 2, \"threshold\": 0.9}",
+          "stderr": "",
+          "artifact_files": []
+        },
+        {
+          "turn_id": 3,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"max_bus\": 118167, \"max_voltage\": 1.11442, \"min_bus\": 196119, \"min_voltage\": 0.843127, \"plot_file\": \"generalized_007_turn3_line.png\", \"scale_factor\": 1.015}",
+          "actual_stdout": "RESULT_JSON={\"max_bus\": 118167, \"max_voltage\": 1.11442, \"min_bus\": 196119, \"min_voltage\": 0.843127, \"plot_file\": \"generalized_007_turn3_line.png\", \"scale_factor\": 1.015}",
+          "stderr": "",
+          "artifact_files": [
+            "generalized_007_turn3_line.png"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario_id": "generalized_scenario_008",
+      "family": "rank_add_scale_plot",
+      "case_key": "uploaded_ei33",
+      "passed": true,
+      "turn_results": [
+        {
+          "turn_id": 1,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"selected_bus_ids\": [118167, 164893, 320002, 320001, 168601], \"selected_voltages\": [1.11442, 1.11105, 1.093495, 1.093345, 1.092529], \"slack_bus\": 100042, \"slack_voltage\": 1.01}",
+          "actual_stdout": "RESULT_JSON={\"selected_bus_ids\": [118167, 164893, 320002, 320001, 168601], \"selected_voltages\": [1.11442, 1.11105, 1.093495, 1.093345, 1.092529], \"slack_bus\": 100042, \"slack_voltage\": 1.01}",
+          "stderr": "",
+          "artifact_files": []
+        },
+        {
+          "turn_id": 2,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"added_load_bus\": 100029, \"added_load_idx\": \"GFT_008_A\", \"min_bus\": 196119, \"min_voltage\": 0.864354, \"selected_bus_ids\": [196119], \"selected_count\": 1, \"threshold\": 0.88}",
+          "actual_stdout": "RESULT_JSON={\"added_load_bus\": 100029, \"added_load_idx\": \"GFT_008_A\", \"min_bus\": 196119, \"min_voltage\": 0.864354, \"selected_bus_ids\": [196119], \"selected_count\": 1, \"threshold\": 0.88}",
+          "stderr": "",
+          "artifact_files": []
+        },
+        {
+          "turn_id": 3,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"max_bus\": 164893, \"max_voltage\": 1.122157, \"min_bus\": 196119, \"min_voltage\": 0.88306, \"plot_file\": \"generalized_008_turn3_line.png\", \"scale_factor\": 0.98}",
+          "actual_stdout": "RESULT_JSON={\"max_bus\": 164893, \"max_voltage\": 1.122157, \"min_bus\": 196119, \"min_voltage\": 0.88306, \"plot_file\": \"generalized_008_turn3_line.png\", \"scale_factor\": 0.98}",
+          "stderr": "",
+          "artifact_files": [
+            "generalized_008_turn3_line.png"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario_id": "generalized_scenario_009",
+      "family": "threshold_slack_add_extremes",
+      "case_key": "builtin_ieee14",
+      "passed": true,
+      "turn_results": [
+        {
+          "turn_id": 1,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"lowest_bus_ids\": [3, 4], \"lowest_voltages\": [1.01, 1.011403], \"selected_bus_ids\": [1, 2, 6, 7, 8, 9], \"selected_count\": 6, \"threshold\": 1.02}",
+          "actual_stdout": "RESULT_JSON={\"lowest_bus_ids\": [3, 4], \"lowest_voltages\": [1.01, 1.011403], \"selected_bus_ids\": [1, 2, 6, 7, 8, 9], \"selected_count\": 6, \"threshold\": 1.02}",
+          "stderr": "",
+          "artifact_files": []
+        },
+        {
+          "turn_id": 2,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"selected_count\": 2, \"slack_bus\": 1, \"slack_setpoint\": 1.022, \"slack_voltage\": 1.022}",
+          "actual_stdout": "RESULT_JSON={\"selected_count\": 2, \"slack_bus\": 1, \"slack_setpoint\": 1.022, \"slack_voltage\": 1.022}",
+          "stderr": "",
+          "artifact_files": []
+        },
+        {
+          "turn_id": 3,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"added_load_idx\": \"GFT_009_B\", \"max_bus\": 6, \"max_voltage\": 1.03, \"min_bus\": 3, \"min_voltage\": 1.01, \"total_pq_count\": 12}",
+          "actual_stdout": "RESULT_JSON={\"added_load_idx\": \"GFT_009_B\", \"max_bus\": 6, \"max_voltage\": 1.03, \"min_bus\": 3, \"min_voltage\": 1.01, \"total_pq_count\": 12}",
+          "stderr": "",
+          "artifact_files": []
+        }
+      ]
+    },
+    {
+      "scenario_id": "generalized_scenario_010",
+      "family": "threshold_slack_add_extremes",
+      "case_key": "uploaded_ieee14",
+      "passed": true,
+      "turn_results": [
+        {
+          "turn_id": 1,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"lowest_bus_ids\": [3, 4], \"lowest_voltages\": [1.01, 1.011403], \"selected_bus_ids\": [1, 2, 6, 7, 8, 9, 11], \"selected_count\": 7, \"threshold\": 1.018}",
+          "actual_stdout": "RESULT_JSON={\"lowest_bus_ids\": [3, 4], \"lowest_voltages\": [1.01, 1.011403], \"selected_bus_ids\": [1, 2, 6, 7, 8, 9, 11], \"selected_count\": 7, \"threshold\": 1.018}",
+          "stderr": "",
+          "artifact_files": []
+        },
+        {
+          "turn_id": 2,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"selected_count\": 0, \"slack_bus\": 1, \"slack_setpoint\": 1.028, \"slack_voltage\": 1.028}",
+          "actual_stdout": "RESULT_JSON={\"selected_count\": 0, \"slack_bus\": 1, \"slack_setpoint\": 1.028, \"slack_voltage\": 1.028}",
+          "stderr": "",
+          "artifact_files": []
+        },
+        {
+          "turn_id": 3,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"added_load_idx\": \"GFT_010_B\", \"max_bus\": 6, \"max_voltage\": 1.03, \"min_bus\": 3, \"min_voltage\": 1.01, \"total_pq_count\": 12}",
+          "actual_stdout": "RESULT_JSON={\"added_load_idx\": \"GFT_010_B\", \"max_bus\": 6, \"max_voltage\": 1.03, \"min_bus\": 3, \"min_voltage\": 1.01, \"total_pq_count\": 12}",
+          "stderr": "",
+          "artifact_files": []
+        }
+      ]
+    },
+    {
+      "scenario_id": "generalized_scenario_011",
+      "family": "threshold_slack_add_extremes",
+      "case_key": "builtin_ieee39",
+      "passed": true,
+      "turn_results": [
+        {
+          "turn_id": 1,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"lowest_bus_ids\": [7, 8], \"lowest_voltages\": [0.929955, 0.943746], \"selected_bus_ids\": [19, 30, 31, 35, 36], \"selected_count\": 5, \"threshold\": 1.038}",
+          "actual_stdout": "RESULT_JSON={\"lowest_bus_ids\": [7, 8], \"lowest_voltages\": [0.929955, 0.943746], \"selected_bus_ids\": [19, 30, 31, 35, 36], \"selected_count\": 5, \"threshold\": 1.038}",
+          "stderr": "",
+          "artifact_files": []
+        },
+        {
+          "turn_id": 2,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"selected_count\": 3, \"slack_bus\": 39, \"slack_setpoint\": 1.026, \"slack_voltage\": 1.026}",
+          "actual_stdout": "RESULT_JSON={\"selected_count\": 3, \"slack_bus\": 39, \"slack_setpoint\": 1.026, \"slack_voltage\": 1.026}",
+          "stderr": "",
+          "artifact_files": []
+        },
+        {
+          "turn_id": 3,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"added_load_idx\": \"GFT_011_B\", \"max_bus\": 36, \"max_voltage\": 1.0635, \"min_bus\": 7, \"min_voltage\": 0.929288, \"total_pq_count\": 20}",
+          "actual_stdout": "RESULT_JSON={\"added_load_idx\": \"GFT_011_B\", \"max_bus\": 36, \"max_voltage\": 1.0635, \"min_bus\": 7, \"min_voltage\": 0.929288, \"total_pq_count\": 20}",
+          "stderr": "",
+          "artifact_files": []
+        }
+      ]
+    },
+    {
+      "scenario_id": "generalized_scenario_012",
+      "family": "threshold_slack_add_extremes",
+      "case_key": "uploaded_ieee39",
+      "passed": true,
+      "turn_results": [
+        {
+          "turn_id": 1,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"lowest_bus_ids\": [7, 8], \"lowest_voltages\": [0.929955, 0.943746], \"selected_bus_ids\": [30, 35, 36], \"selected_count\": 3, \"threshold\": 1.045}",
+          "actual_stdout": "RESULT_JSON={\"lowest_bus_ids\": [7, 8], \"lowest_voltages\": [0.929955, 0.943746], \"selected_bus_ids\": [30, 35, 36], \"selected_count\": 3, \"threshold\": 1.045}",
+          "stderr": "",
+          "artifact_files": []
+        },
+        {
+          "turn_id": 2,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"selected_count\": 2, \"slack_bus\": 39, \"slack_setpoint\": 1.018, \"slack_voltage\": 1.018}",
+          "actual_stdout": "RESULT_JSON={\"selected_count\": 2, \"slack_bus\": 39, \"slack_setpoint\": 1.018, \"slack_voltage\": 1.018}",
+          "stderr": "",
+          "artifact_files": []
+        },
+        {
+          "turn_id": 3,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"added_load_idx\": \"GFT_012_B\", \"max_bus\": 36, \"max_voltage\": 1.0635, \"min_bus\": 7, \"min_voltage\": 0.927927, \"total_pq_count\": 20}",
+          "actual_stdout": "RESULT_JSON={\"added_load_idx\": \"GFT_012_B\", \"max_bus\": 36, \"max_voltage\": 1.0635, \"min_bus\": 7, \"min_voltage\": 0.927927, \"total_pq_count\": 20}",
+          "stderr": "",
+          "artifact_files": []
+        }
+      ]
+    },
+    {
+      "scenario_id": "generalized_scenario_013",
+      "family": "threshold_slack_add_extremes",
+      "case_key": "builtin_kundur",
+      "passed": true,
+      "turn_results": [
+        {
+          "turn_id": 1,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"lowest_bus_ids\": [8, 7], \"lowest_voltages\": [0.954, 0.956218], \"selected_bus_ids\": [1, 2, 3, 4], \"selected_count\": 4, \"threshold\": 0.995}",
+          "actual_stdout": "RESULT_JSON={\"lowest_bus_ids\": [8, 7], \"lowest_voltages\": [0.954, 0.956218], \"selected_bus_ids\": [1, 2, 3, 4], \"selected_count\": 4, \"threshold\": 0.995}",
+          "stderr": "",
+          "artifact_files": []
+        },
+        {
+          "turn_id": 2,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"selected_count\": 2, \"slack_bus\": 1, \"slack_setpoint\": 1.008, \"slack_voltage\": 1.008}",
+          "actual_stdout": "RESULT_JSON={\"selected_count\": 2, \"slack_bus\": 1, \"slack_setpoint\": 1.008, \"slack_voltage\": 1.008}",
+          "stderr": "",
+          "artifact_files": []
+        },
+        {
+          "turn_id": 3,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"added_load_idx\": \"GFT_013_B\", \"max_bus\": 1, \"max_voltage\": 1.008, \"min_bus\": 8, \"min_voltage\": 0.954417, \"total_pq_count\": 3}",
+          "actual_stdout": "RESULT_JSON={\"added_load_idx\": \"GFT_013_B\", \"max_bus\": 1, \"max_voltage\": 1.008, \"min_bus\": 8, \"min_voltage\": 0.954417, \"total_pq_count\": 3}",
+          "stderr": "",
+          "artifact_files": []
+        }
+      ]
+    },
+    {
+      "scenario_id": "generalized_scenario_014",
+      "family": "threshold_slack_add_extremes",
+      "case_key": "uploaded_kundur",
+      "passed": true,
+      "turn_results": [
+        {
+          "turn_id": 1,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"lowest_bus_ids\": [8, 7], \"lowest_voltages\": [0.954, 0.956218], \"selected_bus_ids\": [1, 2, 3, 4], \"selected_count\": 4, \"threshold\": 0.998}",
+          "actual_stdout": "RESULT_JSON={\"lowest_bus_ids\": [8, 7], \"lowest_voltages\": [0.954, 0.956218], \"selected_bus_ids\": [1, 2, 3, 4], \"selected_count\": 4, \"threshold\": 0.998}",
+          "stderr": "",
+          "artifact_files": []
+        },
+        {
+          "turn_id": 2,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"selected_count\": 1, \"slack_bus\": 1, \"slack_setpoint\": 1.012, \"slack_voltage\": 1.012}",
+          "actual_stdout": "RESULT_JSON={\"selected_count\": 1, \"slack_bus\": 1, \"slack_setpoint\": 1.012, \"slack_voltage\": 1.012}",
+          "stderr": "",
+          "artifact_files": []
+        },
+        {
+          "turn_id": 3,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"added_load_idx\": \"GFT_014_B\", \"max_bus\": 1, \"max_voltage\": 1.012, \"min_bus\": 8, \"min_voltage\": 0.954508, \"total_pq_count\": 3}",
+          "actual_stdout": "RESULT_JSON={\"added_load_idx\": \"GFT_014_B\", \"max_bus\": 1, \"max_voltage\": 1.012, \"min_bus\": 8, \"min_voltage\": 0.954508, \"total_pq_count\": 3}",
+          "stderr": "",
+          "artifact_files": []
+        }
+      ]
+    },
+    {
+      "scenario_id": "generalized_scenario_015",
+      "family": "lowrank_add_slack_plot",
+      "case_key": "builtin_ieee14",
+      "passed": true,
+      "turn_results": [
+        {
+          "turn_id": 1,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"selected_bus_ids\": [3, 4, 13, 10], \"selected_voltages\": [1.01, 1.011403, 1.01445, 1.015542]}",
+          "actual_stdout": "RESULT_JSON={\"selected_bus_ids\": [3, 4, 13, 10], \"selected_voltages\": [1.01, 1.011403, 1.01445, 1.015542]}",
+          "stderr": "",
+          "artifact_files": []
+        },
+        {
+          "turn_id": 2,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"added_load_idx\": \"GFT_015_C\", \"selected_bus_ids\": [3, 4], \"selected_count\": 2, \"slack_bus\": 1, \"slack_voltage\": 1.03, \"threshold\": 1.012}",
+          "actual_stdout": "RESULT_JSON={\"added_load_idx\": \"GFT_015_C\", \"selected_bus_ids\": [3, 4], \"selected_count\": 2, \"slack_bus\": 1, \"slack_voltage\": 1.03, \"threshold\": 1.012}",
+          "stderr": "",
+          "artifact_files": []
+        },
+        {
+          "turn_id": 3,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"plot_file\": \"generalized_015_turn3_lowrank.png\", \"selected_bus_ids\": [3, 4, 10, 13], \"selected_voltages\": [1.01, 1.010262, 1.014119, 1.014173], \"slack_setpoint\": 1.024, \"slack_voltage\": 1.024}",
+          "actual_stdout": "RESULT_JSON={\"plot_file\": \"generalized_015_turn3_lowrank.png\", \"selected_bus_ids\": [3, 4, 10, 13], \"selected_voltages\": [1.01, 1.010262, 1.014119, 1.014173], \"slack_setpoint\": 1.024, \"slack_voltage\": 1.024}",
+          "stderr": "",
+          "artifact_files": [
+            "generalized_015_turn3_lowrank.png"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario_id": "generalized_scenario_016",
+      "family": "lowrank_add_slack_plot",
+      "case_key": "uploaded_ieee14",
+      "passed": true,
+      "turn_results": [
+        {
+          "turn_id": 1,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"selected_bus_ids\": [3, 4, 13], \"selected_voltages\": [1.01, 1.011403, 1.01445]}",
+          "actual_stdout": "RESULT_JSON={\"selected_bus_ids\": [3, 4, 13], \"selected_voltages\": [1.01, 1.011403, 1.01445]}",
+          "stderr": "",
+          "artifact_files": []
+        },
+        {
+          "turn_id": 2,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"added_load_idx\": \"GFT_016_C\", \"selected_bus_ids\": [3, 4], \"selected_count\": 2, \"slack_bus\": 1, \"slack_voltage\": 1.03, \"threshold\": 1.013}",
+          "actual_stdout": "RESULT_JSON={\"added_load_idx\": \"GFT_016_C\", \"selected_bus_ids\": [3, 4], \"selected_count\": 2, \"slack_bus\": 1, \"slack_voltage\": 1.03, \"threshold\": 1.013}",
+          "stderr": "",
+          "artifact_files": []
+        },
+        {
+          "turn_id": 3,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"plot_file\": \"generalized_016_turn3_lowrank.png\", \"selected_bus_ids\": [3, 4, 10], \"selected_voltages\": [1.01, 1.01099, 1.013352], \"slack_setpoint\": 1.03, \"slack_voltage\": 1.03}",
+          "actual_stdout": "RESULT_JSON={\"plot_file\": \"generalized_016_turn3_lowrank.png\", \"selected_bus_ids\": [3, 4, 10], \"selected_voltages\": [1.01, 1.01099, 1.013352], \"slack_setpoint\": 1.03, \"slack_voltage\": 1.03}",
+          "stderr": "",
+          "artifact_files": [
+            "generalized_016_turn3_lowrank.png"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario_id": "generalized_scenario_017",
+      "family": "lowrank_add_slack_plot",
+      "case_key": "builtin_ieee39",
+      "passed": true,
+      "turn_results": [
+        {
+          "turn_id": 1,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"selected_bus_ids\": [7, 8, 3, 4], \"selected_voltages\": [0.929955, 0.943746, 0.970713, 0.976312]}",
+          "actual_stdout": "RESULT_JSON={\"selected_bus_ids\": [7, 8, 3, 4], \"selected_voltages\": [0.929955, 0.943746, 0.970713, 0.976312]}",
+          "stderr": "",
+          "artifact_files": []
+        },
+        {
+          "turn_id": 2,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"added_load_idx\": \"GFT_017_C\", \"selected_bus_ids\": [3, 7, 8], \"selected_count\": 3, \"slack_bus\": 39, \"slack_voltage\": 1.03, \"threshold\": 0.972}",
+          "actual_stdout": "RESULT_JSON={\"added_load_idx\": \"GFT_017_C\", \"selected_bus_ids\": [3, 7, 8], \"selected_count\": 3, \"slack_bus\": 39, \"slack_voltage\": 1.03, \"threshold\": 0.972}",
+          "stderr": "",
+          "artifact_files": []
+        },
+        {
+          "turn_id": 3,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"plot_file\": \"generalized_017_turn3_lowrank.png\", \"selected_bus_ids\": [7, 8, 3, 4], \"selected_voltages\": [0.928251, 0.941766, 0.970465, 0.975692], \"slack_setpoint\": 1.02, \"slack_voltage\": 1.02}",
+          "actual_stdout": "RESULT_JSON={\"plot_file\": \"generalized_017_turn3_lowrank.png\", \"selected_bus_ids\": [7, 8, 3, 4], \"selected_voltages\": [0.928251, 0.941766, 0.970465, 0.975692], \"slack_setpoint\": 1.02, \"slack_voltage\": 1.02}",
+          "stderr": "",
+          "artifact_files": [
+            "generalized_017_turn3_lowrank.png"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario_id": "generalized_scenario_018",
+      "family": "lowrank_add_slack_plot",
+      "case_key": "uploaded_ieee39",
+      "passed": true,
+      "turn_results": [
+        {
+          "turn_id": 1,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"selected_bus_ids\": [7, 8, 3, 4, 15], \"selected_voltages\": [0.929955, 0.943746, 0.970713, 0.976312, 0.978205]}",
+          "actual_stdout": "RESULT_JSON={\"selected_bus_ids\": [7, 8, 3, 4, 15], \"selected_voltages\": [0.929955, 0.943746, 0.970713, 0.976312, 0.978205]}",
+          "stderr": "",
+          "artifact_files": []
+        },
+        {
+          "turn_id": 2,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"added_load_idx\": \"GFT_018_C\", \"selected_bus_ids\": [7, 8], \"selected_count\": 2, \"slack_bus\": 39, \"slack_voltage\": 1.03, \"threshold\": 0.968}",
+          "actual_stdout": "RESULT_JSON={\"added_load_idx\": \"GFT_018_C\", \"selected_bus_ids\": [7, 8], \"selected_count\": 2, \"slack_bus\": 39, \"slack_voltage\": 1.03, \"threshold\": 0.968}",
+          "stderr": "",
+          "artifact_files": []
+        },
+        {
+          "turn_id": 3,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"plot_file\": \"generalized_018_turn3_lowrank.png\", \"selected_bus_ids\": [7, 8, 3, 4, 15], \"selected_voltages\": [0.930313, 0.944161, 0.970767, 0.976443, 0.978265], \"slack_setpoint\": 1.032, \"slack_voltage\": 1.032}",
+          "actual_stdout": "RESULT_JSON={\"plot_file\": \"generalized_018_turn3_lowrank.png\", \"selected_bus_ids\": [7, 8, 3, 4, 15], \"selected_voltages\": [0.930313, 0.944161, 0.970767, 0.976443, 0.978265], \"slack_setpoint\": 1.032, \"slack_voltage\": 1.032}",
+          "stderr": "",
+          "artifact_files": [
+            "generalized_018_turn3_lowrank.png"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario_id": "generalized_scenario_019",
+      "family": "lowrank_add_slack_plot",
+      "case_key": "builtin_kundur",
+      "passed": true,
+      "turn_results": [
+        {
+          "turn_id": 1,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"selected_bus_ids\": [8, 7, 9], \"selected_voltages\": [0.954, 0.956218, 0.968564]}",
+          "actual_stdout": "RESULT_JSON={\"selected_bus_ids\": [8, 7, 9], \"selected_voltages\": [0.954, 0.956218, 0.968564]}",
+          "stderr": "",
+          "artifact_files": []
+        },
+        {
+          "turn_id": 2,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"added_load_idx\": \"GFT_019_C\", \"selected_bus_ids\": [7, 8], \"selected_count\": 2, \"slack_bus\": 1, \"slack_voltage\": 1.0, \"threshold\": 0.965}",
+          "actual_stdout": "RESULT_JSON={\"added_load_idx\": \"GFT_019_C\", \"selected_bus_ids\": [7, 8], \"selected_count\": 2, \"slack_bus\": 1, \"slack_voltage\": 1.0, \"threshold\": 0.965}",
+          "stderr": "",
+          "artifact_files": []
+        },
+        {
+          "turn_id": 3,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"plot_file\": \"generalized_019_turn3_lowrank.png\", \"selected_bus_ids\": [8, 7, 9], \"selected_voltages\": [0.954303, 0.957279, 0.968753], \"slack_setpoint\": 1.005, \"slack_voltage\": 1.005}",
+          "actual_stdout": "RESULT_JSON={\"plot_file\": \"generalized_019_turn3_lowrank.png\", \"selected_bus_ids\": [8, 7, 9], \"selected_voltages\": [0.954303, 0.957279, 0.968753], \"slack_setpoint\": 1.005, \"slack_voltage\": 1.005}",
+          "stderr": "",
+          "artifact_files": [
+            "generalized_019_turn3_lowrank.png"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario_id": "generalized_scenario_020",
+      "family": "lowrank_add_slack_plot",
+      "case_key": "uploaded_kundur",
+      "passed": true,
+      "turn_results": [
+        {
+          "turn_id": 1,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"selected_bus_ids\": [8, 7, 9, 6], \"selected_voltages\": [0.954, 0.956218, 0.968564, 0.969086]}",
+          "actual_stdout": "RESULT_JSON={\"selected_bus_ids\": [8, 7, 9, 6], \"selected_voltages\": [0.954, 0.956218, 0.968564, 0.969086]}",
+          "stderr": "",
+          "artifact_files": []
+        },
+        {
+          "turn_id": 2,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"added_load_idx\": \"GFT_020_C\", \"selected_bus_ids\": [7, 8], \"selected_count\": 2, \"slack_bus\": 1, \"slack_voltage\": 1.0, \"threshold\": 0.96}",
+          "actual_stdout": "RESULT_JSON={\"added_load_idx\": \"GFT_020_C\", \"selected_bus_ids\": [7, 8], \"selected_count\": 2, \"slack_bus\": 1, \"slack_voltage\": 1.0, \"threshold\": 0.96}",
+          "stderr": "",
+          "artifact_files": []
+        },
+        {
+          "turn_id": 3,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"plot_file\": \"generalized_020_turn3_lowrank.png\", \"selected_bus_ids\": [8, 7, 9, 6], \"selected_voltages\": [0.954483, 0.958326, 0.968798, 0.971475], \"slack_setpoint\": 1.01, \"slack_voltage\": 1.01}",
+          "actual_stdout": "RESULT_JSON={\"plot_file\": \"generalized_020_turn3_lowrank.png\", \"selected_bus_ids\": [8, 7, 9, 6], \"selected_voltages\": [0.954483, 0.958326, 0.968798, 0.971475], \"slack_setpoint\": 1.01, \"slack_voltage\": 1.01}",
+          "stderr": "",
+          "artifact_files": [
+            "generalized_020_turn3_lowrank.png"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario_id": "generalized_scenario_021",
+      "family": "extremes_pv_scale_barplot",
+      "case_key": "builtin_ieee39",
+      "passed": true,
+      "turn_results": [
+        {
+          "turn_id": 1,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"max_bus\": 36, \"max_voltage\": 1.0635, \"min_bus\": 7, \"min_voltage\": 0.929955}",
+          "actual_stdout": "RESULT_JSON={\"max_bus\": 36, \"max_voltage\": 1.0635, \"min_bus\": 7, \"min_voltage\": 0.929955}",
+          "stderr": "",
+          "artifact_files": []
+        },
+        {
+          "turn_id": 2,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"pv_bus\": 30, \"pv_setpoint\": 1.017, \"pv_voltage\": 1.017, \"selected_count\": 4}",
+          "actual_stdout": "RESULT_JSON={\"pv_bus\": 30, \"pv_setpoint\": 1.017, \"pv_voltage\": 1.017, \"selected_count\": 4}",
+          "stderr": "",
+          "artifact_files": []
+        },
+        {
+          "turn_id": 3,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"max_bus\": 36, \"max_voltage\": 1.0635, \"min_bus\": 7, \"min_voltage\": 0.92553, \"plot_file\": \"generalized_021_turn3_bar.png\", \"scale_factor\": 1.035}",
+          "actual_stdout": "RESULT_JSON={\"max_bus\": 36, \"max_voltage\": 1.0635, \"min_bus\": 7, \"min_voltage\": 0.92553, \"plot_file\": \"generalized_021_turn3_bar.png\", \"scale_factor\": 1.035}",
+          "stderr": "",
+          "artifact_files": [
+            "generalized_021_turn3_bar.png"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario_id": "generalized_scenario_022",
+      "family": "extremes_pv_scale_barplot",
+      "case_key": "uploaded_ieee39",
+      "passed": true,
+      "turn_results": [
+        {
+          "turn_id": 1,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"max_bus\": 36, \"max_voltage\": 1.0635, \"min_bus\": 7, \"min_voltage\": 0.929955}",
+          "actual_stdout": "RESULT_JSON={\"max_bus\": 36, \"max_voltage\": 1.0635, \"min_bus\": 7, \"min_voltage\": 0.929955}",
+          "stderr": "",
+          "artifact_files": []
+        },
+        {
+          "turn_id": 2,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"pv_bus\": 30, \"pv_setpoint\": 1.012, \"pv_voltage\": 1.012, \"selected_count\": 6}",
+          "actual_stdout": "RESULT_JSON={\"pv_bus\": 30, \"pv_setpoint\": 1.012, \"pv_voltage\": 1.012, \"selected_count\": 6}",
+          "stderr": "",
+          "artifact_files": []
+        },
+        {
+          "turn_id": 3,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"max_bus\": 36, \"max_voltage\": 1.0635, \"min_bus\": 7, \"min_voltage\": 0.931621, \"plot_file\": \"generalized_022_turn3_bar.png\", \"scale_factor\": 0.985}",
+          "actual_stdout": "RESULT_JSON={\"max_bus\": 36, \"max_voltage\": 1.0635, \"min_bus\": 7, \"min_voltage\": 0.931621, \"plot_file\": \"generalized_022_turn3_bar.png\", \"scale_factor\": 0.985}",
+          "stderr": "",
+          "artifact_files": [
+            "generalized_022_turn3_bar.png"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario_id": "generalized_scenario_023",
+      "family": "line_topk_scale_threshold_plot",
+      "case_key": "builtin_pjm5",
+      "passed": true,
+      "turn_results": [
+        {
+          "turn_id": 1,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"selected_line_ids\": [\"2\", \"5\", \"1\", \"0\"], \"selected_line_metrics\": [2.488387, 2.15862, 1.596229, 1.496079]}",
+          "actual_stdout": "RESULT_JSON={\"selected_line_ids\": [\"2\", \"5\", \"1\", \"0\"], \"selected_line_metrics\": [2.488387, 2.15862, 1.596229, 1.496079]}",
+          "stderr": "",
+          "artifact_files": []
+        },
+        {
+          "turn_id": 2,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"angle_threshold\": 1.5, \"scale_factor\": 1.04, \"selected_count\": 5, \"selected_line_ids\": [\"0\", \"1\", \"2\", \"5\", \"6\"]}",
+          "actual_stdout": "RESULT_JSON={\"angle_threshold\": 1.5, \"scale_factor\": 1.04, \"selected_count\": 5, \"selected_line_ids\": [\"0\", \"1\", \"2\", \"5\", \"6\"]}",
+          "stderr": "",
+          "artifact_files": []
+        },
+        {
+          "turn_id": 3,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"added_load_idx\": \"GFT_023_D\", \"max_bus\": 2, \"max_voltage\": 1.0, \"min_bus\": 1, \"min_voltage\": 0.991447, \"plot_file\": \"generalized_023_turn3_voltage.png\"}",
+          "actual_stdout": "RESULT_JSON={\"added_load_idx\": \"GFT_023_D\", \"max_bus\": 2, \"max_voltage\": 1.0, \"min_bus\": 1, \"min_voltage\": 0.991447, \"plot_file\": \"generalized_023_turn3_voltage.png\"}",
+          "stderr": "",
+          "artifact_files": [
+            "generalized_023_turn3_voltage.png"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario_id": "generalized_scenario_024",
+      "family": "line_topk_scale_threshold_plot",
+      "case_key": "uploaded_pjm5",
+      "passed": true,
+      "turn_results": [
+        {
+          "turn_id": 1,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"selected_line_ids\": [\"2\", \"5\", \"1\"], \"selected_line_metrics\": [2.488387, 2.15862, 1.596229]}",
+          "actual_stdout": "RESULT_JSON={\"selected_line_ids\": [\"2\", \"5\", \"1\"], \"selected_line_metrics\": [2.488387, 2.15862, 1.596229]}",
+          "stderr": "",
+          "artifact_files": []
+        },
+        {
+          "turn_id": 2,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"angle_threshold\": 1.0, \"scale_factor\": 0.96, \"selected_count\": 5, \"selected_line_ids\": [\"0\", \"1\", \"2\", \"5\", \"6\"]}",
+          "actual_stdout": "RESULT_JSON={\"angle_threshold\": 1.0, \"scale_factor\": 0.96, \"selected_count\": 5, \"selected_line_ids\": [\"0\", \"1\", \"2\", \"5\", \"6\"]}",
+          "stderr": "",
+          "artifact_files": []
+        },
+        {
+          "turn_id": 3,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"added_load_idx\": \"GFT_024_D\", \"max_bus\": 2, \"max_voltage\": 1.0, \"min_bus\": 1, \"min_voltage\": 0.992149, \"plot_file\": \"generalized_024_turn3_voltage.png\"}",
+          "actual_stdout": "RESULT_JSON={\"added_load_idx\": \"GFT_024_D\", \"max_bus\": 2, \"max_voltage\": 1.0, \"min_bus\": 1, \"min_voltage\": 0.992149, \"plot_file\": \"generalized_024_turn3_voltage.png\"}",
+          "stderr": "",
+          "artifact_files": [
+            "generalized_024_turn3_voltage.png"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario_id": "generalized_scenario_025",
+      "family": "voltage_then_slack_line_threshold",
+      "case_key": "builtin_pjm5",
+      "passed": true,
+      "turn_results": [
+        {
+          "turn_id": 1,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"max_bus\": 2, \"max_voltage\": 1.0, \"min_bus\": 1, \"min_voltage\": 0.991799, \"slack_bus\": 3, \"slack_voltage\": 1.0}",
+          "actual_stdout": "RESULT_JSON={\"max_bus\": 2, \"max_voltage\": 1.0, \"min_bus\": 1, \"min_voltage\": 0.991799, \"slack_bus\": 3, \"slack_voltage\": 1.0}",
+          "stderr": "",
+          "artifact_files": []
+        },
+        {
+          "turn_id": 2,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"selected_line_ids\": [\"2\", \"5\", \"1\", \"0\"], \"selected_line_metrics\": [2.480023, 2.165713, 1.598309, 1.490857], \"slack_setpoint\": 1.015, \"slack_voltage\": 1.015}",
+          "actual_stdout": "RESULT_JSON={\"selected_line_ids\": [\"2\", \"5\", \"1\", \"0\"], \"selected_line_metrics\": [2.480023, 2.165713, 1.598309, 1.490857], \"slack_setpoint\": 1.015, \"slack_voltage\": 1.015}",
+          "stderr": "",
+          "artifact_files": []
+        },
+        {
+          "turn_id": 3,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"angle_threshold\": 1.7, \"scale_factor\": 1.05, \"selected_count\": 2, \"selected_line_ids\": [\"2\", \"5\"], \"slack_setpoint\": 1.015}",
+          "actual_stdout": "RESULT_JSON={\"angle_threshold\": 1.7, \"scale_factor\": 1.05, \"selected_count\": 2, \"selected_line_ids\": [\"2\", \"5\"], \"slack_setpoint\": 1.015}",
+          "stderr": "",
+          "artifact_files": []
+        }
+      ]
+    },
+    {
+      "scenario_id": "generalized_scenario_026",
+      "family": "voltage_then_slack_line_threshold",
+      "case_key": "uploaded_pjm5",
+      "passed": true,
+      "turn_results": [
+        {
+          "turn_id": 1,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"max_bus\": 2, \"max_voltage\": 1.0, \"min_bus\": 1, \"min_voltage\": 0.991799, \"slack_bus\": 3, \"slack_voltage\": 1.0}",
+          "actual_stdout": "RESULT_JSON={\"max_bus\": 2, \"max_voltage\": 1.0, \"min_bus\": 1, \"min_voltage\": 0.991799, \"slack_bus\": 3, \"slack_voltage\": 1.0}",
+          "stderr": "",
+          "artifact_files": []
+        },
+        {
+          "turn_id": 2,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"selected_line_ids\": [\"2\", \"5\", \"1\"], \"selected_line_metrics\": [2.474492, 2.169563, 1.599673], \"slack_setpoint\": 1.025, \"slack_voltage\": 1.025}",
+          "actual_stdout": "RESULT_JSON={\"selected_line_ids\": [\"2\", \"5\", \"1\"], \"selected_line_metrics\": [2.474492, 2.169563, 1.599673], \"slack_setpoint\": 1.025, \"slack_voltage\": 1.025}",
+          "stderr": "",
+          "artifact_files": []
+        },
+        {
+          "turn_id": 3,
+          "passed": true,
+          "returncode": 0,
+          "stdout_match": true,
+          "artifacts_present": true,
+          "expected_stdout": "RESULT_JSON={\"angle_threshold\": 1.2, \"scale_factor\": 0.97, \"selected_count\": 5, \"selected_line_ids\": [\"0\", \"1\", \"2\", \"5\", \"6\"], \"slack_setpoint\": 1.025}",
+          "actual_stdout": "RESULT_JSON={\"angle_threshold\": 1.2, \"scale_factor\": 0.97, \"selected_count\": 5, \"selected_line_ids\": [\"0\", \"1\", \"2\", \"5\", \"6\"], \"slack_setpoint\": 1.025}",
+          "stderr": "",
+          "artifact_files": []
+        }
+      ]
+    }
+  ]
+}

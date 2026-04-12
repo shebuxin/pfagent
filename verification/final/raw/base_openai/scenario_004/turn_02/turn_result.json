@@ -1,0 +1,49 @@
+{
+  "actual_result_json": null,
+  "artifact_passed": true,
+  "artifact_paths": [],
+  "artifact_score": 5.0,
+  "code": "# required_dependencies: andes\nimport andes\n\n# Load the IEEE 14 full case\ncase = andes.get_case(\"ieee14/ieee14_full.xlsx\")\nssa = andes.load(case, setup=True, no_output=True, log=False)\n\n# Add a new PQ load\nssa.PQ.add(\n    idx='PQ_VERIFY_004_A',\n    bus=10,\n    p0=0.019,\n    q0=0.012\n)\n\n# Run power flow analysis again\nandes.fpn(ssa)\n\n# Define the voltage threshold\nthreshold = 1.015\n\n# Get all bus voltages and their IDs\nbus_voltages = ssa.Bus.V.v\nbus_ids = ssa.Bus.idx.v\n\n# Identify buses below the threshold\nselected_bus_ids = [int(bus_ids[i]) for i in range(len(bus_voltages)) if bus_voltages[i] < threshold]\nselected_bus_ids.sort()\n\n# Find minimum voltage and corresponding bus\nmin_voltage = min(bus_voltages)\nmin_bus = int(bus_ids[bus_voltages.argmin()])\n\n# Prepare the RESULT_JSON\nRESULT_JSON = {\n    'added_load_idx': 'PQ_VERIFY_004_A',\n    'added_load_bus': 10,\n    'threshold': round(threshold, 6),\n    'selected_bus_ids': selected_bus_ids,\n    'selected_count': len(selected_bus_ids),\n    'min_bus': min_bus,\n    'min_voltage': round(min_voltage, 6)\n}\n\n# Print the result in the specified format\nprint(f\"RESULT_JSON={RESULT_JSON}\")",
+  "continuity_score": 15.0,
+  "execution_output": "STDERR:\nTraceback (most recent call last):\n  File \"/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_004/turn_02/workspace/generated_code.py\", line 51, in <module>\n    andes.fpn(ssa)\n    ^^^^^^^^^\nAttributeError: module 'andes' has no attribute 'fpn'\n\n",
+  "execution_passed": false,
+  "execution_score": 0.0,
+  "expected_result_json": {
+    "added_load_bus": 10,
+    "added_load_idx": "PQ_VERIFY_004_A",
+    "min_bus": 3,
+    "min_voltage": 1.01,
+    "selected_bus_ids": [
+      3,
+      4,
+      10,
+      13
+    ],
+    "selected_count": 4,
+    "threshold": 1.015
+  },
+  "failure_categories": [
+    "grounding",
+    "execution",
+    "semantic"
+  ],
+  "format_score": 10.0,
+  "format_valid": true,
+  "grounding_score": 20.59,
+  "issues": [
+    "Missing code requirement: add PQ call",
+    "Code block 1: For add-before-setup workflows, load the case with `setup=False` before calling `ssa.add(...)`.",
+    "Code block 1: For add-before-setup workflows, call `ssa.setup()` after `ssa.add(...)` and before `ssa.PFlow.run()`.",
+    "Execution failed. Return code: 1",
+    "RESULT_JSON was missing or could not be parsed."
+  ],
+  "prompt": "Please revise the prior script for this next step and return one full script only.\nKeep using the same built-in case from earlier in this conversation.\nKeep the same case, add one new PQ load before setup at bus 10 with idx 'PQ_VERIFY_004_A', p0=0.019, and q0=0.012.\nAfter rerunning power flow, report every bus below 1.015 p.u. together with the minimum-voltage bus.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: added_load_idx, added_load_bus, threshold, selected_bus_ids, selected_count, min_bus, min_voltage.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.\n- `selected_bus_ids` should list all buses below the threshold in ascending bus order.",
+  "response": "```python\n# required_dependencies: andes\nimport andes\n\n# Load the IEEE 14 full case\ncase = andes.get_case(\"ieee14/ieee14_full.xlsx\")\nssa = andes.load(case, setup=True, no_output=True, log=False)\n\n# Add a new PQ load\nssa.PQ.add(\n    idx='PQ_VERIFY_004_A',\n    bus=10,\n    p0=0.019,\n    q0=0.012\n)\n\n# Run power flow analysis again\nandes.fpn(ssa)\n\n# Define the voltage threshold\nthreshold = 1.015\n\n# Get all bus voltages and their IDs\nbus_voltages = ssa.Bus.V.v\nbus_ids = ssa.Bus.idx.v\n\n# Identify buses below the threshold\nselected_bus_ids = [int(bus_ids[i]) for i in range(len(bus_voltages)) if bus_voltages[i] < threshold]\nselected_bus_ids.sort()\n\n# Find minimum voltage and corresponding bus\nmin_voltage = min(bus_voltages)\nmin_bus = int(bus_ids[bus_voltages.argmin()])\n\n# Prepare the RESULT_JSON\nRESULT_JSON = {\n    'added_load_idx': 'PQ_VERIFY_004_A',\n    'added_load_bus': 10,\n    'threshold': round(threshold, 6),\n    'selected_bus_ids': selected_bus_ids,\n    'selected_count': len(selected_bus_ids),\n    'min_bus': min_bus,\n    'min_voltage': round(min_voltage, 6)\n}\n\n# Print the result in the specified format\nprint(f\"RESULT_JSON={RESULT_JSON}\")\n```",
+  "result_json_parse_error": "RESULT_JSON marker not found in stdout.",
+  "score_total": 50.59,
+  "semantic_passed": false,
+  "semantic_score": 0.0,
+  "turn_id": 2,
+  "turn_passed": false,
+  "used_template_fallback": false
+}

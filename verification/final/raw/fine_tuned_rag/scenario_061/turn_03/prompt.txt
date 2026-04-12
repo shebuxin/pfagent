@@ -1,0 +1,8 @@
+Follow-up request: update the previous study and return a fresh complete script.
+Keep the adjusted slack-bus setting from the last turn.
+Also add a new PQ load before setup at bus 4 with idx 'PQ_VERIFY_061_B', p0=0.012, and q0=0.007.
+Rerun power flow and report the maximum-voltage bus, minimum-voltage bus, and the total number of PQ loads now present.
+- The script must end by printing exactly one line that starts with RESULT_JSON=
+- The JSON object must contain these keys: added_load_idx, max_bus, max_voltage, min_bus, min_voltage, total_pq_count.
+- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.
+- Round float values in RESULT_JSON to 6 decimals.

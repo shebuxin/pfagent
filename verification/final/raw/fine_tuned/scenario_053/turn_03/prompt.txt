@@ -1,0 +1,15 @@
+Next follow-up: rebuild the script for the updated study, code only.
+Keep the PV setpoint adjustment from the previous turn.
+Also scale every PQ load by 1.040, rerun power flow, and save a bar chart of the bus voltages to 'scenario_053_turn3_bar.png'.
+- The script must end by printing exactly one line that starts with RESULT_JSON=
+- The JSON object must contain these keys: scale_factor, min_bus, min_voltage, max_bus, max_voltage, plot_file.
+- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.
+- Round float values in RESULT_JSON to 6 decimals.
+- Use a bar chart, not a line chart.
+
+Runtime file context:
+- Working directory for execution: verification/artifacts_recheck_20260403_parallel/fine_tuned/20260403_162926/raw/fine_tuned/scenario_053/turn_03/workspace
+- Uploaded files available during execution:
+- verify_ieee39_053.xlsx
+- Use this exact filename directly in andes.load(...).
+- Do not wrap the uploaded filename with andes.get_case(...).

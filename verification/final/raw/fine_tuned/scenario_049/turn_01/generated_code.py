@@ -1,0 +1,29 @@
+# required_dependencies: andes,numpy,json
+import andes
+import numpy as np
+import json
+import os
+
+def _round_float(value):
+    return round(float(value), 6)
+
+cwd = os.getcwd()
+case_path = os.path.join(cwd, "verify_ieee39_049.xlsx")
+ssa = andes.load(case_path, setup=True, no_output=True, log=False)
+
+ssa.PFlow.run()
+
+bus_ids = np.asarray(ssa.Bus.idx.v)
+bus_v = np.asarray(ssa.Bus.v.v, dtype=float)
+threshold = 1.04
+mask = bus_v > threshold
+bottom_k = 2
+rank_indices = np.argsort(bus_v)[:bottom_k]
+result = {
+    "threshold": _round_float(threshold),
+    "selected_bus_ids": [int(value) for value in bus_ids[mask]],
+    "selected_count": int(np.sum(mask)),
+    "lowest_bus_ids": [int(rank_indices[i]) for i in range(bottom_k)],
+    "lowest_voltages": [_round_float(bus_v[i]) for i in rank_indices],
+}
+print("RESULT_JSON=" + json.dumps(result, sort_keys=True))

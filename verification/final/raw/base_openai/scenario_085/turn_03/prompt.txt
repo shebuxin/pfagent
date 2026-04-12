@@ -1,0 +1,8 @@
+Please keep the conversation context and send one new complete script only.
+Keep the scaled PQ-load change from the previous turn.
+Also add one new PQ load before setup at bus 1 with idx 'PQ_VERIFY_085_E', p0=0.012, and q0=0.006.
+After rerunning, save a line plot of bus voltages to 'scenario_085_turn3_voltage.png' and report the maximum-voltage bus and minimum-voltage bus.
+- The script must end by printing exactly one line that starts with RESULT_JSON=
+- The JSON object must contain these keys: added_load_idx, max_bus, max_voltage, min_bus, min_voltage, plot_file.
+- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.
+- Round float values in RESULT_JSON to 6 decimals.

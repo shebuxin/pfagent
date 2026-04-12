@@ -1,0 +1,124 @@
+{
+  "blueprint": "extremes_pv_scale_barplot",
+  "case_family": "kundur",
+  "case_source": "uploaded",
+  "scenario_id": "scenario_080",
+  "source_case_path": "kundur/kundur_full.xlsx",
+  "turns": [
+    {
+      "actual_result_json": {
+        "max_bus": 2,
+        "max_voltage": 1.0,
+        "min_bus": 8,
+        "min_voltage": 0.954
+      },
+      "artifact_passed": true,
+      "artifact_paths": [],
+      "artifact_score": 5.0,
+      "code": "# required_dependencies: andes,json\nimport andes\nimport json\nimport os\n\ndef _round_float(value):\n    return round(float(value), 6)\n\ncase = os.path.join(os.getcwd(), \"verify_kundur_080.xlsx\")\nssa = andes.load(case, setup=True, no_output=True, log=False)\n\nssa.PFlow.run()\n\nbus_ids = ssa.Bus.idx.v\nbus_v = ssa.Bus.v.v\nmax_index = int(list(bus_v).index(max(bus_v)))\nmin_index = int(list(bus_v).index(min(bus_v)))\nresult_json = json.dumps(\n    {\n        \"max_bus\": int(bus_ids[max_index]),\n        \"max_voltage\": _round_float(bus_v[max_index]),\n        \"min_bus\": int(bus_ids[min_index]),\n        \"min_voltage\": _round_float(bus_v[min_index]),\n    },\n    sort_keys=True,\n)\nprint(\"RESULT_JSON=\" + result_json)",
+      "continuity_score": 15.0,
+      "execution_output": "STDOUT:\nRESULT_JSON={\"max_bus\": 2, \"max_voltage\": 1.0, \"min_bus\": 8, \"min_voltage\": 0.954}\n\n",
+      "execution_passed": true,
+      "execution_score": 20.0,
+      "expected_result_json": {
+        "max_bus": 2,
+        "max_voltage": 1.0,
+        "min_bus": 8,
+        "min_voltage": 0.954
+      },
+      "failure_categories": [],
+      "format_score": 10.0,
+      "format_valid": true,
+      "grounding_score": 25.0,
+      "issues": [],
+      "prompt": "Give me code only: one full Python script in one fenced block.\nUse my uploaded file verify_kundur_080.xlsx from the current working directory.\nRun power flow and report the maximum-voltage bus and minimum-voltage bus.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: max_bus, max_voltage, min_bus, min_voltage.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.\n\nRuntime file context:\n- Working directory for execution: verification/artifacts_recheck_20260403_parallel/fine_tuned/20260403_162926/raw/fine_tuned/scenario_080/turn_01/workspace\n- Uploaded files available during execution:\n- verify_kundur_080.xlsx\n- Use this exact filename directly in andes.load(...).\n- Do not wrap the uploaded filename with andes.get_case(...).\n",
+      "response": "```python\n# required_dependencies: andes,json\nimport andes\nimport json\nimport os\n\ndef _round_float(value):\n    return round(float(value), 6)\n\ncase = os.path.join(os.getcwd(), \"verify_kundur_080.xlsx\")\nssa = andes.load(case, setup=True, no_output=True, log=False)\n\nssa.PFlow.run()\n\nbus_ids = ssa.Bus.idx.v\nbus_v = ssa.Bus.v.v\nmax_index = int(list(bus_v).index(max(bus_v)))\nmin_index = int(list(bus_v).index(min(bus_v)))\nresult_json = json.dumps(\n    {\n        \"max_bus\": int(bus_ids[max_index]),\n        \"max_voltage\": _round_float(bus_v[max_index]),\n        \"min_bus\": int(bus_ids[min_index]),\n        \"min_voltage\": _round_float(bus_v[min_index]),\n    },\n    sort_keys=True,\n)\nprint(\"RESULT_JSON=\" + result_json)\n```",
+      "result_json_parse_error": null,
+      "score_total": 100.0,
+      "semantic_passed": true,
+      "semantic_score": 25.0,
+      "turn_id": 1,
+      "turn_passed": true,
+      "used_template_fallback": false
+    },
+    {
+      "actual_result_json": {
+        "pv_bus": 2,
+        "pv_setpoint": 1.0,
+        "pv_voltage": 1.0,
+        "selected_count": 4
+      },
+      "artifact_passed": true,
+      "artifact_paths": [],
+      "artifact_score": 5.0,
+      "code": "# required_dependencies: andes,json\nimport andes\nimport json\nimport os\n\ndef _round_float(value):\n    return round(float(value), 6)\n\ncase = os.path.join(os.getcwd(), \"verify_kundur_080.xlsx\")\nssa = andes.load(case, setup=True, no_output=True, log=False)\n\nssa.PV.set(src=\"v0\", idx=ssa.PV.idx.v[0], attr=\"v\", value=1.0)\nssa.PFlow.run()\n\nbus_ids = ssa.Bus.idx.v\nbus_v = ssa.Bus.v.v\npv_bus = ssa.PV.bus.v[0]\npv_index = int(bus_ids.index(pv_bus))\nthreshold = 1.0\nCount = sum(v > threshold for v in bus_v)\nresult_json = json.dumps(\n    {\n        \"pv_bus\": int(pv_bus),\n        \"pv_setpoint\": _round_float(1.0),\n        \"pv_voltage\": _round_float(bus_v[pv_index]),\n        \"selected_count\": int(Count),\n    },\n    sort_keys=True,\n)\nprint(\"RESULT_JSON=\" + result_json)",
+      "continuity_score": 15.0,
+      "execution_output": "STDOUT:\nRESULT_JSON={\"pv_bus\": 2, \"pv_setpoint\": 1.0, \"pv_voltage\": 1.0, \"selected_count\": 4}\n\n",
+      "execution_passed": true,
+      "execution_score": 20.0,
+      "expected_result_json": {
+        "pv_bus": 2,
+        "pv_setpoint": 1.0,
+        "pv_voltage": 1.0,
+        "selected_count": 4
+      },
+      "failure_categories": [],
+      "format_score": 10.0,
+      "format_valid": true,
+      "grounding_score": 25.0,
+      "issues": [],
+      "prompt": "Follow-up request: update the previous study and return a fresh complete script.\nKeep using the same uploaded study file from earlier in this conversation.\nKeep the same case, set the first PV voltage target to 1.000, rerun power flow, and report the affected PV bus voltage together with how many buses are above 1.000 p.u.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: pv_bus, pv_setpoint, pv_voltage, selected_count.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.\n\nRuntime file context:\n- Working directory for execution: verification/artifacts_recheck_20260403_parallel/fine_tuned/20260403_162926/raw/fine_tuned/scenario_080/turn_02/workspace\n- Uploaded files available during execution:\n- verify_kundur_080.xlsx\n- Use this exact filename directly in andes.load(...).\n- Do not wrap the uploaded filename with andes.get_case(...).\n",
+      "response": "```python\n# required_dependencies: andes,json\nimport andes\nimport json\nimport os\n\ndef _round_float(value):\n    return round(float(value), 6)\n\ncase = os.path.join(os.getcwd(), \"verify_kundur_080.xlsx\")\nssa = andes.load(case, setup=True, no_output=True, log=False)\n\nssa.PV.set(src=\"v0\", idx=ssa.PV.idx.v[0], attr=\"v\", value=1.0)\nssa.PFlow.run()\n\nbus_ids = ssa.Bus.idx.v\nbus_v = ssa.Bus.v.v\npv_bus = ssa.PV.bus.v[0]\npv_index = int(bus_ids.index(pv_bus))\nthreshold = 1.0\nCount = sum(v > threshold for v in bus_v)\nresult_json = json.dumps(\n    {\n        \"pv_bus\": int(pv_bus),\n        \"pv_setpoint\": _round_float(1.0),\n        \"pv_voltage\": _round_float(bus_v[pv_index]),\n        \"selected_count\": int(Count),\n    },\n    sort_keys=True,\n)\nprint(\"RESULT_JSON=\" + result_json)\n```",
+      "result_json_parse_error": null,
+      "score_total": 100.0,
+      "semantic_passed": true,
+      "semantic_score": 25.0,
+      "turn_id": 2,
+      "turn_passed": true,
+      "used_template_fallback": false
+    },
+    {
+      "actual_result_json": {
+        "max_bus": 2,
+        "max_voltage": 1.0,
+        "min_bus": 7,
+        "min_voltage": 0.944207,
+        "plot_file": "scenario_080_turn3_bar.png",
+        "scale_factor": 1.04
+      },
+      "artifact_passed": true,
+      "artifact_paths": [
+        "scenario_080_turn3_bar.png"
+      ],
+      "artifact_score": 5.0,
+      "code": "# required_dependencies: andes,json,matplotlib\nimport andes\nimport json\nimport os\nimport matplotlib.pyplot as plt\n\ndef _round_float(value):\n    return round(float(value), 6)\n\ncase = os.path.join(os.getcwd(), \"verify_kundur_080.xlsx\")\nssa = andes.load(case, setup=True, no_output=True, log=False)\n\nssa.PV.set(src=\"v0\", idx=ssa.PV.idx.v[0], attr=\"v\", value=1.0)\nscale_factor = 1.04\nssa.PQ.set(src=\"p0\", idx=ssa.PQ.idx.v, attr=\"v\", value=scale_factor * ssa.PQ.p0.v)\nssa.PQ.set(src=\"q0\", idx=ssa.PQ.idx.v, attr=\"v\", value=scale_factor * ssa.PQ.q0.v)\nssa.PFlow.run()\n\nbus_ids = ssa.Bus.idx.v\nbus_v = ssa.Bus.v.v\nplot_file = \"scenario_080_turn3_bar.png\"\nplt.figure(figsize=(10, 4))\nplt.bar(bus_ids, bus_v)\nplt.xticks(rotation=90)\nplt.xlabel(\"Bus\")\nplt.ylabel(\"Voltage (p.u.)\")\nplt.tight_layout()\nplt.savefig(plot_file, dpi=150)\nplt.close()\nmin_index = int(list(bus_v).index(min(bus_v)))\nmax_index = int(list(bus_v).index(max(bus_v)))\nresult_json = json.dumps(\n    {\n        \"scale_factor\": _round_float(1.04),\n        \"min_bus\": int(bus_ids[min_index]),\n        \"min_voltage\": _round_float(bus_v[min_index]),\n        \"max_bus\": int(bus_ids[max_index]),\n        \"max_voltage\": _round_float(bus_v[max_index]),\n        \"plot_file\": plot_file,\n    },\n    sort_keys=True,\n)\nprint(\"RESULT_JSON=\" + result_json)",
+      "continuity_score": 15.0,
+      "execution_output": "STDOUT:\nRESULT_JSON={\"max_bus\": 2, \"max_voltage\": 1.0, \"min_bus\": 7, \"min_voltage\": 0.944207, \"plot_file\": \"scenario_080_turn3_bar.png\", \"scale_factor\": 1.04}\n\n",
+      "execution_passed": true,
+      "execution_score": 20.0,
+      "expected_result_json": {
+        "max_bus": 2,
+        "max_voltage": 1.0,
+        "min_bus": 7,
+        "min_voltage": 0.944207,
+        "plot_file": "scenario_080_turn3_bar.png",
+        "scale_factor": 1.04
+      },
+      "failure_categories": [],
+      "format_score": 10.0,
+      "format_valid": true,
+      "grounding_score": 25.0,
+      "issues": [],
+      "prompt": "Please revise the prior script for this next step and return one full script only.\nKeep the PV setpoint adjustment from the previous turn.\nAlso scale every PQ load by 1.040, rerun power flow, and save a bar chart of the bus voltages to 'scenario_080_turn3_bar.png'.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: scale_factor, min_bus, min_voltage, max_bus, max_voltage, plot_file.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.\n- Use a bar chart, not a line chart.\n\nRuntime file context:\n- Working directory for execution: verification/artifacts_recheck_20260403_parallel/fine_tuned/20260403_162926/raw/fine_tuned/scenario_080/turn_03/workspace\n- Uploaded files available during execution:\n- verify_kundur_080.xlsx\n- Use this exact filename directly in andes.load(...).\n- Do not wrap the uploaded filename with andes.get_case(...).\n",
+      "response": "```python\n# required_dependencies: andes,json,matplotlib\nimport andes\nimport json\nimport os\nimport matplotlib.pyplot as plt\n\ndef _round_float(value):\n    return round(float(value), 6)\n\ncase = os.path.join(os.getcwd(), \"verify_kundur_080.xlsx\")\nssa = andes.load(case, setup=True, no_output=True, log=False)\n\nssa.PV.set(src=\"v0\", idx=ssa.PV.idx.v[0], attr=\"v\", value=1.0)\nscale_factor = 1.04\nssa.PQ.set(src=\"p0\", idx=ssa.PQ.idx.v, attr=\"v\", value=scale_factor * ssa.PQ.p0.v)\nssa.PQ.set(src=\"q0\", idx=ssa.PQ.idx.v, attr=\"v\", value=scale_factor * ssa.PQ.q0.v)\nssa.PFlow.run()\n\nbus_ids = ssa.Bus.idx.v\nbus_v = ssa.Bus.v.v\nplot_file = \"scenario_080_turn3_bar.png\"\nplt.figure(figsize=(10, 4))\nplt.bar(bus_ids, bus_v)\nplt.xticks(rotation=90)\nplt.xlabel(\"Bus\")\nplt.ylabel(\"Voltage (p.u.)\")\nplt.tight_layout()\nplt.savefig(plot_file, dpi=150)\nplt.close()\nmin_index = int(list(bus_v).index(min(bus_v)))\nmax_index = int(list(bus_v).index(max(bus_v)))\nresult_json = json.dumps(\n    {\n        \"scale_factor\": _round_float(1.04),\n        \"min_bus\": int(bus_ids[min_index]),\n        \"min_voltage\": _round_float(bus_v[min_index]),\n        \"max_bus\": int(bus_ids[max_index]),\n        \"max_voltage\": _round_float(bus_v[max_index]),\n        \"plot_file\": plot_file,\n    },\n    sort_keys=True,\n)\nprint(\"RESULT_JSON=\" + result_json)\n```",
+      "result_json_parse_error": null,
+      "score_total": 100.0,
+      "semantic_passed": true,
+      "semantic_score": 25.0,
+      "turn_id": 3,
+      "turn_passed": true,
+      "used_template_fallback": false
+    }
+  ],
+  "uploaded_filename": "verify_kundur_080.xlsx"
+}

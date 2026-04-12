@@ -1,0 +1,3 @@
+STDOUT:
+RESULT_JSON={"selected_count": 2, "slack_bus": 39, "slack_setpoint": 1.015, "slack_voltage": 1.015}
+

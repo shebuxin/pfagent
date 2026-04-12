@@ -1,0 +1,8 @@
+STDERR:
+System has been setup. Calling setup() twice is not allowed. To add devices, reload the case with setup=False, add devices, then call setup().
+Traceback (most recent call last):
+  File "/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_043/turn_03/workspace/generated_code.py", line 58, in <module>
+    ssa.PQ.p0 *= scale_factor
+    ^^^^^^
+AttributeError: 'bool' object has no attribute 'PQ'
+

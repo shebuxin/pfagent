@@ -1,0 +1,4 @@
+stage_id,label,suite_label,scenario_count,scenario_pass_count,scenario_pass_rate,avg_conversation_score,notes
+structured_baseline,Stage 1: Structured Benchmark Before Open Stress Test,152-scenario structured suite,152,152,100.0,100.0,"The current structured benchmark was fully solved, but it still used stronger RESULT_JSON-style task contracts."
+open_generalization_gap,Stage 2: Open Scenario Stress Test Before Adaptive Evolution,4-scenario open generalization suite,4,0,0.0,56.81,Four more open-ended scenarios were introduced to expose natural-language grounding gaps in case modification and contingency analysis.
+open_generalization_recovered,Stage 3: Open Scenario Stress Test After Adaptive Evolution,4-scenario open generalization suite,4,4,100.0,100.0,The same four open scenarios were re-run after integrating the adaptive evolution mechanism into the agent workflow.

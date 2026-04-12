@@ -1,0 +1,51 @@
+{
+  "actual_result_json": null,
+  "artifact_passed": true,
+  "artifact_paths": [],
+  "artifact_score": 5.0,
+  "code": "# required_dependencies: pandas, numpy\nimport os\nimport json\nimport andes\nimport numpy as np\n\n# Load the uploaded case\nscript_dir = os.getcwd()\ncase = os.path.join(script_dir, \"verify_kundur_076.xlsx\")\nssa = andes.load(case, setup=True, no_output=True, log=False)\n\n# Run power flow\nandes.run_power_flow(ssa)\n\n# Set the voltage threshold\nthreshold = 1.0\n\n# Count all buses above the threshold\nselected_bus_ids = ssa.Bus.idx.v[ssa.Bus.v > threshold].tolist()\nselected_count = len(selected_bus_ids)\n\n# Find the two lowest-voltage buses\nlowest_buses_indices = np.argsort(ssa.Bus.v)[:2]\nlowest_bus_ids = ssa.Bus.idx.v[lowest_buses_indices].tolist()\nlowest_voltages = [round(ssa.Bus.v[i], 6) for i in lowest_buses_indices]\n\n# Prepare the result as JSON\nresult_json = {\n    \"threshold\": float(threshold),\n    \"selected_bus_ids\": selected_bus_ids,\n    \"selected_count\": selected_count,\n    \"lowest_bus_ids\": lowest_bus_ids,\n    \"lowest_voltages\": lowest_voltages\n}\n\n# Print the result\nprint(f\"RESULT_JSON={json.dumps(result_json)}\")",
+  "continuity_score": 15.0,
+  "execution_output": "STDERR:\nTraceback (most recent call last):\n  File \"/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_076/turn_01/workspace/generated_code.py\", line 47, in <module>\n    andes.run_power_flow(ssa)\n    ^^^^^^^^^^^^^^^^^^^^\nAttributeError: module 'andes' has no attribute 'run_power_flow'\n\n",
+  "execution_passed": false,
+  "execution_score": 0.0,
+  "expected_result_json": {
+    "lowest_bus_ids": [
+      8,
+      7
+    ],
+    "lowest_voltages": [
+      0.954,
+      0.956218
+    ],
+    "selected_bus_ids": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "selected_count": 4,
+    "threshold": 1.0
+  },
+  "failure_categories": [
+    "grounding",
+    "execution",
+    "semantic"
+  ],
+  "format_score": 10.0,
+  "format_valid": true,
+  "grounding_score": 25.0,
+  "issues": [
+    "Code block 1: Use `ssa.Bus.v.v`, not `ssa.Bus.v`, when you need bus voltage magnitudes.",
+    "Execution failed. Return code: 1",
+    "RESULT_JSON was missing or could not be parsed."
+  ],
+  "prompt": "Write one complete runnable Python script only, inside a single ```python block.\nUse my uploaded file verify_kundur_076.xlsx from the current working directory.\nRun power flow, count all buses above 1.000 p.u., and also return the two lowest-voltage buses.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: threshold, selected_bus_ids, selected_count, lowest_bus_ids, lowest_voltages.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.\n- `selected_bus_ids` should list every bus above the threshold.\n- `lowest_bus_ids` should contain exactly two buses in ascending voltage order.\n\nRuntime file context:\n- Working directory for execution: verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_076/turn_01/workspace\n- Uploaded files available during execution:\n- verify_kundur_076.xlsx\n- Use this exact filename directly in andes.load(...).\n- Do not wrap the uploaded filename with andes.get_case(...).\n",
+  "response": "```python\n# required_dependencies: pandas, numpy\nimport os\nimport json\nimport andes\nimport numpy as np\n\n# Load the uploaded case\nscript_dir = os.getcwd()\ncase = os.path.join(script_dir, \"verify_kundur_076.xlsx\")\nssa = andes.load(case, setup=True, no_output=True, log=False)\n\n# Run power flow\nandes.run_power_flow(ssa)\n\n# Set the voltage threshold\nthreshold = 1.0\n\n# Count all buses above the threshold\nselected_bus_ids = ssa.Bus.idx.v[ssa.Bus.v > threshold].tolist()\nselected_count = len(selected_bus_ids)\n\n# Find the two lowest-voltage buses\nlowest_buses_indices = np.argsort(ssa.Bus.v)[:2]\nlowest_bus_ids = ssa.Bus.idx.v[lowest_buses_indices].tolist()\nlowest_voltages = [round(ssa.Bus.v[i], 6) for i in lowest_buses_indices]\n\n# Prepare the result as JSON\nresult_json = {\n    \"threshold\": float(threshold),\n    \"selected_bus_ids\": selected_bus_ids,\n    \"selected_count\": selected_count,\n    \"lowest_bus_ids\": lowest_bus_ids,\n    \"lowest_voltages\": lowest_voltages\n}\n\n# Print the result\nprint(f\"RESULT_JSON={json.dumps(result_json)}\")\n```",
+  "result_json_parse_error": "RESULT_JSON marker not found in stdout.",
+  "score_total": 55.0,
+  "semantic_passed": false,
+  "semantic_score": 0.0,
+  "turn_id": 1,
+  "turn_passed": false,
+  "used_template_fallback": false
+}

@@ -1,0 +1,7 @@
+STDERR:
+Traceback (most recent call last):
+  File "/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_020/turn_02/workspace/generated_code.py", line 48, in <module>
+    slack_bus_idx = ssa.SlackBus.idx.v[0]  # Assuming there's only one slack bus
+                    ^^^^^^^^^^^^
+AttributeError: 'System' object has no attribute 'SlackBus'
+

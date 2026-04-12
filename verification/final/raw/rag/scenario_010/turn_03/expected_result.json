@@ -1,0 +1,8 @@
+{
+  "max_bus": 6,
+  "max_voltage": 1.03,
+  "min_bus": 4,
+  "min_voltage": 1.004231,
+  "plot_file": "scenario_010_turn3_bar.png",
+  "scale_factor": 1.04
+}

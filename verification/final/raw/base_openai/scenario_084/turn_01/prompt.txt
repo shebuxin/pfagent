@@ -1,0 +1,15 @@
+Please answer with one runnable Python script only and nothing else.
+Use my uploaded file verify_kundur_084.xlsx from the current working directory.
+Run power flow and report the 4 lowest-voltage buses.
+- The script must end by printing exactly one line that starts with RESULT_JSON=
+- The JSON object must contain these keys: selected_bus_ids, selected_voltages.
+- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.
+- Round float values in RESULT_JSON to 6 decimals.
+- `selected_bus_ids` and `selected_voltages` should represent the lowest-voltage buses in ascending voltage order.
+
+Runtime file context:
+- Working directory for execution: verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_084/turn_01/workspace
+- Uploaded files available during execution:
+- verify_kundur_084.xlsx
+- Use this exact filename directly in andes.load(...).
+- Do not wrap the uploaded filename with andes.get_case(...).

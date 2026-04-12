@@ -1,0 +1,13 @@
+{
+  "lowest_bus_ids": [
+    8,
+    7
+  ],
+  "lowest_voltages": [
+    0.954,
+    0.956218
+  ],
+  "selected_bus_ids": [],
+  "selected_count": 0,
+  "threshold": 1.02
+}

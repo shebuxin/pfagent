@@ -1,0 +1,162 @@
+{
+  "active_mutation_packs": [
+    "corridor_outage_aliases",
+    "line_outage_api_guardrail",
+    "n1_outage_set_aliases",
+    "pq_percentage_scaling",
+    "pv_regulator_aliases",
+    "string_device_idx_guardrail",
+    "targeted_device_resolution"
+  ],
+  "marker_overrides": {
+    "candidate_line_markers": [
+      "outage set",
+      "screening set",
+      "stressed case"
+    ],
+    "pq_carry_markers": [
+      "same demand record",
+      "that same demand record",
+      "that demand record",
+      "same demand",
+      "demand components"
+    ],
+    "pv_carry_markers": [
+      "that regulator",
+      "same voltage-control record",
+      "that same voltage-control record",
+      "regulator target",
+      "that generator voltage-target change",
+      "keep that regulator change"
+    ],
+    "structured_activation_markers": [
+      "outage set",
+      "screening set",
+      "stressed case"
+    ]
+  },
+  "pattern_overrides": {
+    "line_outage_by_pair": [
+      "put the transmission corridor between buses (\\d+) and (\\d+) out of service",
+      "corridor between buses (\\d+) and (\\d+) out of service",
+      "knock the (\\d+)-(\\d+) corridor out of service"
+    ],
+    "target_pq_bus": [
+      "demand record belongs to bus (\\d+)",
+      "record belongs to bus (\\d+)",
+      "demand record sits on bus (\\d+)",
+      "record sits on bus (\\d+)",
+      "load belongs to bus (\\d+)"
+    ],
+    "target_pq_percent": [
+      "([0-9]*\\.?[0-9]+)% heavier",
+      "([0-9]*\\.?[0-9]+)% higher",
+      "([0-9]*\\.?[0-9]+)% larger",
+      "([0-9]*\\.?[0-9]+)% more on both active and reactive"
+    ],
+    "target_pv_bus": [
+      "generator-side voltage-control record associated with bus (\\d+)",
+      "voltage-control record associated with bus (\\d+)"
+    ],
+    "target_pv_v0": [
+      "raise .* regulator target to ([0-9]*\\.?[0-9]+)",
+      "raise that regulator target to ([0-9]*\\.?[0-9]+)",
+      "move that regulator target to ([0-9]*\\.?[0-9]+)"
+    ]
+  },
+  "profile_version": "2026-04-04-open-generalization-v1",
+  "prompt_guidance": [
+    "Treat `corridor between buses A and B`, `trip the branch`, and `out of service` phrasing as line-outage requests that should map to `ssa.Line.set_status(...)` after resolving the real line idx.",
+    "For contingency studies, update line status through `ssa.Line.set_status(...)`. Do not invent helpers such as `ssa.PFlow.set(..., attr='in_service', ...)`.",
+    "Treat `outage set`, `screening set`, or `stressed case` wording as N-1 screening over the listed candidate bus pairs, always restarting from the same modified case.",
+    "Interpret phrases like `4% heavier` or `3% higher` on the same demand record as multiplying both `p0` and `q0` by `1.04` or `1.03`.",
+    "Treat phrases such as `regulator target`, `voltage-control record`, or `generator-side voltage-control record` as PV `v0` adjustment requests.",
+    "ANDES device identifiers such as `PQ_2` or `Line_3` may be strings; preserve them as returned by ANDES instead of forcing integer conversion.",
+    "When the user identifies a demand or PV record by bus, resolve the matching device idx from the real ANDES arrays before calling `.set(...)`.",
+    "Do not treat the bus number or array position as the device idx for `PQ`, `PV`, or `Line` edits."
+  ],
+  "root_cause_summary": [
+    {
+      "activated_packs": [
+        "string_device_idx_guardrail"
+      ],
+      "count": 2,
+      "example_turns": [
+        "open_scenario_002/turn_02",
+        "open_scenario_004/turn_02"
+      ],
+      "label": "String device idx was cast to int",
+      "signature_id": "device_idx_cast_to_int"
+    },
+    {
+      "activated_packs": [
+        "targeted_device_resolution",
+        "string_device_idx_guardrail"
+      ],
+      "count": 4,
+      "example_turns": [
+        "open_scenario_001/turn_02",
+        "open_scenario_001/turn_03",
+        "open_scenario_002/turn_03"
+      ],
+      "label": "Bus number or array index was used as device idx",
+      "signature_id": "positional_idx_used_as_device_idx"
+    },
+    {
+      "activated_packs": [
+        "pq_percentage_scaling",
+        "targeted_device_resolution"
+      ],
+      "count": 3,
+      "example_turns": [
+        "open_scenario_001/turn_02",
+        "open_scenario_002/turn_02",
+        "open_scenario_004/turn_02"
+      ],
+      "label": "Open-ended percentage demand phrasing was not grounded",
+      "signature_id": "open_ended_pq_percentage_language"
+    },
+    {
+      "activated_packs": [
+        "pv_regulator_aliases",
+        "targeted_device_resolution"
+      ],
+      "count": 2,
+      "example_turns": [
+        "open_scenario_003/turn_01",
+        "open_scenario_003/turn_02"
+      ],
+      "label": "Open-ended regulator phrasing was not grounded",
+      "signature_id": "open_ended_pv_regulator_language"
+    },
+    {
+      "activated_packs": [
+        "corridor_outage_aliases",
+        "line_outage_api_guardrail"
+      ],
+      "count": 4,
+      "example_turns": [
+        "open_scenario_001/turn_03",
+        "open_scenario_002/turn_03",
+        "open_scenario_003/turn_03"
+      ],
+      "label": "Corridor phrasing was not mapped to line outage status edits",
+      "signature_id": "corridor_outage_language"
+    },
+    {
+      "activated_packs": [
+        "n1_outage_set_aliases",
+        "line_outage_api_guardrail"
+      ],
+      "count": 1,
+      "example_turns": [
+        "open_scenario_004/turn_03"
+      ],
+      "label": "Outage-set language was not mapped to N-1 screening",
+      "signature_id": "n1_outage_set_language"
+    }
+  ],
+  "source_runs": [
+    "/home/bshe/Documents/git-research/pfagent/verification/artifacts_open_generalization_20260404/fine_tuned_rag/20260404_102736/verification_results.json"
+  ]
+}

@@ -1,0 +1,15 @@
+Please answer with one runnable Python script only and nothing else.
+Use my uploaded file verify_pjm5_095.json from the current working directory.
+Run power flow and report the top-4 lines by absolute sending-end phase angle.
+- The script must end by printing exactly one line that starts with RESULT_JSON=
+- The JSON object must contain these keys: selected_line_ids, selected_line_metrics.
+- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.
+- Round float values in RESULT_JSON to 6 decimals.
+- `selected_line_metrics` should contain the absolute sending-end phase angles in descending order.
+
+Runtime file context:
+- Working directory for execution: verification/artifacts_recheck_20260403_parallel/fine_tuned/20260403_162926/raw/fine_tuned/scenario_095/turn_01/workspace
+- Uploaded files available during execution:
+- verify_pjm5_095.json
+- Use this exact filename directly in andes.load(...).
+- Do not wrap the uploaded filename with andes.get_case(...).

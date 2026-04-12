@@ -1,0 +1,52 @@
+{
+  "actual_result_json": null,
+  "artifact_passed": true,
+  "artifact_paths": [],
+  "artifact_score": 5.0,
+  "code": "# required_dependencies: andes,json\nimport andes\nimport json\n\n# Load PJM 5-bus case\ncase = andes.get_case(\"5bus/pjm5bus.json\")\nssa = andes.load(case, setup=True, no_output=True, log=False)\n\n# Set slack-bus voltage target\nslack_bus_idx = ssa.Slack.idx.v\nssb_voltage_target = 1.020\nssa.Slack.set_voltage(slack_bus_idx, ssb_voltage_target)\n\n# Run power flow\nandes.run_power_flow(ssa)\n\n# Extracting slack bus voltage and line metrics\nslack_voltage = round(ssa.Bus.v[slack_bus_idx][0], 6)\nslack_setpoint = ssb_voltage_target\n\n# Get line metrics (sending-end phase angles)\nline_angles = ssa.Line.angle1.v  # Sending-end angle\nline_ids = ssa.Line.idx.v\n\n# Pair line IDs with their angles and sort\nline_metrics = sorted(zip(line_ids, line_angles), key=lambda x: abs(x[1]), reverse=True)[:4]\n\nselected_line_ids = [line_metric[0] for line_metric in line_metrics]\nselected_line_metrics = [round(line_metric[1], 6) for line_metric in line_metrics]\n\n# Prepare JSON output\nresult_json = {\n    \"slack_setpoint\": slack_setpoint,\n    \"slack_voltage\": slack_voltage,\n    \"selected_line_ids\": selected_line_ids,\n    \"selected_line_metrics\": selected_line_metrics\n}\n\n# Print the result\nprint(f\"RESULT_JSON={json.dumps(result_json)}\")",
+  "continuity_score": 15.0,
+  "execution_output": "STDERR:\nTraceback (most recent call last):\n  File \"/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_091/turn_02/workspace/generated_code.py\", line 46, in <module>\n    ssa.Slack.set_voltage(slack_bus_idx, ssb_voltage_target)\n    ^^^^^^^^^^^^^^^^^^^^^\nAttributeError: 'Slack' object has no attribute 'set_voltage'\n\n",
+  "execution_passed": false,
+  "execution_score": 0.0,
+  "expected_result_json": {
+    "selected_line_ids": [
+      "2",
+      "5",
+      "1",
+      "0"
+    ],
+    "selected_line_metrics": [
+      2.477253,
+      2.167726,
+      1.598994,
+      1.48913
+    ],
+    "slack_setpoint": 1.02,
+    "slack_voltage": 1.02
+  },
+  "failure_categories": [
+    "grounding",
+    "execution",
+    "semantic"
+  ],
+  "format_score": 10.0,
+  "format_valid": true,
+  "grounding_score": 15.38,
+  "issues": [
+    "Missing code requirement: Slack set call",
+    "Missing code requirement: line angle array",
+    "Code block 1: Use `ssa.Bus.v.v`, not `ssa.Bus.v`, when you need bus voltage magnitudes.",
+    "Code block 1: For line-angle analysis, use the ANDES line-angle result arrays such as `ssa.Line.a1.e`.",
+    "Execution failed. Return code: 1",
+    "RESULT_JSON was missing or could not be parsed."
+  ],
+  "prompt": "Please revise the prior script for this next step and return one full script only.\nKeep using the same built-in case from earlier in this conversation.\nKeep the same case, set the slack-bus voltage target to 1.020, rerun power flow, and report the top-4 lines by absolute sending-end phase angle.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: slack_setpoint, slack_voltage, selected_line_ids, selected_line_metrics.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.",
+  "response": "```python\n# required_dependencies: andes,json\nimport andes\nimport json\n\n# Load PJM 5-bus case\ncase = andes.get_case(\"5bus/pjm5bus.json\")\nssa = andes.load(case, setup=True, no_output=True, log=False)\n\n# Set slack-bus voltage target\nslack_bus_idx = ssa.Slack.idx.v\nssb_voltage_target = 1.020\nssa.Slack.set_voltage(slack_bus_idx, ssb_voltage_target)\n\n# Run power flow\nandes.run_power_flow(ssa)\n\n# Extracting slack bus voltage and line metrics\nslack_voltage = round(ssa.Bus.v[slack_bus_idx][0], 6)\nslack_setpoint = ssb_voltage_target\n\n# Get line metrics (sending-end phase angles)\nline_angles = ssa.Line.angle1.v  # Sending-end angle\nline_ids = ssa.Line.idx.v\n\n# Pair line IDs with their angles and sort\nline_metrics = sorted(zip(line_ids, line_angles), key=lambda x: abs(x[1]), reverse=True)[:4]\n\nselected_line_ids = [line_metric[0] for line_metric in line_metrics]\nselected_line_metrics = [round(line_metric[1], 6) for line_metric in line_metrics]\n\n# Prepare JSON output\nresult_json = {\n    \"slack_setpoint\": slack_setpoint,\n    \"slack_voltage\": slack_voltage,\n    \"selected_line_ids\": selected_line_ids,\n    \"selected_line_metrics\": selected_line_metrics\n}\n\n# Print the result\nprint(f\"RESULT_JSON={json.dumps(result_json)}\")\n```",
+  "result_json_parse_error": "RESULT_JSON marker not found in stdout.",
+  "score_total": 45.38,
+  "semantic_passed": false,
+  "semantic_score": 0.0,
+  "turn_id": 2,
+  "turn_passed": false,
+  "used_template_fallback": false
+}

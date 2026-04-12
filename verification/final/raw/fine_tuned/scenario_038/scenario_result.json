@@ -1,0 +1,126 @@
+{
+  "blueprint": "extremes_pv_scale_barplot",
+  "case_family": "ieee39",
+  "case_source": "builtin",
+  "scenario_id": "scenario_038",
+  "source_case_path": "ieee39/ieee39.xlsx",
+  "turns": [
+    {
+      "actual_result_json": null,
+      "artifact_passed": true,
+      "artifact_paths": [],
+      "artifact_score": 5.0,
+      "code": "# required_dependencies: andes,json\nimport andes\nimport json\n\ndef _round_float(value):\n    return round(float(value), 6)\n\nssa = andes.load(\n    andes.get_case(\"ieee39/ieee39.xlsx\"),\n    setup=False,\n    no_output=True,\n)\n\nssa.setup()\nssa.PFlow.run()\n\nbus_ids = ssa.Bus.idx.v\nbus_v = ssa.Bus.v.v\nmax_index = int(int(np.argmax(bus_v)))\nmin_index = int(int(np.argmin(bus_v)))\nresult = {\n    \"max_bus\": int(bus_ids[max_index]),\n    \"max_voltage\": _round_float(bus_v[max_index]),\n    \"min_bus\": int(bus_ids[min_index]),\n    \"min_voltage\": _round_float(bus_v[min_index]),\n}\nprint(\"RESULT_JSON=\" + json.dumps(result, sort_keys=True))",
+      "continuity_score": 15.0,
+      "execution_output": "STDERR:\nTraceback (most recent call last):\n  File \"/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/fine_tuned/20260403_162926/raw/fine_tuned/scenario_038/turn_01/workspace/generated_code.py\", line 53, in <module>\n    max_index = int(int(np.argmax(bus_v)))\n                        ^^\nNameError: name 'np' is not defined\n\n",
+      "execution_passed": false,
+      "execution_score": 0.0,
+      "expected_result_json": {
+        "max_bus": 36,
+        "max_voltage": 1.0635,
+        "min_bus": 7,
+        "min_voltage": 0.929955
+      },
+      "failure_categories": [
+        "execution",
+        "semantic"
+      ],
+      "format_score": 10.0,
+      "format_valid": true,
+      "grounding_score": 25.0,
+      "issues": [
+        "Execution failed. Return code: 1",
+        "RESULT_JSON was missing or could not be parsed."
+      ],
+      "prompt": "Return exactly one runnable Python code block and no prose.\nUse the built-in IEEE 39 case.\nRun power flow and report the maximum-voltage bus and minimum-voltage bus.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: max_bus, max_voltage, min_bus, min_voltage.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.",
+      "response": "```python\n# required_dependencies: andes,json\nimport andes\nimport json\n\ndef _round_float(value):\n    return round(float(value), 6)\n\nssa = andes.load(\n    andes.get_case(\"ieee39/ieee39.xlsx\"),\n    setup=False,\n    no_output=True,\n)\n\nssa.setup()\nssa.PFlow.run()\n\nbus_ids = ssa.Bus.idx.v\nbus_v = ssa.Bus.v.v\nmax_index = int(int(np.argmax(bus_v)))\nmin_index = int(int(np.argmin(bus_v)))\nresult = {\n    \"max_bus\": int(bus_ids[max_index]),\n    \"max_voltage\": _round_float(bus_v[max_index]),\n    \"min_bus\": int(bus_ids[min_index]),\n    \"min_voltage\": _round_float(bus_v[min_index]),\n}\nprint(\"RESULT_JSON=\" + json.dumps(result, sort_keys=True))\n```",
+      "result_json_parse_error": "RESULT_JSON marker not found in stdout.",
+      "score_total": 55.0,
+      "semantic_passed": false,
+      "semantic_score": 0.0,
+      "turn_id": 1,
+      "turn_passed": false,
+      "used_template_fallback": false
+    },
+    {
+      "actual_result_json": null,
+      "artifact_passed": true,
+      "artifact_paths": [],
+      "artifact_score": 5.0,
+      "code": "# required_dependencies: andes,json,numpy\nimport andes\nimport json\nimport numpy as np\n\ndef _round_float(value):\n    return round(float(value), 6)\n\nssa = andes.load(\n    andes.get_case(\"ieee39/ieee39.xlsx\"),\n    setup=False,\n    no_output=True,\n)\n\nssa.setup()\npv_setpoint = 1.01\nssa.PV.set(src=\"v0\", idx=[ssa.PV.idx.v[0]], attr=\"v\", value=[pv_setpoint])\nssa.PFlow.run()\n\nbus_ids = ssa.Bus.idx.v\nbus_v = ssa.Bus.v.v\npv_bus = int(ssa.PV.bus.v[0])\npv_index = int(np.where(bus_ids == pv_bus)[0][0])\nthreshold = 1.03\nresult = {\n    \"pv_bus\": pv_bus,\n    \"pv_setpoint\": _round_float(1.01),\n    \"pv_voltage\": _round_float(bus_v[pv_index]),\n    \"selected_count\": int(int(np.sum(bus_v > threshold))),\n}\nprint(\"RESULT_JSON=\" + json.dumps(result, sort_keys=True))",
+      "continuity_score": 15.0,
+      "execution_output": "STDERR:\nTraceback (most recent call last):\n  File \"/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/fine_tuned/20260403_162926/raw/fine_tuned/scenario_038/turn_02/workspace/generated_code.py\", line 57, in <module>\n    pv_index = int(np.where(bus_ids == pv_bus)[0][0])\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: Calling nonzero on 0d arrays is not allowed. Use np.atleast_1d(scalar).nonzero() instead. If the context of this error is of the form `arr[nonzero(cond)]`, just use `arr[cond]`.\n\n",
+      "execution_passed": false,
+      "execution_score": 0.0,
+      "expected_result_json": {
+        "pv_bus": 30,
+        "pv_setpoint": 1.01,
+        "pv_voltage": 1.01,
+        "selected_count": 6
+      },
+      "failure_categories": [
+        "execution",
+        "semantic"
+      ],
+      "format_score": 10.0,
+      "format_valid": true,
+      "grounding_score": 25.0,
+      "issues": [
+        "Execution failed. Return code: 1",
+        "RESULT_JSON was missing or could not be parsed."
+      ],
+      "prompt": "Next follow-up: rebuild the script for the updated study, code only.\nKeep using the same built-in case from earlier in this conversation.\nKeep the same case, set the first PV voltage target to 1.010, rerun power flow, and report the affected PV bus voltage together with how many buses are above 1.030 p.u.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: pv_bus, pv_setpoint, pv_voltage, selected_count.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.",
+      "response": "```python\n# required_dependencies: andes,json,numpy\nimport andes\nimport json\nimport numpy as np\n\ndef _round_float(value):\n    return round(float(value), 6)\n\nssa = andes.load(\n    andes.get_case(\"ieee39/ieee39.xlsx\"),\n    setup=False,\n    no_output=True,\n)\n\nssa.setup()\npv_setpoint = 1.01\nssa.PV.set(src=\"v0\", idx=[ssa.PV.idx.v[0]], attr=\"v\", value=[pv_setpoint])\nssa.PFlow.run()\n\nbus_ids = ssa.Bus.idx.v\nbus_v = ssa.Bus.v.v\npv_bus = int(ssa.PV.bus.v[0])\npv_index = int(np.where(bus_ids == pv_bus)[0][0])\nthreshold = 1.03\nresult = {\n    \"pv_bus\": pv_bus,\n    \"pv_setpoint\": _round_float(1.01),\n    \"pv_voltage\": _round_float(bus_v[pv_index]),\n    \"selected_count\": int(int(np.sum(bus_v > threshold))),\n}\nprint(\"RESULT_JSON=\" + json.dumps(result, sort_keys=True))\n```",
+      "result_json_parse_error": "RESULT_JSON marker not found in stdout.",
+      "score_total": 55.0,
+      "semantic_passed": false,
+      "semantic_score": 0.0,
+      "turn_id": 2,
+      "turn_passed": false,
+      "used_template_fallback": false
+    },
+    {
+      "actual_result_json": null,
+      "artifact_passed": false,
+      "artifact_paths": [],
+      "artifact_score": 0.0,
+      "code": "# required_dependencies: andes,json,numpy,matplotlib\nimport andes\nimport json\nimport numpy as np\nimport matplotlib.pyplot as plt\n\ndef _round_float(value):\n    return round(float(value), 6)\n\nssa = andes.load(\n    andes.get_case(\"ieee39/ieee39.xlsx\"),\n    setup=False,\n    no_output=True,\n)\n\nssa.setup()\npv_setpoint = 1.01\nssa.PV.set(src=\"v0\", idx=[ssa.PV.idx.v[0]], attr=\"v\", value=[pv_setpoint])\nscale_factor = 1.03\nssa.PQ.set(src=\"p0\", idx=ssa.PQ.idx.v, attr=\"v\", value=scale_factor * ssa.PQ.p0.v)\nssa.PFlow.run()\n\nbus_ids = ssa.Bus.idx.v\nbus_v = ssa.Bus.v.v\nplot_file = \"scenario_038_turn3_bar.png\"\nplt.figure(figsize=(10, 4))\nplt.bar(bus_ids.astype(str), bus_v)\nplt.xticks(rotation=90)\nplt.xlabel(\"Bus\")\nplt.ylabel(\"Voltage (p.u.)\")\nplt.tight_layout()\nplt.savefig(plot_file, dpi=150)\nplt.close()\nmin_index = int(int(np.argmin(bus_v)))\nmax_index = int(int(np.argmax(bus_v)))\nresult = {\n    \"scale_factor\": _round_float(1.03),\n    \"min_bus\": int(bus_ids[min_index]),\n    \"min_voltage\": _round_float(bus_v[min_index]),\n    \"max_bus\": int(bus_ids[max_index]),\n    \"max_voltage\": _round_float(bus_v[max_index]),\n    \"plot_file\": plot_file,\n}\nprint(\"RESULT_JSON=\" + json.dumps(result, sort_keys=True))",
+      "continuity_score": 15.0,
+      "execution_output": "STDERR:\nTraceback (most recent call last):\n  File \"/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/fine_tuned/20260403_162926/raw/fine_tuned/scenario_038/turn_03/workspace/generated_code.py\", line 61, in <module>\n    plt.bar(bus_ids.astype(str), bus_v)\n            ^^^^^^^^^^^^^^\nAttributeError: 'list' object has no attribute 'astype'\n\n",
+      "execution_passed": false,
+      "execution_score": 0.0,
+      "expected_result_json": {
+        "max_bus": 36,
+        "max_voltage": 1.0635,
+        "min_bus": 7,
+        "min_voltage": 0.926209,
+        "plot_file": "scenario_038_turn3_bar.png",
+        "scale_factor": 1.03
+      },
+      "failure_categories": [
+        "execution",
+        "semantic",
+        "artifact"
+      ],
+      "format_score": 10.0,
+      "format_valid": true,
+      "grounding_score": 25.0,
+      "issues": [
+        "Execution failed. Return code: 1",
+        "RESULT_JSON was missing or could not be parsed.",
+        "Plot filename mismatch: expected scenario_038_turn3_bar.png, got None",
+        "Expected plot artifact not found: scenario_038_turn3_bar.png"
+      ],
+      "prompt": "Please keep the conversation context and send one new complete script only.\nKeep the PV setpoint adjustment from the previous turn.\nAlso scale every PQ load by 1.030, rerun power flow, and save a bar chart of the bus voltages to 'scenario_038_turn3_bar.png'.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: scale_factor, min_bus, min_voltage, max_bus, max_voltage, plot_file.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.\n- Use a bar chart, not a line chart.",
+      "response": "```python\n# required_dependencies: andes,json,numpy,matplotlib\nimport andes\nimport json\nimport numpy as np\nimport matplotlib.pyplot as plt\n\ndef _round_float(value):\n    return round(float(value), 6)\n\nssa = andes.load(\n    andes.get_case(\"ieee39/ieee39.xlsx\"),\n    setup=False,\n    no_output=True,\n)\n\nssa.setup()\npv_setpoint = 1.01\nssa.PV.set(src=\"v0\", idx=[ssa.PV.idx.v[0]], attr=\"v\", value=[pv_setpoint])\nscale_factor = 1.03\nssa.PQ.set(src=\"p0\", idx=ssa.PQ.idx.v, attr=\"v\", value=scale_factor * ssa.PQ.p0.v)\nssa.PFlow.run()\n\nbus_ids = ssa.Bus.idx.v\nbus_v = ssa.Bus.v.v\nplot_file = \"scenario_038_turn3_bar.png\"\nplt.figure(figsize=(10, 4))\nplt.bar(bus_ids.astype(str), bus_v)\nplt.xticks(rotation=90)\nplt.xlabel(\"Bus\")\nplt.ylabel(\"Voltage (p.u.)\")\nplt.tight_layout()\nplt.savefig(plot_file, dpi=150)\nplt.close()\nmin_index = int(int(np.argmin(bus_v)))\nmax_index = int(int(np.argmax(bus_v)))\nresult = {\n    \"scale_factor\": _round_float(1.03),\n    \"min_bus\": int(bus_ids[min_index]),\n    \"min_voltage\": _round_float(bus_v[min_index]),\n    \"max_bus\": int(bus_ids[max_index]),\n    \"max_voltage\": _round_float(bus_v[max_index]),\n    \"plot_file\": plot_file,\n}\nprint(\"RESULT_JSON=\" + json.dumps(result, sort_keys=True))\n```",
+      "result_json_parse_error": "RESULT_JSON marker not found in stdout.",
+      "score_total": 50.0,
+      "semantic_passed": false,
+      "semantic_score": 0.0,
+      "turn_id": 3,
+      "turn_passed": false,
+      "used_template_fallback": false
+    }
+  ],
+  "uploaded_filename": null
+}

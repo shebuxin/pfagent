@@ -1,0 +1,36 @@
+{
+  "actual_result_json": {
+    "max_bus": 2,
+    "max_voltage": 1.0,
+    "min_bus": 8,
+    "min_voltage": 0.954
+  },
+  "artifact_passed": true,
+  "artifact_paths": [],
+  "artifact_score": 5.0,
+  "code": "import json\nimport numpy as np\nimport andes\n\ndef _round_float(value):\n    return round(float(value), 6)\n\nssa = andes.load(\n    andes.get_case(\"kundur/kundur_full.xlsx\"),\n    setup=True,\n    no_output=True,\n)\n\nssa.PFlow.run()\n\nbus_ids = np.asarray(ssa.Bus.idx.v)\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nmax_index = int(np.argmax(bus_v))\nmin_index = int(np.argmin(bus_v))\nresult = {\n    \"max_bus\": int(bus_ids[max_index]),\n    \"max_voltage\": _round_float(bus_v[max_index]),\n    \"min_bus\": int(bus_ids[min_index]),\n    \"min_voltage\": _round_float(bus_v[min_index]),\n}\nprint(\"RESULT_JSON=\" + json.dumps(result, sort_keys=True))",
+  "continuity_score": 15.0,
+  "execution_output": "STDOUT:\nRESULT_JSON={\"max_bus\": 2, \"max_voltage\": 1.0, \"min_bus\": 8, \"min_voltage\": 0.954}\n\n",
+  "execution_passed": true,
+  "execution_score": 20.0,
+  "expected_result_json": {
+    "max_bus": 2,
+    "max_voltage": 1.0,
+    "min_bus": 8,
+    "min_voltage": 0.954
+  },
+  "failure_categories": [],
+  "format_score": 10.0,
+  "format_valid": true,
+  "grounding_score": 25.0,
+  "issues": [],
+  "prompt": "Please answer with one runnable Python script only and nothing else.\nUse the built-in Kundur full case.\nRun power flow and report the maximum-voltage bus and minimum-voltage bus.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: max_bus, max_voltage, min_bus, min_voltage.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.",
+  "response": "```python\nimport json\nimport numpy as np\nimport andes\n\ndef _round_float(value):\n    return round(float(value), 6)\n\nssa = andes.load(\n    andes.get_case(\"kundur/kundur_full.xlsx\"),\n    setup=True,\n    no_output=True,\n)\n\nssa.PFlow.run()\n\nbus_ids = np.asarray(ssa.Bus.idx.v)\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nmax_index = int(np.argmax(bus_v))\nmin_index = int(np.argmin(bus_v))\nresult = {\n    \"max_bus\": int(bus_ids[max_index]),\n    \"max_voltage\": _round_float(bus_v[max_index]),\n    \"min_bus\": int(bus_ids[min_index]),\n    \"min_voltage\": _round_float(bus_v[min_index]),\n}\nprint(\"RESULT_JSON=\" + json.dumps(result, sort_keys=True))\n```",
+  "result_json_parse_error": null,
+  "score_total": 100.0,
+  "semantic_passed": true,
+  "semantic_score": 25.0,
+  "turn_id": 1,
+  "turn_passed": true,
+  "used_template_fallback": false
+}

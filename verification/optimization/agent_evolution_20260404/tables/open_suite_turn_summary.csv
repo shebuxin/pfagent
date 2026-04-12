@@ -1,0 +1,7 @@
+suite_label,phase,turn_id,turn_pass_rate
+4-scenario open generalization suite,before_fix,1,0.0
+4-scenario open generalization suite,before_fix,2,0.0
+4-scenario open generalization suite,before_fix,3,0.0
+4-scenario open generalization suite,after_fix,1,100.0
+4-scenario open generalization suite,after_fix,2,100.0
+4-scenario open generalization suite,after_fix,3,100.0

@@ -1,0 +1,15 @@
+Follow-up request: update the previous study and return a fresh complete script.
+Keep the added load from the previous turn.
+Also set the slack-bus voltage target to 1.020, rerun power flow, and save a line plot of bus voltages to 'scenario_026_turn3_line.png'.
+- The script must end by printing exactly one line that starts with RESULT_JSON=
+- The JSON object must contain these keys: slack_setpoint, slack_voltage, selected_bus_ids, selected_voltages, plot_file.
+- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.
+- Round float values in RESULT_JSON to 6 decimals.
+- `selected_bus_ids` and `selected_voltages` should again represent the lowest-voltage buses in ascending voltage order.
+
+Runtime file context:
+- Working directory for execution: verification/artifacts_recheck_20260403_parallel/rag/20260403_162928/raw/rag/scenario_026/turn_03/workspace
+- Uploaded files available during execution:
+- verify_ieee14_026.xlsx
+- Use this exact filename directly in andes.load(...).
+- Do not wrap the uploaded filename with andes.get_case(...).

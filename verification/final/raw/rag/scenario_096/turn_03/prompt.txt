@@ -1,0 +1,15 @@
+Next follow-up: rebuild the script for the updated study, code only.
+Keep the scaled PQ-load change from the previous turn.
+Also add one new PQ load before setup at bus 4 with idx 'PQ_VERIFY_096_E', p0=0.018, and q0=0.012.
+After rerunning, save a line plot of bus voltages to 'scenario_096_turn3_voltage.png' and report the maximum-voltage bus and minimum-voltage bus.
+- The script must end by printing exactly one line that starts with RESULT_JSON=
+- The JSON object must contain these keys: added_load_idx, max_bus, max_voltage, min_bus, min_voltage, plot_file.
+- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.
+- Round float values in RESULT_JSON to 6 decimals.
+
+Runtime file context:
+- Working directory for execution: verification/artifacts_recheck_20260403_parallel/rag/20260403_162928/raw/rag/scenario_096/turn_03/workspace
+- Uploaded files available during execution:
+- verify_pjm5_096.json
+- Use this exact filename directly in andes.load(...).
+- Do not wrap the uploaded filename with andes.get_case(...).

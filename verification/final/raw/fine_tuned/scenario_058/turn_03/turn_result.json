@@ -1,0 +1,44 @@
+{
+  "actual_result_json": null,
+  "artifact_passed": false,
+  "artifact_paths": [],
+  "artifact_score": 0.0,
+  "code": "# required_dependencies: numpy,matplotlib\nimport json\nimport numpy as np\nimport andes\nimport matplotlib.pyplot as plt\n\ndef _round_float(value):\n    return round(float(value), 6)\n\nssa = andes.load(\n    andes.get_case(\"kundur/kundur_full.xlsx\"),\n    setup=False,\n    no_output=True,\n)\n\nssa.PQ.add(\n    param_dict={\n        \"bus\": 6,\n        \"idx\": \"PQ_VERIFY_058_A\",\n        \"p0\": 0.013,\n        \"q0\": 0.008,\n    }\n)\n\nssa.setup()\nscale_factor = 1.04\nssa.PQ.set(src=\"p0\", idx=ssa.PQ.idx.v, attr=\"v\", value=scale_factor * ssa.PQ.p0.v)\nssa.PQ.set(src=\"q0\", idx=ssa.PQ.idx.v, attr=\"v\", value=scale_factor * ssa.PQ.q0.v)\nssa.PFlow.run()\n\nbus_ids = np.asarray(ssa.Bus.idx.v)\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nplot_file = \"scenario_058_turn3_line.png\"\nplt.figure(figsize=(10, 4))\nplt.plot(bus_ids, bus_v, marker=\"o\", linewidth=1.5)\nplt.xticks(rotation=90)\nplt.xlabel(\"Bus\")\nplt.ylabel(\"Voltage (p.u.)\")\nplt.tight_layout()\nplt.savefig(plot_file, dpi=150)\nplt.close()\nmax_index = int(np.argmax(bus_v))\nmin_index = int(np.argmin(bus_v))\nresult = {\n    \"scale_factor\": _round_float(1.04),\n    \"max_bus\": int(bus_ids[max_index]),\n    \"max_voltage\": _round_float(bus_v[max_index]),\n    \"min_bus\": int(bus_ids[min_index]),\n    \"min_voltage\": _round_float(bus_v[min_index]),\n    \"plot_file\": plot_file,\n}\nprint(\"RESULT_JSON=\" + json.dumps(result, sort_keys=True))",
+  "continuity_score": 10.91,
+  "execution_output": "STDERR:\nTraceback (most recent call last):\n  File \"/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/fine_tuned/20260403_162926/raw/fine_tuned/scenario_058/turn_03/workspace/generated_code.py\", line 50, in <module>\n    ssa.PQ.add(\n  File \"/home/bshe/miniconda3/envs/pfagent/lib/python3.11/site-packages/andes/core/model/modeldata.py\", line 149, in add\n    idx = kwargs['idx']\n          ~~~~~~^^^^^^^\nKeyError: 'idx'\n\n",
+  "execution_passed": false,
+  "execution_score": 0.0,
+  "expected_result_json": {
+    "max_bus": 2,
+    "max_voltage": 1.0,
+    "min_bus": 7,
+    "min_voltage": 0.944072,
+    "plot_file": "scenario_058_turn3_line.png",
+    "scale_factor": 1.04
+  },
+  "failure_categories": [
+    "continuity",
+    "execution",
+    "semantic",
+    "artifact"
+  ],
+  "format_score": 10.0,
+  "format_valid": true,
+  "grounding_score": 25.0,
+  "issues": [
+    "Missing code requirement: add PQ call",
+    "Execution failed. Return code: 1",
+    "RESULT_JSON was missing or could not be parsed.",
+    "Plot filename mismatch: expected scenario_058_turn3_line.png, got None",
+    "Expected plot artifact not found: scenario_058_turn3_line.png"
+  ],
+  "prompt": "Follow-up request: update the previous study and return a fresh complete script.\nKeep the added load from the previous step.\nAlso scale every PQ load by a factor of 1.040 after setup, rerun power flow, and save a line plot of bus voltage magnitude to 'scenario_058_turn3_line.png'.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: scale_factor, max_bus, max_voltage, min_bus, min_voltage, plot_file.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.\n- `plot_file` must exactly match the saved filename.",
+  "response": "```python\n# required_dependencies: numpy,matplotlib\nimport json\nimport numpy as np\nimport andes\nimport matplotlib.pyplot as plt\n\ndef _round_float(value):\n    return round(float(value), 6)\n\nssa = andes.load(\n    andes.get_case(\"kundur/kundur_full.xlsx\"),\n    setup=False,\n    no_output=True,\n)\n\nssa.PQ.add(\n    param_dict={\n        \"bus\": 6,\n        \"idx\": \"PQ_VERIFY_058_A\",\n        \"p0\": 0.013,\n        \"q0\": 0.008,\n    }\n)\n\nssa.setup()\nscale_factor = 1.04\nssa.PQ.set(src=\"p0\", idx=ssa.PQ.idx.v, attr=\"v\", value=scale_factor * ssa.PQ.p0.v)\nssa.PQ.set(src=\"q0\", idx=ssa.PQ.idx.v, attr=\"v\", value=scale_factor * ssa.PQ.q0.v)\nssa.PFlow.run()\n\nbus_ids = np.asarray(ssa.Bus.idx.v)\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nplot_file = \"scenario_058_turn3_line.png\"\nplt.figure(figsize=(10, 4))\nplt.plot(bus_ids, bus_v, marker=\"o\", linewidth=1.5)\nplt.xticks(rotation=90)\nplt.xlabel(\"Bus\")\nplt.ylabel(\"Voltage (p.u.)\")\nplt.tight_layout()\nplt.savefig(plot_file, dpi=150)\nplt.close()\nmax_index = int(np.argmax(bus_v))\nmin_index = int(np.argmin(bus_v))\nresult = {\n    \"scale_factor\": _round_float(1.04),\n    \"max_bus\": int(bus_ids[max_index]),\n    \"max_voltage\": _round_float(bus_v[max_index]),\n    \"min_bus\": int(bus_ids[min_index]),\n    \"min_voltage\": _round_float(bus_v[min_index]),\n    \"plot_file\": plot_file,\n}\nprint(\"RESULT_JSON=\" + json.dumps(result, sort_keys=True))\n```",
+  "result_json_parse_error": "RESULT_JSON marker not found in stdout.",
+  "score_total": 45.91,
+  "semantic_passed": false,
+  "semantic_score": 0.0,
+  "turn_id": 3,
+  "turn_passed": false,
+  "used_template_fallback": false
+}

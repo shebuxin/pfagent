@@ -1,0 +1,15 @@
+Please revise the prior script for this next step and return one full script only.
+Keep the added load from the previous step.
+Also scale every PQ load by a factor of 1.030 after setup, rerun power flow, and save a line plot of bus voltage magnitude to 'scenario_071_turn3_line.png'.
+- The script must end by printing exactly one line that starts with RESULT_JSON=
+- The JSON object must contain these keys: scale_factor, max_bus, max_voltage, min_bus, min_voltage, plot_file.
+- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.
+- Round float values in RESULT_JSON to 6 decimals.
+- `plot_file` must exactly match the saved filename.
+
+Runtime file context:
+- Working directory for execution: verification/artifacts_recheck_20260403_parallel/fine_tuned/20260403_162926/raw/fine_tuned/scenario_071/turn_03/workspace
+- Uploaded files available during execution:
+- verify_kundur_071.xlsx
+- Use this exact filename directly in andes.load(...).
+- Do not wrap the uploaded filename with andes.get_case(...).

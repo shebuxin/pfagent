@@ -1,0 +1,3 @@
+STDOUT:
+RESULT_JSON={"selected_line_ids": ["2", "5", "1"], "selected_line_metrics": [2.488387, 2.15862, 1.596229]}
+

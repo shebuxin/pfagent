@@ -1,0 +1,67 @@
+{
+  "actual_result_json": {
+    "lowest_bus_ids": [
+      4,
+      1
+    ],
+    "lowest_voltages": [
+      1.0,
+      1.0
+    ],
+    "selected_bus_ids": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "selected_count": 4,
+    "threshold": 1.0
+  },
+  "artifact_passed": true,
+  "artifact_paths": [],
+  "artifact_score": 5.0,
+  "code": "import json\nimport numpy as np\nimport andes\n\ndef _round_float(value):\n    return round(float(value), 6)\n\nssa = andes.load(\n    andes.get_case(\"kundur/kundur_full.xlsx\"),\n    setup=False,\n    no_output=True,\n)\n\nssa.setup()\nssa.PFlow.run()\n\nbus_ids = np.asarray(ssa.Bus.idx.v)\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nthreshold = 1.0\nmask = bus_v > threshold\ntop_k = 2\nmasked_bus_ids = bus_ids[mask].tolist()\nmasked_bus_v = bus_v[mask]\nrank_indices = np.argsort(masked_bus_v)[:top_k]\nlowest_ranked_bus_ids = [masked_bus_ids[i] for i in rank_indices]\nlowest_ranked_bus_v = [masked_bus_v[i] for i in rank_indices]\nresult = {\n    \"threshold\": _round_float(threshold),\n    \"selected_bus_ids\": masked_bus_ids,\n    \"selected_count\": int(np.sum(mask)),\n    \"lowest_bus_ids\": lowest_ranked_bus_ids,\n    \"lowest_voltages\": [_round_float(v) for v in lowest_ranked_bus_v],\n}\nprint(\"RESULT_JSON=\" + json.dumps(result, sort_keys=True))",
+  "continuity_score": 15.0,
+  "execution_output": "STDOUT:\nRESULT_JSON={\"lowest_bus_ids\": [4, 1], \"lowest_voltages\": [1.0, 1.0], \"selected_bus_ids\": [1, 2, 3, 4], \"selected_count\": 4, \"threshold\": 1.0}\n\n",
+  "execution_passed": true,
+  "execution_score": 20.0,
+  "expected_result_json": {
+    "lowest_bus_ids": [
+      8,
+      7
+    ],
+    "lowest_voltages": [
+      0.954,
+      0.956218
+    ],
+    "selected_bus_ids": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "selected_count": 4,
+    "threshold": 1.0
+  },
+  "failure_categories": [
+    "semantic"
+  ],
+  "format_score": 10.0,
+  "format_valid": true,
+  "grounding_score": 25.0,
+  "issues": [
+    "lowest_bus_ids[0]: expected 8, got 4",
+    "lowest_bus_ids[1]: expected 7, got 1",
+    "lowest_voltages[0]: expected 0.954, got 1.0",
+    "lowest_voltages[1]: expected 0.956218, got 1.0"
+  ],
+  "prompt": "Please answer with one runnable Python script only and nothing else.\nUse the built-in Kundur full case.\nRun power flow, count all buses above 1.000 p.u., and also return the two lowest-voltage buses.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: threshold, selected_bus_ids, selected_count, lowest_bus_ids, lowest_voltages.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.\n- `selected_bus_ids` should list every bus above the threshold.\n- `lowest_bus_ids` should contain exactly two buses in ascending voltage order.",
+  "response": "```python\nimport json\nimport numpy as np\nimport andes\n\ndef _round_float(value):\n    return round(float(value), 6)\n\nssa = andes.load(\n    andes.get_case(\"kundur/kundur_full.xlsx\"),\n    setup=False,\n    no_output=True,\n)\n\nssa.setup()\nssa.PFlow.run()\n\nbus_ids = np.asarray(ssa.Bus.idx.v)\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nthreshold = 1.0\nmask = bus_v > threshold\ntop_k = 2\nmasked_bus_ids = bus_ids[mask].tolist()\nmasked_bus_v = bus_v[mask]\nrank_indices = np.argsort(masked_bus_v)[:top_k]\nlowest_ranked_bus_ids = [masked_bus_ids[i] for i in rank_indices]\nlowest_ranked_bus_v = [masked_bus_v[i] for i in rank_indices]\nresult = {\n    \"threshold\": _round_float(threshold),\n    \"selected_bus_ids\": masked_bus_ids,\n    \"selected_count\": int(np.sum(mask)),\n    \"lowest_bus_ids\": lowest_ranked_bus_ids,\n    \"lowest_voltages\": [_round_float(v) for v in lowest_ranked_bus_v],\n}\nprint(\"RESULT_JSON=\" + json.dumps(result, sort_keys=True))\n```",
+  "result_json_parse_error": null,
+  "score_total": 90.0,
+  "semantic_passed": false,
+  "semantic_score": 15.0,
+  "turn_id": 1,
+  "turn_passed": false,
+  "used_template_fallback": false
+}

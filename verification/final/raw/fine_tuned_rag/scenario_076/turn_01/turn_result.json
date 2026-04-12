@@ -1,0 +1,60 @@
+{
+  "actual_result_json": {
+    "lowest_bus_ids": [
+      8,
+      7
+    ],
+    "lowest_voltages": [
+      0.954,
+      0.956218
+    ],
+    "selected_bus_ids": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "selected_count": 4,
+    "threshold": 1.0
+  },
+  "artifact_passed": true,
+  "artifact_paths": [],
+  "artifact_score": 5.0,
+  "code": "# required_dependencies: andes,numpy\nimport json\nimport andes\nimport numpy as np\nimport os\n\nscript_dir = os.getcwd()\ncase = os.path.join(script_dir, \"verify_kundur_076.xlsx\")\nssa = andes.load(case, setup=False, no_output=True, log=False)\n\nssa.setup()\n\nssa.PFlow.run()\n\nbus_ids = np.asarray(ssa.Bus.idx.v, dtype=int)\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\n\nresult_json = {}\nthreshold = 1.0\nabove_mask = bus_v > threshold\nlowest_idx = np.argsort(bus_v)[:2]\nresult_json[\"threshold\"] = round(float(threshold), 6)\nresult_json[\"selected_bus_ids\"] = [int(item) for item in bus_ids[above_mask]]\nresult_json[\"selected_count\"] = int(np.sum(above_mask))\nresult_json[\"lowest_bus_ids\"] = [int(bus_ids[i]) for i in lowest_idx]\nresult_json[\"lowest_voltages\"] = [round(float(bus_v[i]), 6) for i in lowest_idx]\n\nprint(\"RESULT_JSON=\" + json.dumps(result_json, sort_keys=True))",
+  "continuity_score": 15.0,
+  "execution_output": "STDOUT:\nRESULT_JSON={\"lowest_bus_ids\": [8, 7], \"lowest_voltages\": [0.954, 0.956218], \"selected_bus_ids\": [1, 2, 3, 4], \"selected_count\": 4, \"threshold\": 1.0}\n\n",
+  "execution_passed": true,
+  "execution_score": 20.0,
+  "expected_result_json": {
+    "lowest_bus_ids": [
+      8,
+      7
+    ],
+    "lowest_voltages": [
+      0.954,
+      0.956218
+    ],
+    "selected_bus_ids": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "selected_count": 4,
+    "threshold": 1.0
+  },
+  "failure_categories": [],
+  "format_score": 10.0,
+  "format_valid": true,
+  "grounding_score": 25.0,
+  "issues": [],
+  "prompt": "Write one complete runnable Python script only, inside a single ```python block.\nUse my uploaded file verify_kundur_076.xlsx from the current working directory.\nRun power flow, count all buses above 1.000 p.u., and also return the two lowest-voltage buses.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: threshold, selected_bus_ids, selected_count, lowest_bus_ids, lowest_voltages.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.\n- `selected_bus_ids` should list every bus above the threshold.\n- `lowest_bus_ids` should contain exactly two buses in ascending voltage order.\n\nRuntime file context:\n- Working directory for execution: verification/artifacts_recheck_20260403_parallel/fine_tuned_rag/20260403_162927/raw/fine_tuned_rag/scenario_076/turn_01/workspace\n- Uploaded files available during execution:\n- verify_kundur_076.xlsx\n- Use this exact filename directly in andes.load(...).\n- Do not wrap the uploaded filename with andes.get_case(...).\n",
+  "response": "```python\n# required_dependencies: andes,numpy\nimport json\nimport andes\nimport numpy as np\nimport os\n\nscript_dir = os.getcwd()\ncase = os.path.join(script_dir, \"verify_kundur_076.xlsx\")\nssa = andes.load(case, setup=False, no_output=True, log=False)\n\nssa.setup()\n\nssa.PFlow.run()\n\nbus_ids = np.asarray(ssa.Bus.idx.v, dtype=int)\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\n\nresult_json = {}\nthreshold = 1.0\nabove_mask = bus_v > threshold\nlowest_idx = np.argsort(bus_v)[:2]\nresult_json[\"threshold\"] = round(float(threshold), 6)\nresult_json[\"selected_bus_ids\"] = [int(item) for item in bus_ids[above_mask]]\nresult_json[\"selected_count\"] = int(np.sum(above_mask))\nresult_json[\"lowest_bus_ids\"] = [int(bus_ids[i]) for i in lowest_idx]\nresult_json[\"lowest_voltages\"] = [round(float(bus_v[i]), 6) for i in lowest_idx]\n\nprint(\"RESULT_JSON=\" + json.dumps(result_json, sort_keys=True))\n```",
+  "result_json_parse_error": null,
+  "score_total": 100.0,
+  "semantic_passed": true,
+  "semantic_score": 25.0,
+  "turn_id": 1,
+  "turn_passed": true,
+  "used_template_fallback": false
+}

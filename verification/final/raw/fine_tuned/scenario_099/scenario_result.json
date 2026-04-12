@@ -1,0 +1,140 @@
+{
+  "blueprint": "voltage_then_slack_line_threshold",
+  "case_family": "pjm5",
+  "case_source": "uploaded",
+  "scenario_id": "scenario_099",
+  "source_case_path": "5bus/pjm5bus.json",
+  "turns": [
+    {
+      "actual_result_json": null,
+      "artifact_passed": true,
+      "artifact_paths": [],
+      "artifact_score": 5.0,
+      "code": "# required_dependencies: andes,json\nimport andes\nimport json\nimport os\n\ndef _round_float(value):\n    return round(float(value), 6)\n\ncase = os.path.join(os.getcwd(), \"verify_pjm5_099.json\")\nssa = andes.load(case, setup=True, no_output=True, log=False)\n\nssa.PFlow.run()\n\nbus_ids = ssa.Bus.idx.v\nbus_v = ssa.Bus.v.v\nslack_bus = int(ssa.Slack.bus.v[0])\nslack_index = int(bus_ids.tolist().index(slack_bus))\nslack_voltage = _round_float(bus_v[slack_index])\nmax_index = int(bus_v.argmax())\nmin_index = int(bus_v.argmin())\nresult = {\n    \"slack_bus\": slack_bus,\n    \"slack_voltage\": slack_voltage,\n    \"max_bus\": int(bus_ids[max_index]),\n    \"max_voltage\": _round_float(bus_v[max_index]),\n    \"min_bus\": int(bus_ids[min_index]),\n    \"min_voltage\": _round_float(bus_v[min_index]),\n}\nprint(\"RESULT_JSON=\" + json.dumps(result, sort_keys=True))",
+      "continuity_score": 15.0,
+      "execution_output": "STDERR:\nTraceback (most recent call last):\n  File \"/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/fine_tuned/20260403_162926/raw/fine_tuned/scenario_099/turn_01/workspace/generated_code.py\", line 51, in <module>\n    slack_index = int(bus_ids.tolist().index(slack_bus))\n                      ^^^^^^^^^^^^^^\nAttributeError: 'list' object has no attribute 'tolist'\n\n",
+      "execution_passed": false,
+      "execution_score": 0.0,
+      "expected_result_json": {
+        "max_bus": 2,
+        "max_voltage": 1.0,
+        "min_bus": 1,
+        "min_voltage": 0.991799,
+        "slack_bus": 3,
+        "slack_voltage": 1.0
+      },
+      "failure_categories": [
+        "execution",
+        "semantic"
+      ],
+      "format_score": 10.0,
+      "format_valid": true,
+      "grounding_score": 25.0,
+      "issues": [
+        "Execution failed. Return code: 1",
+        "RESULT_JSON was missing or could not be parsed."
+      ],
+      "prompt": "Return exactly one runnable Python code block and no prose.\nUse my uploaded file verify_pjm5_099.json from the current working directory.\nRun power flow and report the maximum-voltage bus, minimum-voltage bus, and slack-bus voltage.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: slack_bus, slack_voltage, max_bus, max_voltage, min_bus, min_voltage.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.\n\nRuntime file context:\n- Working directory for execution: verification/artifacts_recheck_20260403_parallel/fine_tuned/20260403_162926/raw/fine_tuned/scenario_099/turn_01/workspace\n- Uploaded files available during execution:\n- verify_pjm5_099.json\n- Use this exact filename directly in andes.load(...).\n- Do not wrap the uploaded filename with andes.get_case(...).\n",
+      "response": "```python\n# required_dependencies: andes,json\nimport andes\nimport json\nimport os\n\ndef _round_float(value):\n    return round(float(value), 6)\n\ncase = os.path.join(os.getcwd(), \"verify_pjm5_099.json\")\nssa = andes.load(case, setup=True, no_output=True, log=False)\n\nssa.PFlow.run()\n\nbus_ids = ssa.Bus.idx.v\nbus_v = ssa.Bus.v.v\nslack_bus = int(ssa.Slack.bus.v[0])\nslack_index = int(bus_ids.tolist().index(slack_bus))\nslack_voltage = _round_float(bus_v[slack_index])\nmax_index = int(bus_v.argmax())\nmin_index = int(bus_v.argmin())\nresult = {\n    \"slack_bus\": slack_bus,\n    \"slack_voltage\": slack_voltage,\n    \"max_bus\": int(bus_ids[max_index]),\n    \"max_voltage\": _round_float(bus_v[max_index]),\n    \"min_bus\": int(bus_ids[min_index]),\n    \"min_voltage\": _round_float(bus_v[min_index]),\n}\nprint(\"RESULT_JSON=\" + json.dumps(result, sort_keys=True))\n```",
+      "result_json_parse_error": "RESULT_JSON marker not found in stdout.",
+      "score_total": 55.0,
+      "semantic_passed": false,
+      "semantic_score": 0.0,
+      "turn_id": 1,
+      "turn_passed": false,
+      "used_template_fallback": false
+    },
+    {
+      "actual_result_json": null,
+      "artifact_passed": true,
+      "artifact_paths": [],
+      "artifact_score": 5.0,
+      "code": "# required_dependencies: andes,json,numpy\nimport andes\nimport json\nimport os\nimport numpy as np\n\ndef _round_float(value):\n    return round(float(value), 6)\n\ncase = os.path.join(os.getcwd(), \"verify_pjm5_099.json\")\nssa = andes.load(case, setup=True, no_output=True, log=False)\n\nslack_setpoint = 1.02\nssa.Slack.set(src=\"v0\", idx=[ssa.Slack.idx.v[0]], attr=\"v\", value=[slack_setpoint])\nssa.PFlow.run()\n\nbus_ids = ssa.Bus.idx.v\nbus_v = ssa.Bus.v.v\nline_ids = ssa.Line.idx.v\nabs_a1 = np.abs(np.asarray(ssa.Line.a1.e, dtype=float))\nslack_bus = int(ssa.Slack.bus.v[0])\nslack_index = int(bus_ids.tolist().index(slack_bus))\nslack_voltage = _round_float(bus_v[slack_index])\ntop_k = 4\nrank_indices = np.argsort(abs_a1)[-top_k:][::-1]\nresult = {\n    \"slack_setpoint\": _round_float(1.02),\n    \"slack_voltage\": slack_voltage,\n    \"selected_line_ids\": [str(line_ids[i]) for i in rank_indices],\n    \"selected_line_metrics\": [round(float(abs_a1[i]), 6) for i in rank_indices],\n}\nprint(\"RESULT_JSON=\" + json.dumps(result, sort_keys=True))",
+      "continuity_score": 15.0,
+      "execution_output": "STDERR:\nTraceback (most recent call last):\n  File \"/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/fine_tuned/20260403_162926/raw/fine_tuned/scenario_099/turn_02/workspace/generated_code.py\", line 56, in <module>\n    slack_index = int(bus_ids.tolist().index(slack_bus))\n                      ^^^^^^^^^^^^^^\nAttributeError: 'list' object has no attribute 'tolist'\n\n",
+      "execution_passed": false,
+      "execution_score": 0.0,
+      "expected_result_json": {
+        "selected_line_ids": [
+          "2",
+          "5",
+          "1",
+          "0"
+        ],
+        "selected_line_metrics": [
+          2.477253,
+          2.167726,
+          1.598994,
+          1.48913
+        ],
+        "slack_setpoint": 1.02,
+        "slack_voltage": 1.02
+      },
+      "failure_categories": [
+        "execution",
+        "semantic"
+      ],
+      "format_score": 10.0,
+      "format_valid": true,
+      "grounding_score": 25.0,
+      "issues": [
+        "Execution failed. Return code: 1",
+        "RESULT_JSON was missing or could not be parsed."
+      ],
+      "prompt": "Please revise the prior script for this next step and return one full script only.\nKeep using the same uploaded study file from earlier in this conversation.\nKeep the same case, set the slack-bus voltage target to 1.020, rerun power flow, and report the top-4 lines by absolute sending-end phase angle.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: slack_setpoint, slack_voltage, selected_line_ids, selected_line_metrics.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.\n\nRuntime file context:\n- Working directory for execution: verification/artifacts_recheck_20260403_parallel/fine_tuned/20260403_162926/raw/fine_tuned/scenario_099/turn_02/workspace\n- Uploaded files available during execution:\n- verify_pjm5_099.json\n- Use this exact filename directly in andes.load(...).\n- Do not wrap the uploaded filename with andes.get_case(...).\n",
+      "response": "```python\n# required_dependencies: andes,json,numpy\nimport andes\nimport json\nimport os\nimport numpy as np\n\ndef _round_float(value):\n    return round(float(value), 6)\n\ncase = os.path.join(os.getcwd(), \"verify_pjm5_099.json\")\nssa = andes.load(case, setup=True, no_output=True, log=False)\n\nslack_setpoint = 1.02\nssa.Slack.set(src=\"v0\", idx=[ssa.Slack.idx.v[0]], attr=\"v\", value=[slack_setpoint])\nssa.PFlow.run()\n\nbus_ids = ssa.Bus.idx.v\nbus_v = ssa.Bus.v.v\nline_ids = ssa.Line.idx.v\nabs_a1 = np.abs(np.asarray(ssa.Line.a1.e, dtype=float))\nslack_bus = int(ssa.Slack.bus.v[0])\nslack_index = int(bus_ids.tolist().index(slack_bus))\nslack_voltage = _round_float(bus_v[slack_index])\ntop_k = 4\nrank_indices = np.argsort(abs_a1)[-top_k:][::-1]\nresult = {\n    \"slack_setpoint\": _round_float(1.02),\n    \"slack_voltage\": slack_voltage,\n    \"selected_line_ids\": [str(line_ids[i]) for i in rank_indices],\n    \"selected_line_metrics\": [round(float(abs_a1[i]), 6) for i in rank_indices],\n}\nprint(\"RESULT_JSON=\" + json.dumps(result, sort_keys=True))\n```",
+      "result_json_parse_error": "RESULT_JSON marker not found in stdout.",
+      "score_total": 55.0,
+      "semantic_passed": false,
+      "semantic_score": 0.0,
+      "turn_id": 2,
+      "turn_passed": false,
+      "used_template_fallback": false
+    },
+    {
+      "actual_result_json": null,
+      "artifact_passed": true,
+      "artifact_paths": [],
+      "artifact_score": 5.0,
+      "code": "# required_dependencies: andes,json,numpy\nimport andes\nimport json\nimport os\nimport numpy as np\n\ndef _round_float(value):\n    return round(float(value), 6)\n\ncase = os.path.join(os.getcwd(), \"verify_pjm5_099.json\")\nssa = andes.load(case, setup=True, no_output=True, log=False)\n\nslack_setpoint = 1.02\nssa.Slack.set(src=\"v0\", idx=[ssa.Slack.idx.v[0]], attr=\"v\", value=[slack_setpoint])\nscale_factor = 1.05\nssa.PQ.set(src=\"p0\", idx=ssa.PQ.idx.v, attr=\"v\", value=scale_factor * ssa.PQ.p0.v)\nssa.PQ.set(src=\"q0\", idx=ssa.PQ.idx.v, attr=\"v\", value=scale_factor * ssa.PQ.q0.v)\nssa.PFlow.run()\n\nbus_ids = ssa.Bus.idx.v\nline_ids = ssa.Line.idx.v\nabs_a1 = np.abs(np.asarray(ssa.Line.a1.e, dtype=float))\nslack_bus = int(ssa.Slack.bus.v[0])\nslack_index = int(bus_ids.tolist().index(slack_bus))\nslack_voltage = _round_float(ssa.Bus.v.v[slack_index])\nangle_threshold = 0.12\nmask = abs_a1 > angle_threshold\nresult = {\n    \"slack_setpoint\": _round_float(1.02),\n    \"scale_factor\": _round_float(1.05),\n    \"angle_threshold\": _round_float(angle_threshold),\n    \"selected_line_ids\": [str(value) for value in line_ids[mask].tolist()],\n    \"selected_count\": int(np.sum(mask)),\n}\nprint(\"RESULT_JSON=\" + json.dumps(result, sort_keys=True))",
+      "continuity_score": 15.0,
+      "execution_output": "STDERR:\nTraceback (most recent call last):\n  File \"/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/fine_tuned/20260403_162926/raw/fine_tuned/scenario_099/turn_03/workspace/generated_code.py\", line 58, in <module>\n    slack_index = int(bus_ids.tolist().index(slack_bus))\n                      ^^^^^^^^^^^^^^\nAttributeError: 'list' object has no attribute 'tolist'\n\n",
+      "execution_passed": false,
+      "execution_score": 0.0,
+      "expected_result_json": {
+        "angle_threshold": 0.12,
+        "scale_factor": 1.05,
+        "selected_count": 5,
+        "selected_line_ids": [
+          "0",
+          "1",
+          "2",
+          "5",
+          "6"
+        ],
+        "slack_setpoint": 1.02
+      },
+      "failure_categories": [
+        "execution",
+        "semantic"
+      ],
+      "format_score": 10.0,
+      "format_valid": true,
+      "grounding_score": 25.0,
+      "issues": [
+        "Execution failed. Return code: 1",
+        "RESULT_JSON was missing or could not be parsed."
+      ],
+      "prompt": "Next follow-up: rebuild the script for the updated study, code only.\nKeep the slack-bus adjustment from the previous turn.\nAlso scale every PQ load by 1.050, rerun power flow, and report all lines whose absolute sending-end phase angle is above 0.120 radians.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: slack_setpoint, scale_factor, angle_threshold, selected_line_ids, selected_count.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.\n\nRuntime file context:\n- Working directory for execution: verification/artifacts_recheck_20260403_parallel/fine_tuned/20260403_162926/raw/fine_tuned/scenario_099/turn_03/workspace\n- Uploaded files available during execution:\n- verify_pjm5_099.json\n- Use this exact filename directly in andes.load(...).\n- Do not wrap the uploaded filename with andes.get_case(...).\n",
+      "response": "```python\n# required_dependencies: andes,json,numpy\nimport andes\nimport json\nimport os\nimport numpy as np\n\ndef _round_float(value):\n    return round(float(value), 6)\n\ncase = os.path.join(os.getcwd(), \"verify_pjm5_099.json\")\nssa = andes.load(case, setup=True, no_output=True, log=False)\n\nslack_setpoint = 1.02\nssa.Slack.set(src=\"v0\", idx=[ssa.Slack.idx.v[0]], attr=\"v\", value=[slack_setpoint])\nscale_factor = 1.05\nssa.PQ.set(src=\"p0\", idx=ssa.PQ.idx.v, attr=\"v\", value=scale_factor * ssa.PQ.p0.v)\nssa.PQ.set(src=\"q0\", idx=ssa.PQ.idx.v, attr=\"v\", value=scale_factor * ssa.PQ.q0.v)\nssa.PFlow.run()\n\nbus_ids = ssa.Bus.idx.v\nline_ids = ssa.Line.idx.v\nabs_a1 = np.abs(np.asarray(ssa.Line.a1.e, dtype=float))\nslack_bus = int(ssa.Slack.bus.v[0])\nslack_index = int(bus_ids.tolist().index(slack_bus))\nslack_voltage = _round_float(ssa.Bus.v.v[slack_index])\nangle_threshold = 0.12\nmask = abs_a1 > angle_threshold\nresult = {\n    \"slack_setpoint\": _round_float(1.02),\n    \"scale_factor\": _round_float(1.05),\n    \"angle_threshold\": _round_float(angle_threshold),\n    \"selected_line_ids\": [str(value) for value in line_ids[mask].tolist()],\n    \"selected_count\": int(np.sum(mask)),\n}\nprint(\"RESULT_JSON=\" + json.dumps(result, sort_keys=True))\n```",
+      "result_json_parse_error": "RESULT_JSON marker not found in stdout.",
+      "score_total": 55.0,
+      "semantic_passed": false,
+      "semantic_score": 0.0,
+      "turn_id": 3,
+      "turn_passed": false,
+      "used_template_fallback": false
+    }
+  ],
+  "uploaded_filename": "verify_pjm5_099.json"
+}

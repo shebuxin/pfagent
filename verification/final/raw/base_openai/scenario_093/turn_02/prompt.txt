@@ -1,0 +1,14 @@
+Next follow-up: rebuild the script for the updated study, code only.
+Keep using the same uploaded study file from earlier in this conversation.
+Keep the same study, scale every PQ load by 1.030, rerun power flow, and report every line whose absolute sending-end phase angle is above 0.080 radians.
+- The script must end by printing exactly one line that starts with RESULT_JSON=
+- The JSON object must contain these keys: scale_factor, angle_threshold, selected_line_ids, selected_count.
+- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.
+- Round float values in RESULT_JSON to 6 decimals.
+
+Runtime file context:
+- Working directory for execution: verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_093/turn_02/workspace
+- Uploaded files available during execution:
+- verify_pjm5_093.json
+- Use this exact filename directly in andes.load(...).
+- Do not wrap the uploaded filename with andes.get_case(...).

@@ -1,0 +1,8 @@
+{
+  "added_load_idx": "PQ_VERIFY_047_B",
+  "max_bus": 36,
+  "max_voltage": 1.0635,
+  "min_bus": 7,
+  "min_voltage": 0.927371,
+  "total_pq_count": 20
+}

@@ -1,0 +1,15 @@
+{
+  "plot_file": "scenario_013_turn3_line.png",
+  "selected_bus_ids": [
+    3,
+    4,
+    13
+  ],
+  "selected_voltages": [
+    1.01,
+    1.010396,
+    1.014385
+  ],
+  "slack_setpoint": 1.025,
+  "slack_voltage": 1.025
+}

@@ -1,0 +1,37 @@
+{
+  "actual_result_json": null,
+  "artifact_passed": true,
+  "artifact_paths": [],
+  "artifact_score": 5.0,
+  "code": "# required_dependencies: andes\nimport andes\nimport numpy as np\n\n# Load the IEEE 14 full case\ncase = andes.get_case(\"ieee14/ieee14_full.xlsx\")\nssa = andes.load(case, setup=True, no_output=True, log=False)\n\n# Run power flow\nandes.run(ssa)\n\n# Inspect bus voltages\nbus_voltages = ssa.Bus.Vm.v\nmax_voltage = np.max(bus_voltages)\nmin_voltage = np.min(bus_voltages)\n\n# Get corresponding bus indices\nmax_bus = int(np.where(bus_voltages == max_voltage)[0][0]) + 1  # Convert to 1-based index\nmin_bus = int(np.where(bus_voltages == min_voltage)[0][0]) + 1  # Convert to 1-based index\n\n# Prepare the JSON result\nRESULT_JSON = {\n    \"max_bus\": max_bus,\n    \"max_voltage\": round(float(max_voltage), 6),\n    \"min_bus\": min_bus,\n    \"min_voltage\": round(float(min_voltage), 6)\n}\n\n# Print the result\nprint(f\"RESULT_JSON={RESULT_JSON}\")",
+  "continuity_score": 15.0,
+  "execution_output": "STDERR:\nTraceback (most recent call last):\n  File \"/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_009/turn_01/workspace/generated_code.py\", line 44, in <module>\n    andes.run(ssa)\n  File \"/home/bshe/miniconda3/envs/pfagent/lib/python3.11/site-packages/andes/main.py\", line 650, in run\n    cases = _find_cases(filename, input_path)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/bshe/miniconda3/envs/pfagent/lib/python3.11/site-packages/andes/main.py\", line 484, in _find_cases\n    if len(filename) == 0:\n       ^^^^^^^^^^^^^\nTypeError: object of type 'System' has no len()\n\n",
+  "execution_passed": false,
+  "execution_score": 0.0,
+  "expected_result_json": {
+    "max_bus": 6,
+    "max_voltage": 1.03,
+    "min_bus": 3,
+    "min_voltage": 1.01
+  },
+  "failure_categories": [
+    "execution",
+    "semantic"
+  ],
+  "format_score": 10.0,
+  "format_valid": true,
+  "grounding_score": 25.0,
+  "issues": [
+    "Execution failed. Return code: 1",
+    "RESULT_JSON was missing or could not be parsed."
+  ],
+  "prompt": "Please answer with one runnable Python script only and nothing else.\nUse the built-in IEEE 14 full case.\nRun power flow and report the maximum-voltage bus and minimum-voltage bus.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: max_bus, max_voltage, min_bus, min_voltage.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.",
+  "response": "```python\n# required_dependencies: andes\nimport andes\nimport numpy as np\n\n# Load the IEEE 14 full case\ncase = andes.get_case(\"ieee14/ieee14_full.xlsx\")\nssa = andes.load(case, setup=True, no_output=True, log=False)\n\n# Run power flow\nandes.run(ssa)\n\n# Inspect bus voltages\nbus_voltages = ssa.Bus.Vm.v\nmax_voltage = np.max(bus_voltages)\nmin_voltage = np.min(bus_voltages)\n\n# Get corresponding bus indices\nmax_bus = int(np.where(bus_voltages == max_voltage)[0][0]) + 1  # Convert to 1-based index\nmin_bus = int(np.where(bus_voltages == min_voltage)[0][0]) + 1  # Convert to 1-based index\n\n# Prepare the JSON result\nRESULT_JSON = {\n    \"max_bus\": max_bus,\n    \"max_voltage\": round(float(max_voltage), 6),\n    \"min_bus\": min_bus,\n    \"min_voltage\": round(float(min_voltage), 6)\n}\n\n# Print the result\nprint(f\"RESULT_JSON={RESULT_JSON}\")\n```",
+  "result_json_parse_error": "RESULT_JSON marker not found in stdout.",
+  "score_total": 55.0,
+  "semantic_passed": false,
+  "semantic_score": 0.0,
+  "turn_id": 1,
+  "turn_passed": false,
+  "used_template_fallback": false
+}

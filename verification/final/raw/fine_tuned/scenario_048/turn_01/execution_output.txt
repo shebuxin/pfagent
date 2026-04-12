@@ -1,0 +1,7 @@
+STDERR:
+Traceback (most recent call last):
+  File "/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/fine_tuned/20260403_162926/raw/fine_tuned/scenario_048/turn_01/workspace/generated_code.py", line 57, in <module>
+    "selected_bus_ids": [int(value) for value in bus_ids[mask]],
+                                                 ~~~~~~~^^^^^^
+TypeError: only integer scalar arrays can be converted to a scalar index
+

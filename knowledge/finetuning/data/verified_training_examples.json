@@ -1,0 +1,832 @@
+{
+  "examples": [
+    {
+      "id": "builtin_ieee14_top3_with_slack",
+      "family": "voltage_topk",
+      "case_key": "builtin_ieee14",
+      "user": "Write runnable Python code only. Use the built-in IEEE 14 full case, run power flow, print the slack bus voltage, and list the top-3 highest-voltage buses.",
+      "assistant": "import andes\nimport numpy as np\n\nssa = andes.load(\n    andes.get_case('ieee14/ieee14_full.xlsx'),\n    setup=True,\n    no_output=True,\n)\n\nssa.PFlow.run()\n\nbus_ids = [str(bus_id) for bus_id in ssa.Bus.idx.v]\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\ntop_indices = np.argsort(bus_v)[-3:][::-1]\n\nprint(f\"Slack bus voltage: {float(ssa.Slack.v.v[0]):.4f} p.u.\")\nfor rank, idx in enumerate(top_indices, start=1):\n    print(f\"Top {rank}: Bus {bus_ids[idx]} voltage = {bus_v[idx]:.4f} p.u.\")",
+      "validation": {
+        "expected_stdout": "Slack bus voltage: 1.0300 p.u.\nTop 1: Bus 6 voltage = 1.0300 p.u.\nTop 2: Bus 2 voltage = 1.0300 p.u.\nTop 3: Bus 8 voltage = 1.0300 p.u.",
+        "artifact_files": [],
+        "uploaded_files": {}
+      }
+    },
+    {
+      "id": "builtin_ieee39_top2_with_slack",
+      "family": "voltage_topk",
+      "case_key": "builtin_ieee39",
+      "user": "Return only a runnable Python script. Use the built-in IEEE 39 case, run power flow, print the slack bus voltage, and list the top-2 highest-voltage buses.",
+      "assistant": "import andes\nimport numpy as np\n\nssa = andes.load(\n    andes.get_case('ieee39/ieee39.xlsx'),\n    setup=True,\n    no_output=True,\n)\n\nssa.PFlow.run()\n\nbus_ids = [str(bus_id) for bus_id in ssa.Bus.idx.v]\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\ntop_indices = np.argsort(bus_v)[-2:][::-1]\n\nprint(f\"Slack bus voltage: {float(ssa.Slack.v.v[0]):.4f} p.u.\")\nfor rank, idx in enumerate(top_indices, start=1):\n    print(f\"Top {rank}: Bus {bus_ids[idx]} voltage = {bus_v[idx]:.4f} p.u.\")",
+      "validation": {
+        "expected_stdout": "Slack bus voltage: 1.0300 p.u.\nTop 1: Bus 36 voltage = 1.0635 p.u.\nTop 2: Bus 35 voltage = 1.0493 p.u.",
+        "artifact_files": [],
+        "uploaded_files": {}
+      }
+    },
+    {
+      "id": "builtin_ei33_top3_plain",
+      "family": "voltage_topk",
+      "case_key": "builtin_ei33",
+      "user": "Generate only Python code that I can run as-is. Use the built-in EI_33 case, run power flow, and list the top-3 highest-voltage buses.",
+      "assistant": "import andes\nimport numpy as np\n\nssa = andes.load(\n    andes.get_case('ei/EI_33.xlsx'),\n    setup=True,\n    no_output=True,\n)\n\nssa.PFlow.run()\n\nbus_ids = [str(bus_id) for bus_id in ssa.Bus.idx.v]\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\ntop_indices = np.argsort(bus_v)[-3:][::-1]\n\nfor rank, idx in enumerate(top_indices, start=1):\n    print(f\"Top {rank}: Bus {bus_ids[idx]} voltage = {bus_v[idx]:.4f} p.u.\")",
+      "validation": {
+        "expected_stdout": "Top 1: Bus 118167 voltage = 1.1144 p.u.\nTop 2: Bus 164893 voltage = 1.1110 p.u.\nTop 3: Bus 320002 voltage = 1.0935 p.u.",
+        "artifact_files": [],
+        "uploaded_files": {}
+      }
+    },
+    {
+      "id": "uploaded_ieee14_top2_with_slack",
+      "family": "voltage_topk",
+      "case_key": "uploaded_ieee14",
+      "user": "Provide runnable Python code only. Use my uploaded file north_ieee14_case.xlsx in the current working directory, run power flow, print the slack bus voltage, and list the top-2 highest-voltage buses.",
+      "assistant": "import andes\nimport os\nimport numpy as np\n\ncase = os.path.join(os.getcwd(), 'north_ieee14_case.xlsx')\nssa = andes.load(case, setup=True, no_output=True)\n\nssa.PFlow.run()\n\nbus_ids = [str(bus_id) for bus_id in ssa.Bus.idx.v]\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\ntop_indices = np.argsort(bus_v)[-2:][::-1]\n\nprint(f\"Slack bus voltage: {float(ssa.Slack.v.v[0]):.4f} p.u.\")\nfor rank, idx in enumerate(top_indices, start=1):\n    print(f\"Top {rank}: Bus {bus_ids[idx]} voltage = {bus_v[idx]:.4f} p.u.\")",
+      "validation": {
+        "expected_stdout": "Slack bus voltage: 1.0300 p.u.\nTop 1: Bus 6 voltage = 1.0300 p.u.\nTop 2: Bus 2 voltage = 1.0300 p.u.",
+        "artifact_files": [],
+        "uploaded_files": {
+          "north_ieee14_case.xlsx": "ieee14/ieee14_full.xlsx"
+        }
+      }
+    },
+    {
+      "id": "uploaded_ieee39_top2_with_slack",
+      "family": "voltage_topk",
+      "case_key": "uploaded_ieee39",
+      "user": "Write runnable Python code only. Use my uploaded file plant_study_39.xlsx in the current working directory, run power flow, print the slack bus voltage, and list the top-2 highest-voltage buses.",
+      "assistant": "import andes\nimport os\nimport numpy as np\n\ncase = os.path.join(os.getcwd(), 'plant_study_39.xlsx')\nssa = andes.load(case, setup=True, no_output=True)\n\nssa.PFlow.run()\n\nbus_ids = [str(bus_id) for bus_id in ssa.Bus.idx.v]\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\ntop_indices = np.argsort(bus_v)[-2:][::-1]\n\nprint(f\"Slack bus voltage: {float(ssa.Slack.v.v[0]):.4f} p.u.\")\nfor rank, idx in enumerate(top_indices, start=1):\n    print(f\"Top {rank}: Bus {bus_ids[idx]} voltage = {bus_v[idx]:.4f} p.u.\")",
+      "validation": {
+        "expected_stdout": "Slack bus voltage: 1.0300 p.u.\nTop 1: Bus 36 voltage = 1.0635 p.u.\nTop 2: Bus 35 voltage = 1.0493 p.u.",
+        "artifact_files": [],
+        "uploaded_files": {
+          "plant_study_39.xlsx": "ieee39/ieee39.xlsx"
+        }
+      }
+    },
+    {
+      "id": "uploaded_ei33_top3_plain",
+      "family": "voltage_topk",
+      "case_key": "uploaded_ei33",
+      "user": "Return only a runnable Python script. Use my uploaded file ei33_uploaded.xlsx in the current working directory, run power flow, and list the top-3 highest-voltage buses.",
+      "assistant": "import andes\nimport os\nimport numpy as np\n\ncase = os.path.join(os.getcwd(), 'ei33_uploaded.xlsx')\nssa = andes.load(case, setup=True, no_output=True)\n\nssa.PFlow.run()\n\nbus_ids = [str(bus_id) for bus_id in ssa.Bus.idx.v]\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\ntop_indices = np.argsort(bus_v)[-3:][::-1]\n\nfor rank, idx in enumerate(top_indices, start=1):\n    print(f\"Top {rank}: Bus {bus_ids[idx]} voltage = {bus_v[idx]:.4f} p.u.\")",
+      "validation": {
+        "expected_stdout": "Top 1: Bus 118167 voltage = 1.1144 p.u.\nTop 2: Bus 164893 voltage = 1.1110 p.u.\nTop 3: Bus 320002 voltage = 1.0935 p.u.",
+        "artifact_files": [],
+        "uploaded_files": {
+          "ei33_uploaded.xlsx": "ei/EI_33.xlsx"
+        }
+      }
+    },
+    {
+      "id": "builtin_ieee14_bottom2",
+      "family": "voltage_bottomk",
+      "case_key": "builtin_ieee14",
+      "user": "Generate only Python code that I can run as-is. Use the built-in IEEE 14 full case, run power flow, and print the 2 lowest-voltage buses.",
+      "assistant": "import andes\nimport numpy as np\n\nssa = andes.load(\n    andes.get_case('ieee14/ieee14_full.xlsx'),\n    setup=True,\n    no_output=True,\n)\n\nssa.PFlow.run()\n\nbus_ids = [str(bus_id) for bus_id in ssa.Bus.idx.v]\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nbottom_indices = np.argsort(bus_v)[:2]\n\nfor rank, idx in enumerate(bottom_indices, start=1):\n    print(f\"Lowest {rank}: Bus {bus_ids[idx]} voltage = {bus_v[idx]:.4f} p.u.\")",
+      "validation": {
+        "expected_stdout": "Lowest 1: Bus 3 voltage = 1.0100 p.u.\nLowest 2: Bus 4 voltage = 1.0114 p.u.",
+        "artifact_files": [],
+        "uploaded_files": {}
+      }
+    },
+    {
+      "id": "builtin_ieee39_bottom2",
+      "family": "voltage_bottomk",
+      "case_key": "builtin_ieee39",
+      "user": "Provide runnable Python code only. Use the built-in IEEE 39 case, run power flow, and print the 2 lowest-voltage buses.",
+      "assistant": "import andes\nimport numpy as np\n\nssa = andes.load(\n    andes.get_case('ieee39/ieee39.xlsx'),\n    setup=True,\n    no_output=True,\n)\n\nssa.PFlow.run()\n\nbus_ids = [str(bus_id) for bus_id in ssa.Bus.idx.v]\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nbottom_indices = np.argsort(bus_v)[:2]\n\nfor rank, idx in enumerate(bottom_indices, start=1):\n    print(f\"Lowest {rank}: Bus {bus_ids[idx]} voltage = {bus_v[idx]:.4f} p.u.\")",
+      "validation": {
+        "expected_stdout": "Lowest 1: Bus 7 voltage = 0.9300 p.u.\nLowest 2: Bus 8 voltage = 0.9437 p.u.",
+        "artifact_files": [],
+        "uploaded_files": {}
+      }
+    },
+    {
+      "id": "builtin_gbnetwork_bottom3",
+      "family": "voltage_bottomk",
+      "case_key": "builtin_gbnetwork",
+      "user": "Write runnable Python code only. Use the built-in GBnetwork case, run power flow, and print the 3 lowest-voltage buses.",
+      "assistant": "import andes\nimport numpy as np\n\nssa = andes.load(\n    andes.get_case('GBnetwork/GBnetwork.xlsx'),\n    setup=True,\n    no_output=True,\n)\n\nssa.PFlow.run()\n\nbus_ids = [str(bus_id) for bus_id in ssa.Bus.idx.v]\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nbottom_indices = np.argsort(bus_v)[:3]\n\nfor rank, idx in enumerate(bottom_indices, start=1):\n    print(f\"Lowest {rank}: Bus {bus_ids[idx]} voltage = {bus_v[idx]:.4f} p.u.\")",
+      "validation": {
+        "expected_stdout": "Lowest 1: Bus 1773 voltage = 0.9435 p.u.\nLowest 2: Bus 2123 voltage = 0.9437 p.u.\nLowest 3: Bus 1492 voltage = 0.9440 p.u.",
+        "artifact_files": [],
+        "uploaded_files": {}
+      }
+    },
+    {
+      "id": "uploaded_ieee14_bottom2",
+      "family": "voltage_bottomk",
+      "case_key": "uploaded_ieee14",
+      "user": "Return only a runnable Python script. Use my uploaded file north_ieee14_case.xlsx in the current working directory, run power flow, and print the 2 lowest-voltage buses.",
+      "assistant": "import andes\nimport os\nimport numpy as np\n\ncase = os.path.join(os.getcwd(), 'north_ieee14_case.xlsx')\nssa = andes.load(case, setup=True, no_output=True)\n\nssa.PFlow.run()\n\nbus_ids = [str(bus_id) for bus_id in ssa.Bus.idx.v]\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nbottom_indices = np.argsort(bus_v)[:2]\n\nfor rank, idx in enumerate(bottom_indices, start=1):\n    print(f\"Lowest {rank}: Bus {bus_ids[idx]} voltage = {bus_v[idx]:.4f} p.u.\")",
+      "validation": {
+        "expected_stdout": "Lowest 1: Bus 3 voltage = 1.0100 p.u.\nLowest 2: Bus 4 voltage = 1.0114 p.u.",
+        "artifact_files": [],
+        "uploaded_files": {
+          "north_ieee14_case.xlsx": "ieee14/ieee14_full.xlsx"
+        }
+      }
+    },
+    {
+      "id": "uploaded_gbnetwork_bottom3",
+      "family": "voltage_bottomk",
+      "case_key": "uploaded_gbnetwork",
+      "user": "Generate only Python code that I can run as-is. Use my uploaded file gbnetwork_uploaded.xlsx in the current working directory, run power flow, and print the 3 lowest-voltage buses.",
+      "assistant": "import andes\nimport os\nimport numpy as np\n\ncase = os.path.join(os.getcwd(), 'gbnetwork_uploaded.xlsx')\nssa = andes.load(case, setup=True, no_output=True)\n\nssa.PFlow.run()\n\nbus_ids = [str(bus_id) for bus_id in ssa.Bus.idx.v]\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nbottom_indices = np.argsort(bus_v)[:3]\n\nfor rank, idx in enumerate(bottom_indices, start=1):\n    print(f\"Lowest {rank}: Bus {bus_ids[idx]} voltage = {bus_v[idx]:.4f} p.u.\")",
+      "validation": {
+        "expected_stdout": "Lowest 1: Bus 1773 voltage = 0.9435 p.u.\nLowest 2: Bus 2123 voltage = 0.9437 p.u.\nLowest 3: Bus 1492 voltage = 0.9440 p.u.",
+        "artifact_files": [],
+        "uploaded_files": {
+          "gbnetwork_uploaded.xlsx": "GBnetwork/GBnetwork.xlsx"
+        }
+      }
+    },
+    {
+      "id": "builtin_ieee14_count_above_1_02",
+      "family": "count_above_threshold",
+      "case_key": "builtin_ieee14",
+      "user": "Provide runnable Python code only. Use the built-in IEEE 14 full case, run power flow, and count how many buses are above 1.02 p.u.",
+      "assistant": "import andes\nimport numpy as np\n\nssa = andes.load(\n    andes.get_case('ieee14/ieee14_full.xlsx'),\n    setup=True,\n    no_output=True,\n)\n\nthreshold = 1.02\n\nssa.PFlow.run()\n\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\ncount = int(np.sum(bus_v > threshold))\nprint(f\"Buses above {threshold} p.u.: {count}\")",
+      "validation": {
+        "expected_stdout": "Buses above 1.02 p.u.: 6",
+        "artifact_files": [],
+        "uploaded_files": {}
+      }
+    },
+    {
+      "id": "builtin_ieee39_count_above_1_04",
+      "family": "count_above_threshold",
+      "case_key": "builtin_ieee39",
+      "user": "Write runnable Python code only. Use the built-in IEEE 39 case, run power flow, and count how many buses are above 1.04 p.u.",
+      "assistant": "import andes\nimport numpy as np\n\nssa = andes.load(\n    andes.get_case('ieee39/ieee39.xlsx'),\n    setup=True,\n    no_output=True,\n)\n\nthreshold = 1.04\n\nssa.PFlow.run()\n\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\ncount = int(np.sum(bus_v > threshold))\nprint(f\"Buses above {threshold} p.u.: {count}\")",
+      "validation": {
+        "expected_stdout": "Buses above 1.04 p.u.: 5",
+        "artifact_files": [],
+        "uploaded_files": {}
+      }
+    },
+    {
+      "id": "builtin_ei33_count_above_1_01",
+      "family": "count_above_threshold",
+      "case_key": "builtin_ei33",
+      "user": "Return only a runnable Python script. Use the built-in EI_33 case, run power flow, and count how many buses are above 1.01 p.u.",
+      "assistant": "import andes\nimport numpy as np\n\nssa = andes.load(\n    andes.get_case('ei/EI_33.xlsx'),\n    setup=True,\n    no_output=True,\n)\n\nthreshold = 1.01\n\nssa.PFlow.run()\n\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\ncount = int(np.sum(bus_v > threshold))\nprint(f\"Buses above {threshold} p.u.: {count}\")",
+      "validation": {
+        "expected_stdout": "Buses above 1.01 p.u.: 298",
+        "artifact_files": [],
+        "uploaded_files": {}
+      }
+    },
+    {
+      "id": "builtin_gbnetwork_count_above_1_02",
+      "family": "count_above_threshold",
+      "case_key": "builtin_gbnetwork",
+      "user": "Generate only Python code that I can run as-is. Use the built-in GBnetwork case, run power flow, and count how many buses are above 1.02 p.u.",
+      "assistant": "import andes\nimport numpy as np\n\nssa = andes.load(\n    andes.get_case('GBnetwork/GBnetwork.xlsx'),\n    setup=True,\n    no_output=True,\n)\n\nthreshold = 1.02\n\nssa.PFlow.run()\n\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\ncount = int(np.sum(bus_v > threshold))\nprint(f\"Buses above {threshold} p.u.: {count}\")",
+      "validation": {
+        "expected_stdout": "Buses above 1.02 p.u.: 1814",
+        "artifact_files": [],
+        "uploaded_files": {}
+      }
+    },
+    {
+      "id": "uploaded_ieee14_count_above_1_01",
+      "family": "count_above_threshold",
+      "case_key": "uploaded_ieee14",
+      "user": "Provide runnable Python code only. Use my uploaded file north_ieee14_case.xlsx in the current working directory, run power flow, and count how many buses are above 1.01 p.u.",
+      "assistant": "import andes\nimport os\nimport numpy as np\n\ncase = os.path.join(os.getcwd(), 'north_ieee14_case.xlsx')\nssa = andes.load(case, setup=True, no_output=True)\n\nthreshold = 1.01\n\nssa.PFlow.run()\n\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\ncount = int(np.sum(bus_v > threshold))\nprint(f\"Buses above {threshold} p.u.: {count}\")",
+      "validation": {
+        "expected_stdout": "Buses above 1.01 p.u.: 14",
+        "artifact_files": [],
+        "uploaded_files": {
+          "north_ieee14_case.xlsx": "ieee14/ieee14_full.xlsx"
+        }
+      }
+    },
+    {
+      "id": "uploaded_ieee39_count_above_1_03",
+      "family": "count_above_threshold",
+      "case_key": "uploaded_ieee39",
+      "user": "Write runnable Python code only. Use my uploaded file plant_study_39.xlsx in the current working directory, run power flow, and count how many buses are above 1.03 p.u.",
+      "assistant": "import andes\nimport os\nimport numpy as np\n\ncase = os.path.join(os.getcwd(), 'plant_study_39.xlsx')\nssa = andes.load(case, setup=True, no_output=True)\n\nthreshold = 1.03\n\nssa.PFlow.run()\n\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\ncount = int(np.sum(bus_v > threshold))\nprint(f\"Buses above {threshold} p.u.: {count}\")",
+      "validation": {
+        "expected_stdout": "Buses above 1.03 p.u.: 7",
+        "artifact_files": [],
+        "uploaded_files": {
+          "plant_study_39.xlsx": "ieee39/ieee39.xlsx"
+        }
+      }
+    },
+    {
+      "id": "uploaded_ei33_count_above_1_01",
+      "family": "count_above_threshold",
+      "case_key": "uploaded_ei33",
+      "user": "Return only a runnable Python script. Use my uploaded file ei33_uploaded.xlsx in the current working directory, run power flow, and count how many buses are above 1.01 p.u.",
+      "assistant": "import andes\nimport os\nimport numpy as np\n\ncase = os.path.join(os.getcwd(), 'ei33_uploaded.xlsx')\nssa = andes.load(case, setup=True, no_output=True)\n\nthreshold = 1.01\n\nssa.PFlow.run()\n\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\ncount = int(np.sum(bus_v > threshold))\nprint(f\"Buses above {threshold} p.u.: {count}\")",
+      "validation": {
+        "expected_stdout": "Buses above 1.01 p.u.: 298",
+        "artifact_files": [],
+        "uploaded_files": {
+          "ei33_uploaded.xlsx": "ei/EI_33.xlsx"
+        }
+      }
+    },
+    {
+      "id": "builtin_ieee14_below_1_0",
+      "family": "list_below_threshold",
+      "case_key": "builtin_ieee14",
+      "user": "Generate only Python code that I can run as-is. Use the built-in IEEE 14 full case, run power flow, and print every bus below 1.0 p.u.",
+      "assistant": "import andes\nimport numpy as np\n\nssa = andes.load(\n    andes.get_case('ieee14/ieee14_full.xlsx'),\n    setup=True,\n    no_output=True,\n)\n\nthreshold = 1.0\n\nssa.PFlow.run()\n\nbus_ids = [str(bus_id) for bus_id in ssa.Bus.idx.v]\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nmatches = [(bus_id, voltage) for bus_id, voltage in zip(bus_ids, bus_v) if voltage < threshold]\n\nif matches:\n    print(f\"Buses below {threshold} p.u.:\")\n    for bus_id, voltage in matches:\n        print(f\"Bus {bus_id}: {voltage:.4f} p.u.\")\nelse:\n    print(f\"No buses below {threshold} p.u.\")",
+      "validation": {
+        "expected_stdout": "No buses below 1.0 p.u.",
+        "artifact_files": [],
+        "uploaded_files": {}
+      }
+    },
+    {
+      "id": "builtin_ieee39_below_0_95",
+      "family": "list_below_threshold",
+      "case_key": "builtin_ieee39",
+      "user": "Provide runnable Python code only. Use the built-in IEEE 39 case, run power flow, and print every bus below 0.95 p.u.",
+      "assistant": "import andes\nimport numpy as np\n\nssa = andes.load(\n    andes.get_case('ieee39/ieee39.xlsx'),\n    setup=True,\n    no_output=True,\n)\n\nthreshold = 0.95\n\nssa.PFlow.run()\n\nbus_ids = [str(bus_id) for bus_id in ssa.Bus.idx.v]\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nmatches = [(bus_id, voltage) for bus_id, voltage in zip(bus_ids, bus_v) if voltage < threshold]\n\nif matches:\n    print(f\"Buses below {threshold} p.u.:\")\n    for bus_id, voltage in matches:\n        print(f\"Bus {bus_id}: {voltage:.4f} p.u.\")\nelse:\n    print(f\"No buses below {threshold} p.u.\")",
+      "validation": {
+        "expected_stdout": "Buses below 0.95 p.u.:\nBus 7: 0.9300 p.u.\nBus 8: 0.9437 p.u.",
+        "artifact_files": [],
+        "uploaded_files": {}
+      }
+    },
+    {
+      "id": "builtin_kundur_below_0_97",
+      "family": "list_below_threshold",
+      "case_key": "builtin_kundur",
+      "user": "Write runnable Python code only. Use the built-in kundur_full case, run power flow, and print every bus below 0.97 p.u.",
+      "assistant": "import andes\nimport numpy as np\n\nssa = andes.load(\n    andes.get_case('kundur/kundur_full.xlsx'),\n    setup=True,\n    no_output=True,\n)\n\nthreshold = 0.97\n\nssa.PFlow.run()\n\nbus_ids = [str(bus_id) for bus_id in ssa.Bus.idx.v]\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nmatches = [(bus_id, voltage) for bus_id, voltage in zip(bus_ids, bus_v) if voltage < threshold]\n\nif matches:\n    print(f\"Buses below {threshold} p.u.:\")\n    for bus_id, voltage in matches:\n        print(f\"Bus {bus_id}: {voltage:.4f} p.u.\")\nelse:\n    print(f\"No buses below {threshold} p.u.\")",
+      "validation": {
+        "expected_stdout": "Buses below 0.97 p.u.:\nBus 6: 0.9691 p.u.\nBus 7: 0.9562 p.u.\nBus 8: 0.9540 p.u.\nBus 9: 0.9686 p.u.",
+        "artifact_files": [],
+        "uploaded_files": {}
+      }
+    },
+    {
+      "id": "builtin_gbnetwork_below_0_95",
+      "family": "list_below_threshold",
+      "case_key": "builtin_gbnetwork",
+      "user": "Return only a runnable Python script. Use the built-in GBnetwork case, run power flow, and print every bus below 0.95 p.u.",
+      "assistant": "import andes\nimport numpy as np\n\nssa = andes.load(\n    andes.get_case('GBnetwork/GBnetwork.xlsx'),\n    setup=True,\n    no_output=True,\n)\n\nthreshold = 0.95\n\nssa.PFlow.run()\n\nbus_ids = [str(bus_id) for bus_id in ssa.Bus.idx.v]\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nmatches = [(bus_id, voltage) for bus_id, voltage in zip(bus_ids, bus_v) if voltage < threshold]\n\nif matches:\n    print(f\"Buses below {threshold} p.u.:\")\n    for bus_id, voltage in matches:\n        print(f\"Bus {bus_id}: {voltage:.4f} p.u.\")\nelse:\n    print(f\"No buses below {threshold} p.u.\")",
+      "validation": {
+        "expected_stdout": "Buses below 0.95 p.u.:\nBus 266: 0.9464 p.u.\nBus 643: 0.9459 p.u.\nBus 671: 0.9457 p.u.\nBus 790: 0.9466 p.u.\nBus 791: 0.9466 p.u.\nBus 792: 0.9466 p.u.\nBus 804: 0.9470 p.u.\nBus 806: 0.9469 p.u.\nBus 807: 0.9469 p.u.\nBus 857: 0.9445 p.u.\nBus 866: 0.9447 p.u.\nBus 871: 0.9444 p.u.\nBus 942: 0.9475 p.u.\nBus 955: 0.9465 p.u.\nBus 1282: 0.9498 p.u.\nBus 1310: 0.9449 p.u.\nBus 1311: 0.9448 p.u.\nBus 1312: 0.9448 p.u.\nBus 1313: 0.9448 p.u.\nBus 1314: 0.9448 p.u.\nBus 1316: 0.9448 p.u.\nBus 1317: 0.9447 p.u.\nBus 1318: 0.9448 p.u.\nBus 1319: 0.9500 p.u.\nBus 1362: 0.9443 p.u.\nBus 1363: 0.9489 p.u.\nBus 1364: 0.9443 p.u.\nBus 1365: 0.9444 p.u.\nBus 1366: 0.9443 p.u.\nBus 1489: 0.9447 p.u.\nBus 1490: 0.9482 p.u.\nBus 1492: 0.9440 p.u.\nBus 1773: 0.9435 p.u.\nBus 1936: 0.9495 p.u.\nBus 2123: 0.9437 p.u.",
+        "artifact_files": [],
+        "uploaded_files": {}
+      }
+    },
+    {
+      "id": "uploaded_ieee14_below_1_0",
+      "family": "list_below_threshold",
+      "case_key": "uploaded_ieee14",
+      "user": "Generate only Python code that I can run as-is. Use my uploaded file north_ieee14_case.xlsx in the current working directory, run power flow, and print every bus below 1.0 p.u.",
+      "assistant": "import andes\nimport os\nimport numpy as np\n\ncase = os.path.join(os.getcwd(), 'north_ieee14_case.xlsx')\nssa = andes.load(case, setup=True, no_output=True)\n\nthreshold = 1.0\n\nssa.PFlow.run()\n\nbus_ids = [str(bus_id) for bus_id in ssa.Bus.idx.v]\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nmatches = [(bus_id, voltage) for bus_id, voltage in zip(bus_ids, bus_v) if voltage < threshold]\n\nif matches:\n    print(f\"Buses below {threshold} p.u.:\")\n    for bus_id, voltage in matches:\n        print(f\"Bus {bus_id}: {voltage:.4f} p.u.\")\nelse:\n    print(f\"No buses below {threshold} p.u.\")",
+      "validation": {
+        "expected_stdout": "No buses below 1.0 p.u.",
+        "artifact_files": [],
+        "uploaded_files": {
+          "north_ieee14_case.xlsx": "ieee14/ieee14_full.xlsx"
+        }
+      }
+    },
+    {
+      "id": "uploaded_ieee39_below_0_96",
+      "family": "list_below_threshold",
+      "case_key": "uploaded_ieee39",
+      "user": "Provide runnable Python code only. Use my uploaded file plant_study_39.xlsx in the current working directory, run power flow, and print every bus below 0.96 p.u.",
+      "assistant": "import andes\nimport os\nimport numpy as np\n\ncase = os.path.join(os.getcwd(), 'plant_study_39.xlsx')\nssa = andes.load(case, setup=True, no_output=True)\n\nthreshold = 0.96\n\nssa.PFlow.run()\n\nbus_ids = [str(bus_id) for bus_id in ssa.Bus.idx.v]\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nmatches = [(bus_id, voltage) for bus_id, voltage in zip(bus_ids, bus_v) if voltage < threshold]\n\nif matches:\n    print(f\"Buses below {threshold} p.u.:\")\n    for bus_id, voltage in matches:\n        print(f\"Bus {bus_id}: {voltage:.4f} p.u.\")\nelse:\n    print(f\"No buses below {threshold} p.u.\")",
+      "validation": {
+        "expected_stdout": "Buses below 0.96 p.u.:\nBus 7: 0.9300 p.u.\nBus 8: 0.9437 p.u.",
+        "artifact_files": [],
+        "uploaded_files": {
+          "plant_study_39.xlsx": "ieee39/ieee39.xlsx"
+        }
+      }
+    },
+    {
+      "id": "uploaded_kundur_below_0_97",
+      "family": "list_below_threshold",
+      "case_key": "uploaded_kundur",
+      "user": "Write runnable Python code only. Use my uploaded file kundur_ops_case.xlsx in the current working directory, run power flow, and print every bus below 0.97 p.u.",
+      "assistant": "import andes\nimport os\nimport numpy as np\n\ncase = os.path.join(os.getcwd(), 'kundur_ops_case.xlsx')\nssa = andes.load(case, setup=True, no_output=True)\n\nthreshold = 0.97\n\nssa.PFlow.run()\n\nbus_ids = [str(bus_id) for bus_id in ssa.Bus.idx.v]\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nmatches = [(bus_id, voltage) for bus_id, voltage in zip(bus_ids, bus_v) if voltage < threshold]\n\nif matches:\n    print(f\"Buses below {threshold} p.u.:\")\n    for bus_id, voltage in matches:\n        print(f\"Bus {bus_id}: {voltage:.4f} p.u.\")\nelse:\n    print(f\"No buses below {threshold} p.u.\")",
+      "validation": {
+        "expected_stdout": "Buses below 0.97 p.u.:\nBus 6: 0.9691 p.u.\nBus 7: 0.9562 p.u.\nBus 8: 0.9540 p.u.\nBus 9: 0.9686 p.u.",
+        "artifact_files": [],
+        "uploaded_files": {
+          "kundur_ops_case.xlsx": "kundur/kundur_full.xlsx"
+        }
+      }
+    },
+    {
+      "id": "builtin_ieee14_max_min_voltage",
+      "family": "max_min_voltage",
+      "case_key": "builtin_ieee14",
+      "user": "Return only a runnable Python script. Use the built-in IEEE 14 full case, run power flow, and print the maximum-voltage bus together with the minimum-voltage bus.",
+      "assistant": "import andes\nimport numpy as np\n\nssa = andes.load(\n    andes.get_case('ieee14/ieee14_full.xlsx'),\n    setup=True,\n    no_output=True,\n)\n\nssa.PFlow.run()\n\nbus_ids = [str(bus_id) for bus_id in ssa.Bus.idx.v]\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nidx_max = int(np.argmax(bus_v))\nidx_min = int(np.argmin(bus_v))\nprint(f\"Maximum voltage: Bus {bus_ids[idx_max]} = {bus_v[idx_max]:.4f} p.u.\")\nprint(f\"Minimum voltage: Bus {bus_ids[idx_min]} = {bus_v[idx_min]:.4f} p.u.\")",
+      "validation": {
+        "expected_stdout": "Maximum voltage: Bus 6 = 1.0300 p.u.\nMinimum voltage: Bus 3 = 1.0100 p.u.",
+        "artifact_files": [],
+        "uploaded_files": {}
+      }
+    },
+    {
+      "id": "builtin_ieee39_max_min_voltage",
+      "family": "max_min_voltage",
+      "case_key": "builtin_ieee39",
+      "user": "Generate only Python code that I can run as-is. Use the built-in IEEE 39 case, run power flow, and print the maximum-voltage bus together with the minimum-voltage bus.",
+      "assistant": "import andes\nimport numpy as np\n\nssa = andes.load(\n    andes.get_case('ieee39/ieee39.xlsx'),\n    setup=True,\n    no_output=True,\n)\n\nssa.PFlow.run()\n\nbus_ids = [str(bus_id) for bus_id in ssa.Bus.idx.v]\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nidx_max = int(np.argmax(bus_v))\nidx_min = int(np.argmin(bus_v))\nprint(f\"Maximum voltage: Bus {bus_ids[idx_max]} = {bus_v[idx_max]:.4f} p.u.\")\nprint(f\"Minimum voltage: Bus {bus_ids[idx_min]} = {bus_v[idx_min]:.4f} p.u.\")",
+      "validation": {
+        "expected_stdout": "Maximum voltage: Bus 36 = 1.0635 p.u.\nMinimum voltage: Bus 7 = 0.9300 p.u.",
+        "artifact_files": [],
+        "uploaded_files": {}
+      }
+    },
+    {
+      "id": "builtin_gbnetwork_max_min_voltage",
+      "family": "max_min_voltage",
+      "case_key": "builtin_gbnetwork",
+      "user": "Provide runnable Python code only. Use the built-in GBnetwork case, run power flow, and print the maximum-voltage bus together with the minimum-voltage bus.",
+      "assistant": "import andes\nimport numpy as np\n\nssa = andes.load(\n    andes.get_case('GBnetwork/GBnetwork.xlsx'),\n    setup=True,\n    no_output=True,\n)\n\nssa.PFlow.run()\n\nbus_ids = [str(bus_id) for bus_id in ssa.Bus.idx.v]\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nidx_max = int(np.argmax(bus_v))\nidx_min = int(np.argmin(bus_v))\nprint(f\"Maximum voltage: Bus {bus_ids[idx_max]} = {bus_v[idx_max]:.4f} p.u.\")\nprint(f\"Minimum voltage: Bus {bus_ids[idx_min]} = {bus_v[idx_min]:.4f} p.u.\")",
+      "validation": {
+        "expected_stdout": "Maximum voltage: Bus 724 = 1.0576 p.u.\nMinimum voltage: Bus 1773 = 0.9435 p.u.",
+        "artifact_files": [],
+        "uploaded_files": {}
+      }
+    },
+    {
+      "id": "uploaded_ieee14_max_min_voltage",
+      "family": "max_min_voltage",
+      "case_key": "uploaded_ieee14",
+      "user": "Write runnable Python code only. Use my uploaded file north_ieee14_case.xlsx in the current working directory, run power flow, and print the maximum-voltage bus together with the minimum-voltage bus.",
+      "assistant": "import andes\nimport os\nimport numpy as np\n\ncase = os.path.join(os.getcwd(), 'north_ieee14_case.xlsx')\nssa = andes.load(case, setup=True, no_output=True)\n\nssa.PFlow.run()\n\nbus_ids = [str(bus_id) for bus_id in ssa.Bus.idx.v]\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nidx_max = int(np.argmax(bus_v))\nidx_min = int(np.argmin(bus_v))\nprint(f\"Maximum voltage: Bus {bus_ids[idx_max]} = {bus_v[idx_max]:.4f} p.u.\")\nprint(f\"Minimum voltage: Bus {bus_ids[idx_min]} = {bus_v[idx_min]:.4f} p.u.\")",
+      "validation": {
+        "expected_stdout": "Maximum voltage: Bus 6 = 1.0300 p.u.\nMinimum voltage: Bus 3 = 1.0100 p.u.",
+        "artifact_files": [],
+        "uploaded_files": {
+          "north_ieee14_case.xlsx": "ieee14/ieee14_full.xlsx"
+        }
+      }
+    },
+    {
+      "id": "uploaded_ieee39_max_min_voltage",
+      "family": "max_min_voltage",
+      "case_key": "uploaded_ieee39",
+      "user": "Return only a runnable Python script. Use my uploaded file plant_study_39.xlsx in the current working directory, run power flow, and print the maximum-voltage bus together with the minimum-voltage bus.",
+      "assistant": "import andes\nimport os\nimport numpy as np\n\ncase = os.path.join(os.getcwd(), 'plant_study_39.xlsx')\nssa = andes.load(case, setup=True, no_output=True)\n\nssa.PFlow.run()\n\nbus_ids = [str(bus_id) for bus_id in ssa.Bus.idx.v]\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nidx_max = int(np.argmax(bus_v))\nidx_min = int(np.argmin(bus_v))\nprint(f\"Maximum voltage: Bus {bus_ids[idx_max]} = {bus_v[idx_max]:.4f} p.u.\")\nprint(f\"Minimum voltage: Bus {bus_ids[idx_min]} = {bus_v[idx_min]:.4f} p.u.\")",
+      "validation": {
+        "expected_stdout": "Maximum voltage: Bus 36 = 1.0635 p.u.\nMinimum voltage: Bus 7 = 0.9300 p.u.",
+        "artifact_files": [],
+        "uploaded_files": {
+          "plant_study_39.xlsx": "ieee39/ieee39.xlsx"
+        }
+      }
+    },
+    {
+      "id": "uploaded_gbnetwork_max_min_voltage",
+      "family": "max_min_voltage",
+      "case_key": "uploaded_gbnetwork",
+      "user": "Generate only Python code that I can run as-is. Use my uploaded file gbnetwork_uploaded.xlsx in the current working directory, run power flow, and print the maximum-voltage bus together with the minimum-voltage bus.",
+      "assistant": "import andes\nimport os\nimport numpy as np\n\ncase = os.path.join(os.getcwd(), 'gbnetwork_uploaded.xlsx')\nssa = andes.load(case, setup=True, no_output=True)\n\nssa.PFlow.run()\n\nbus_ids = [str(bus_id) for bus_id in ssa.Bus.idx.v]\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nidx_max = int(np.argmax(bus_v))\nidx_min = int(np.argmin(bus_v))\nprint(f\"Maximum voltage: Bus {bus_ids[idx_max]} = {bus_v[idx_max]:.4f} p.u.\")\nprint(f\"Minimum voltage: Bus {bus_ids[idx_min]} = {bus_v[idx_min]:.4f} p.u.\")",
+      "validation": {
+        "expected_stdout": "Maximum voltage: Bus 724 = 1.0576 p.u.\nMinimum voltage: Bus 1773 = 0.9435 p.u.",
+        "artifact_files": [],
+        "uploaded_files": {
+          "gbnetwork_uploaded.xlsx": "GBnetwork/GBnetwork.xlsx"
+        }
+      }
+    },
+    {
+      "id": "builtin_ieee14_plot_line",
+      "family": "plot_line",
+      "case_key": "builtin_ieee14",
+      "user": "Provide runnable Python code only. Use the built-in IEEE 14 full case, run power flow, and save a line plot of the bus voltage profile.",
+      "assistant": "import andes\nimport matplotlib.pyplot as plt\n\nssa = andes.load(\n    andes.get_case('ieee14/ieee14_full.xlsx'),\n    setup=True,\n    no_output=True,\n)\n\nssa.PFlow.run()\n\nbus_ids = [str(bus_id) for bus_id in ssa.Bus.idx.v]\nbus_v = ssa.Bus.v.v\nplt.figure(figsize=(10, 4))\nplt.plot(bus_ids, bus_v, marker='o')\nplt.xlabel('Bus')\nplt.ylabel('Voltage (p.u.)')\nplt.title('Bus Voltage Profile')\nplt.tight_layout()\nplot_file = 'ieee14_ieee14_full.xlsx_voltage_profile_line.png'\nplt.savefig(plot_file, dpi=150)\nprint(f\"Saved plot to {plot_file}\")",
+      "validation": {
+        "expected_stdout": "Saved plot to ieee14_ieee14_full.xlsx_voltage_profile_line.png",
+        "artifact_files": [
+          "ieee14_ieee14_full.xlsx_voltage_profile_line.png"
+        ],
+        "uploaded_files": {}
+      }
+    },
+    {
+      "id": "builtin_ieee39_plot_bar",
+      "family": "plot_bar",
+      "case_key": "builtin_ieee39",
+      "user": "Write runnable Python code only. Use the built-in IEEE 39 case, run power flow, and save a bar plot of the bus voltage profile.",
+      "assistant": "import andes\nimport matplotlib.pyplot as plt\n\nssa = andes.load(\n    andes.get_case('ieee39/ieee39.xlsx'),\n    setup=True,\n    no_output=True,\n)\n\nssa.PFlow.run()\n\nbus_ids = [str(bus_id) for bus_id in ssa.Bus.idx.v]\nbus_v = ssa.Bus.v.v\nplt.figure(figsize=(10, 4))\nplt.bar(bus_ids, bus_v)\nplt.xlabel('Bus')\nplt.ylabel('Voltage (p.u.)')\nplt.title('Bus Voltage Profile')\nplt.tight_layout()\nplot_file = 'ieee39_ieee39.xlsx_voltage_profile_bar.png'\nplt.savefig(plot_file, dpi=150)\nprint(f\"Saved plot to {plot_file}\")",
+      "validation": {
+        "expected_stdout": "Saved plot to ieee39_ieee39.xlsx_voltage_profile_bar.png",
+        "artifact_files": [
+          "ieee39_ieee39.xlsx_voltage_profile_bar.png"
+        ],
+        "uploaded_files": {}
+      }
+    },
+    {
+      "id": "builtin_ei33_plot_line",
+      "family": "plot_line",
+      "case_key": "builtin_ei33",
+      "user": "Return only a runnable Python script. Use the built-in EI_33 case, run power flow, and save a line plot of the bus voltage profile.",
+      "assistant": "import andes\nimport matplotlib.pyplot as plt\n\nssa = andes.load(\n    andes.get_case('ei/EI_33.xlsx'),\n    setup=True,\n    no_output=True,\n)\n\nssa.PFlow.run()\n\nbus_ids = [str(bus_id) for bus_id in ssa.Bus.idx.v]\nbus_v = ssa.Bus.v.v\nplt.figure(figsize=(10, 4))\nplt.plot(bus_ids, bus_v, marker='o')\nplt.xlabel('Bus')\nplt.ylabel('Voltage (p.u.)')\nplt.title('Bus Voltage Profile')\nplt.tight_layout()\nplot_file = 'ei_EI_33.xlsx_voltage_profile_line.png'\nplt.savefig(plot_file, dpi=150)\nprint(f\"Saved plot to {plot_file}\")",
+      "validation": {
+        "expected_stdout": "Saved plot to ei_EI_33.xlsx_voltage_profile_line.png",
+        "artifact_files": [
+          "ei_EI_33.xlsx_voltage_profile_line.png"
+        ],
+        "uploaded_files": {}
+      }
+    },
+    {
+      "id": "uploaded_ieee14_plot_bar",
+      "family": "plot_bar",
+      "case_key": "uploaded_ieee14",
+      "user": "Generate only Python code that I can run as-is. Use my uploaded file north_ieee14_case.xlsx in the current working directory, run power flow, and save a bar plot of the bus voltage profile.",
+      "assistant": "import andes\nimport os\nimport matplotlib.pyplot as plt\n\ncase = os.path.join(os.getcwd(), 'north_ieee14_case.xlsx')\nssa = andes.load(case, setup=True, no_output=True)\n\nssa.PFlow.run()\n\nbus_ids = [str(bus_id) for bus_id in ssa.Bus.idx.v]\nbus_v = ssa.Bus.v.v\nplt.figure(figsize=(10, 4))\nplt.bar(bus_ids, bus_v)\nplt.xlabel('Bus')\nplt.ylabel('Voltage (p.u.)')\nplt.title('Bus Voltage Profile')\nplt.tight_layout()\nplot_file = 'north_ieee14_case.xlsx_voltage_profile_bar.png'\nplt.savefig(plot_file, dpi=150)\nprint(f\"Saved plot to {plot_file}\")",
+      "validation": {
+        "expected_stdout": "Saved plot to north_ieee14_case.xlsx_voltage_profile_bar.png",
+        "artifact_files": [
+          "north_ieee14_case.xlsx_voltage_profile_bar.png"
+        ],
+        "uploaded_files": {
+          "north_ieee14_case.xlsx": "ieee14/ieee14_full.xlsx"
+        }
+      }
+    },
+    {
+      "id": "uploaded_ieee39_plot_line",
+      "family": "plot_line",
+      "case_key": "uploaded_ieee39",
+      "user": "Provide runnable Python code only. Use my uploaded file plant_study_39.xlsx in the current working directory, run power flow, and save a line plot of the bus voltage profile.",
+      "assistant": "import andes\nimport os\nimport matplotlib.pyplot as plt\n\ncase = os.path.join(os.getcwd(), 'plant_study_39.xlsx')\nssa = andes.load(case, setup=True, no_output=True)\n\nssa.PFlow.run()\n\nbus_ids = [str(bus_id) for bus_id in ssa.Bus.idx.v]\nbus_v = ssa.Bus.v.v\nplt.figure(figsize=(10, 4))\nplt.plot(bus_ids, bus_v, marker='o')\nplt.xlabel('Bus')\nplt.ylabel('Voltage (p.u.)')\nplt.title('Bus Voltage Profile')\nplt.tight_layout()\nplot_file = 'plant_study_39.xlsx_voltage_profile_line.png'\nplt.savefig(plot_file, dpi=150)\nprint(f\"Saved plot to {plot_file}\")",
+      "validation": {
+        "expected_stdout": "Saved plot to plant_study_39.xlsx_voltage_profile_line.png",
+        "artifact_files": [
+          "plant_study_39.xlsx_voltage_profile_line.png"
+        ],
+        "uploaded_files": {
+          "plant_study_39.xlsx": "ieee39/ieee39.xlsx"
+        }
+      }
+    },
+    {
+      "id": "uploaded_ei33_plot_bar",
+      "family": "plot_bar",
+      "case_key": "uploaded_ei33",
+      "user": "Write runnable Python code only. Use my uploaded file ei33_uploaded.xlsx in the current working directory, run power flow, and save a bar plot of the bus voltage profile.",
+      "assistant": "import andes\nimport os\nimport matplotlib.pyplot as plt\n\ncase = os.path.join(os.getcwd(), 'ei33_uploaded.xlsx')\nssa = andes.load(case, setup=True, no_output=True)\n\nssa.PFlow.run()\n\nbus_ids = [str(bus_id) for bus_id in ssa.Bus.idx.v]\nbus_v = ssa.Bus.v.v\nplt.figure(figsize=(10, 4))\nplt.bar(bus_ids, bus_v)\nplt.xlabel('Bus')\nplt.ylabel('Voltage (p.u.)')\nplt.title('Bus Voltage Profile')\nplt.tight_layout()\nplot_file = 'ei33_uploaded.xlsx_voltage_profile_bar.png'\nplt.savefig(plot_file, dpi=150)\nprint(f\"Saved plot to {plot_file}\")",
+      "validation": {
+        "expected_stdout": "Saved plot to ei33_uploaded.xlsx_voltage_profile_bar.png",
+        "artifact_files": [
+          "ei33_uploaded.xlsx_voltage_profile_bar.png"
+        ],
+        "uploaded_files": {
+          "ei33_uploaded.xlsx": "ei/EI_33.xlsx"
+        }
+      }
+    },
+    {
+      "id": "builtin_pjm5_line_angle_top2",
+      "family": "line_angle_topk",
+      "case_key": "builtin_pjm5",
+      "user": "Return only a runnable Python script. Use the built-in pjm5bus case, run power flow, and print the top-2 lines by absolute sending-end phase angle.",
+      "assistant": "import andes\nimport numpy as np\n\nssa = andes.load(\n    andes.get_case('5bus/pjm5bus.json'),\n    setup=True,\n    no_output=True,\n)\n\nssa.PFlow.run()\n\nline_ids = [str(line_id) for line_id in ssa.Line.idx.v]\nangles = np.abs(np.asarray(ssa.Line.a1.e, dtype=float))\ntop_indices = np.argsort(angles)[-2:][::-1]\n\nfor rank, idx in enumerate(top_indices, start=1):\n    print(f\"Top {rank}: Line {line_ids[idx]} |a1| = {angles[idx]:.6f} rad\")",
+      "validation": {
+        "expected_stdout": "Top 1: Line 2 |a1| = 2.488387 rad\nTop 2: Line 5 |a1| = 2.158620 rad",
+        "artifact_files": [],
+        "uploaded_files": {}
+      }
+    },
+    {
+      "id": "builtin_pjm5_line_angle_top3",
+      "family": "line_angle_topk",
+      "case_key": "builtin_pjm5",
+      "user": "Generate only Python code that I can run as-is. Use the built-in pjm5bus case, run power flow, and print the top-3 lines by absolute sending-end phase angle.",
+      "assistant": "import andes\nimport numpy as np\n\nssa = andes.load(\n    andes.get_case('5bus/pjm5bus.json'),\n    setup=True,\n    no_output=True,\n)\n\nssa.PFlow.run()\n\nline_ids = [str(line_id) for line_id in ssa.Line.idx.v]\nangles = np.abs(np.asarray(ssa.Line.a1.e, dtype=float))\ntop_indices = np.argsort(angles)[-3:][::-1]\n\nfor rank, idx in enumerate(top_indices, start=1):\n    print(f\"Top {rank}: Line {line_ids[idx]} |a1| = {angles[idx]:.6f} rad\")",
+      "validation": {
+        "expected_stdout": "Top 1: Line 2 |a1| = 2.488387 rad\nTop 2: Line 5 |a1| = 2.158620 rad\nTop 3: Line 1 |a1| = 1.596229 rad",
+        "artifact_files": [],
+        "uploaded_files": {}
+      }
+    },
+    {
+      "id": "uploaded_pjm5_line_angle_top2",
+      "family": "line_angle_topk",
+      "case_key": "uploaded_pjm5",
+      "user": "Provide runnable Python code only. Use my uploaded file pjm5_snapshot.json in the current working directory, run power flow, and print the top-2 lines by absolute sending-end phase angle.",
+      "assistant": "import andes\nimport os\nimport numpy as np\n\ncase = os.path.join(os.getcwd(), 'pjm5_snapshot.json')\nssa = andes.load(case, setup=True, no_output=True)\n\nssa.PFlow.run()\n\nline_ids = [str(line_id) for line_id in ssa.Line.idx.v]\nangles = np.abs(np.asarray(ssa.Line.a1.e, dtype=float))\ntop_indices = np.argsort(angles)[-2:][::-1]\n\nfor rank, idx in enumerate(top_indices, start=1):\n    print(f\"Top {rank}: Line {line_ids[idx]} |a1| = {angles[idx]:.6f} rad\")",
+      "validation": {
+        "expected_stdout": "Top 1: Line 2 |a1| = 2.488387 rad\nTop 2: Line 5 |a1| = 2.158620 rad",
+        "artifact_files": [],
+        "uploaded_files": {
+          "pjm5_snapshot.json": "5bus/pjm5bus.json"
+        }
+      }
+    },
+    {
+      "id": "uploaded_pjm5_line_angle_top3",
+      "family": "line_angle_topk",
+      "case_key": "uploaded_pjm5",
+      "user": "Write runnable Python code only. Use my uploaded file pjm5_snapshot.json in the current working directory, run power flow, and print the top-3 lines by absolute sending-end phase angle.",
+      "assistant": "import andes\nimport os\nimport numpy as np\n\ncase = os.path.join(os.getcwd(), 'pjm5_snapshot.json')\nssa = andes.load(case, setup=True, no_output=True)\n\nssa.PFlow.run()\n\nline_ids = [str(line_id) for line_id in ssa.Line.idx.v]\nangles = np.abs(np.asarray(ssa.Line.a1.e, dtype=float))\ntop_indices = np.argsort(angles)[-3:][::-1]\n\nfor rank, idx in enumerate(top_indices, start=1):\n    print(f\"Top {rank}: Line {line_ids[idx]} |a1| = {angles[idx]:.6f} rad\")",
+      "validation": {
+        "expected_stdout": "Top 1: Line 2 |a1| = 2.488387 rad\nTop 2: Line 5 |a1| = 2.158620 rad\nTop 3: Line 1 |a1| = 1.596229 rad",
+        "artifact_files": [],
+        "uploaded_files": {
+          "pjm5_snapshot.json": "5bus/pjm5bus.json"
+        }
+      }
+    },
+    {
+      "id": "builtin_pjm5_line_angle_above_0_08",
+      "family": "line_angle_threshold",
+      "case_key": "builtin_pjm5",
+      "user": "Return only a runnable Python script. Use the built-in pjm5bus case, run power flow, and print every line whose absolute sending-end phase angle is above 0.08 radians.",
+      "assistant": "import andes\n\nssa = andes.load(\n    andes.get_case('5bus/pjm5bus.json'),\n    setup=True,\n    no_output=True,\n)\n\nthreshold = 0.08\n\nssa.PFlow.run()\n\nmatches = []\nfor line_id, angle in zip([str(value) for value in ssa.Line.idx.v], ssa.Line.a1.e):\n    if abs(angle) > threshold:\n        matches.append((line_id, abs(float(angle))))\n\nif matches:\n    print(f\"Lines above {threshold} rad:\")\n    for line_id, angle in matches:\n        print(f\"Line {line_id}: |a1| = {angle:.6f} rad\")\nelse:\n    print(f\"No lines above {threshold} rad\")",
+      "validation": {
+        "expected_stdout": "Lines above 0.08 rad:\nLine 0: |a1| = 1.496079 rad\nLine 1: |a1| = 1.596229 rad\nLine 2: |a1| = 2.488387 rad\nLine 4: |a1| = 0.213690 rad\nLine 5: |a1| = 2.158620 rad\nLine 6: |a1| = 1.496079 rad",
+        "artifact_files": [],
+        "uploaded_files": {}
+      }
+    },
+    {
+      "id": "builtin_pjm5_line_angle_above_0_1",
+      "family": "line_angle_threshold",
+      "case_key": "builtin_pjm5",
+      "user": "Generate only Python code that I can run as-is. Use the built-in pjm5bus case, run power flow, and print every line whose absolute sending-end phase angle is above 0.1 radians.",
+      "assistant": "import andes\n\nssa = andes.load(\n    andes.get_case('5bus/pjm5bus.json'),\n    setup=True,\n    no_output=True,\n)\n\nthreshold = 0.1\n\nssa.PFlow.run()\n\nmatches = []\nfor line_id, angle in zip([str(value) for value in ssa.Line.idx.v], ssa.Line.a1.e):\n    if abs(angle) > threshold:\n        matches.append((line_id, abs(float(angle))))\n\nif matches:\n    print(f\"Lines above {threshold} rad:\")\n    for line_id, angle in matches:\n        print(f\"Line {line_id}: |a1| = {angle:.6f} rad\")\nelse:\n    print(f\"No lines above {threshold} rad\")",
+      "validation": {
+        "expected_stdout": "Lines above 0.1 rad:\nLine 0: |a1| = 1.496079 rad\nLine 1: |a1| = 1.596229 rad\nLine 2: |a1| = 2.488387 rad\nLine 4: |a1| = 0.213690 rad\nLine 5: |a1| = 2.158620 rad\nLine 6: |a1| = 1.496079 rad",
+        "artifact_files": [],
+        "uploaded_files": {}
+      }
+    },
+    {
+      "id": "uploaded_pjm5_line_angle_above_0_08",
+      "family": "line_angle_threshold",
+      "case_key": "uploaded_pjm5",
+      "user": "Provide runnable Python code only. Use my uploaded file pjm5_snapshot.json in the current working directory, run power flow, and print every line whose absolute sending-end phase angle is above 0.08 radians.",
+      "assistant": "import andes\nimport os\n\ncase = os.path.join(os.getcwd(), 'pjm5_snapshot.json')\nssa = andes.load(case, setup=True, no_output=True)\n\nthreshold = 0.08\n\nssa.PFlow.run()\n\nmatches = []\nfor line_id, angle in zip([str(value) for value in ssa.Line.idx.v], ssa.Line.a1.e):\n    if abs(angle) > threshold:\n        matches.append((line_id, abs(float(angle))))\n\nif matches:\n    print(f\"Lines above {threshold} rad:\")\n    for line_id, angle in matches:\n        print(f\"Line {line_id}: |a1| = {angle:.6f} rad\")\nelse:\n    print(f\"No lines above {threshold} rad\")",
+      "validation": {
+        "expected_stdout": "Lines above 0.08 rad:\nLine 0: |a1| = 1.496079 rad\nLine 1: |a1| = 1.596229 rad\nLine 2: |a1| = 2.488387 rad\nLine 4: |a1| = 0.213690 rad\nLine 5: |a1| = 2.158620 rad\nLine 6: |a1| = 1.496079 rad",
+        "artifact_files": [],
+        "uploaded_files": {
+          "pjm5_snapshot.json": "5bus/pjm5bus.json"
+        }
+      }
+    },
+    {
+      "id": "uploaded_pjm5_line_angle_above_0_1",
+      "family": "line_angle_threshold",
+      "case_key": "uploaded_pjm5",
+      "user": "Write runnable Python code only. Use my uploaded file pjm5_snapshot.json in the current working directory, run power flow, and print every line whose absolute sending-end phase angle is above 0.1 radians.",
+      "assistant": "import andes\nimport os\n\ncase = os.path.join(os.getcwd(), 'pjm5_snapshot.json')\nssa = andes.load(case, setup=True, no_output=True)\n\nthreshold = 0.1\n\nssa.PFlow.run()\n\nmatches = []\nfor line_id, angle in zip([str(value) for value in ssa.Line.idx.v], ssa.Line.a1.e):\n    if abs(angle) > threshold:\n        matches.append((line_id, abs(float(angle))))\n\nif matches:\n    print(f\"Lines above {threshold} rad:\")\n    for line_id, angle in matches:\n        print(f\"Line {line_id}: |a1| = {angle:.6f} rad\")\nelse:\n    print(f\"No lines above {threshold} rad\")",
+      "validation": {
+        "expected_stdout": "Lines above 0.1 rad:\nLine 0: |a1| = 1.496079 rad\nLine 1: |a1| = 1.596229 rad\nLine 2: |a1| = 2.488387 rad\nLine 4: |a1| = 0.213690 rad\nLine 5: |a1| = 2.158620 rad\nLine 6: |a1| = 1.496079 rad",
+        "artifact_files": [],
+        "uploaded_files": {
+          "pjm5_snapshot.json": "5bus/pjm5bus.json"
+        }
+      }
+    },
+    {
+      "id": "builtin_kundur_add_load_9_0_02_0_015_violations",
+      "family": "add_load_violations",
+      "case_key": "builtin_kundur",
+      "user": "Return only a runnable Python script. Use the built-in kundur_full case, add one new PQ load at bus 9 before setup with p0=0.02 and q0=0.015, run power flow, and report any buses outside [0.94, 1.06] p.u.",
+      "assistant": "import andes\nimport numpy as np\n\nssa = andes.load(\n    andes.get_case('kundur/kundur_full.xlsx'),\n    setup=False,\n    no_output=True,\n)\n\nssa.add('PQ', param_dict=dict(bus=9, idx='PQ_EXTRA_9_0_02', p0=0.02, q0=0.015))\nssa.setup()\nssa.PFlow.run()\n\nvmin = 0.94\nvmax = 1.06\nbus_ids = [str(bus_id) for bus_id in ssa.Bus.idx.v]\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nviolations = [(bus_id, voltage) for bus_id, voltage in zip(bus_ids, bus_v) if voltage < vmin or voltage > vmax]\n\nif violations:\n    print(f\"Voltage violations outside [{vmin}, {vmax}] p.u.:\")\n    for bus_id, voltage in violations:\n        print(f\"Bus {bus_id}: {voltage:.4f} p.u.\")\nelse:\n    print(f\"No bus voltage violations outside [{vmin}, {vmax}] p.u.\")",
+      "validation": {
+        "expected_stdout": "No bus voltage violations outside [0.94, 1.06] p.u.",
+        "artifact_files": [],
+        "uploaded_files": {}
+      }
+    },
+    {
+      "id": "builtin_ieee39_add_load_7_0_018_0_009_violations",
+      "family": "add_load_violations",
+      "case_key": "builtin_ieee39",
+      "user": "Generate only Python code that I can run as-is. Use the built-in IEEE 39 case, add one new PQ load at bus 7 before setup with p0=0.018 and q0=0.009, run power flow, and report any buses outside [0.95, 1.05] p.u.",
+      "assistant": "import andes\nimport numpy as np\n\nssa = andes.load(\n    andes.get_case('ieee39/ieee39.xlsx'),\n    setup=False,\n    no_output=True,\n)\n\nssa.add('PQ', param_dict=dict(bus=7, idx='PQ_EXTRA_7_0_018', p0=0.018, q0=0.009))\nssa.setup()\nssa.PFlow.run()\n\nvmin = 0.95\nvmax = 1.05\nbus_ids = [str(bus_id) for bus_id in ssa.Bus.idx.v]\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nviolations = [(bus_id, voltage) for bus_id, voltage in zip(bus_ids, bus_v) if voltage < vmin or voltage > vmax]\n\nif violations:\n    print(f\"Voltage violations outside [{vmin}, {vmax}] p.u.:\")\n    for bus_id, voltage in violations:\n        print(f\"Bus {bus_id}: {voltage:.4f} p.u.\")\nelse:\n    print(f\"No bus voltage violations outside [{vmin}, {vmax}] p.u.\")",
+      "validation": {
+        "expected_stdout": "Voltage violations outside [0.95, 1.05] p.u.:\nBus 7: 0.9298 p.u.\nBus 8: 0.9436 p.u.\nBus 36: 1.0635 p.u.",
+        "artifact_files": [],
+        "uploaded_files": {}
+      }
+    },
+    {
+      "id": "uploaded_kundur_add_load_6_0_025_0_02_violations",
+      "family": "add_load_violations",
+      "case_key": "uploaded_kundur",
+      "user": "Provide runnable Python code only. Use my uploaded file kundur_ops_case.xlsx in the current working directory, add one new PQ load at bus 6 before setup with p0=0.025 and q0=0.02, run power flow, and report any buses outside [0.93, 1.07] p.u.",
+      "assistant": "import andes\nimport os\nimport numpy as np\n\ncase = os.path.join(os.getcwd(), 'kundur_ops_case.xlsx')\nssa = andes.load(case, setup=False, no_output=True)\n\nssa.add('PQ', param_dict=dict(bus=6, idx='PQ_EXTRA_6_0_025', p0=0.025, q0=0.02))\nssa.setup()\nssa.PFlow.run()\n\nvmin = 0.93\nvmax = 1.07\nbus_ids = [str(bus_id) for bus_id in ssa.Bus.idx.v]\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nviolations = [(bus_id, voltage) for bus_id, voltage in zip(bus_ids, bus_v) if voltage < vmin or voltage > vmax]\n\nif violations:\n    print(f\"Voltage violations outside [{vmin}, {vmax}] p.u.:\")\n    for bus_id, voltage in violations:\n        print(f\"Bus {bus_id}: {voltage:.4f} p.u.\")\nelse:\n    print(f\"No bus voltage violations outside [{vmin}, {vmax}] p.u.\")",
+      "validation": {
+        "expected_stdout": "No bus voltage violations outside [0.93, 1.07] p.u.",
+        "artifact_files": [],
+        "uploaded_files": {
+          "kundur_ops_case.xlsx": "kundur/kundur_full.xlsx"
+        }
+      }
+    },
+    {
+      "id": "uploaded_ieee39_add_load_7_0_018_0_009_violations",
+      "family": "add_load_violations",
+      "case_key": "uploaded_ieee39",
+      "user": "Write runnable Python code only. Use my uploaded file plant_study_39.xlsx in the current working directory, add one new PQ load at bus 7 before setup with p0=0.018 and q0=0.009, run power flow, and report any buses outside [0.95, 1.05] p.u.",
+      "assistant": "import andes\nimport os\nimport numpy as np\n\ncase = os.path.join(os.getcwd(), 'plant_study_39.xlsx')\nssa = andes.load(case, setup=False, no_output=True)\n\nssa.add('PQ', param_dict=dict(bus=7, idx='PQ_EXTRA_7_0_018', p0=0.018, q0=0.009))\nssa.setup()\nssa.PFlow.run()\n\nvmin = 0.95\nvmax = 1.05\nbus_ids = [str(bus_id) for bus_id in ssa.Bus.idx.v]\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nviolations = [(bus_id, voltage) for bus_id, voltage in zip(bus_ids, bus_v) if voltage < vmin or voltage > vmax]\n\nif violations:\n    print(f\"Voltage violations outside [{vmin}, {vmax}] p.u.:\")\n    for bus_id, voltage in violations:\n        print(f\"Bus {bus_id}: {voltage:.4f} p.u.\")\nelse:\n    print(f\"No bus voltage violations outside [{vmin}, {vmax}] p.u.\")",
+      "validation": {
+        "expected_stdout": "Voltage violations outside [0.95, 1.05] p.u.:\nBus 7: 0.9298 p.u.\nBus 8: 0.9436 p.u.\nBus 36: 1.0635 p.u.",
+        "artifact_files": [],
+        "uploaded_files": {
+          "plant_study_39.xlsx": "ieee39/ieee39.xlsx"
+        }
+      }
+    },
+    {
+      "id": "builtin_kundur_add_load_4_0_03_0_01_min",
+      "family": "add_load_min_bus",
+      "case_key": "builtin_kundur",
+      "user": "Return only a runnable Python script. Use the built-in kundur_full case, add one new PQ load at bus 4 before setup with p0=0.03 and q0=0.01, run power flow, and print the minimum-voltage bus.",
+      "assistant": "import andes\nimport numpy as np\n\nssa = andes.load(\n    andes.get_case('kundur/kundur_full.xlsx'),\n    setup=False,\n    no_output=True,\n)\n\nssa.add('PQ', param_dict=dict(bus=4, idx='PQ_EXTRA_4_0_03', p0=0.03, q0=0.01))\nssa.setup()\nssa.PFlow.run()\n\nbus_ids = [str(bus_id) for bus_id in ssa.Bus.idx.v]\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nidx_min = int(np.argmin(bus_v))\nprint(f\"Minimum-voltage bus after adding load: Bus {bus_ids[idx_min]} = {bus_v[idx_min]:.4f} p.u.\")",
+      "validation": {
+        "expected_stdout": "Minimum-voltage bus after adding load: Bus 8 = 0.9540 p.u.",
+        "artifact_files": [],
+        "uploaded_files": {}
+      }
+    },
+    {
+      "id": "builtin_ieee39_add_load_4_0_02_0_01_min",
+      "family": "add_load_min_bus",
+      "case_key": "builtin_ieee39",
+      "user": "Generate only Python code that I can run as-is. Use the built-in IEEE 39 case, add one new PQ load at bus 4 before setup with p0=0.02 and q0=0.01, run power flow, and print the minimum-voltage bus.",
+      "assistant": "import andes\nimport numpy as np\n\nssa = andes.load(\n    andes.get_case('ieee39/ieee39.xlsx'),\n    setup=False,\n    no_output=True,\n)\n\nssa.add('PQ', param_dict=dict(bus=4, idx='PQ_EXTRA_4_0_02', p0=0.02, q0=0.01))\nssa.setup()\nssa.PFlow.run()\n\nbus_ids = [str(bus_id) for bus_id in ssa.Bus.idx.v]\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nidx_min = int(np.argmin(bus_v))\nprint(f\"Minimum-voltage bus after adding load: Bus {bus_ids[idx_min]} = {bus_v[idx_min]:.4f} p.u.\")",
+      "validation": {
+        "expected_stdout": "Minimum-voltage bus after adding load: Bus 7 = 0.9299 p.u.",
+        "artifact_files": [],
+        "uploaded_files": {}
+      }
+    },
+    {
+      "id": "uploaded_kundur_add_load_5_0_02_0_012_min",
+      "family": "add_load_min_bus",
+      "case_key": "uploaded_kundur",
+      "user": "Provide runnable Python code only. Use my uploaded file kundur_ops_case.xlsx in the current working directory, add one new PQ load at bus 5 before setup with p0=0.02 and q0=0.012, run power flow, and print the minimum-voltage bus.",
+      "assistant": "import andes\nimport os\nimport numpy as np\n\ncase = os.path.join(os.getcwd(), 'kundur_ops_case.xlsx')\nssa = andes.load(case, setup=False, no_output=True)\n\nssa.add('PQ', param_dict=dict(bus=5, idx='PQ_EXTRA_5_0_02', p0=0.02, q0=0.012))\nssa.setup()\nssa.PFlow.run()\n\nbus_ids = [str(bus_id) for bus_id in ssa.Bus.idx.v]\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nidx_min = int(np.argmin(bus_v))\nprint(f\"Minimum-voltage bus after adding load: Bus {bus_ids[idx_min]} = {bus_v[idx_min]:.4f} p.u.\")",
+      "validation": {
+        "expected_stdout": "Minimum-voltage bus after adding load: Bus 8 = 0.9540 p.u.",
+        "artifact_files": [],
+        "uploaded_files": {
+          "kundur_ops_case.xlsx": "kundur/kundur_full.xlsx"
+        }
+      }
+    },
+    {
+      "id": "uploaded_ieee39_add_load_4_0_02_0_01_min",
+      "family": "add_load_min_bus",
+      "case_key": "uploaded_ieee39",
+      "user": "Write runnable Python code only. Use my uploaded file plant_study_39.xlsx in the current working directory, add one new PQ load at bus 4 before setup with p0=0.02 and q0=0.01, run power flow, and print the minimum-voltage bus.",
+      "assistant": "import andes\nimport os\nimport numpy as np\n\ncase = os.path.join(os.getcwd(), 'plant_study_39.xlsx')\nssa = andes.load(case, setup=False, no_output=True)\n\nssa.add('PQ', param_dict=dict(bus=4, idx='PQ_EXTRA_4_0_02', p0=0.02, q0=0.01))\nssa.setup()\nssa.PFlow.run()\n\nbus_ids = [str(bus_id) for bus_id in ssa.Bus.idx.v]\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nidx_min = int(np.argmin(bus_v))\nprint(f\"Minimum-voltage bus after adding load: Bus {bus_ids[idx_min]} = {bus_v[idx_min]:.4f} p.u.\")",
+      "validation": {
+        "expected_stdout": "Minimum-voltage bus after adding load: Bus 7 = 0.9299 p.u.",
+        "artifact_files": [],
+        "uploaded_files": {
+          "plant_study_39.xlsx": "ieee39/ieee39.xlsx"
+        }
+      }
+    },
+    {
+      "id": "builtin_ieee39_scale_pq_1_05",
+      "family": "scale_pq_totals",
+      "case_key": "builtin_ieee39",
+      "user": "Return only a runnable Python script. Use the built-in IEEE 39 case, scale every PQ load by a factor of 1.05, run power flow, and print the new total active and reactive PQ load in per unit.",
+      "assistant": "import andes\nimport numpy as np\n\nssa = andes.load(\n    andes.get_case('ieee39/ieee39.xlsx'),\n    setup=False,\n    no_output=True,\n)\n\nscale = 1.05\nssa.setup()\nssa.PQ.set(src='p0', idx=ssa.PQ.idx.v, attr='v', value=scale * ssa.PQ.p0.v)\nssa.PQ.set(src='q0', idx=ssa.PQ.idx.v, attr='v', value=scale * ssa.PQ.q0.v)\nssa.PFlow.run()\n\ntotal_p = float(np.sum(np.asarray(ssa.PQ.p0.v, dtype=float)))\ntotal_q = float(np.sum(np.asarray(ssa.PQ.q0.v, dtype=float)))\nprint(f\"Scaled total PQ load: P={total_p:.6f} p.u., Q={total_q:.6f} p.u.\")",
+      "validation": {
+        "expected_stdout": "Scaled total PQ load: P=61.496400 p.u., Q=29.196300 p.u.",
+        "artifact_files": [],
+        "uploaded_files": {}
+      }
+    },
+    {
+      "id": "builtin_ieee14_scale_pq_1_08",
+      "family": "scale_pq_totals",
+      "case_key": "builtin_ieee14",
+      "user": "Generate only Python code that I can run as-is. Use the built-in IEEE 14 full case, scale every PQ load by a factor of 1.08, run power flow, and print the new total active and reactive PQ load in per unit.",
+      "assistant": "import andes\nimport numpy as np\n\nssa = andes.load(\n    andes.get_case('ieee14/ieee14_full.xlsx'),\n    setup=False,\n    no_output=True,\n)\n\nscale = 1.08\nssa.setup()\nssa.PQ.set(src='p0', idx=ssa.PQ.idx.v, attr='v', value=scale * ssa.PQ.p0.v)\nssa.PQ.set(src='q0', idx=ssa.PQ.idx.v, attr='v', value=scale * ssa.PQ.q0.v)\nssa.PFlow.run()\n\ntotal_p = float(np.sum(np.asarray(ssa.PQ.p0.v, dtype=float)))\ntotal_q = float(np.sum(np.asarray(ssa.PQ.q0.v, dtype=float)))\nprint(f\"Scaled total PQ load: P={total_p:.6f} p.u., Q={total_q:.6f} p.u.\")",
+      "validation": {
+        "expected_stdout": "Scaled total PQ load: P=2.415960 p.u., Q=1.030320 p.u.",
+        "artifact_files": [],
+        "uploaded_files": {}
+      }
+    },
+    {
+      "id": "builtin_gbnetwork_scale_pq_1_03",
+      "family": "scale_pq_totals",
+      "case_key": "builtin_gbnetwork",
+      "user": "Provide runnable Python code only. Use the built-in GBnetwork case, scale every PQ load by a factor of 1.03, run power flow, and print the new total active and reactive PQ load in per unit.",
+      "assistant": "import andes\nimport numpy as np\n\nssa = andes.load(\n    andes.get_case('GBnetwork/GBnetwork.xlsx'),\n    setup=False,\n    no_output=True,\n)\n\nscale = 1.03\nssa.setup()\nssa.PQ.set(src='p0', idx=ssa.PQ.idx.v, attr='v', value=scale * ssa.PQ.p0.v)\nssa.PQ.set(src='q0', idx=ssa.PQ.idx.v, attr='v', value=scale * ssa.PQ.q0.v)\nssa.PFlow.run()\n\ntotal_p = float(np.sum(np.asarray(ssa.PQ.p0.v, dtype=float)))\ntotal_q = float(np.sum(np.asarray(ssa.PQ.q0.v, dtype=float)))\nprint(f\"Scaled total PQ load: P={total_p:.6f} p.u., Q={total_q:.6f} p.u.\")",
+      "validation": {
+        "expected_stdout": "Scaled total PQ load: P=618.798868 p.u., Q=214.111662 p.u.",
+        "artifact_files": [],
+        "uploaded_files": {}
+      }
+    },
+    {
+      "id": "uploaded_ieee39_scale_pq_1_05",
+      "family": "scale_pq_totals",
+      "case_key": "uploaded_ieee39",
+      "user": "Write runnable Python code only. Use my uploaded file plant_study_39.xlsx in the current working directory, scale every PQ load by a factor of 1.05, run power flow, and print the new total active and reactive PQ load in per unit.",
+      "assistant": "import andes\nimport os\nimport numpy as np\n\ncase = os.path.join(os.getcwd(), 'plant_study_39.xlsx')\nssa = andes.load(case, setup=False, no_output=True)\n\nscale = 1.05\nssa.setup()\nssa.PQ.set(src='p0', idx=ssa.PQ.idx.v, attr='v', value=scale * ssa.PQ.p0.v)\nssa.PQ.set(src='q0', idx=ssa.PQ.idx.v, attr='v', value=scale * ssa.PQ.q0.v)\nssa.PFlow.run()\n\ntotal_p = float(np.sum(np.asarray(ssa.PQ.p0.v, dtype=float)))\ntotal_q = float(np.sum(np.asarray(ssa.PQ.q0.v, dtype=float)))\nprint(f\"Scaled total PQ load: P={total_p:.6f} p.u., Q={total_q:.6f} p.u.\")",
+      "validation": {
+        "expected_stdout": "Scaled total PQ load: P=61.496400 p.u., Q=29.196300 p.u.",
+        "artifact_files": [],
+        "uploaded_files": {
+          "plant_study_39.xlsx": "ieee39/ieee39.xlsx"
+        }
+      }
+    },
+    {
+      "id": "uploaded_ieee14_scale_pq_0_95",
+      "family": "scale_pq_totals",
+      "case_key": "uploaded_ieee14",
+      "user": "Return only a runnable Python script. Use my uploaded file north_ieee14_case.xlsx in the current working directory, scale every PQ load by a factor of 0.95, run power flow, and print the new total active and reactive PQ load in per unit.",
+      "assistant": "import andes\nimport os\nimport numpy as np\n\ncase = os.path.join(os.getcwd(), 'north_ieee14_case.xlsx')\nssa = andes.load(case, setup=False, no_output=True)\n\nscale = 0.95\nssa.setup()\nssa.PQ.set(src='p0', idx=ssa.PQ.idx.v, attr='v', value=scale * ssa.PQ.p0.v)\nssa.PQ.set(src='q0', idx=ssa.PQ.idx.v, attr='v', value=scale * ssa.PQ.q0.v)\nssa.PFlow.run()\n\ntotal_p = float(np.sum(np.asarray(ssa.PQ.p0.v, dtype=float)))\ntotal_q = float(np.sum(np.asarray(ssa.PQ.q0.v, dtype=float)))\nprint(f\"Scaled total PQ load: P={total_p:.6f} p.u., Q={total_q:.6f} p.u.\")",
+      "validation": {
+        "expected_stdout": "Scaled total PQ load: P=2.125150 p.u., Q=0.906300 p.u.",
+        "artifact_files": [],
+        "uploaded_files": {
+          "north_ieee14_case.xlsx": "ieee14/ieee14_full.xlsx"
+        }
+      }
+    },
+    {
+      "id": "uploaded_gbnetwork_scale_pq_1_03",
+      "family": "scale_pq_totals",
+      "case_key": "uploaded_gbnetwork",
+      "user": "Generate only Python code that I can run as-is. Use my uploaded file gbnetwork_uploaded.xlsx in the current working directory, scale every PQ load by a factor of 1.03, run power flow, and print the new total active and reactive PQ load in per unit.",
+      "assistant": "import andes\nimport os\nimport numpy as np\n\ncase = os.path.join(os.getcwd(), 'gbnetwork_uploaded.xlsx')\nssa = andes.load(case, setup=False, no_output=True)\n\nscale = 1.03\nssa.setup()\nssa.PQ.set(src='p0', idx=ssa.PQ.idx.v, attr='v', value=scale * ssa.PQ.p0.v)\nssa.PQ.set(src='q0', idx=ssa.PQ.idx.v, attr='v', value=scale * ssa.PQ.q0.v)\nssa.PFlow.run()\n\ntotal_p = float(np.sum(np.asarray(ssa.PQ.p0.v, dtype=float)))\ntotal_q = float(np.sum(np.asarray(ssa.PQ.q0.v, dtype=float)))\nprint(f\"Scaled total PQ load: P={total_p:.6f} p.u., Q={total_q:.6f} p.u.\")",
+      "validation": {
+        "expected_stdout": "Scaled total PQ load: P=618.798868 p.u., Q=214.111662 p.u.",
+        "artifact_files": [],
+        "uploaded_files": {
+          "gbnetwork_uploaded.xlsx": "GBnetwork/GBnetwork.xlsx"
+        }
+      }
+    },
+    {
+      "id": "builtin_ieee39_pv_setpoints",
+      "family": "pv_setpoints",
+      "case_key": "builtin_ieee39",
+      "user": "Provide runnable Python code only. Use the built-in IEEE 39 case, update PV generators 1 and 2 so that p0 becomes [5, 7] and q0 becomes [2, 2.5], run power flow, and print the updated PV setpoints.",
+      "assistant": "import andes\nimport numpy as np\n\nssa = andes.load(\n    andes.get_case('ieee39/ieee39.xlsx'),\n    setup=False,\n    no_output=True,\n)\n\nssa.setup()\nssa.PV.set(src='p0', idx=[1, 2], attr='v', value=np.asarray([5, 7], dtype=float))\nssa.PV.set(src='q0', idx=[1, 2], attr='v', value=np.asarray([2, 2.5], dtype=float))\nssa.PFlow.run()\n\nupdated_p = [round(float(value), 4) for value in np.asarray(ssa.PV.p0.v[:2], dtype=float)]\nupdated_q = [round(float(value), 4) for value in np.asarray(ssa.PV.q0.v[:2], dtype=float)]\nprint(f\"Updated PV p0 setpoints: {updated_p}\")\nprint(f\"Updated PV q0 setpoints: {updated_q}\")",
+      "validation": {
+        "expected_stdout": "Updated PV p0 setpoints: [5.0, 7.0]\nUpdated PV q0 setpoints: [2.0, 2.5]",
+        "artifact_files": [],
+        "uploaded_files": {}
+      }
+    },
+    {
+      "id": "uploaded_ieee39_pv_setpoints",
+      "family": "pv_setpoints",
+      "case_key": "uploaded_ieee39",
+      "user": "Write runnable Python code only. Use my uploaded file plant_study_39.xlsx in the current working directory, update PV generators 1 and 2 so that p0 becomes [5, 7] and q0 becomes [2, 2.5], run power flow, and print the updated PV setpoints.",
+      "assistant": "import andes\nimport os\nimport numpy as np\n\ncase = os.path.join(os.getcwd(), 'plant_study_39.xlsx')\nssa = andes.load(case, setup=False, no_output=True)\n\nssa.setup()\nssa.PV.set(src='p0', idx=[1, 2], attr='v', value=np.asarray([5, 7], dtype=float))\nssa.PV.set(src='q0', idx=[1, 2], attr='v', value=np.asarray([2, 2.5], dtype=float))\nssa.PFlow.run()\n\nupdated_p = [round(float(value), 4) for value in np.asarray(ssa.PV.p0.v[:2], dtype=float)]\nupdated_q = [round(float(value), 4) for value in np.asarray(ssa.PV.q0.v[:2], dtype=float)]\nprint(f\"Updated PV p0 setpoints: {updated_p}\")\nprint(f\"Updated PV q0 setpoints: {updated_q}\")",
+      "validation": {
+        "expected_stdout": "Updated PV p0 setpoints: [5.0, 7.0]\nUpdated PV q0 setpoints: [2.0, 2.5]",
+        "artifact_files": [],
+        "uploaded_files": {
+          "plant_study_39.xlsx": "ieee39/ieee39.xlsx"
+        }
+      }
+    },
+    {
+      "id": "builtin_ieee39_slack_setpoints",
+      "family": "slack_setpoints",
+      "case_key": "builtin_ieee39",
+      "user": "Return only a runnable Python script. Use the built-in IEEE 39 case, update the slack bus setpoints to v0=1.01 and a0=0.02, run power flow, and print the updated slack setpoints.",
+      "assistant": "import andes\nimport numpy as np\n\nssa = andes.load(\n    andes.get_case('ieee39/ieee39.xlsx'),\n    setup=True,\n    no_output=True,\n)\n\nssa.Slack.set(src='v0', idx=10, attr='v', value=np.asarray([1.01], dtype=float))\nssa.Slack.set(src='a0', idx=10, attr='v', value=np.asarray([0.02], dtype=float))\nssa.PFlow.run()\n\nupdated_v0 = float(np.asarray(ssa.Slack.v0.v, dtype=float)[0])\nupdated_a0 = float(np.asarray(ssa.Slack.a0.v, dtype=float)[0])\nprint(f\"Updated slack setpoints: v0={updated_v0:.4f}, a0={updated_a0:.4f}\")",
+      "validation": {
+        "expected_stdout": "Updated slack setpoints: v0=1.0100, a0=0.0200",
+        "artifact_files": [],
+        "uploaded_files": {}
+      }
+    },
+    {
+      "id": "uploaded_ieee39_slack_setpoints",
+      "family": "slack_setpoints",
+      "case_key": "uploaded_ieee39",
+      "user": "Generate only Python code that I can run as-is. Use my uploaded file plant_study_39.xlsx in the current working directory, update the slack bus setpoints to v0=1.01 and a0=0.02, run power flow, and print the updated slack setpoints.",
+      "assistant": "import andes\nimport os\nimport numpy as np\n\ncase = os.path.join(os.getcwd(), 'plant_study_39.xlsx')\nssa = andes.load(case, setup=True, no_output=True)\n\nssa.Slack.set(src='v0', idx=10, attr='v', value=np.asarray([1.01], dtype=float))\nssa.Slack.set(src='a0', idx=10, attr='v', value=np.asarray([0.02], dtype=float))\nssa.PFlow.run()\n\nupdated_v0 = float(np.asarray(ssa.Slack.v0.v, dtype=float)[0])\nupdated_a0 = float(np.asarray(ssa.Slack.a0.v, dtype=float)[0])\nprint(f\"Updated slack setpoints: v0={updated_v0:.4f}, a0={updated_a0:.4f}\")",
+      "validation": {
+        "expected_stdout": "Updated slack setpoints: v0=1.0100, a0=0.0200",
+        "artifact_files": [],
+        "uploaded_files": {
+          "plant_study_39.xlsx": "ieee39/ieee39.xlsx"
+        }
+      }
+    }
+  ]
+}

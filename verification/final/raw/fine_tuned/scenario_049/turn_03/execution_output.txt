@@ -1,0 +1,8 @@
+STDERR:
+Traceback (most recent call last):
+  File "/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/fine_tuned/20260403_162926/raw/fine_tuned/scenario_049/turn_03/workspace/generated_code.py", line 48, in <module>
+    ssa.add(
+  File "/home/bshe/miniconda3/envs/pfagent/lib/python3.11/site-packages/andes/system/facade.py", line 404, in add
+    raise NotImplementedError(
+NotImplementedError: Adding devices after setup() is not supported. To add devices, reload the case with setup=False, add devices, then call setup().
+

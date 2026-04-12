@@ -1,0 +1,48 @@
+{
+  "actual_result_json": null,
+  "artifact_passed": true,
+  "artifact_paths": [],
+  "artifact_score": 5.0,
+  "code": "# required_dependencies: numpy\nimport json\nimport numpy as np\nimport andes\n\ndef _round_float(value):\n    return round(float(value), 6)\n\nssa = andes.load(\n    andes.get_case(\"5bus/pjm5bus.json\"),\n    setup=True,\n    no_output=True,\n)\n\nssa.PFlow.set(src=\"Slack\", idx=[ssa.Slack.idx.v[0]], attr=\"v0\", value=[1.01])\nssa.PFlow.set(src=\"PQ\", idx=ssa.PQ.idx.v, attr=\"p0\", value=1.04 * ssa.PQ.p0.v)\nssa.PFlow.set(src=\"PQ\", idx=ssa.PQ.idx.v, attr=\"q0\", value=1.04 * ssa.PQ.q0.v)\nssa.PFlow.run()\n\nbus_ids = np.asarray(ssa.Bus.idx.v)\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nline_ids = np.asarray(ssa.Line.idx.v)\nabs_a1 = np.abs(np.asarray(ssa.Line.a1.e, dtype=float))\nslack_bus = int(ssa.Slack.bus.v[0])\nslack_index = int(np.where(bus_ids == slack_bus)[0][0])\nslack_voltage = _round_float(bus_v[slack_index])\nscale_factor = 1.04\nangle_threshold = 0.1\nmask = abs_a1 > angle_threshold\nresult = {\n    \"slack_setpoint\": 1.01,\n    \"scale_factor\": scale_factor,\n    \"angle_threshold\": _round_float(angle_threshold),\n    \"selected_line_ids\": [int(value) for value in line_ids[mask]],\n    \"selected_count\": int(np.sum(mask)),\n}\nprint(\"RESULT_JSON=\" + json.dumps(result, sort_keys=True))",
+  "continuity_score": 6.0,
+  "execution_output": "STDERR:\nTraceback (most recent call last):\n  File \"/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/fine_tuned/20260403_162926/raw/fine_tuned/scenario_090/turn_03/workspace/generated_code.py\", line 49, in <module>\n    ssa.PFlow.set(src=\"Slack\", idx=[ssa.Slack.idx.v[0]], attr=\"v0\", value=[1.01])\n    ^^^^^^^^^^^^^\nAttributeError: 'PFlow' object has no attribute 'set'\n\n",
+  "execution_passed": false,
+  "execution_score": 0.0,
+  "expected_result_json": {
+    "angle_threshold": 0.1,
+    "scale_factor": 1.04,
+    "selected_count": 5,
+    "selected_line_ids": [
+      "0",
+      "1",
+      "2",
+      "5",
+      "6"
+    ],
+    "slack_setpoint": 1.01
+  },
+  "failure_categories": [
+    "grounding",
+    "continuity",
+    "execution",
+    "semantic"
+  ],
+  "format_score": 10.0,
+  "format_valid": true,
+  "grounding_score": 19.23,
+  "issues": [
+    "Missing code requirement: PQ scale call",
+    "Missing code requirement: Slack set call",
+    "Execution failed. Return code: 1",
+    "RESULT_JSON was missing or could not be parsed."
+  ],
+  "prompt": "Please revise the prior script for this next step and return one full script only.\nKeep the slack-bus adjustment from the previous turn.\nAlso scale every PQ load by 1.040, rerun power flow, and report all lines whose absolute sending-end phase angle is above 0.100 radians.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: slack_setpoint, scale_factor, angle_threshold, selected_line_ids, selected_count.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.",
+  "response": "```python\n# required_dependencies: numpy\nimport json\nimport numpy as np\nimport andes\n\ndef _round_float(value):\n    return round(float(value), 6)\n\nssa = andes.load(\n    andes.get_case(\"5bus/pjm5bus.json\"),\n    setup=True,\n    no_output=True,\n)\n\nssa.PFlow.set(src=\"Slack\", idx=[ssa.Slack.idx.v[0]], attr=\"v0\", value=[1.01])\nssa.PFlow.set(src=\"PQ\", idx=ssa.PQ.idx.v, attr=\"p0\", value=1.04 * ssa.PQ.p0.v)\nssa.PFlow.set(src=\"PQ\", idx=ssa.PQ.idx.v, attr=\"q0\", value=1.04 * ssa.PQ.q0.v)\nssa.PFlow.run()\n\nbus_ids = np.asarray(ssa.Bus.idx.v)\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nline_ids = np.asarray(ssa.Line.idx.v)\nabs_a1 = np.abs(np.asarray(ssa.Line.a1.e, dtype=float))\nslack_bus = int(ssa.Slack.bus.v[0])\nslack_index = int(np.where(bus_ids == slack_bus)[0][0])\nslack_voltage = _round_float(bus_v[slack_index])\nscale_factor = 1.04\nangle_threshold = 0.1\nmask = abs_a1 > angle_threshold\nresult = {\n    \"slack_setpoint\": 1.01,\n    \"scale_factor\": scale_factor,\n    \"angle_threshold\": _round_float(angle_threshold),\n    \"selected_line_ids\": [int(value) for value in line_ids[mask]],\n    \"selected_count\": int(np.sum(mask)),\n}\nprint(\"RESULT_JSON=\" + json.dumps(result, sort_keys=True))\n```",
+  "result_json_parse_error": "RESULT_JSON marker not found in stdout.",
+  "score_total": 40.23,
+  "semantic_passed": false,
+  "semantic_score": 0.0,
+  "turn_id": 3,
+  "turn_passed": false,
+  "used_template_fallback": false
+}

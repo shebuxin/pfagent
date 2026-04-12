@@ -1,0 +1,47 @@
+{
+  "actual_result_json": null,
+  "artifact_passed": true,
+  "artifact_paths": [],
+  "artifact_score": 5.0,
+  "code": "# required_dependencies: andes,json\nimport andes\nimport json\nimport numpy as np\n\ndef _round_float(value):\n    return round(float(value), 6)\n\ncase = \"verify_kundur_072.xlsx\"\nssa = andes.load(case, setup=False, no_output=True)\n\nssa.PFlow.run()\n\nbus_ids = np.asarray(ssa.Bus.idx.v)\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nslack_bus = int(ssa.Slack.bus.v[0])\nslack_index = int(np.where(bus_ids == slack_bus)[0][0])\nslack_voltage = _round_float(bus_v[slack_index])\ntop_k = 3\nrank_indices = np.argsort(bus_v)[-top_k:][::-1]\nresult = {\n    \"slack_bus\": slack_bus,\n    \"slack_voltage\": slack_voltage,\n    \"selected_bus_ids\": [int(bus_ids[i]) for i in rank_indices],\n    \"selected_voltages\": [_round_float(bus_v[i]) for i in rank_indices],\n}\nprint(\"RESULT_JSON=\" + json.dumps(result, sort_keys=True))",
+  "continuity_score": 15.0,
+  "execution_output": "STDERR:\nTraceback (most recent call last):\n  File \"/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/fine_tuned/20260403_162926/raw/fine_tuned/scenario_072/turn_01/workspace/generated_code.py\", line 46, in <module>\n    ssa.PFlow.run()\n  File \"/home/bshe/miniconda3/envs/pfagent/lib/python3.11/site-packages/andes/routines/pflow.py\", line 299, in run\n    self.init()\n  File \"/home/bshe/miniconda3/envs/pfagent/lib/python3.11/site-packages/andes/routines/pflow.py\", line 88, in init\n    self.system.set_var_arrays(self.models, inplace=True, alloc=False)\n  File \"/home/bshe/miniconda3/envs/pfagent/lib/python3.11/site-packages/andes/system/facade.py\", line 584, in set_var_arrays\n    var.set_arrays(self.dae, inplace=inplace, alloc=alloc)\n  File \"/home/bshe/miniconda3/envs/pfagent/lib/python3.11/site-packages/andes/core/var.py\", line 203, in set_arrays\n    self._set_arrays_inplace(dae)\n  File \"/home/bshe/miniconda3/envs/pfagent/lib/python3.11/site-packages/andes/core/var.py\", line 214, in _set_arrays_inplace\n    slice_idx = slice(self.a[0], self.a[-1] + 1)\n                      ~~~~~~^^^\nIndexError: index 0 is out of bounds for axis 0 with size 0\n\n",
+  "execution_passed": false,
+  "execution_score": 0.0,
+  "expected_result_json": {
+    "selected_bus_ids": [
+      2,
+      3,
+      1
+    ],
+    "selected_voltages": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "slack_bus": 1,
+    "slack_voltage": 1.0
+  },
+  "failure_categories": [
+    "grounding",
+    "execution",
+    "semantic"
+  ],
+  "format_score": 10.0,
+  "format_valid": true,
+  "grounding_score": 25.0,
+  "issues": [
+    "Code block 1: When using `setup=False`, call `ssa.setup()` before running an ANDES routine.",
+    "Execution failed. Return code: 1",
+    "RESULT_JSON was missing or could not be parsed."
+  ],
+  "prompt": "Return exactly one runnable Python code block and no prose.\nUse my uploaded file verify_kundur_072.xlsx from the current working directory.\nRun power flow and report the top-3 highest-voltage buses plus the slack-bus voltage.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: slack_bus, slack_voltage, selected_bus_ids, selected_voltages.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.\n- `selected_bus_ids` and `selected_voltages` should represent the top highest-voltage buses in descending order.\n\nRuntime file context:\n- Working directory for execution: verification/artifacts_recheck_20260403_parallel/fine_tuned/20260403_162926/raw/fine_tuned/scenario_072/turn_01/workspace\n- Uploaded files available during execution:\n- verify_kundur_072.xlsx\n- Use this exact filename directly in andes.load(...).\n- Do not wrap the uploaded filename with andes.get_case(...).\n",
+  "response": "```python\n# required_dependencies: andes,json\nimport andes\nimport json\nimport numpy as np\n\ndef _round_float(value):\n    return round(float(value), 6)\n\ncase = \"verify_kundur_072.xlsx\"\nssa = andes.load(case, setup=False, no_output=True)\n\nssa.PFlow.run()\n\nbus_ids = np.asarray(ssa.Bus.idx.v)\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nslack_bus = int(ssa.Slack.bus.v[0])\nslack_index = int(np.where(bus_ids == slack_bus)[0][0])\nslack_voltage = _round_float(bus_v[slack_index])\ntop_k = 3\nrank_indices = np.argsort(bus_v)[-top_k:][::-1]\nresult = {\n    \"slack_bus\": slack_bus,\n    \"slack_voltage\": slack_voltage,\n    \"selected_bus_ids\": [int(bus_ids[i]) for i in rank_indices],\n    \"selected_voltages\": [_round_float(bus_v[i]) for i in rank_indices],\n}\nprint(\"RESULT_JSON=\" + json.dumps(result, sort_keys=True))\n```",
+  "result_json_parse_error": "RESULT_JSON marker not found in stdout.",
+  "score_total": 55.0,
+  "semantic_passed": false,
+  "semantic_score": 0.0,
+  "turn_id": 1,
+  "turn_passed": false,
+  "used_template_fallback": false
+}

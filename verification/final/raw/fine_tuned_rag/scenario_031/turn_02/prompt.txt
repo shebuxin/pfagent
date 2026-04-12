@@ -1,0 +1,9 @@
+Follow-up request: update the previous study and return a fresh complete script.
+Keep using the same built-in case from earlier in this conversation.
+Keep the same case, add one new PQ load before setup at bus 15 with idx 'PQ_VERIFY_031_A', p0=0.016, and q0=0.01.
+After rerunning power flow, report every bus below 0.970 p.u. together with the minimum-voltage bus.
+- The script must end by printing exactly one line that starts with RESULT_JSON=
+- The JSON object must contain these keys: added_load_idx, added_load_bus, threshold, selected_bus_ids, selected_count, min_bus, min_voltage.
+- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.
+- Round float values in RESULT_JSON to 6 decimals.
+- `selected_bus_ids` should list all buses below the threshold in ascending bus order.

@@ -1,0 +1,7 @@
+STDERR:
+Traceback (most recent call last):
+  File "/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_030/turn_03/workspace/generated_code.py", line 47, in <module>
+    bus_idx = np.where(ssa.Bus.idx.v == 10)[0][0]
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: Calling nonzero on 0d arrays is not allowed. Use np.atleast_1d(scalar).nonzero() instead. If the context of this error is of the form `arr[nonzero(cond)]`, just use `arr[cond]`.
+

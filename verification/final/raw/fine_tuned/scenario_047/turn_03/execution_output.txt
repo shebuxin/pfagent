@@ -1,0 +1,23 @@
+STDERR:
+Traceback (most recent call last):
+  File "/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/fine_tuned/20260403_162926/raw/fine_tuned/scenario_047/turn_03/workspace/generated_code.py", line 53, in <module>
+    ssa.PFlow.run()
+  File "/home/bshe/miniconda3/envs/pfagent/lib/python3.11/site-packages/andes/routines/pflow.py", line 299, in run
+    self.init()
+  File "/home/bshe/miniconda3/envs/pfagent/lib/python3.11/site-packages/andes/routines/pflow.py", line 89, in init
+    self.system.init(self.models, routine='pflow')
+  File "/home/bshe/miniconda3/envs/pfagent/lib/python3.11/site-packages/andes/system/facade.py", line 643, in init
+    mdl.init(routine=routine)
+  File "/home/bshe/miniconda3/envs/pfagent/lib/python3.11/site-packages/andes/core/model/model.py", line 1281, in init
+    self.s_update()
+  File "/home/bshe/miniconda3/envs/pfagent/lib/python3.11/site-packages/andes/core/model/model.py", line 773, in s_update
+    return self.evaluator.s_update()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bshe/miniconda3/envs/pfagent/lib/python3.11/site-packages/andes/core/model/model_evaluator.py", line 195, in s_update
+    instance.v = np.array(func(*model.s_args[name]),
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bshe/.andes/pycode/PQ.py", line 45, in Ppf_svc
+    return Rlb*v0**2*vcmp_zl + Rub*v0**2*vcmp_zu + p0*vcmp_zi
+           ~~~~~~~~~^~~~~~~~
+ValueError: operands could not be broadcast together with shapes (20,) (19,) 
+

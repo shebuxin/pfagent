@@ -1,0 +1,3 @@
+STDOUT:
+RESULT_JSON={"added_load_bus": 4, "added_load_idx": "PQ_VERIFY_015_A", "min_bus": 3, "min_voltage": 1.01, "selected_bus_ids": [], "selected_count": 0, "threshold": 1.0}
+

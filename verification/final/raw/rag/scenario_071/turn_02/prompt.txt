@@ -1,0 +1,16 @@
+Follow-up request: update the previous study and return a fresh complete script.
+Keep using the same uploaded study file from earlier in this conversation.
+Keep the same case, add one new PQ load before setup at bus 4 with idx 'PQ_VERIFY_071_A', p0=0.01, and q0=0.006.
+After rerunning power flow, report every bus below 0.940 p.u. together with the minimum-voltage bus.
+- The script must end by printing exactly one line that starts with RESULT_JSON=
+- The JSON object must contain these keys: added_load_idx, added_load_bus, threshold, selected_bus_ids, selected_count, min_bus, min_voltage.
+- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.
+- Round float values in RESULT_JSON to 6 decimals.
+- `selected_bus_ids` should list all buses below the threshold in ascending bus order.
+
+Runtime file context:
+- Working directory for execution: verification/artifacts_recheck_20260403_parallel/rag/20260403_162928/raw/rag/scenario_071/turn_02/workspace
+- Uploaded files available during execution:
+- verify_kundur_071.xlsx
+- Use this exact filename directly in andes.load(...).
+- Do not wrap the uploaded filename with andes.get_case(...).

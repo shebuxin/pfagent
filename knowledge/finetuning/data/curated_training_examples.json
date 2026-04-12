@@ -1,0 +1,54 @@
+{
+  "examples": [
+    {
+      "id": "builtin_ieee14_slack_top3",
+      "user": "Write runnable Python code only. Use the built-in IEEE 14 full case, run power flow, print the slack bus voltage, and list the three highest-voltage buses.",
+      "assistant": "import andes\nimport numpy as np\n\nssa = andes.load(\n    andes.get_case('ieee14/ieee14_full.xlsx'),\n    setup=True,\n    no_output=True,\n)\nssa.PFlow.run()\n\nbus_ids = ssa.Bus.idx.v\nbus_v = ssa.Bus.v.v\nslack_v = float(ssa.Slack.v.v[0])\n\ntop_indices = np.argsort(bus_v)[-3:][::-1]\n\nprint(f\"Slack bus voltage: {slack_v:.4f} p.u.\")\nfor rank, idx in enumerate(top_indices, start=1):\n    print(f\"Top {rank}: Bus {bus_ids[idx]} voltage = {bus_v[idx]:.4f} p.u.\")"
+    },
+    {
+      "id": "builtin_kundur_voltage_violation_scan",
+      "user": "Write runnable Python code only. Start from the built-in kundur_full case, add a new PQ load at bus 8 before setup with p0=0.018 and q0=0.01, run power flow, and report any buses outside the range [0.95, 1.05].",
+      "assistant": "import andes\n\nv_min = 0.95\nv_max = 1.05\n\nssa = andes.load(\n    andes.get_case('kundur/kundur_full.xlsx'),\n    setup=False,\n    no_output=True,\n)\nssa.add('PQ', param_dict=dict(bus=8, idx='PQ_EXTRA_8', p0=0.018, q0=0.01))\nssa.setup()\nssa.PFlow.run()\n\nbus_ids = ssa.Bus.idx.v\nbus_v = ssa.Bus.v.v\nviolations = [\n    (bus_id, voltage)\n    for bus_id, voltage in zip(bus_ids, bus_v)\n    if voltage < v_min or voltage > v_max\n]\n\nif violations:\n    print('Voltage violations found:')\n    for bus_id, voltage in violations:\n        print(f\"Bus {bus_id}: {voltage:.4f} p.u.\")\nelse:\n    print('No bus voltage violations found.')"
+    },
+    {
+      "id": "builtin_pjm5bus_top2_line_angles",
+      "user": "Write runnable Python code only. Use the built-in pjm5bus case, run power flow, and print the top two lines by absolute sending-end phase angle.",
+      "assistant": "import andes\nimport numpy as np\n\nssa = andes.load(\n    andes.get_case('5bus/pjm5bus.json'),\n    setup=True,\n    no_output=True,\n)\nssa.PFlow.run()\n\nline_ids = ssa.Line.idx.v\nsending_angles = np.abs(ssa.Line.a1.e)\n\ntop_indices = np.argsort(sending_angles)[-2:][::-1]\nfor rank, idx in enumerate(top_indices, start=1):\n    print(\n        f\"Top {rank}: Line {line_ids[idx]} |a1| = {sending_angles[idx]:.6f} rad\"\n    )"
+    },
+    {
+      "id": "builtin_ieee39_below_threshold_and_slack",
+      "user": "Write runnable Python code only. Use the built-in IEEE 39 case, run power flow, print the slack bus voltage, and list every bus below 0.96 p.u.",
+      "assistant": "import andes\n\nthreshold = 0.96\n\nssa = andes.load(\n    andes.get_case('ieee39/ieee39.xlsx'),\n    setup=True,\n    no_output=True,\n)\nssa.PFlow.run()\n\nprint(f\"Slack bus voltage: {float(ssa.Slack.v.v[0]):.4f} p.u.\")\nfor bus_id, voltage in zip(ssa.Bus.idx.v, ssa.Bus.v.v):\n    if voltage < threshold:\n        print(f\"Bus {bus_id}: {voltage:.4f} p.u.\")"
+    },
+    {
+      "id": "builtin_ieee14_voltage_bar_plot",
+      "user": "Write runnable Python code only. Use the built-in IEEE 14 full case, run power flow, and save a bar plot of the bus voltage profile.",
+      "assistant": "import andes\nimport matplotlib.pyplot as plt\n\nssa = andes.load(\n    andes.get_case('ieee14/ieee14_full.xlsx'),\n    setup=True,\n    no_output=True,\n)\nssa.PFlow.run()\n\nbus_ids = [str(bus_id) for bus_id in ssa.Bus.idx.v]\nbus_v = ssa.Bus.v.v\n\nplt.figure(figsize=(10, 4))\nplt.bar(bus_ids, bus_v)\nplt.xlabel('Bus')\nplt.ylabel('Voltage (p.u.)')\nplt.title('IEEE 14 Bus Voltage Profile')\nplt.tight_layout()\nplt.savefig('ieee14_voltage_profile_bar.png', dpi=150)\nprint('Saved plot to ieee14_voltage_profile_bar.png')"
+    },
+    {
+      "id": "uploaded_ieee39_extremes",
+      "user": "Write runnable Python code only. Use my uploaded file review_upload_39.xlsx from the current working directory, run power flow, and print the buses with the maximum and minimum voltages.",
+      "assistant": "import andes\nimport numpy as np\nimport os\n\ncase = os.path.join(os.getcwd(), 'review_upload_39.xlsx')\nssa = andes.load(case, setup=True, no_output=True)\nssa.PFlow.run()\n\nbus_ids = ssa.Bus.idx.v\nbus_v = ssa.Bus.v.v\nidx_max = int(np.argmax(bus_v))\nidx_min = int(np.argmin(bus_v))\n\nprint(f\"Maximum voltage: Bus {bus_ids[idx_max]} = {bus_v[idx_max]:.4f} p.u.\")\nprint(f\"Minimum voltage: Bus {bus_ids[idx_min]} = {bus_v[idx_min]:.4f} p.u.\")"
+    },
+    {
+      "id": "uploaded_ieee14_count_above_threshold",
+      "user": "Write runnable Python code only. Use my uploaded file north_grid14.xlsx, run power flow, and count how many buses are above 1.01 p.u.",
+      "assistant": "import andes\nimport numpy as np\nimport os\n\ncase = os.path.join(os.getcwd(), 'north_grid14.xlsx')\nssa = andes.load(case, setup=True, no_output=True)\nssa.PFlow.run()\n\nbus_v = ssa.Bus.v.v\ncount = int(np.sum(bus_v > 1.01))\nprint(f\"Buses above 1.01 p.u.: {count}\")"
+    },
+    {
+      "id": "uploaded_kundur_add_load_min_bus",
+      "user": "Write runnable Python code only. Use my uploaded file kundur_ops_case.xlsx, add a PQ load at bus 5 before setup with p0=0.02 and q0=0.012, run power flow, and print the minimum-voltage bus.",
+      "assistant": "import andes\nimport numpy as np\nimport os\n\ncase = os.path.join(os.getcwd(), 'kundur_ops_case.xlsx')\nssa = andes.load(case, setup=False, no_output=True)\nssa.add('PQ', param_dict=dict(bus=5, idx='PQ_EXTRA_5', p0=0.02, q0=0.012))\nssa.setup()\nssa.PFlow.run()\n\nbus_ids = ssa.Bus.idx.v\nbus_v = ssa.Bus.v.v\nidx_min = int(np.argmin(bus_v))\nprint(f\"Minimum-voltage bus: Bus {bus_ids[idx_min]} = {bus_v[idx_min]:.4f} p.u.\")"
+    },
+    {
+      "id": "uploaded_pjm5_angle_threshold",
+      "user": "Write runnable Python code only. Use my uploaded file pjm5_snapshot.json, run power flow, and print every line whose absolute sending-end phase angle is above 0.08 radians.",
+      "assistant": "import andes\nimport os\n\nthreshold = 0.08\n\ncase = os.path.join(os.getcwd(), 'pjm5_snapshot.json')\nssa = andes.load(case, setup=True, no_output=True)\nssa.PFlow.run()\n\nfor line_id, angle in zip(ssa.Line.idx.v, ssa.Line.a1.e):\n    if abs(angle) > threshold:\n        print(f\"Line {line_id}: |a1| = {abs(angle):.6f} rad\")"
+    },
+    {
+      "id": "uploaded_ieee39_slack_and_top2",
+      "user": "Write runnable Python code only. Use my uploaded file plant_study_39.xlsx, run power flow, print the slack bus voltage, and list the two highest-voltage buses.",
+      "assistant": "import andes\nimport numpy as np\nimport os\n\ncase = os.path.join(os.getcwd(), 'plant_study_39.xlsx')\nssa = andes.load(case, setup=True, no_output=True)\nssa.PFlow.run()\n\nbus_ids = ssa.Bus.idx.v\nbus_v = ssa.Bus.v.v\nslack_v = float(ssa.Slack.v.v[0])\n\ntop_indices = np.argsort(bus_v)[-2:][::-1]\nprint(f\"Slack bus voltage: {slack_v:.4f} p.u.\")\nfor rank, idx in enumerate(top_indices, start=1):\n    print(f\"Top {rank}: Bus {bus_ids[idx]} voltage = {bus_v[idx]:.4f} p.u.\")"
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "actual_result_json": {
+    "max_bus": 6,
+    "max_voltage": 1.03,
+    "min_bus": 3,
+    "min_voltage": 1.01
+  },
+  "artifact_passed": true,
+  "artifact_paths": [],
+  "artifact_score": 5.0,
+  "code": "# required_dependencies: andes,numpy\nimport json\nimport andes\nimport numpy as np\n\nssa = andes.load(\n    andes.get_case(\"ieee14/ieee14_full.xlsx\"),\n    setup=False,\n    no_output=True,\n    log=False,\n)\n\nssa.setup()\n\nssa.PFlow.run()\n\nbus_ids = np.asarray(ssa.Bus.idx.v, dtype=int)\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\n\nresult_json = {}\nresult_json[\"max_bus\"] = int(bus_ids[int(np.argmax(bus_v))])\nresult_json[\"max_voltage\"] = round(float(bus_v[int(np.argmax(bus_v))]), 6)\nresult_json[\"min_bus\"] = int(bus_ids[int(np.argmin(bus_v))])\nresult_json[\"min_voltage\"] = round(float(bus_v[int(np.argmin(bus_v))]), 6)\n\nprint(\"RESULT_JSON=\" + json.dumps(result_json, sort_keys=True))",
+  "continuity_score": 15.0,
+  "execution_output": "STDOUT:\nRESULT_JSON={\"max_bus\": 6, \"max_voltage\": 1.03, \"min_bus\": 3, \"min_voltage\": 1.01}\n\n",
+  "execution_passed": true,
+  "execution_score": 20.0,
+  "expected_result_json": {
+    "max_bus": 6,
+    "max_voltage": 1.03,
+    "min_bus": 3,
+    "min_voltage": 1.01
+  },
+  "failure_categories": [],
+  "format_score": 10.0,
+  "format_valid": true,
+  "grounding_score": 25.0,
+  "issues": [],
+  "prompt": "Please answer with one runnable Python script only and nothing else.\nUse the built-in IEEE 14 full case.\nRun power flow and report the maximum-voltage bus and minimum-voltage bus.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: max_bus, max_voltage, min_bus, min_voltage.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.",
+  "response": "```python\n# required_dependencies: andes,numpy\nimport json\nimport andes\nimport numpy as np\n\nssa = andes.load(\n    andes.get_case(\"ieee14/ieee14_full.xlsx\"),\n    setup=False,\n    no_output=True,\n    log=False,\n)\n\nssa.setup()\n\nssa.PFlow.run()\n\nbus_ids = np.asarray(ssa.Bus.idx.v, dtype=int)\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\n\nresult_json = {}\nresult_json[\"max_bus\"] = int(bus_ids[int(np.argmax(bus_v))])\nresult_json[\"max_voltage\"] = round(float(bus_v[int(np.argmax(bus_v))]), 6)\nresult_json[\"min_bus\"] = int(bus_ids[int(np.argmin(bus_v))])\nresult_json[\"min_voltage\"] = round(float(bus_v[int(np.argmin(bus_v))]), 6)\n\nprint(\"RESULT_JSON=\" + json.dumps(result_json, sort_keys=True))\n```",
+  "result_json_parse_error": null,
+  "score_total": 100.0,
+  "semantic_passed": true,
+  "semantic_score": 25.0,
+  "turn_id": 1,
+  "turn_passed": true,
+  "used_template_fallback": false
+}

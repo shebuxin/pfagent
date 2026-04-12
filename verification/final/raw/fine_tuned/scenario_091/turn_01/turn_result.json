@@ -1,0 +1,39 @@
+{
+  "actual_result_json": null,
+  "artifact_passed": true,
+  "artifact_paths": [],
+  "artifact_score": 5.0,
+  "code": "# required_dependencies: andes,json\nimport andes\nimport json\n\ndef _round_float(value):\n    return round(float(value), 6)\n\nssa = andes.load(\n    andes.get_case(\"5bus/pjm5bus.json\"),\n    setup=False,\n    no_output=True,\n)\n\nssa.setup()\nssa.PFlow.run()\n\nbus_ids = ssa.Bus.idx.v\nbus_v = ssa.Bus.v.v\nslack_bus = int(ssa.Slack.bus.v[0])\nslack_index = int(ssa.Bus.idx.v.tolist().index(slack_bus))\nslack_voltage = _round_float(ssa.Bus.v.v[slack_index])\nmax_index = int(bus_v.argmax())\nmin_index = int(bus_v.argmin())\nresult = {\n    \"slack_bus\": slack_bus,\n    \"slack_voltage\": slack_voltage,\n    \"max_bus\": int(bus_ids[max_index]),\n    \"max_voltage\": _round_float(bus_v[max_index]),\n    \"min_bus\": int(bus_ids[min_index]),\n    \"min_voltage\": _round_float(bus_v[min_index]),\n}\nprint(\"RESULT_JSON=\" + json.dumps(result, sort_keys=True))",
+  "continuity_score": 15.0,
+  "execution_output": "STDERR:\nTraceback (most recent call last):\n  File \"/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/fine_tuned/20260403_162926/raw/fine_tuned/scenario_091/turn_01/workspace/generated_code.py\", line 54, in <module>\n    slack_index = int(ssa.Bus.idx.v.tolist().index(slack_bus))\n                      ^^^^^^^^^^^^^^^^^^^^\nAttributeError: 'list' object has no attribute 'tolist'\n\n",
+  "execution_passed": false,
+  "execution_score": 0.0,
+  "expected_result_json": {
+    "max_bus": 2,
+    "max_voltage": 1.0,
+    "min_bus": 1,
+    "min_voltage": 0.991799,
+    "slack_bus": 3,
+    "slack_voltage": 1.0
+  },
+  "failure_categories": [
+    "execution",
+    "semantic"
+  ],
+  "format_score": 10.0,
+  "format_valid": true,
+  "grounding_score": 25.0,
+  "issues": [
+    "Execution failed. Return code: 1",
+    "RESULT_JSON was missing or could not be parsed."
+  ],
+  "prompt": "Return exactly one runnable Python code block and no prose.\nUse the built-in PJM 5-bus case.\nRun power flow and report the maximum-voltage bus, minimum-voltage bus, and slack-bus voltage.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: slack_bus, slack_voltage, max_bus, max_voltage, min_bus, min_voltage.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.",
+  "response": "```python\n# required_dependencies: andes,json\nimport andes\nimport json\n\ndef _round_float(value):\n    return round(float(value), 6)\n\nssa = andes.load(\n    andes.get_case(\"5bus/pjm5bus.json\"),\n    setup=False,\n    no_output=True,\n)\n\nssa.setup()\nssa.PFlow.run()\n\nbus_ids = ssa.Bus.idx.v\nbus_v = ssa.Bus.v.v\nslack_bus = int(ssa.Slack.bus.v[0])\nslack_index = int(ssa.Bus.idx.v.tolist().index(slack_bus))\nslack_voltage = _round_float(ssa.Bus.v.v[slack_index])\nmax_index = int(bus_v.argmax())\nmin_index = int(bus_v.argmin())\nresult = {\n    \"slack_bus\": slack_bus,\n    \"slack_voltage\": slack_voltage,\n    \"max_bus\": int(bus_ids[max_index]),\n    \"max_voltage\": _round_float(bus_v[max_index]),\n    \"min_bus\": int(bus_ids[min_index]),\n    \"min_voltage\": _round_float(bus_v[min_index]),\n}\nprint(\"RESULT_JSON=\" + json.dumps(result, sort_keys=True))\n```",
+  "result_json_parse_error": "RESULT_JSON marker not found in stdout.",
+  "score_total": 55.0,
+  "semantic_passed": false,
+  "semantic_score": 0.0,
+  "turn_id": 1,
+  "turn_passed": false,
+  "used_template_fallback": false
+}

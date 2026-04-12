@@ -1,0 +1,45 @@
+{
+  "actual_result_json": null,
+  "artifact_passed": true,
+  "artifact_paths": [],
+  "artifact_score": 5.0,
+  "code": "# required_dependencies: andes\nimport andes\nimport numpy as np\n\n# Load the IEEE 39 case\ncase = andes.get_case(\"ieee39/ieee39.xlsx\")\nssa = andes.load(case, setup=True, no_output=True, log=False)\n\n# Run the power flow\nandes.run_power_flow(ssa)\n\n# Get slack bus information\nslack_bus = ssa.SlackBus.idx.v[0]\nslack_voltage = round(ssa.SlackBus.v.v[0], 6)\n\n# Get voltage of all buses\nbus_voltages = ssa.Bus.v.v\nbus_ids = ssa.Bus.idx.v\n\n# Find the top 2 highest voltage buses\nsorted_indices = np.argsort(bus_voltages)[-2:][::-1]  # Sort and get last two in descending order\nselected_bus_ids = bus_ids[sorted_indices].tolist()\nselected_voltages = [round(bus_voltages[idx], 6) for idx in sorted_indices]\n\n# Prepare RESULT_JSON\nRESULT_JSON = {\n    \"slack_bus\": int(slack_bus),\n    \"slack_voltage\": float(slack_voltage),\n    \"selected_bus_ids\": selected_bus_ids,\n    \"selected_voltages\": selected_voltages\n}\n\n# Output the result\nprint(\"RESULT_JSON=\", RESULT_JSON)",
+  "continuity_score": 15.0,
+  "execution_output": "STDERR:\nTraceback (most recent call last):\n  File \"/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_029/turn_01/workspace/generated_code.py\", line 44, in <module>\n    andes.run_power_flow(ssa)\n    ^^^^^^^^^^^^^^^^^^^^\nAttributeError: module 'andes' has no attribute 'run_power_flow'\n\n",
+  "execution_passed": false,
+  "execution_score": 0.0,
+  "expected_result_json": {
+    "selected_bus_ids": [
+      36,
+      35
+    ],
+    "selected_voltages": [
+      1.0635,
+      1.0493
+    ],
+    "slack_bus": 39,
+    "slack_voltage": 1.03
+  },
+  "failure_categories": [
+    "format",
+    "execution",
+    "semantic"
+  ],
+  "format_score": 0.0,
+  "format_valid": false,
+  "grounding_score": 25.0,
+  "issues": [
+    "Response was not exactly one fenced Python code block.",
+    "Execution failed. Return code: 1",
+    "RESULT_JSON was missing or could not be parsed."
+  ],
+  "prompt": "Write one complete runnable Python script only, inside a single ```python block.\nUse the built-in IEEE 39 case.\nRun power flow and report the top-2 highest-voltage buses plus the slack-bus voltage.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: slack_bus, slack_voltage, selected_bus_ids, selected_voltages.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.\n- `selected_bus_ids` and `selected_voltages` should represent the top highest-voltage buses in descending order.",
+  "response": "Here's the corrected Python script that uses the built-in IEEE 39 case and performs the power flow analysis as requested. This script will print the required JSON object at the end.\n\n```python\n# required_dependencies: andes\nimport andes\nimport numpy as np\n\n# Load the IEEE 39 case\ncase = andes.get_case(\"ieee39/ieee39.xlsx\")\nssa = andes.load(case, setup=True, no_output=True, log=False)\n\n# Run the power flow\nandes.run_power_flow(ssa)\n\n# Get slack bus information\nslack_bus = ssa.SlackBus.idx.v[0]\nslack_voltage = round(ssa.SlackBus.v.v[0], 6)\n\n# Get voltage of all buses\nbus_voltages = ssa.Bus.v.v\nbus_ids = ssa.Bus.idx.v\n\n# Find the top 2 highest voltage buses\nsorted_indices = np.argsort(bus_voltages)[-2:][::-1]  # Sort and get last two in descending order\nselected_bus_ids = bus_ids[sorted_indices].tolist()\nselected_voltages = [round(bus_voltages[idx], 6) for idx in sorted_indices]\n\n# Prepare RESULT_JSON\nRESULT_JSON = {\n    \"slack_bus\": int(slack_bus),\n    \"slack_voltage\": float(slack_voltage),\n    \"selected_bus_ids\": selected_bus_ids,\n    \"selected_voltages\": selected_voltages\n}\n\n# Output the result\nprint(\"RESULT_JSON=\", RESULT_JSON)\n``` \n\nMake sure you have the `andes` library installed and that you run this code in an environment where it can access the necessary ANDES built-in case files.",
+  "result_json_parse_error": "RESULT_JSON marker not found in stdout.",
+  "score_total": 45.0,
+  "semantic_passed": false,
+  "semantic_score": 0.0,
+  "turn_id": 1,
+  "turn_passed": false,
+  "used_template_fallback": false
+}

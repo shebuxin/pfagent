@@ -1,0 +1,126 @@
+{
+  "blueprint": "extremes_pv_scale_barplot",
+  "case_family": "kundur",
+  "case_source": "uploaded",
+  "scenario_id": "scenario_080",
+  "source_case_path": "kundur/kundur_full.xlsx",
+  "turns": [
+    {
+      "actual_result_json": null,
+      "artifact_passed": true,
+      "artifact_paths": [],
+      "artifact_score": 5.0,
+      "code": "# required_dependencies: andes\nimport andes\n\n# Load the uploaded case\ncase = \"verify_kundur_080.xlsx\"\nssa = andes.load(case, setup=True, no_output=True, log=False)\n\n# Run power flow\nresult = andes.run(ssa)\n\n# Identify max and min voltage buses\nmax_voltage_bus_idx = ssa.bus.v[np.argmax(ssa.bus.v)]\nmin_voltage_bus_idx = ssa.bus.v[np.argmin(ssa.bus.v)]\nmax_voltage = round(ssa.bus.v.max(), 6)\nmin_voltage = round(ssa.bus.v.min(), 6)\n\n# Prepare JSON result\nRESULT_JSON = {\n    \"max_bus\": int(max_voltage_bus_idx),\n    \"max_voltage\": float(max_voltage),\n    \"min_bus\": int(min_voltage_bus_idx),\n    \"min_voltage\": float(min_voltage),\n}\n\nprint(\"RESULT_JSON=\", RESULT_JSON)",
+      "continuity_score": 15.0,
+      "execution_output": "STDERR:\nTraceback (most recent call last):\n  File \"/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_080/turn_01/workspace/generated_code.py\", line 43, in <module>\n    result = andes.run(ssa)\n             ^^^^^^^^^^^^^^\n  File \"/home/bshe/miniconda3/envs/pfagent/lib/python3.11/site-packages/andes/main.py\", line 650, in run\n    cases = _find_cases(filename, input_path)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/bshe/miniconda3/envs/pfagent/lib/python3.11/site-packages/andes/main.py\", line 484, in _find_cases\n    if len(filename) == 0:\n       ^^^^^^^^^^^^^\nTypeError: object of type 'System' has no len()\n\n",
+      "execution_passed": false,
+      "execution_score": 0.0,
+      "expected_result_json": {
+        "max_bus": 2,
+        "max_voltage": 1.0,
+        "min_bus": 8,
+        "min_voltage": 0.954
+      },
+      "failure_categories": [
+        "execution",
+        "semantic"
+      ],
+      "format_score": 10.0,
+      "format_valid": true,
+      "grounding_score": 25.0,
+      "issues": [
+        "Execution failed. Return code: 1",
+        "RESULT_JSON was missing or could not be parsed."
+      ],
+      "prompt": "Give me code only: one full Python script in one fenced block.\nUse my uploaded file verify_kundur_080.xlsx from the current working directory.\nRun power flow and report the maximum-voltage bus and minimum-voltage bus.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: max_bus, max_voltage, min_bus, min_voltage.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.\n\nRuntime file context:\n- Working directory for execution: verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_080/turn_01/workspace\n- Uploaded files available during execution:\n- verify_kundur_080.xlsx\n- Use this exact filename directly in andes.load(...).\n- Do not wrap the uploaded filename with andes.get_case(...).\n",
+      "response": "```python\n# required_dependencies: andes\nimport andes\n\n# Load the uploaded case\ncase = \"verify_kundur_080.xlsx\"\nssa = andes.load(case, setup=True, no_output=True, log=False)\n\n# Run power flow\nresult = andes.run(ssa)\n\n# Identify max and min voltage buses\nmax_voltage_bus_idx = ssa.bus.v[np.argmax(ssa.bus.v)]\nmin_voltage_bus_idx = ssa.bus.v[np.argmin(ssa.bus.v)]\nmax_voltage = round(ssa.bus.v.max(), 6)\nmin_voltage = round(ssa.bus.v.min(), 6)\n\n# Prepare JSON result\nRESULT_JSON = {\n    \"max_bus\": int(max_voltage_bus_idx),\n    \"max_voltage\": float(max_voltage),\n    \"min_bus\": int(min_voltage_bus_idx),\n    \"min_voltage\": float(min_voltage),\n}\n\nprint(\"RESULT_JSON=\", RESULT_JSON)\n```",
+      "result_json_parse_error": "RESULT_JSON marker not found in stdout.",
+      "score_total": 55.0,
+      "semantic_passed": false,
+      "semantic_score": 0.0,
+      "turn_id": 1,
+      "turn_passed": false,
+      "used_template_fallback": false
+    },
+    {
+      "actual_result_json": null,
+      "artifact_passed": true,
+      "artifact_paths": [],
+      "artifact_score": 5.0,
+      "code": "# required_dependencies: andes\nimport andes\n\n# Load the uploaded case\ncase = \"verify_kundur_080.xlsx\"\nssa = andes.load(case, setup=True, no_output=True, log=False)\n\n# Set the first PV voltage target to 1.000\npv_index = ssa.PV.idx.v[0]  # Get the index of the first PV\nssa.PV.set(pv_index, 'Vtarget', 1.000)\n\n# Rerun power flow\nresult = andes.run(ssa)\n\n# Get the affected PV bus voltage\naffected_pv_voltage = round(ssa.PV.v[vv.pv_index], 6)\n\n# Count the number of buses above 1.000 p.u.\nabove_target_count = (ssa.bus.v > 1.000).sum()\n\n# Prepare JSON result\nRESULT_JSON = {\n    \"pv_bus\": int(ssa.PV.bus.v[pv_index]),\n    \"pv_setpoint\": 1.000,\n    \"pv_voltage\": float(affected_pv_voltage),\n    \"selected_count\": int(above_target_count),\n}\n\nprint(\"RESULT_JSON=\", RESULT_JSON)",
+      "continuity_score": 15.0,
+      "execution_output": "STDERR:\nTraceback (most recent call last):\n  File \"/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_080/turn_02/workspace/generated_code.py\", line 44, in <module>\n    ssa.PV.set(pv_index, 'Vtarget', 1.000)\n  File \"/home/bshe/miniconda3/envs/pfagent/lib/python3.11/site-packages/andes/core/model/model.py\", line 617, in set\n    uid = self.idx2uid(idx)\n          ^^^^^^^^^^^^^^^^^\n  File \"/home/bshe/miniconda3/envs/pfagent/lib/python3.11/site-packages/andes/core/model/model.py\", line 454, in idx2uid\n    return self._one_idx2uid(idx)\n           ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/bshe/miniconda3/envs/pfagent/lib/python3.11/site-packages/andes/core/model/model.py\", line 470, in _one_idx2uid\n    raise KeyError(\"<%s>: device not exist with idx=%s.\" %\nKeyError: '<PV>: device not exist with idx=Vtarget.'\n\n",
+      "execution_passed": false,
+      "execution_score": 0.0,
+      "expected_result_json": {
+        "pv_bus": 2,
+        "pv_setpoint": 1.0,
+        "pv_voltage": 1.0,
+        "selected_count": 4
+      },
+      "failure_categories": [
+        "execution",
+        "semantic"
+      ],
+      "format_score": 10.0,
+      "format_valid": true,
+      "grounding_score": 25.0,
+      "issues": [
+        "Execution failed. Return code: 1",
+        "RESULT_JSON was missing or could not be parsed."
+      ],
+      "prompt": "Follow-up request: update the previous study and return a fresh complete script.\nKeep using the same uploaded study file from earlier in this conversation.\nKeep the same case, set the first PV voltage target to 1.000, rerun power flow, and report the affected PV bus voltage together with how many buses are above 1.000 p.u.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: pv_bus, pv_setpoint, pv_voltage, selected_count.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.\n\nRuntime file context:\n- Working directory for execution: verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_080/turn_02/workspace\n- Uploaded files available during execution:\n- verify_kundur_080.xlsx\n- Use this exact filename directly in andes.load(...).\n- Do not wrap the uploaded filename with andes.get_case(...).\n",
+      "response": "```python\n# required_dependencies: andes\nimport andes\n\n# Load the uploaded case\ncase = \"verify_kundur_080.xlsx\"\nssa = andes.load(case, setup=True, no_output=True, log=False)\n\n# Set the first PV voltage target to 1.000\npv_index = ssa.PV.idx.v[0]  # Get the index of the first PV\nssa.PV.set(pv_index, 'Vtarget', 1.000)\n\n# Rerun power flow\nresult = andes.run(ssa)\n\n# Get the affected PV bus voltage\naffected_pv_voltage = round(ssa.PV.v[vv.pv_index], 6)\n\n# Count the number of buses above 1.000 p.u.\nabove_target_count = (ssa.bus.v > 1.000).sum()\n\n# Prepare JSON result\nRESULT_JSON = {\n    \"pv_bus\": int(ssa.PV.bus.v[pv_index]),\n    \"pv_setpoint\": 1.000,\n    \"pv_voltage\": float(affected_pv_voltage),\n    \"selected_count\": int(above_target_count),\n}\n\nprint(\"RESULT_JSON=\", RESULT_JSON)\n```",
+      "result_json_parse_error": "RESULT_JSON marker not found in stdout.",
+      "score_total": 55.0,
+      "semantic_passed": false,
+      "semantic_score": 0.0,
+      "turn_id": 2,
+      "turn_passed": false,
+      "used_template_fallback": false
+    },
+    {
+      "actual_result_json": null,
+      "artifact_passed": false,
+      "artifact_paths": [],
+      "artifact_score": 0.0,
+      "code": "# required_dependencies: andes, matplotlib\nimport andes\nimport matplotlib.pyplot as plt\n\n# Load the uploaded case\ncase = \"verify_kundur_080.xlsx\"\nssa = andes.load(case, setup=True, no_output=True, log=False)\n\n# Set the first PV voltage target to 1.000\npv_index = ssa.PV.idx.v[0]  # Get the index of the first PV\nssa.PV.set(pv_index, 'Vtarget', 1.000)\n\n# Scale every PQ load by 1.040\nscale_factor = 1.040\nssa.PQ.set('P', ssa.PQ.p_mw * scale_factor)\nssa.PQ.set('Q', ssa.PQ.q_mvar * scale_factor)\n\n# Rerun power flow\nresult = andes.run(ssa)\n\n# Extract bus voltage information\nbus_voltages = ssa.bus.v\n\n# Find min and max voltage buses\nmin_bus_index = bus_voltages.argmin()\nmax_bus_index = bus_voltages.argmax()\nmin_voltage = round(bus_voltages.min(), 6)\nmax_voltage = round(bus_voltages.max(), 6)\n\n# Prepare bar chart\nplt.figure(figsize=(10, 6))\nplt.bar(range(len(bus_voltages)), bus_voltages, color='lightblue')\nplt.xlabel('Bus Number')\nplt.ylabel('Voltage (p.u.)')\nplt.title('Bus Voltages')\nplt.xticks(range(len(bus_voltages)))\nplt.grid(axis='y')\n\n# Save the bar chart\nplot_file = 'scenario_080_turn3_bar.png'\nplt.savefig(plot_file)\nplt.close()\n\n# Prepare JSON result\nRESULT_JSON = {\n    \"scale_factor\": float(scale_factor),\n    \"min_bus\": int(ssa.bus.idx.v[min_bus_index]),\n    \"min_voltage\": float(min_voltage),\n    \"max_bus\": int(ssa.bus.idx.v[max_bus_index]),\n    \"max_voltage\": float(max_voltage),\n    \"plot_file\": plot_file,\n}\n\nprint(\"RESULT_JSON=\", RESULT_JSON)",
+      "continuity_score": 15.0,
+      "execution_output": "STDERR:\nTraceback (most recent call last):\n  File \"/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_080/turn_03/workspace/generated_code.py\", line 45, in <module>\n    ssa.PV.set(pv_index, 'Vtarget', 1.000)\n  File \"/home/bshe/miniconda3/envs/pfagent/lib/python3.11/site-packages/andes/core/model/model.py\", line 617, in set\n    uid = self.idx2uid(idx)\n          ^^^^^^^^^^^^^^^^^\n  File \"/home/bshe/miniconda3/envs/pfagent/lib/python3.11/site-packages/andes/core/model/model.py\", line 454, in idx2uid\n    return self._one_idx2uid(idx)\n           ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/bshe/miniconda3/envs/pfagent/lib/python3.11/site-packages/andes/core/model/model.py\", line 470, in _one_idx2uid\n    raise KeyError(\"<%s>: device not exist with idx=%s.\" %\nKeyError: '<PV>: device not exist with idx=Vtarget.'\n\n",
+      "execution_passed": false,
+      "execution_score": 0.0,
+      "expected_result_json": {
+        "max_bus": 2,
+        "max_voltage": 1.0,
+        "min_bus": 7,
+        "min_voltage": 0.944207,
+        "plot_file": "scenario_080_turn3_bar.png",
+        "scale_factor": 1.04
+      },
+      "failure_categories": [
+        "execution",
+        "semantic",
+        "artifact"
+      ],
+      "format_score": 10.0,
+      "format_valid": true,
+      "grounding_score": 25.0,
+      "issues": [
+        "Execution failed. Return code: 1",
+        "RESULT_JSON was missing or could not be parsed.",
+        "Plot filename mismatch: expected scenario_080_turn3_bar.png, got None",
+        "Expected plot artifact not found: scenario_080_turn3_bar.png"
+      ],
+      "prompt": "Please revise the prior script for this next step and return one full script only.\nKeep the PV setpoint adjustment from the previous turn.\nAlso scale every PQ load by 1.040, rerun power flow, and save a bar chart of the bus voltages to 'scenario_080_turn3_bar.png'.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: scale_factor, min_bus, min_voltage, max_bus, max_voltage, plot_file.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.\n- Use a bar chart, not a line chart.\n\nRuntime file context:\n- Working directory for execution: verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_080/turn_03/workspace\n- Uploaded files available during execution:\n- verify_kundur_080.xlsx\n- Use this exact filename directly in andes.load(...).\n- Do not wrap the uploaded filename with andes.get_case(...).\n",
+      "response": "```python\n# required_dependencies: andes, matplotlib\nimport andes\nimport matplotlib.pyplot as plt\n\n# Load the uploaded case\ncase = \"verify_kundur_080.xlsx\"\nssa = andes.load(case, setup=True, no_output=True, log=False)\n\n# Set the first PV voltage target to 1.000\npv_index = ssa.PV.idx.v[0]  # Get the index of the first PV\nssa.PV.set(pv_index, 'Vtarget', 1.000)\n\n# Scale every PQ load by 1.040\nscale_factor = 1.040\nssa.PQ.set('P', ssa.PQ.p_mw * scale_factor)\nssa.PQ.set('Q', ssa.PQ.q_mvar * scale_factor)\n\n# Rerun power flow\nresult = andes.run(ssa)\n\n# Extract bus voltage information\nbus_voltages = ssa.bus.v\n\n# Find min and max voltage buses\nmin_bus_index = bus_voltages.argmin()\nmax_bus_index = bus_voltages.argmax()\nmin_voltage = round(bus_voltages.min(), 6)\nmax_voltage = round(bus_voltages.max(), 6)\n\n# Prepare bar chart\nplt.figure(figsize=(10, 6))\nplt.bar(range(len(bus_voltages)), bus_voltages, color='lightblue')\nplt.xlabel('Bus Number')\nplt.ylabel('Voltage (p.u.)')\nplt.title('Bus Voltages')\nplt.xticks(range(len(bus_voltages)))\nplt.grid(axis='y')\n\n# Save the bar chart\nplot_file = 'scenario_080_turn3_bar.png'\nplt.savefig(plot_file)\nplt.close()\n\n# Prepare JSON result\nRESULT_JSON = {\n    \"scale_factor\": float(scale_factor),\n    \"min_bus\": int(ssa.bus.idx.v[min_bus_index]),\n    \"min_voltage\": float(min_voltage),\n    \"max_bus\": int(ssa.bus.idx.v[max_bus_index]),\n    \"max_voltage\": float(max_voltage),\n    \"plot_file\": plot_file,\n}\n\nprint(\"RESULT_JSON=\", RESULT_JSON)\n```",
+      "result_json_parse_error": "RESULT_JSON marker not found in stdout.",
+      "score_total": 50.0,
+      "semantic_passed": false,
+      "semantic_score": 0.0,
+      "turn_id": 3,
+      "turn_passed": false,
+      "used_template_fallback": false
+    }
+  ],
+  "uploaded_filename": "verify_kundur_080.xlsx"
+}

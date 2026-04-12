@@ -1,0 +1,37 @@
+{
+  "actual_result_json": null,
+  "artifact_passed": true,
+  "artifact_paths": [],
+  "artifact_score": 5.0,
+  "code": "# required_dependencies: andes\nimport andes\n\ncase = andes.load(andes.get_case(\"kundur/kundur_full.xlsx\"), setup=True, no_output=True, log=False)\nresult = andes.run_power_flow(case)\n\nmax_bus_index = result.V.idx.v[np.argmax(result.V.mag.v)]\nmin_bus_index = result.V.idx.v[np.argmin(result.V.mag.v)]\nmax_voltage = round(np.max(result.V.mag.v), 6)\nmin_voltage = round(np.min(result.V.mag.v), 6)\n\nRESULT_JSON = {\n    \"max_bus\": int(max_bus_index),\n    \"max_voltage\": float(max_voltage),\n    \"min_bus\": int(min_bus_index),\n    \"min_voltage\": float(min_voltage)\n}\n\nprint(\"RESULT_JSON=\", RESULT_JSON)",
+  "continuity_score": 15.0,
+  "execution_output": "STDERR:\nTraceback (most recent call last):\n  File \"/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_066/turn_01/workspace/generated_code.py\", line 39, in <module>\n    result = andes.run_power_flow(case)\n             ^^^^^^^^^^^^^^^^^^^^\nAttributeError: module 'andes' has no attribute 'run_power_flow'\n\n",
+  "execution_passed": false,
+  "execution_score": 0.0,
+  "expected_result_json": {
+    "max_bus": 2,
+    "max_voltage": 1.0,
+    "min_bus": 8,
+    "min_voltage": 0.954
+  },
+  "failure_categories": [
+    "execution",
+    "semantic"
+  ],
+  "format_score": 10.0,
+  "format_valid": true,
+  "grounding_score": 25.0,
+  "issues": [
+    "Execution failed. Return code: 1",
+    "RESULT_JSON was missing or could not be parsed."
+  ],
+  "prompt": "Return exactly one runnable Python code block and no prose.\nUse the built-in Kundur full case.\nRun power flow and report the maximum-voltage bus and minimum-voltage bus.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: max_bus, max_voltage, min_bus, min_voltage.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.",
+  "response": "```python\n# required_dependencies: andes\nimport andes\n\ncase = andes.load(andes.get_case(\"kundur/kundur_full.xlsx\"), setup=True, no_output=True, log=False)\nresult = andes.run_power_flow(case)\n\nmax_bus_index = result.V.idx.v[np.argmax(result.V.mag.v)]\nmin_bus_index = result.V.idx.v[np.argmin(result.V.mag.v)]\nmax_voltage = round(np.max(result.V.mag.v), 6)\nmin_voltage = round(np.min(result.V.mag.v), 6)\n\nRESULT_JSON = {\n    \"max_bus\": int(max_bus_index),\n    \"max_voltage\": float(max_voltage),\n    \"min_bus\": int(min_bus_index),\n    \"min_voltage\": float(min_voltage)\n}\n\nprint(\"RESULT_JSON=\", RESULT_JSON)\n```",
+  "result_json_parse_error": "RESULT_JSON marker not found in stdout.",
+  "score_total": 55.0,
+  "semantic_passed": false,
+  "semantic_score": 0.0,
+  "turn_id": 1,
+  "turn_passed": false,
+  "used_template_fallback": false
+}

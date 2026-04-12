@@ -1,0 +1,37 @@
+{
+  "actual_result_json": null,
+  "artifact_passed": true,
+  "artifact_paths": [],
+  "artifact_score": 5.0,
+  "code": "# required_dependencies: andes,json\nimport andes\nimport json\nimport os\n\ndef _round_float(value):\n    return round(float(value), 6)\n\ncwd = os.getcwd()\ncase = os.path.join(cwd, \"verify_ieee39_053.xlsx\")\nssa = andes.load(case, setup=True, no_output=True, log=False)\n\nssa.PFlow.run()\n\nbus_ids = ssa.Bus.idx.v\nbus_v = ssa.Bus.v.v\nmax_index = int(np.argmax(bus_v))\nmin_index = int(np.argmin(bus_v))\nresult = {\n    \"max_bus\": int(bus_ids[max_index]),\n    \"max_voltage\": _round_float(bus_v[max_index]),\n    \"min_bus\": int(bus_ids[min_index]),\n    \"min_voltage\": _round_float(bus_v[min_index]),\n}\nprint(\"RESULT_JSON=\" + json.dumps(result, sort_keys=True))",
+  "continuity_score": 15.0,
+  "execution_output": "STDERR:\nTraceback (most recent call last):\n  File \"/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/fine_tuned/20260403_162926/raw/fine_tuned/scenario_053/turn_01/workspace/generated_code.py\", line 51, in <module>\n    max_index = int(np.argmax(bus_v))\n                    ^^\nNameError: name 'np' is not defined\n\n",
+  "execution_passed": false,
+  "execution_score": 0.0,
+  "expected_result_json": {
+    "max_bus": 36,
+    "max_voltage": 1.0635,
+    "min_bus": 7,
+    "min_voltage": 0.929955
+  },
+  "failure_categories": [
+    "execution",
+    "semantic"
+  ],
+  "format_score": 10.0,
+  "format_valid": true,
+  "grounding_score": 25.0,
+  "issues": [
+    "Execution failed. Return code: 1",
+    "RESULT_JSON was missing or could not be parsed."
+  ],
+  "prompt": "Please answer with one runnable Python script only and nothing else.\nUse my uploaded file verify_ieee39_053.xlsx from the current working directory.\nRun power flow and report the maximum-voltage bus and minimum-voltage bus.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: max_bus, max_voltage, min_bus, min_voltage.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.\n\nRuntime file context:\n- Working directory for execution: verification/artifacts_recheck_20260403_parallel/fine_tuned/20260403_162926/raw/fine_tuned/scenario_053/turn_01/workspace\n- Uploaded files available during execution:\n- verify_ieee39_053.xlsx\n- Use this exact filename directly in andes.load(...).\n- Do not wrap the uploaded filename with andes.get_case(...).\n",
+  "response": "```python\n# required_dependencies: andes,json\nimport andes\nimport json\nimport os\n\ndef _round_float(value):\n    return round(float(value), 6)\n\ncwd = os.getcwd()\ncase = os.path.join(cwd, \"verify_ieee39_053.xlsx\")\nssa = andes.load(case, setup=True, no_output=True, log=False)\n\nssa.PFlow.run()\n\nbus_ids = ssa.Bus.idx.v\nbus_v = ssa.Bus.v.v\nmax_index = int(np.argmax(bus_v))\nmin_index = int(np.argmin(bus_v))\nresult = {\n    \"max_bus\": int(bus_ids[max_index]),\n    \"max_voltage\": _round_float(bus_v[max_index]),\n    \"min_bus\": int(bus_ids[min_index]),\n    \"min_voltage\": _round_float(bus_v[min_index]),\n}\nprint(\"RESULT_JSON=\" + json.dumps(result, sort_keys=True))\n```",
+  "result_json_parse_error": "RESULT_JSON marker not found in stdout.",
+  "score_total": 55.0,
+  "semantic_passed": false,
+  "semantic_score": 0.0,
+  "turn_id": 1,
+  "turn_passed": false,
+  "used_template_fallback": false
+}

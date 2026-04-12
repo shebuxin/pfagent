@@ -1,0 +1,1800 @@
+{
+  "generated_at": "2026-04-04T11:06:16.778546",
+  "model_key": "fine_tuned_rag",
+  "model_label": "Fine-tuned + RAG",
+  "workflow": [
+    "stress_test_open_scenarios",
+    "collect_verification_failures",
+    "extract_root_cause_signatures",
+    "activate_mutation_packs",
+    "update_runtime_profile",
+    "revalidate_same_scenarios"
+  ],
+  "full_progression": [
+    {
+      "stage_id": "main_100_initial",
+      "label": "100-scenario initial benchmark",
+      "suite_group": "main_suite",
+      "suite_label": "100-scenario baseline suite",
+      "scenario_count": 100,
+      "scenario_pass_count": 0,
+      "scenario_pass_rate": 0.0,
+      "avg_conversation_score": 51.43,
+      "notes": "Earliest retained 100-scenario benchmark before the major structured-generation and workflow upgrades.",
+      "model_summary_source": {
+        "kind": "git",
+        "rev": "d3e11d266",
+        "path": "verification/artifacts_parallel/combined_20260328/reports/model_summary.json"
+      },
+      "turn_summary_source": {
+        "kind": "git",
+        "rev": "d3e11d266",
+        "path": "verification/artifacts_parallel/combined_20260328/reports/tables/turn_summary.csv"
+      },
+      "turn_1_pass_rate": 20.0,
+      "turn_2_pass_rate": 3.0,
+      "turn_3_pass_rate": 0.0,
+      "turn_1_score": 64.63,
+      "turn_2_score": 50.98,
+      "turn_3_score": 38.68
+    },
+    {
+      "stage_id": "main_100_optimized",
+      "label": "100-scenario optimized benchmark",
+      "suite_group": "main_suite",
+      "suite_label": "100-scenario retained final suite",
+      "scenario_count": 100,
+      "scenario_pass_count": 100,
+      "scenario_pass_rate": 100.0,
+      "avg_conversation_score": 100.0,
+      "notes": "After major workflow abstraction, retrieval grounding, and structured ANDES generation, the 100-scenario benchmark was saturated.",
+      "model_summary_source": {
+        "kind": "file",
+        "path": "/home/bshe/Documents/git-research/pfagent/verification/final/reports/model_summary.json"
+      },
+      "turn_summary_source": {
+        "kind": "file",
+        "path": "/home/bshe/Documents/git-research/pfagent/verification/final/reports/tables/turn_summary.csv"
+      },
+      "turn_1_pass_rate": 100.0,
+      "turn_2_pass_rate": 100.0,
+      "turn_3_pass_rate": 100.0,
+      "turn_1_score": 100.0,
+      "turn_2_score": 100.0,
+      "turn_3_score": 100.0
+    },
+    {
+      "stage_id": "main_132_before_fix",
+      "label": "132-scenario harder suite before fix",
+      "suite_group": "main_suite",
+      "suite_label": "132-scenario harder suite",
+      "scenario_count": 132,
+      "scenario_pass_count": 100,
+      "scenario_pass_rate": 75.76,
+      "avg_conversation_score": 92.19,
+      "notes": "New targeted case-edit and N-1 scenarios reduced performance and exposed the next bottleneck.",
+      "model_summary_source": {
+        "kind": "file",
+        "path": "/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_132_parallel/fine_tuned_rag/20260403_184605/reports/model_summary.json"
+      },
+      "turn_summary_source": {
+        "kind": "file",
+        "path": "/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_132_parallel/fine_tuned_rag/20260403_184605/reports/tables/turn_summary.csv"
+      },
+      "turn_1_pass_rate": 85.61,
+      "turn_2_pass_rate": 78.79,
+      "turn_3_pass_rate": 75.76,
+      "turn_1_score": 95.46,
+      "turn_2_score": 94.41,
+      "turn_3_score": 86.69
+    },
+    {
+      "stage_id": "main_132_after_fix",
+      "label": "132-scenario harder suite after fix",
+      "suite_group": "main_suite",
+      "suite_label": "132-scenario harder suite",
+      "scenario_count": 132,
+      "scenario_pass_count": 132,
+      "scenario_pass_rate": 100.0,
+      "avg_conversation_score": 100.0,
+      "notes": "Structured device-resolution and contingency edits were expanded, restoring full pass rate on the 132-scenario suite.",
+      "model_summary_source": {
+        "kind": "file",
+        "path": "/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_132_optimized/fine_tuned_rag/20260403_203014/reports/model_summary.json"
+      },
+      "turn_summary_source": {
+        "kind": "file",
+        "path": "/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_132_optimized/fine_tuned_rag/20260403_203014/reports/tables/turn_summary.csv"
+      },
+      "turn_1_pass_rate": 100.0,
+      "turn_2_pass_rate": 100.0,
+      "turn_3_pass_rate": 100.0,
+      "turn_1_score": 100.0,
+      "turn_2_score": 100.0,
+      "turn_3_score": 100.0
+    },
+    {
+      "stage_id": "main_140_light",
+      "label": "140-scenario light expansion",
+      "suite_group": "main_suite",
+      "suite_label": "140-scenario light expansion",
+      "scenario_count": 140,
+      "scenario_pass_count": 140,
+      "scenario_pass_rate": 100.0,
+      "avg_conversation_score": 100.0,
+      "notes": "A small expansion stayed within the solved region.",
+      "model_summary_source": {
+        "kind": "file",
+        "path": "/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_140_light/fine_tuned_rag/20260403_210841/reports/model_summary.json"
+      },
+      "turn_summary_source": {
+        "kind": "file",
+        "path": "/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_140_light/fine_tuned_rag/20260403_210841/reports/tables/turn_summary.csv"
+      },
+      "turn_1_pass_rate": 100.0,
+      "turn_2_pass_rate": 100.0,
+      "turn_3_pass_rate": 100.0,
+      "turn_1_score": 100.0,
+      "turn_2_score": 100.0,
+      "turn_3_score": 100.0
+    },
+    {
+      "stage_id": "main_146_generalized",
+      "label": "146-scenario generalized expansion",
+      "suite_group": "main_suite",
+      "suite_label": "146-scenario generalized suite",
+      "scenario_count": 146,
+      "scenario_pass_count": 140,
+      "scenario_pass_rate": 95.89,
+      "avg_conversation_score": 97.98,
+      "notes": "More natural generalized prompts pushed the agent off saturation but still kept performance above 95%.",
+      "model_summary_source": {
+        "kind": "file",
+        "path": "/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_146_generalized/fine_tuned_rag/20260404_093100/reports/model_summary.json"
+      },
+      "turn_summary_source": {
+        "kind": "file",
+        "path": "/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_146_generalized/fine_tuned_rag/20260404_093100/reports/tables/turn_summary.csv"
+      },
+      "turn_1_pass_rate": 95.89,
+      "turn_2_pass_rate": 95.89,
+      "turn_3_pass_rate": 95.89,
+      "turn_1_score": 98.12,
+      "turn_2_score": 98.09,
+      "turn_3_score": 97.74
+    },
+    {
+      "stage_id": "main_152_generalized",
+      "label": "152-scenario generalized suite after fix",
+      "suite_group": "main_suite",
+      "suite_label": "152-scenario generalized suite",
+      "scenario_count": 152,
+      "scenario_pass_count": 152,
+      "scenario_pass_rate": 100.0,
+      "avg_conversation_score": 100.0,
+      "notes": "Parser and state-carryover improvements recovered the expanded main suite to full pass rate.",
+      "model_summary_source": {
+        "kind": "file",
+        "path": "/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260404_152_generalized/fine_tuned_rag/20260404_100400/reports/model_summary.json"
+      },
+      "turn_summary_source": {
+        "kind": "file",
+        "path": "/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260404_152_generalized/fine_tuned_rag/20260404_100400/reports/tables/turn_summary.csv"
+      },
+      "turn_1_pass_rate": 100.0,
+      "turn_2_pass_rate": 100.0,
+      "turn_3_pass_rate": 100.0,
+      "turn_1_score": 100.0,
+      "turn_2_score": 100.0,
+      "turn_3_score": 100.0
+    },
+    {
+      "stage_id": "open_4_before_fix",
+      "label": "4 open scenarios before adaptive evolution",
+      "suite_group": "open_suite",
+      "suite_label": "4-scenario open generalization suite",
+      "scenario_count": 4,
+      "scenario_pass_count": 0,
+      "scenario_pass_rate": 0.0,
+      "avg_conversation_score": 56.81,
+      "notes": "Open-ended phrasing temporarily collapsed performance and revealed the remaining root causes.",
+      "model_summary_source": {
+        "kind": "file",
+        "path": "/home/bshe/Documents/git-research/pfagent/verification/artifacts_open_generalization_20260404/fine_tuned_rag/20260404_102736/reports/model_summary.json"
+      },
+      "turn_summary_source": {
+        "kind": "file",
+        "path": "/home/bshe/Documents/git-research/pfagent/verification/artifacts_open_generalization_20260404/fine_tuned_rag/20260404_102736/reports/tables/turn_summary.csv"
+      },
+      "turn_1_pass_rate": 0.0,
+      "turn_2_pass_rate": 0.0,
+      "turn_3_pass_rate": 0.0,
+      "turn_1_score": 63.12,
+      "turn_2_score": 63.43,
+      "turn_3_score": 43.88
+    },
+    {
+      "stage_id": "open_4_after_fix",
+      "label": "4 open scenarios after adaptive evolution",
+      "suite_group": "open_suite",
+      "suite_label": "4-scenario open generalization suite",
+      "scenario_count": 4,
+      "scenario_pass_count": 4,
+      "scenario_pass_rate": 100.0,
+      "avg_conversation_score": 100.0,
+      "notes": "The failure-driven adaptive evolution mechanism restored full pass rate on the same open scenarios.",
+      "model_summary_source": {
+        "kind": "file",
+        "path": "/home/bshe/Documents/git-research/pfagent/verification/artifacts_open_generalization_20260404/fine_tuned_rag_after_fix/20260404_103919/reports/model_summary.json"
+      },
+      "turn_summary_source": {
+        "kind": "file",
+        "path": "/home/bshe/Documents/git-research/pfagent/verification/artifacts_open_generalization_20260404/fine_tuned_rag_after_fix/20260404_103919/reports/tables/turn_summary.csv"
+      },
+      "turn_1_pass_rate": 100.0,
+      "turn_2_pass_rate": 100.0,
+      "turn_3_pass_rate": 100.0,
+      "turn_1_score": 100.0,
+      "turn_2_score": 100.0,
+      "turn_3_score": 100.0
+    }
+  ],
+  "stage_summaries": [
+    {
+      "stage_id": "structured_baseline",
+      "label": "Stage 1: Structured Benchmark Before Open Stress Test",
+      "suite_label": "152-scenario structured suite",
+      "results_path": "/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260404_152_generalized/fine_tuned_rag/20260404_100400/verification_results.json",
+      "notes": "The current structured benchmark was fully solved, but it still used stronger RESULT_JSON-style task contracts.",
+      "scenario_count": 152,
+      "scenario_pass_count": 152,
+      "scenario_pass_rate": 100.0,
+      "avg_conversation_score": 100.0,
+      "turn_summary": [
+        {
+          "turn_id": 1,
+          "pass_count": 152,
+          "turn_count": 152,
+          "turn_pass_rate": 100.0,
+          "avg_turn_score": 100.0
+        },
+        {
+          "turn_id": 2,
+          "pass_count": 152,
+          "turn_count": 152,
+          "turn_pass_rate": 100.0,
+          "avg_turn_score": 100.0
+        },
+        {
+          "turn_id": 3,
+          "pass_count": 152,
+          "turn_count": 152,
+          "turn_pass_rate": 100.0,
+          "avg_turn_score": 100.0
+        }
+      ],
+      "failure_counts": {},
+      "scenario_rows": [
+        {
+          "scenario_id": "scenario_001",
+          "blueprint": "voltage_rank_add_scale_plot",
+          "case_family": "ieee14",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_002",
+          "blueprint": "voltage_rank_add_scale_plot",
+          "case_family": "ieee14",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_003",
+          "blueprint": "voltage_rank_add_scale_plot",
+          "case_family": "ieee14",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_004",
+          "blueprint": "voltage_rank_add_scale_plot",
+          "case_family": "ieee14",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_005",
+          "blueprint": "threshold_slack_add_extremes",
+          "case_family": "ieee14",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_006",
+          "blueprint": "threshold_slack_add_extremes",
+          "case_family": "ieee14",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_007",
+          "blueprint": "threshold_slack_add_extremes",
+          "case_family": "ieee14",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_008",
+          "blueprint": "threshold_slack_add_extremes",
+          "case_family": "ieee14",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_009",
+          "blueprint": "extremes_pv_scale_barplot",
+          "case_family": "ieee14",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_010",
+          "blueprint": "extremes_pv_scale_barplot",
+          "case_family": "ieee14",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_011",
+          "blueprint": "extremes_pv_scale_barplot",
+          "case_family": "ieee14",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_012",
+          "blueprint": "low_buses_add_slack_plot",
+          "case_family": "ieee14",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_013",
+          "blueprint": "low_buses_add_slack_plot",
+          "case_family": "ieee14",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_014",
+          "blueprint": "low_buses_add_slack_plot",
+          "case_family": "ieee14",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_015",
+          "blueprint": "voltage_rank_add_scale_plot",
+          "case_family": "ieee14",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_016",
+          "blueprint": "voltage_rank_add_scale_plot",
+          "case_family": "ieee14",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_017",
+          "blueprint": "voltage_rank_add_scale_plot",
+          "case_family": "ieee14",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_018",
+          "blueprint": "voltage_rank_add_scale_plot",
+          "case_family": "ieee14",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_019",
+          "blueprint": "threshold_slack_add_extremes",
+          "case_family": "ieee14",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_020",
+          "blueprint": "threshold_slack_add_extremes",
+          "case_family": "ieee14",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_021",
+          "blueprint": "threshold_slack_add_extremes",
+          "case_family": "ieee14",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_022",
+          "blueprint": "threshold_slack_add_extremes",
+          "case_family": "ieee14",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_023",
+          "blueprint": "extremes_pv_scale_barplot",
+          "case_family": "ieee14",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_024",
+          "blueprint": "extremes_pv_scale_barplot",
+          "case_family": "ieee14",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_025",
+          "blueprint": "extremes_pv_scale_barplot",
+          "case_family": "ieee14",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_026",
+          "blueprint": "low_buses_add_slack_plot",
+          "case_family": "ieee14",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_027",
+          "blueprint": "low_buses_add_slack_plot",
+          "case_family": "ieee14",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_028",
+          "blueprint": "low_buses_add_slack_plot",
+          "case_family": "ieee14",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_029",
+          "blueprint": "voltage_rank_add_scale_plot",
+          "case_family": "ieee39",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_030",
+          "blueprint": "voltage_rank_add_scale_plot",
+          "case_family": "ieee39",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_031",
+          "blueprint": "voltage_rank_add_scale_plot",
+          "case_family": "ieee39",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_032",
+          "blueprint": "voltage_rank_add_scale_plot",
+          "case_family": "ieee39",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_033",
+          "blueprint": "threshold_slack_add_extremes",
+          "case_family": "ieee39",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_034",
+          "blueprint": "threshold_slack_add_extremes",
+          "case_family": "ieee39",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_035",
+          "blueprint": "threshold_slack_add_extremes",
+          "case_family": "ieee39",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_036",
+          "blueprint": "threshold_slack_add_extremes",
+          "case_family": "ieee39",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_037",
+          "blueprint": "extremes_pv_scale_barplot",
+          "case_family": "ieee39",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_038",
+          "blueprint": "extremes_pv_scale_barplot",
+          "case_family": "ieee39",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_039",
+          "blueprint": "extremes_pv_scale_barplot",
+          "case_family": "ieee39",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_040",
+          "blueprint": "low_buses_add_slack_plot",
+          "case_family": "ieee39",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_041",
+          "blueprint": "low_buses_add_slack_plot",
+          "case_family": "ieee39",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_042",
+          "blueprint": "low_buses_add_slack_plot",
+          "case_family": "ieee39",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_043",
+          "blueprint": "voltage_rank_add_scale_plot",
+          "case_family": "ieee39",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_044",
+          "blueprint": "voltage_rank_add_scale_plot",
+          "case_family": "ieee39",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_045",
+          "blueprint": "voltage_rank_add_scale_plot",
+          "case_family": "ieee39",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_046",
+          "blueprint": "voltage_rank_add_scale_plot",
+          "case_family": "ieee39",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_047",
+          "blueprint": "threshold_slack_add_extremes",
+          "case_family": "ieee39",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_048",
+          "blueprint": "threshold_slack_add_extremes",
+          "case_family": "ieee39",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_049",
+          "blueprint": "threshold_slack_add_extremes",
+          "case_family": "ieee39",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_050",
+          "blueprint": "threshold_slack_add_extremes",
+          "case_family": "ieee39",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_051",
+          "blueprint": "extremes_pv_scale_barplot",
+          "case_family": "ieee39",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_052",
+          "blueprint": "extremes_pv_scale_barplot",
+          "case_family": "ieee39",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_053",
+          "blueprint": "extremes_pv_scale_barplot",
+          "case_family": "ieee39",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_054",
+          "blueprint": "low_buses_add_slack_plot",
+          "case_family": "ieee39",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_055",
+          "blueprint": "low_buses_add_slack_plot",
+          "case_family": "ieee39",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_056",
+          "blueprint": "low_buses_add_slack_plot",
+          "case_family": "ieee39",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_057",
+          "blueprint": "voltage_rank_add_scale_plot",
+          "case_family": "kundur",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_058",
+          "blueprint": "voltage_rank_add_scale_plot",
+          "case_family": "kundur",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_059",
+          "blueprint": "voltage_rank_add_scale_plot",
+          "case_family": "kundur",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_060",
+          "blueprint": "voltage_rank_add_scale_plot",
+          "case_family": "kundur",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_061",
+          "blueprint": "threshold_slack_add_extremes",
+          "case_family": "kundur",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_062",
+          "blueprint": "threshold_slack_add_extremes",
+          "case_family": "kundur",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_063",
+          "blueprint": "threshold_slack_add_extremes",
+          "case_family": "kundur",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_064",
+          "blueprint": "threshold_slack_add_extremes",
+          "case_family": "kundur",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_065",
+          "blueprint": "extremes_pv_scale_barplot",
+          "case_family": "kundur",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_066",
+          "blueprint": "extremes_pv_scale_barplot",
+          "case_family": "kundur",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_067",
+          "blueprint": "extremes_pv_scale_barplot",
+          "case_family": "kundur",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_068",
+          "blueprint": "low_buses_add_slack_plot",
+          "case_family": "kundur",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_069",
+          "blueprint": "low_buses_add_slack_plot",
+          "case_family": "kundur",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_070",
+          "blueprint": "low_buses_add_slack_plot",
+          "case_family": "kundur",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_071",
+          "blueprint": "voltage_rank_add_scale_plot",
+          "case_family": "kundur",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_072",
+          "blueprint": "voltage_rank_add_scale_plot",
+          "case_family": "kundur",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_073",
+          "blueprint": "voltage_rank_add_scale_plot",
+          "case_family": "kundur",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_074",
+          "blueprint": "voltage_rank_add_scale_plot",
+          "case_family": "kundur",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_075",
+          "blueprint": "threshold_slack_add_extremes",
+          "case_family": "kundur",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_076",
+          "blueprint": "threshold_slack_add_extremes",
+          "case_family": "kundur",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_077",
+          "blueprint": "threshold_slack_add_extremes",
+          "case_family": "kundur",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_078",
+          "blueprint": "threshold_slack_add_extremes",
+          "case_family": "kundur",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_079",
+          "blueprint": "extremes_pv_scale_barplot",
+          "case_family": "kundur",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_080",
+          "blueprint": "extremes_pv_scale_barplot",
+          "case_family": "kundur",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_081",
+          "blueprint": "extremes_pv_scale_barplot",
+          "case_family": "kundur",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_082",
+          "blueprint": "low_buses_add_slack_plot",
+          "case_family": "kundur",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_083",
+          "blueprint": "low_buses_add_slack_plot",
+          "case_family": "kundur",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_084",
+          "blueprint": "low_buses_add_slack_plot",
+          "case_family": "kundur",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_085",
+          "blueprint": "line_topk_scale_threshold_plot",
+          "case_family": "pjm5",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_086",
+          "blueprint": "line_topk_scale_threshold_plot",
+          "case_family": "pjm5",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_087",
+          "blueprint": "line_topk_scale_threshold_plot",
+          "case_family": "pjm5",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_088",
+          "blueprint": "line_topk_scale_threshold_plot",
+          "case_family": "pjm5",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_089",
+          "blueprint": "voltage_then_slack_line_threshold",
+          "case_family": "pjm5",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_090",
+          "blueprint": "voltage_then_slack_line_threshold",
+          "case_family": "pjm5",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_091",
+          "blueprint": "voltage_then_slack_line_threshold",
+          "case_family": "pjm5",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_092",
+          "blueprint": "voltage_then_slack_line_threshold",
+          "case_family": "pjm5",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_093",
+          "blueprint": "line_topk_scale_threshold_plot",
+          "case_family": "pjm5",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_094",
+          "blueprint": "line_topk_scale_threshold_plot",
+          "case_family": "pjm5",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_095",
+          "blueprint": "line_topk_scale_threshold_plot",
+          "case_family": "pjm5",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_096",
+          "blueprint": "line_topk_scale_threshold_plot",
+          "case_family": "pjm5",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_097",
+          "blueprint": "voltage_then_slack_line_threshold",
+          "case_family": "pjm5",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_098",
+          "blueprint": "voltage_then_slack_line_threshold",
+          "case_family": "pjm5",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_099",
+          "blueprint": "voltage_then_slack_line_threshold",
+          "case_family": "pjm5",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_100",
+          "blueprint": "voltage_then_slack_line_threshold",
+          "case_family": "pjm5",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_101",
+          "blueprint": "targeted_pq_edit_then_n1_screening",
+          "case_family": "ieee14",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_102",
+          "blueprint": "targeted_pq_edit_then_n1_screening",
+          "case_family": "ieee14",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_103",
+          "blueprint": "targeted_pv_edit_then_line_outage",
+          "case_family": "ieee14",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_104",
+          "blueprint": "targeted_pv_edit_then_line_outage",
+          "case_family": "ieee14",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_105",
+          "blueprint": "targeted_pq_scale_then_line_outage_threshold",
+          "case_family": "ieee14",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_106",
+          "blueprint": "targeted_pq_edit_then_n1_screening",
+          "case_family": "ieee14",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_107",
+          "blueprint": "targeted_pq_edit_then_n1_screening",
+          "case_family": "ieee14",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_108",
+          "blueprint": "targeted_pv_edit_then_line_outage",
+          "case_family": "ieee14",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_109",
+          "blueprint": "targeted_pv_edit_then_line_outage",
+          "case_family": "ieee14",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_110",
+          "blueprint": "targeted_pq_scale_then_line_outage_threshold",
+          "case_family": "ieee14",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_111",
+          "blueprint": "targeted_pq_edit_then_n1_screening",
+          "case_family": "ieee39",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_112",
+          "blueprint": "targeted_pq_edit_then_n1_screening",
+          "case_family": "ieee39",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_113",
+          "blueprint": "targeted_pv_edit_then_line_outage",
+          "case_family": "ieee39",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_114",
+          "blueprint": "targeted_pv_edit_then_line_outage",
+          "case_family": "ieee39",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_115",
+          "blueprint": "targeted_pq_scale_then_line_outage_threshold",
+          "case_family": "ieee39",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_116",
+          "blueprint": "targeted_pq_edit_then_n1_screening",
+          "case_family": "ieee39",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_117",
+          "blueprint": "targeted_pq_edit_then_n1_screening",
+          "case_family": "ieee39",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_118",
+          "blueprint": "targeted_pv_edit_then_line_outage",
+          "case_family": "ieee39",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_119",
+          "blueprint": "targeted_pv_edit_then_line_outage",
+          "case_family": "ieee39",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_120",
+          "blueprint": "targeted_pq_scale_then_line_outage_threshold",
+          "case_family": "ieee39",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_121",
+          "blueprint": "targeted_pq_edit_then_n1_screening",
+          "case_family": "kundur",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_122",
+          "blueprint": "targeted_pq_edit_then_n1_screening",
+          "case_family": "kundur",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_123",
+          "blueprint": "targeted_pv_edit_then_line_outage",
+          "case_family": "kundur",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_124",
+          "blueprint": "targeted_pv_edit_then_line_outage",
+          "case_family": "kundur",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_125",
+          "blueprint": "targeted_pq_scale_then_line_outage_threshold",
+          "case_family": "kundur",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_126",
+          "blueprint": "targeted_pq_edit_then_n1_screening",
+          "case_family": "kundur",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_127",
+          "blueprint": "targeted_pq_edit_then_n1_screening",
+          "case_family": "kundur",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_128",
+          "blueprint": "targeted_pv_edit_then_line_outage",
+          "case_family": "kundur",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_129",
+          "blueprint": "targeted_pv_edit_then_line_outage",
+          "case_family": "kundur",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_130",
+          "blueprint": "targeted_pq_scale_then_line_outage_threshold",
+          "case_family": "kundur",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_131",
+          "blueprint": "targeted_pq_edit_then_n1_screening",
+          "case_family": "pjm5",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_132",
+          "blueprint": "targeted_pq_edit_then_n1_screening",
+          "case_family": "pjm5",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_133",
+          "blueprint": "targeted_pv_edit_then_line_outage",
+          "case_family": "pjm5",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_134",
+          "blueprint": "targeted_pv_edit_then_line_outage",
+          "case_family": "pjm5",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_135",
+          "blueprint": "targeted_pq_scale_then_line_outage_threshold",
+          "case_family": "pjm5",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_136",
+          "blueprint": "targeted_pq_edit_then_n1_screening",
+          "case_family": "pjm5",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_137",
+          "blueprint": "targeted_pq_edit_then_n1_screening",
+          "case_family": "pjm5",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_138",
+          "blueprint": "targeted_pv_edit_then_line_outage",
+          "case_family": "pjm5",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_139",
+          "blueprint": "targeted_pv_edit_then_line_outage",
+          "case_family": "pjm5",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_140",
+          "blueprint": "targeted_pq_scale_then_line_outage_threshold",
+          "case_family": "pjm5",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_141",
+          "blueprint": "generalized_targeted_pq_then_branch_trip",
+          "case_family": "ieee14",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_142",
+          "blueprint": "generalized_targeted_pv_then_branch_trip",
+          "case_family": "ieee14",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_143",
+          "blueprint": "generalized_targeted_pq_then_branch_trip",
+          "case_family": "ieee14",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_144",
+          "blueprint": "generalized_targeted_pv_then_branch_trip",
+          "case_family": "ieee14",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_145",
+          "blueprint": "generalized_targeted_pq_then_branch_trip",
+          "case_family": "ieee39",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_146",
+          "blueprint": "generalized_targeted_pv_then_branch_trip",
+          "case_family": "ieee39",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_147",
+          "blueprint": "generalized_targeted_pq_then_branch_trip",
+          "case_family": "ieee39",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_148",
+          "blueprint": "generalized_targeted_pv_then_branch_trip",
+          "case_family": "ieee39",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_149",
+          "blueprint": "generalized_targeted_pq_then_branch_trip",
+          "case_family": "kundur",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_150",
+          "blueprint": "generalized_targeted_pv_then_branch_trip",
+          "case_family": "kundur",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_151",
+          "blueprint": "generalized_targeted_pq_then_branch_trip",
+          "case_family": "kundur",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "scenario_152",
+          "blueprint": "generalized_targeted_pv_then_branch_trip",
+          "case_family": "kundur",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        }
+      ]
+    },
+    {
+      "stage_id": "open_generalization_gap",
+      "label": "Stage 2: Open Scenario Stress Test Before Adaptive Evolution",
+      "suite_label": "4-scenario open generalization suite",
+      "results_path": "/home/bshe/Documents/git-research/pfagent/verification/artifacts_open_generalization_20260404/fine_tuned_rag/20260404_102736/verification_results.json",
+      "notes": "Four more open-ended scenarios were introduced to expose natural-language grounding gaps in case modification and contingency analysis.",
+      "scenario_count": 4,
+      "scenario_pass_count": 0,
+      "scenario_pass_rate": 0.0,
+      "avg_conversation_score": 56.81,
+      "turn_summary": [
+        {
+          "turn_id": 1,
+          "pass_count": 0,
+          "turn_count": 4,
+          "turn_pass_rate": 0.0,
+          "avg_turn_score": 63.12
+        },
+        {
+          "turn_id": 2,
+          "pass_count": 0,
+          "turn_count": 4,
+          "turn_pass_rate": 0.0,
+          "avg_turn_score": 63.43
+        },
+        {
+          "turn_id": 3,
+          "pass_count": 0,
+          "turn_count": 4,
+          "turn_pass_rate": 0.0,
+          "avg_turn_score": 43.88
+        }
+      ],
+      "failure_counts": {
+        "continuity": 4,
+        "execution": 10,
+        "grounding": 5,
+        "semantic": 12
+      },
+      "scenario_rows": [
+        {
+          "scenario_id": "open_scenario_001",
+          "blueprint": "open_story_pq_branch_trip",
+          "case_family": "ieee14",
+          "case_source": "builtin",
+          "scenario_passed": false,
+          "conversation_score": 50.8033
+        },
+        {
+          "scenario_id": "open_scenario_002",
+          "blueprint": "open_story_pq_branch_trip",
+          "case_family": "ieee39",
+          "case_source": "uploaded",
+          "scenario_passed": false,
+          "conversation_score": 50.7333
+        },
+        {
+          "scenario_id": "open_scenario_003",
+          "blueprint": "open_story_pv_branch_trip",
+          "case_family": "kundur",
+          "case_source": "builtin",
+          "scenario_passed": false,
+          "conversation_score": 74.6967
+        },
+        {
+          "scenario_id": "open_scenario_004",
+          "blueprint": "open_story_targeted_n1_screening",
+          "case_family": "ieee14",
+          "case_source": "uploaded",
+          "scenario_passed": false,
+          "conversation_score": 51.02
+        }
+      ]
+    },
+    {
+      "stage_id": "open_generalization_recovered",
+      "label": "Stage 3: Open Scenario Stress Test After Adaptive Evolution",
+      "suite_label": "4-scenario open generalization suite",
+      "results_path": "/home/bshe/Documents/git-research/pfagent/verification/artifacts_open_generalization_20260404/fine_tuned_rag_after_fix/20260404_103919/verification_results.json",
+      "notes": "The same four open scenarios were re-run after integrating the adaptive evolution mechanism into the agent workflow.",
+      "scenario_count": 4,
+      "scenario_pass_count": 4,
+      "scenario_pass_rate": 100.0,
+      "avg_conversation_score": 100.0,
+      "turn_summary": [
+        {
+          "turn_id": 1,
+          "pass_count": 4,
+          "turn_count": 4,
+          "turn_pass_rate": 100.0,
+          "avg_turn_score": 100.0
+        },
+        {
+          "turn_id": 2,
+          "pass_count": 4,
+          "turn_count": 4,
+          "turn_pass_rate": 100.0,
+          "avg_turn_score": 100.0
+        },
+        {
+          "turn_id": 3,
+          "pass_count": 4,
+          "turn_count": 4,
+          "turn_pass_rate": 100.0,
+          "avg_turn_score": 100.0
+        }
+      ],
+      "failure_counts": {},
+      "scenario_rows": [
+        {
+          "scenario_id": "open_scenario_001",
+          "blueprint": "open_story_pq_branch_trip",
+          "case_family": "ieee14",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "open_scenario_002",
+          "blueprint": "open_story_pq_branch_trip",
+          "case_family": "ieee39",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "open_scenario_003",
+          "blueprint": "open_story_pv_branch_trip",
+          "case_family": "kundur",
+          "case_source": "builtin",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        },
+        {
+          "scenario_id": "open_scenario_004",
+          "blueprint": "open_story_targeted_n1_screening",
+          "case_family": "ieee14",
+          "case_source": "uploaded",
+          "scenario_passed": true,
+          "conversation_score": 100.0
+        }
+      ]
+    }
+  ],
+  "combined_summaries": [
+    {
+      "stage_id": "expanded_before_fix",
+      "label": "Expanded 156-scenario suite before adaptive evolution",
+      "suite_label": "156-scenario combined suite",
+      "scenario_count": 156,
+      "scenario_pass_count": 152,
+      "scenario_pass_rate": 97.44,
+      "avg_conversation_score": 98.89,
+      "turn_summary": [
+        {
+          "turn_id": 1,
+          "pass_count": 152,
+          "turn_count": 156,
+          "turn_pass_rate": 97.44,
+          "avg_turn_score": 99.05
+        },
+        {
+          "turn_id": 2,
+          "pass_count": 152,
+          "turn_count": 156,
+          "turn_pass_rate": 97.44,
+          "avg_turn_score": 99.06
+        },
+        {
+          "turn_id": 3,
+          "pass_count": 152,
+          "turn_count": 156,
+          "turn_pass_rate": 97.44,
+          "avg_turn_score": 98.56
+        }
+      ]
+    },
+    {
+      "stage_id": "expanded_after_fix",
+      "label": "Expanded 156-scenario suite after adaptive evolution",
+      "suite_label": "156-scenario combined suite",
+      "scenario_count": 156,
+      "scenario_pass_count": 156,
+      "scenario_pass_rate": 100.0,
+      "avg_conversation_score": 100.0,
+      "turn_summary": [
+        {
+          "turn_id": 1,
+          "pass_count": 156,
+          "turn_count": 156,
+          "turn_pass_rate": 100.0,
+          "avg_turn_score": 100.0
+        },
+        {
+          "turn_id": 2,
+          "pass_count": 156,
+          "turn_count": 156,
+          "turn_pass_rate": 100.0,
+          "avg_turn_score": 100.0
+        },
+        {
+          "turn_id": 3,
+          "pass_count": 156,
+          "turn_count": 156,
+          "turn_pass_rate": 100.0,
+          "avg_turn_score": 100.0
+        }
+      ]
+    }
+  ],
+  "profile_path": "/home/bshe/Documents/git-research/pfagent/text-to-sim/data_files/agent_evolution_profile.json",
+  "profile_summary": {
+    "profile_version": "2026-04-04-open-generalization-v1",
+    "active_mutation_packs": [
+      "corridor_outage_aliases",
+      "line_outage_api_guardrail",
+      "n1_outage_set_aliases",
+      "pq_percentage_scaling",
+      "pv_regulator_aliases",
+      "string_device_idx_guardrail",
+      "targeted_device_resolution"
+    ],
+    "root_cause_summary": [
+      {
+        "signature_id": "device_idx_cast_to_int",
+        "label": "String device idx was cast to int",
+        "count": 2,
+        "example_turns": [
+          "open_scenario_002/turn_02",
+          "open_scenario_004/turn_02"
+        ],
+        "activated_packs": [
+          "string_device_idx_guardrail"
+        ]
+      },
+      {
+        "signature_id": "positional_idx_used_as_device_idx",
+        "label": "Bus number or array index was used as device idx",
+        "count": 4,
+        "example_turns": [
+          "open_scenario_001/turn_02",
+          "open_scenario_001/turn_03",
+          "open_scenario_002/turn_03"
+        ],
+        "activated_packs": [
+          "targeted_device_resolution",
+          "string_device_idx_guardrail"
+        ]
+      },
+      {
+        "signature_id": "open_ended_pq_percentage_language",
+        "label": "Open-ended percentage demand phrasing was not grounded",
+        "count": 3,
+        "example_turns": [
+          "open_scenario_001/turn_02",
+          "open_scenario_002/turn_02",
+          "open_scenario_004/turn_02"
+        ],
+        "activated_packs": [
+          "pq_percentage_scaling",
+          "targeted_device_resolution"
+        ]
+      },
+      {
+        "signature_id": "open_ended_pv_regulator_language",
+        "label": "Open-ended regulator phrasing was not grounded",
+        "count": 2,
+        "example_turns": [
+          "open_scenario_003/turn_01",
+          "open_scenario_003/turn_02"
+        ],
+        "activated_packs": [
+          "pv_regulator_aliases",
+          "targeted_device_resolution"
+        ]
+      },
+      {
+        "signature_id": "corridor_outage_language",
+        "label": "Corridor phrasing was not mapped to line outage status edits",
+        "count": 4,
+        "example_turns": [
+          "open_scenario_001/turn_03",
+          "open_scenario_002/turn_03",
+          "open_scenario_003/turn_03"
+        ],
+        "activated_packs": [
+          "corridor_outage_aliases",
+          "line_outage_api_guardrail"
+        ]
+      },
+      {
+        "signature_id": "n1_outage_set_language",
+        "label": "Outage-set language was not mapped to N-1 screening",
+        "count": 1,
+        "example_turns": [
+          "open_scenario_004/turn_03"
+        ],
+        "activated_packs": [
+          "n1_outage_set_aliases",
+          "line_outage_api_guardrail"
+        ]
+      }
+    ]
+  }
+}

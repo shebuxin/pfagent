@@ -1,0 +1,3 @@
+STDOUT:
+RESULT_JSON={"pv_bus": 30, "pv_setpoint": 1.015, "pv_voltage": 1.015, "selected_count": 4}
+

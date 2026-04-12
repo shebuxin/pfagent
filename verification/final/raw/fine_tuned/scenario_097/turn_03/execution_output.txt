@@ -1,0 +1,3 @@
+STDOUT:
+RESULT_JSON={"angle_threshold": 0.08, "scale_factor": 1.03, "selected_count": 0, "selected_line_ids": [], "slack_setpoint": 1.0}
+

@@ -1,0 +1,14 @@
+Please keep the conversation context and send one new complete script only.
+Keep using the same uploaded study file from earlier in this conversation.
+Keep the same study, set the slack-bus voltage target to 1.030, rerun power flow, and report the slack bus voltage plus how many buses fall below 0.970 p.u.
+- The script must end by printing exactly one line that starts with RESULT_JSON=
+- The JSON object must contain these keys: slack_bus, slack_setpoint, slack_voltage, selected_count.
+- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.
+- Round float values in RESULT_JSON to 6 decimals.
+
+Runtime file context:
+- Working directory for execution: verification/artifacts_recheck_20260403_parallel/fine_tuned_rag/20260403_162927/raw/fine_tuned_rag/scenario_049/turn_02/workspace
+- Uploaded files available during execution:
+- verify_ieee39_049.xlsx
+- Use this exact filename directly in andes.load(...).
+- Do not wrap the uploaded filename with andes.get_case(...).

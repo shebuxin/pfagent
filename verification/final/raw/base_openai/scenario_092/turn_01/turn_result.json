@@ -1,0 +1,39 @@
+{
+  "actual_result_json": null,
+  "artifact_passed": true,
+  "artifact_paths": [],
+  "artifact_score": 5.0,
+  "code": "# required_dependencies: andes\nimport andes\n\n# Load the built-in PJM 5-bus case\ncase = andes.load(andes.get_case(\"5bus/pjm5bus.json\"), setup=True, no_output=True, log=False)\n\n# Run power flow\ncase.run_power_flow()\n\n# Extract voltages and bus indices\nvoltages = case.bus.v\nslack_bus = case.bus.idx.slack\nslack_voltage = round(voltages[slack_bus], 6)\n\n# Find max and min voltage buses\nmax_voltage = round(max(voltages), 6)\nmin_voltage = round(min(voltages), 6)\nmax_bus = int(next(i for i, v in enumerate(voltages) if v == max_voltage))\nmin_bus = int(next(i for i, v in enumerate(voltages) if v == min_voltage))\n\n# Prepare the result JSON\nRESULT_JSON = {\n    \"slack_bus\": int(slack_bus),\n    \"slack_voltage\": slack_voltage,\n    \"max_bus\": max_bus,\n    \"max_voltage\": max_voltage,\n    \"min_bus\": min_bus,\n    \"min_voltage\": min_voltage,\n}\n\n# Print the result JSON\nprint(f\"RESULT_JSON={RESULT_JSON}\")",
+  "continuity_score": 15.0,
+  "execution_output": "STDERR:\nTraceback (most recent call last):\n  File \"/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_092/turn_01/workspace/generated_code.py\", line 42, in <module>\n    case.run_power_flow()\n    ^^^^^^^^^^^^^^^^^^^\nAttributeError: 'System' object has no attribute 'run_power_flow'\n\n",
+  "execution_passed": false,
+  "execution_score": 0.0,
+  "expected_result_json": {
+    "max_bus": 2,
+    "max_voltage": 1.0,
+    "min_bus": 1,
+    "min_voltage": 0.991799,
+    "slack_bus": 3,
+    "slack_voltage": 1.0
+  },
+  "failure_categories": [
+    "execution",
+    "semantic"
+  ],
+  "format_score": 10.0,
+  "format_valid": true,
+  "grounding_score": 25.0,
+  "issues": [
+    "Execution failed. Return code: 1",
+    "RESULT_JSON was missing or could not be parsed."
+  ],
+  "prompt": "Write one complete runnable Python script only, inside a single ```python block.\nUse the built-in PJM 5-bus case.\nRun power flow and report the maximum-voltage bus, minimum-voltage bus, and slack-bus voltage.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: slack_bus, slack_voltage, max_bus, max_voltage, min_bus, min_voltage.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.",
+  "response": "```python\n# required_dependencies: andes\nimport andes\n\n# Load the built-in PJM 5-bus case\ncase = andes.load(andes.get_case(\"5bus/pjm5bus.json\"), setup=True, no_output=True, log=False)\n\n# Run power flow\ncase.run_power_flow()\n\n# Extract voltages and bus indices\nvoltages = case.bus.v\nslack_bus = case.bus.idx.slack\nslack_voltage = round(voltages[slack_bus], 6)\n\n# Find max and min voltage buses\nmax_voltage = round(max(voltages), 6)\nmin_voltage = round(min(voltages), 6)\nmax_bus = int(next(i for i, v in enumerate(voltages) if v == max_voltage))\nmin_bus = int(next(i for i, v in enumerate(voltages) if v == min_voltage))\n\n# Prepare the result JSON\nRESULT_JSON = {\n    \"slack_bus\": int(slack_bus),\n    \"slack_voltage\": slack_voltage,\n    \"max_bus\": max_bus,\n    \"max_voltage\": max_voltage,\n    \"min_bus\": min_bus,\n    \"min_voltage\": min_voltage,\n}\n\n# Print the result JSON\nprint(f\"RESULT_JSON={RESULT_JSON}\")\n```",
+  "result_json_parse_error": "RESULT_JSON marker not found in stdout.",
+  "score_total": 55.0,
+  "semantic_passed": false,
+  "semantic_score": 0.0,
+  "turn_id": 1,
+  "turn_passed": false,
+  "used_template_fallback": false
+}

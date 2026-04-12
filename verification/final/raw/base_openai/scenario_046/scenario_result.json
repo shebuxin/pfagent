@@ -1,0 +1,159 @@
+{
+  "blueprint": "voltage_rank_add_scale_plot",
+  "case_family": "ieee39",
+  "case_source": "uploaded",
+  "scenario_id": "scenario_046",
+  "source_case_path": "ieee39/ieee39.xlsx",
+  "turns": [
+    {
+      "actual_result_json": null,
+      "artifact_passed": true,
+      "artifact_paths": [],
+      "artifact_score": 5.0,
+      "code": "# required_dependencies: numpy,andes\nimport os\nimport numpy as np\nimport andes\n\n# Load the case\nscript_dir = os.getcwd()\ncase = os.path.join(script_dir, \"verify_ieee39_046.xlsx\")\nssa = andes.load(case, setup=True, no_output=True, log=False)\n\n# Run power flow\nandes.power_flow(ssa)\n\n# Get slack bus voltage\nslack_bus_idx = ssa.Slack.idx.v[0]\nslack_bus_voltage = ssa.Bus.v[slack_bus_idx]\n\n# Get all bus voltages and their indices\nbus_voltages = ssa.Bus.v\nbus_ids = np.arange(len(bus_voltages))\n\n# Get top 5 highest voltage buses\ntop_indices = np.argsort(-bus_voltages)[:5]\nselected_bus_ids = bus_ids[top_indices].tolist()\nselected_voltages = np.round(bus_voltages[top_indices].tolist(), 6)\n\n# Prepare the result JSON\nRESULT_JSON = {\n    \"slack_bus\": int(slack_bus_idx),\n    \"slack_voltage\": round(slack_bus_voltage, 6),\n    \"selected_bus_ids\": selected_bus_ids,\n    \"selected_voltages\": selected_voltages\n}\n\n# Print result\nprint(f\"RESULT_JSON={RESULT_JSON}\")",
+      "continuity_score": 15.0,
+      "execution_output": "STDERR:\nTraceback (most recent call last):\n  File \"/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_046/turn_01/workspace/generated_code.py\", line 46, in <module>\n    andes.power_flow(ssa)\n    ^^^^^^^^^^^^^^^^\nAttributeError: module 'andes' has no attribute 'power_flow'\n\n",
+      "execution_passed": false,
+      "execution_score": 0.0,
+      "expected_result_json": {
+        "selected_bus_ids": [
+          36,
+          35,
+          30,
+          19,
+          31
+        ],
+        "selected_voltages": [
+          1.0635,
+          1.0493,
+          1.0475,
+          1.042357,
+          1.04
+        ],
+        "slack_bus": 39,
+        "slack_voltage": 1.03
+      },
+      "failure_categories": [
+        "grounding",
+        "execution",
+        "semantic"
+      ],
+      "format_score": 10.0,
+      "format_valid": true,
+      "grounding_score": 25.0,
+      "issues": [
+        "Code block 1: Use `ssa.Bus.v.v`, not `ssa.Bus.v`, when you need bus voltage magnitudes.",
+        "Execution failed. Return code: 1",
+        "RESULT_JSON was missing or could not be parsed."
+      ],
+      "prompt": "Give me code only: one full Python script in one fenced block.\nUse my uploaded file verify_ieee39_046.xlsx from the current working directory.\nRun power flow and report the top-5 highest-voltage buses plus the slack-bus voltage.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: slack_bus, slack_voltage, selected_bus_ids, selected_voltages.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.\n- `selected_bus_ids` and `selected_voltages` should represent the top highest-voltage buses in descending order.\n\nRuntime file context:\n- Working directory for execution: verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_046/turn_01/workspace\n- Uploaded files available during execution:\n- verify_ieee39_046.xlsx\n- Use this exact filename directly in andes.load(...).\n- Do not wrap the uploaded filename with andes.get_case(...).\n",
+      "response": "```python\n# required_dependencies: numpy,andes\nimport os\nimport numpy as np\nimport andes\n\n# Load the case\nscript_dir = os.getcwd()\ncase = os.path.join(script_dir, \"verify_ieee39_046.xlsx\")\nssa = andes.load(case, setup=True, no_output=True, log=False)\n\n# Run power flow\nandes.power_flow(ssa)\n\n# Get slack bus voltage\nslack_bus_idx = ssa.Slack.idx.v[0]\nslack_bus_voltage = ssa.Bus.v[slack_bus_idx]\n\n# Get all bus voltages and their indices\nbus_voltages = ssa.Bus.v\nbus_ids = np.arange(len(bus_voltages))\n\n# Get top 5 highest voltage buses\ntop_indices = np.argsort(-bus_voltages)[:5]\nselected_bus_ids = bus_ids[top_indices].tolist()\nselected_voltages = np.round(bus_voltages[top_indices].tolist(), 6)\n\n# Prepare the result JSON\nRESULT_JSON = {\n    \"slack_bus\": int(slack_bus_idx),\n    \"slack_voltage\": round(slack_bus_voltage, 6),\n    \"selected_bus_ids\": selected_bus_ids,\n    \"selected_voltages\": selected_voltages\n}\n\n# Print result\nprint(f\"RESULT_JSON={RESULT_JSON}\")\n```",
+      "result_json_parse_error": "RESULT_JSON marker not found in stdout.",
+      "score_total": 55.0,
+      "semantic_passed": false,
+      "semantic_score": 0.0,
+      "turn_id": 1,
+      "turn_passed": false,
+      "used_template_fallback": false
+    },
+    {
+      "actual_result_json": null,
+      "artifact_passed": true,
+      "artifact_paths": [],
+      "artifact_score": 5.0,
+      "code": "# required_dependencies: numpy,andes\nimport os\nimport numpy as np\nimport andes\n\n# Load the case\nscript_dir = os.getcwd()\ncase = os.path.join(script_dir, \"verify_ieee39_046.xlsx\")\nssa = andes.load(case, setup=True, no_output=True, log=False)\n\n# Add a new PQ load at bus 20\nbus_20_idx = np.where(ssa.Bus.idx.v == 20)[0]\nif bus_20_idx.size == 0:\n    raise ValueError(\"Bus 20 not found in the case.\")\n    \nssa.PQ.add(\"PQ_VERIFY_046_A\", p0=0.019, q0=0.012, bus=20)\n\n# Setup the modified case\nssa.setup()\n\n# Run power flow again\nandes.power_flow(ssa)\n\n# Get buses with voltages below 0.980 p.u.\nthreshold = 0.980\nlow_voltage_buses = np.where(ssa.Bus.v < threshold)[0]\nselected_bus_ids = ssa.Bus.idx.v[low_voltage_buses].tolist()\n\n# Find the minimum bus voltage and its index\nmin_voltage_idx = np.argmin(ssa.Bus.v)\nmin_bus = int(ssa.Bus.idx.v[min_voltage_idx])\nmin_voltage = round(ssa.Bus.v[min_voltage_idx], 6)\n\n# Prepare the result JSON\nRESULT_JSON = {\n    \"added_load_idx\": \"PQ_VERIFY_046_A\",\n    \"added_load_bus\": 20,\n    \"threshold\": threshold,\n    \"selected_bus_ids\": sorted(selected_bus_ids),\n    \"selected_count\": len(selected_bus_ids),\n    \"min_bus\": min_bus,\n    \"min_voltage\": min_voltage\n}\n\n# Print result\nprint(f\"RESULT_JSON={RESULT_JSON}\")",
+      "continuity_score": 15.0,
+      "execution_output": "STDERR:\nTraceback (most recent call last):\n  File \"/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_046/turn_02/workspace/generated_code.py\", line 46, in <module>\n    bus_20_idx = np.where(ssa.Bus.idx.v == 20)[0]\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: Calling nonzero on 0d arrays is not allowed. Use np.atleast_1d(scalar).nonzero() instead. If the context of this error is of the form `arr[nonzero(cond)]`, just use `arr[cond]`.\n\n",
+      "execution_passed": false,
+      "execution_score": 0.0,
+      "expected_result_json": {
+        "added_load_bus": 20,
+        "added_load_idx": "PQ_VERIFY_046_A",
+        "min_bus": 7,
+        "min_voltage": 0.929974,
+        "selected_bus_ids": [
+          3,
+          4,
+          7,
+          8,
+          15,
+          18
+        ],
+        "selected_count": 6,
+        "threshold": 0.98
+      },
+      "failure_categories": [
+        "grounding",
+        "execution",
+        "semantic"
+      ],
+      "format_score": 10.0,
+      "format_valid": true,
+      "grounding_score": 20.59,
+      "issues": [
+        "Missing code requirement: add PQ call",
+        "Code block 1: Use `ssa.Bus.v.v`, not `ssa.Bus.v`, when you need bus voltage magnitudes.",
+        "Code block 1: For add-before-setup workflows, load the case with `setup=False` before calling `ssa.add(...)`.",
+        "Execution failed. Return code: 1",
+        "RESULT_JSON was missing or could not be parsed."
+      ],
+      "prompt": "Please keep the conversation context and send one new complete script only.\nKeep using the same uploaded study file from earlier in this conversation.\nKeep the same case, add one new PQ load before setup at bus 20 with idx 'PQ_VERIFY_046_A', p0=0.019, and q0=0.012.\nAfter rerunning power flow, report every bus below 0.980 p.u. together with the minimum-voltage bus.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: added_load_idx, added_load_bus, threshold, selected_bus_ids, selected_count, min_bus, min_voltage.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.\n- `selected_bus_ids` should list all buses below the threshold in ascending bus order.\n\nRuntime file context:\n- Working directory for execution: verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_046/turn_02/workspace\n- Uploaded files available during execution:\n- verify_ieee39_046.xlsx\n- Use this exact filename directly in andes.load(...).\n- Do not wrap the uploaded filename with andes.get_case(...).\n",
+      "response": "```python\n# required_dependencies: numpy,andes\nimport os\nimport numpy as np\nimport andes\n\n# Load the case\nscript_dir = os.getcwd()\ncase = os.path.join(script_dir, \"verify_ieee39_046.xlsx\")\nssa = andes.load(case, setup=True, no_output=True, log=False)\n\n# Add a new PQ load at bus 20\nbus_20_idx = np.where(ssa.Bus.idx.v == 20)[0]\nif bus_20_idx.size == 0:\n    raise ValueError(\"Bus 20 not found in the case.\")\n    \nssa.PQ.add(\"PQ_VERIFY_046_A\", p0=0.019, q0=0.012, bus=20)\n\n# Setup the modified case\nssa.setup()\n\n# Run power flow again\nandes.power_flow(ssa)\n\n# Get buses with voltages below 0.980 p.u.\nthreshold = 0.980\nlow_voltage_buses = np.where(ssa.Bus.v < threshold)[0]\nselected_bus_ids = ssa.Bus.idx.v[low_voltage_buses].tolist()\n\n# Find the minimum bus voltage and its index\nmin_voltage_idx = np.argmin(ssa.Bus.v)\nmin_bus = int(ssa.Bus.idx.v[min_voltage_idx])\nmin_voltage = round(ssa.Bus.v[min_voltage_idx], 6)\n\n# Prepare the result JSON\nRESULT_JSON = {\n    \"added_load_idx\": \"PQ_VERIFY_046_A\",\n    \"added_load_bus\": 20,\n    \"threshold\": threshold,\n    \"selected_bus_ids\": sorted(selected_bus_ids),\n    \"selected_count\": len(selected_bus_ids),\n    \"min_bus\": min_bus,\n    \"min_voltage\": min_voltage\n}\n\n# Print result\nprint(f\"RESULT_JSON={RESULT_JSON}\")\n```",
+      "result_json_parse_error": "RESULT_JSON marker not found in stdout.",
+      "score_total": 50.59,
+      "semantic_passed": false,
+      "semantic_score": 0.0,
+      "turn_id": 2,
+      "turn_passed": false,
+      "used_template_fallback": false
+    },
+    {
+      "actual_result_json": null,
+      "artifact_passed": false,
+      "artifact_paths": [],
+      "artifact_score": 0.0,
+      "code": "# required_dependencies: numpy,andas,matplotlib,andes\nimport os\nimport numpy as np\nimport pandas as pd\nimport matplotlib.pyplot as plt\nimport andes\n\n# Load the case\nscript_dir = os.getcwd()\ncase = os.path.join(script_dir, \"verify_ieee39_046.xlsx\")\nssa = andes.load(case, setup=True, no_output=True, log=False)\n\n# Add a new PQ load at bus 20 (keeping the previous change)\nbus_20_idx = np.where(ssa.Bus.idx.v == 20)[0]\nssa.PQ.add(\"PQ_VERIFY_046_A\", p0=0.019, q0=0.012, bus=20)\n\n# Setup the modified case\nssa.setup()\n\n# Scale every PQ load by a factor of 1.050\nscale_factor = 1.050\nfor idx in ssa.PQ.idx.v:\n    ssa.PQ.p0.set(idx, ssa.PQ.p0.v[idx] * scale_factor)\n    ssa.PQ.q0.set(idx, ssa.PQ.q0.v[idx] * scale_factor)\n\n# Run power flow again\nandes.power_flow(ssa)\n\n# Get bus voltages\nbus_voltages = ssa.Bus.v\n\n# Find maximum and minimum bus voltages\nmax_voltage_idx = np.argmax(bus_voltages)\nmin_voltage_idx = np.argmin(bus_voltages)\n\nmax_bus = int(ssa.Bus.idx.v[max_voltage_idx])\nmax_voltage = round(bus_voltages[max_voltage_idx], 6)\n\nmin_bus = int(ssa.Bus.idx.v[min_voltage_idx])\nmin_voltage = round(bus_voltages[min_voltage_idx], 6)\n\n# Save a line plot of bus voltage magnitude\nplt.figure(figsize=(10, 6))\nplt.plot(ssa.Bus.idx.v, bus_voltages, marker='o')\nplt.title('Bus Voltage Magnitude')\nplt.xlabel('Bus Index')\nplt.ylabel('Voltage (p.u.)')\nplt.grid()\nplt.axhline(y=0.980, color='r', linestyle='--', label='Threshold (0.980 p.u.)')\nplt.legend()\nplot_file = 'scenario_046_turn3_line.png'\nplt.savefig(plot_file)\nplt.close()\n\n# Prepare the result JSON\nRESULT_JSON = {\n    \"scale_factor\": scale_factor,\n    \"max_bus\": max_bus,\n    \"max_voltage\": max_voltage,\n    \"min_bus\": min_bus,\n    \"min_voltage\": min_voltage,\n    \"plot_file\": plot_file\n}\n\n# Print result\nprint(f\"RESULT_JSON={RESULT_JSON}\")",
+      "continuity_score": 10.91,
+      "execution_output": "STDERR:\nTraceback (most recent call last):\n  File \"/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_046/turn_03/workspace/generated_code.py\", line 48, in <module>\n    bus_20_idx = np.where(ssa.Bus.idx.v == 20)[0]\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: Calling nonzero on 0d arrays is not allowed. Use np.atleast_1d(scalar).nonzero() instead. If the context of this error is of the form `arr[nonzero(cond)]`, just use `arr[cond]`.\n\n",
+      "execution_passed": false,
+      "execution_score": 0.0,
+      "expected_result_json": {
+        "max_bus": 36,
+        "max_voltage": 1.0635,
+        "min_bus": 7,
+        "min_voltage": 0.923406,
+        "plot_file": "scenario_046_turn3_line.png",
+        "scale_factor": 1.05
+      },
+      "failure_categories": [
+        "grounding",
+        "continuity",
+        "execution",
+        "semantic",
+        "artifact"
+      ],
+      "format_score": 10.0,
+      "format_valid": true,
+      "grounding_score": 20.0,
+      "issues": [
+        "Missing code requirement: PQ scale call",
+        "Missing code requirement: add PQ call",
+        "Code block 1: Use `ssa.Bus.v.v`, not `ssa.Bus.v`, when you need bus voltage magnitudes.",
+        "Execution failed. Return code: 1",
+        "RESULT_JSON was missing or could not be parsed.",
+        "Plot filename mismatch: expected scenario_046_turn3_line.png, got None",
+        "Expected plot artifact not found: scenario_046_turn3_line.png"
+      ],
+      "prompt": "Follow-up request: update the previous study and return a fresh complete script.\nKeep the added load from the previous step.\nAlso scale every PQ load by a factor of 1.050 after setup, rerun power flow, and save a line plot of bus voltage magnitude to 'scenario_046_turn3_line.png'.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: scale_factor, max_bus, max_voltage, min_bus, min_voltage, plot_file.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.\n- `plot_file` must exactly match the saved filename.\n\nRuntime file context:\n- Working directory for execution: verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_046/turn_03/workspace\n- Uploaded files available during execution:\n- verify_ieee39_046.xlsx\n- Use this exact filename directly in andes.load(...).\n- Do not wrap the uploaded filename with andes.get_case(...).\n",
+      "response": "```python\n# required_dependencies: numpy,andas,matplotlib,andes\nimport os\nimport numpy as np\nimport pandas as pd\nimport matplotlib.pyplot as plt\nimport andes\n\n# Load the case\nscript_dir = os.getcwd()\ncase = os.path.join(script_dir, \"verify_ieee39_046.xlsx\")\nssa = andes.load(case, setup=True, no_output=True, log=False)\n\n# Add a new PQ load at bus 20 (keeping the previous change)\nbus_20_idx = np.where(ssa.Bus.idx.v == 20)[0]\nssa.PQ.add(\"PQ_VERIFY_046_A\", p0=0.019, q0=0.012, bus=20)\n\n# Setup the modified case\nssa.setup()\n\n# Scale every PQ load by a factor of 1.050\nscale_factor = 1.050\nfor idx in ssa.PQ.idx.v:\n    ssa.PQ.p0.set(idx, ssa.PQ.p0.v[idx] * scale_factor)\n    ssa.PQ.q0.set(idx, ssa.PQ.q0.v[idx] * scale_factor)\n\n# Run power flow again\nandes.power_flow(ssa)\n\n# Get bus voltages\nbus_voltages = ssa.Bus.v\n\n# Find maximum and minimum bus voltages\nmax_voltage_idx = np.argmax(bus_voltages)\nmin_voltage_idx = np.argmin(bus_voltages)\n\nmax_bus = int(ssa.Bus.idx.v[max_voltage_idx])\nmax_voltage = round(bus_voltages[max_voltage_idx], 6)\n\nmin_bus = int(ssa.Bus.idx.v[min_voltage_idx])\nmin_voltage = round(bus_voltages[min_voltage_idx], 6)\n\n# Save a line plot of bus voltage magnitude\nplt.figure(figsize=(10, 6))\nplt.plot(ssa.Bus.idx.v, bus_voltages, marker='o')\nplt.title('Bus Voltage Magnitude')\nplt.xlabel('Bus Index')\nplt.ylabel('Voltage (p.u.)')\nplt.grid()\nplt.axhline(y=0.980, color='r', linestyle='--', label='Threshold (0.980 p.u.)')\nplt.legend()\nplot_file = 'scenario_046_turn3_line.png'\nplt.savefig(plot_file)\nplt.close()\n\n# Prepare the result JSON\nRESULT_JSON = {\n    \"scale_factor\": scale_factor,\n    \"max_bus\": max_bus,\n    \"max_voltage\": max_voltage,\n    \"min_bus\": min_bus,\n    \"min_voltage\": min_voltage,\n    \"plot_file\": plot_file\n}\n\n# Print result\nprint(f\"RESULT_JSON={RESULT_JSON}\")\n```",
+      "result_json_parse_error": "RESULT_JSON marker not found in stdout.",
+      "score_total": 40.91,
+      "semantic_passed": false,
+      "semantic_score": 0.0,
+      "turn_id": 3,
+      "turn_passed": false,
+      "used_template_fallback": false
+    }
+  ],
+  "uploaded_filename": "verify_ieee39_046.xlsx"
+}

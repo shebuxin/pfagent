@@ -1,0 +1,7 @@
+STDERR:
+Traceback (most recent call last):
+  File "/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_090/turn_03/workspace/generated_code.py", line 43, in <module>
+    slack_idx = ssa.Bus.idx.slack
+                ^^^^^^^^^^^^^^^^^
+AttributeError: 'DataParam' object has no attribute 'slack'
+

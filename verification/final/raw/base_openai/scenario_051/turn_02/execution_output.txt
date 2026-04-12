@@ -1,0 +1,7 @@
+STDERR:
+Traceback (most recent call last):
+  File "/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_051/turn_02/workspace/generated_code.py", line 44, in <module>
+    ssa.PV.v_target.set(first_pv_idx, 1.005)
+    ^^^^^^^^^^^^^^^
+AttributeError: 'PV' object has no attribute 'v_target'
+

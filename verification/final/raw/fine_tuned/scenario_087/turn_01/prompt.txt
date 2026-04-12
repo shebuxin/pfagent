@@ -1,0 +1,8 @@
+Please answer with one runnable Python script only and nothing else.
+Use the built-in PJM 5-bus case.
+Run power flow and report the top-4 lines by absolute sending-end phase angle.
+- The script must end by printing exactly one line that starts with RESULT_JSON=
+- The JSON object must contain these keys: selected_line_ids, selected_line_metrics.
+- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.
+- Round float values in RESULT_JSON to 6 decimals.
+- `selected_line_metrics` should contain the absolute sending-end phase angles in descending order.

@@ -1,0 +1,18 @@
+{
+  "selected_bus_ids": [
+    36,
+    35,
+    30,
+    19,
+    31
+  ],
+  "selected_voltages": [
+    1.0635,
+    1.0493,
+    1.0475,
+    1.042357,
+    1.04
+  ],
+  "slack_bus": 39,
+  "slack_voltage": 1.03
+}

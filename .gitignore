@@ -1,0 +1,46 @@
+# OS and editor noise
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Local env and secrets
+.env
+.env.*
+.venv/
+venv/
+
+# Codex / local tooling
+.codex
+
+# Streamlit and runtime outputs
+text-to-sim/code_executions/
+text-to-sim/regression_runtime/
+text-to-sim/regression_results*.json
+text-to-sim/data_files/feedback/
+text-to-sim/data_files/user_feedback/
+text-to-sim/data_files/metadata.json
+.andes_pycode/
+
+# Verification outputs
+verification/artifacts/
+verification/artifacts_*/
+verification/artifacts_parallel/
+verification/artifacts_ft_compare_*/
+
+# Temporary outputs
+*.log
+*.tmp
+*.bak
+

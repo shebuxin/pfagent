@@ -1,0 +1,14 @@
+Please revise the prior script for this next step and return one full script only.
+Keep using the same uploaded study file from earlier in this conversation.
+Keep the same case, set the first PV voltage target to 1.010, rerun power flow, and report the affected PV bus voltage together with how many buses are above 1.010 p.u.
+- The script must end by printing exactly one line that starts with RESULT_JSON=
+- The JSON object must contain these keys: pv_bus, pv_setpoint, pv_voltage, selected_count.
+- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.
+- Round float values in RESULT_JSON to 6 decimals.
+
+Runtime file context:
+- Working directory for execution: verification/artifacts_recheck_20260403_parallel/rag/20260403_162928/raw/rag/scenario_081/turn_02/workspace
+- Uploaded files available during execution:
+- verify_kundur_081.xlsx
+- Use this exact filename directly in andes.load(...).
+- Do not wrap the uploaded filename with andes.get_case(...).

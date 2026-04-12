@@ -1,0 +1,48 @@
+{
+  "candidate_pairs": 504,
+  "accepted_pairs": 504,
+  "rejections": {
+    "exact_duplicates": 0
+  },
+  "accepted_by_source": {
+    "canonical_task": 18,
+    "low_level_generated": 381,
+    "strict_verified_scenario": 63,
+    "generalized_verified_conversation": 26,
+    "curated_hard_case": 10,
+    "few_shot": 6
+  },
+  "raw_jsonl_audit": {
+    "path": "/home/bshe/Documents/git-research/pfagent/PowerFlow_Specific/fine_tuning_data.jsonl",
+    "exists": true,
+    "counts": {
+      "legacy_ieee39_base": 62,
+      "default_config_false": 310,
+      "bus_uid_usage": 65,
+      "execution_trace_in_prompt": 30,
+      "narrative_summary_answer": 3
+    },
+    "examples": {
+      "legacy_ieee39_base": {
+        "line": "1",
+        "prompt": "How can I check the overall operating condition of the test grid?",
+        "assistant": "import andes\nimport os\n\nscript_dir = os.getcwd()\ncase = os.path.join(script_dir, 'ieee39_base.xlsx')\n\nssa = andes.load(case,\n                setup=False,\n                no_output=True,\n                default_config=Fal"
+      },
+      "bus_uid_usage": {
+        "line": "75",
+        "prompt": "Which point in the network is at its peak level?",
+        "assistant": "import andes\nimport numpy as np\n\n\nssa = andes.load(\n    andes.get_case('ieee39/ieee39.xlsx'),\n    setup=True,     # If setup=False, need to call ss.setup() before running the simulation\n    no_output=True, \n    default_c"
+      },
+      "execution_trace_in_prompt": {
+        "line": "578",
+        "prompt": "Code: import andes\nimport os\n\nscript_dir = os.getcwd()\ncase = os.path.join(script_dir, 'ieee39_base.xlsx')\n\nssa = andes.load(case,\n                setup=False,\n                no_output=True,\n                default_conf",
+        "assistant": "The snippet you provided is intended to\n\n 1. import the ANDES power\u2010flow library  \n 2. load an IEEE-39 bus test case from an Excel file  \n 3. run a steady\u2010state"
+      },
+      "narrative_summary_answer": {
+        "line": "578",
+        "prompt": "Code: import andes\nimport os\n\nscript_dir = os.getcwd()\ncase = os.path.join(script_dir, 'ieee39_base.xlsx')\n\nssa = andes.load(case,\n                setup=False,\n",
+        "assistant": "The snippet you provided is intended to\n\n 1. import the ANDES power\u2010flow library  \n 2. load an IEEE-39 bus test case from an Excel file  \n 3. run a steady\u2010state power\u2010flow  \n 4. print out  \n    \u2013 each PV\u2010bus\u2019s P and Q in"
+      }
+    }
+  }
+}

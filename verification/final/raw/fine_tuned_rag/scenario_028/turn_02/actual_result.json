@@ -1,0 +1,8 @@
+{
+  "added_load_idx": "PQ_VERIFY_028_D",
+  "selected_bus_ids": [],
+  "selected_count": 0,
+  "slack_bus": 1,
+  "slack_voltage": 1.03,
+  "threshold": 1.01
+}

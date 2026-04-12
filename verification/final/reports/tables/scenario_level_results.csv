@@ -1,0 +1,401 @@
+model_key,model_label,scenario_id,blueprint,case_family,case_source,scenario_passed,conversation_score
+base_openai,Base OpenAI,scenario_001,voltage_rank_add_scale_plot,ieee14,builtin,False,48.8333
+base_openai,Base OpenAI,scenario_002,voltage_rank_add_scale_plot,ieee14,builtin,False,50.5
+base_openai,Base OpenAI,scenario_003,voltage_rank_add_scale_plot,ieee14,builtin,False,48.8333
+base_openai,Base OpenAI,scenario_004,voltage_rank_add_scale_plot,ieee14,builtin,False,48.8333
+base_openai,Base OpenAI,scenario_005,threshold_slack_add_extremes,ieee14,builtin,False,48.2567
+base_openai,Base OpenAI,scenario_006,threshold_slack_add_extremes,ieee14,builtin,False,53.53
+base_openai,Base OpenAI,scenario_007,threshold_slack_add_extremes,ieee14,builtin,False,48.2567
+base_openai,Base OpenAI,scenario_008,threshold_slack_add_extremes,ieee14,builtin,False,48.2567
+base_openai,Base OpenAI,scenario_009,extremes_pv_scale_barplot,ieee14,builtin,False,46.59
+base_openai,Base OpenAI,scenario_010,extremes_pv_scale_barplot,ieee14,builtin,False,46.59
+base_openai,Base OpenAI,scenario_011,extremes_pv_scale_barplot,ieee14,builtin,False,46.59
+base_openai,Base OpenAI,scenario_012,low_buses_add_slack_plot,ieee14,builtin,False,48.8333
+base_openai,Base OpenAI,scenario_013,low_buses_add_slack_plot,ieee14,builtin,False,48.8333
+base_openai,Base OpenAI,scenario_014,low_buses_add_slack_plot,ieee14,builtin,False,48.8333
+base_openai,Base OpenAI,scenario_015,voltage_rank_add_scale_plot,ieee14,uploaded,False,50.5
+base_openai,Base OpenAI,scenario_016,voltage_rank_add_scale_plot,ieee14,uploaded,False,50.5
+base_openai,Base OpenAI,scenario_017,voltage_rank_add_scale_plot,ieee14,uploaded,False,37.9233
+base_openai,Base OpenAI,scenario_018,voltage_rank_add_scale_plot,ieee14,uploaded,False,50.5
+base_openai,Base OpenAI,scenario_019,threshold_slack_add_extremes,ieee14,uploaded,False,48.2567
+base_openai,Base OpenAI,scenario_020,threshold_slack_add_extremes,ieee14,uploaded,False,48.2567
+base_openai,Base OpenAI,scenario_021,threshold_slack_add_extremes,ieee14,uploaded,False,48.2567
+base_openai,Base OpenAI,scenario_022,threshold_slack_add_extremes,ieee14,uploaded,False,48.2567
+base_openai,Base OpenAI,scenario_023,extremes_pv_scale_barplot,ieee14,uploaded,False,46.59
+base_openai,Base OpenAI,scenario_024,extremes_pv_scale_barplot,ieee14,uploaded,False,53.3333
+base_openai,Base OpenAI,scenario_025,extremes_pv_scale_barplot,ieee14,uploaded,False,46.59
+base_openai,Base OpenAI,scenario_026,low_buses_add_slack_plot,ieee14,uploaded,False,45.1967
+base_openai,Base OpenAI,scenario_027,low_buses_add_slack_plot,ieee14,uploaded,False,48.8333
+base_openai,Base OpenAI,scenario_028,low_buses_add_slack_plot,ieee14,uploaded,False,48.8333
+base_openai,Base OpenAI,scenario_029,voltage_rank_add_scale_plot,ieee39,builtin,False,38.8333
+base_openai,Base OpenAI,scenario_030,voltage_rank_add_scale_plot,ieee39,builtin,False,48.8333
+base_openai,Base OpenAI,scenario_031,voltage_rank_add_scale_plot,ieee39,builtin,False,50.5
+base_openai,Base OpenAI,scenario_032,voltage_rank_add_scale_plot,ieee39,builtin,False,48.8333
+base_openai,Base OpenAI,scenario_033,threshold_slack_add_extremes,ieee39,builtin,False,48.2567
+base_openai,Base OpenAI,scenario_034,threshold_slack_add_extremes,ieee39,builtin,False,48.2567
+base_openai,Base OpenAI,scenario_035,threshold_slack_add_extremes,ieee39,builtin,False,48.2567
+base_openai,Base OpenAI,scenario_036,threshold_slack_add_extremes,ieee39,builtin,False,38.2567
+base_openai,Base OpenAI,scenario_037,extremes_pv_scale_barplot,ieee39,builtin,False,46.59
+base_openai,Base OpenAI,scenario_038,extremes_pv_scale_barplot,ieee39,builtin,False,46.59
+base_openai,Base OpenAI,scenario_039,extremes_pv_scale_barplot,ieee39,builtin,False,36.59
+base_openai,Base OpenAI,scenario_040,low_buses_add_slack_plot,ieee39,builtin,False,47.9233
+base_openai,Base OpenAI,scenario_041,low_buses_add_slack_plot,ieee39,builtin,False,48.8333
+base_openai,Base OpenAI,scenario_042,low_buses_add_slack_plot,ieee39,builtin,False,38.8333
+base_openai,Base OpenAI,scenario_043,voltage_rank_add_scale_plot,ieee39,uploaded,False,48.8333
+base_openai,Base OpenAI,scenario_044,voltage_rank_add_scale_plot,ieee39,uploaded,False,45.1967
+base_openai,Base OpenAI,scenario_045,voltage_rank_add_scale_plot,ieee39,uploaded,False,48.8333
+base_openai,Base OpenAI,scenario_046,voltage_rank_add_scale_plot,ieee39,uploaded,False,48.8333
+base_openai,Base OpenAI,scenario_047,threshold_slack_add_extremes,ieee39,uploaded,False,48.2567
+base_openai,Base OpenAI,scenario_048,threshold_slack_add_extremes,ieee39,uploaded,False,38.2567
+base_openai,Base OpenAI,scenario_049,threshold_slack_add_extremes,ieee39,uploaded,False,48.2567
+base_openai,Base OpenAI,scenario_050,threshold_slack_add_extremes,ieee39,uploaded,False,48.2567
+base_openai,Base OpenAI,scenario_051,extremes_pv_scale_barplot,ieee39,uploaded,False,36.59
+base_openai,Base OpenAI,scenario_052,extremes_pv_scale_barplot,ieee39,uploaded,False,46.59
+base_openai,Base OpenAI,scenario_053,extremes_pv_scale_barplot,ieee39,uploaded,False,46.59
+base_openai,Base OpenAI,scenario_054,low_buses_add_slack_plot,ieee39,uploaded,False,48.8333
+base_openai,Base OpenAI,scenario_055,low_buses_add_slack_plot,ieee39,uploaded,False,48.8333
+base_openai,Base OpenAI,scenario_056,low_buses_add_slack_plot,ieee39,uploaded,False,48.8333
+base_openai,Base OpenAI,scenario_057,voltage_rank_add_scale_plot,kundur,builtin,False,29.0933
+base_openai,Base OpenAI,scenario_058,voltage_rank_add_scale_plot,kundur,builtin,False,48.8333
+base_openai,Base OpenAI,scenario_059,voltage_rank_add_scale_plot,kundur,builtin,False,48.8333
+base_openai,Base OpenAI,scenario_060,voltage_rank_add_scale_plot,kundur,builtin,False,48.8333
+base_openai,Base OpenAI,scenario_061,threshold_slack_add_extremes,kundur,builtin,False,42.9867
+base_openai,Base OpenAI,scenario_062,threshold_slack_add_extremes,kundur,builtin,False,48.2567
+base_openai,Base OpenAI,scenario_063,threshold_slack_add_extremes,kundur,builtin,False,48.2567
+base_openai,Base OpenAI,scenario_064,threshold_slack_add_extremes,kundur,builtin,False,38.2567
+base_openai,Base OpenAI,scenario_065,extremes_pv_scale_barplot,kundur,builtin,False,41.3167
+base_openai,Base OpenAI,scenario_066,extremes_pv_scale_barplot,kundur,builtin,False,51.8633
+base_openai,Base OpenAI,scenario_067,extremes_pv_scale_barplot,kundur,builtin,False,41.8633
+base_openai,Base OpenAI,scenario_068,low_buses_add_slack_plot,kundur,builtin,False,48.8333
+base_openai,Base OpenAI,scenario_069,low_buses_add_slack_plot,kundur,builtin,False,39.0933
+base_openai,Base OpenAI,scenario_070,low_buses_add_slack_plot,kundur,builtin,False,29.0933
+base_openai,Base OpenAI,scenario_071,voltage_rank_add_scale_plot,kundur,uploaded,False,45.1967
+base_openai,Base OpenAI,scenario_072,voltage_rank_add_scale_plot,kundur,uploaded,False,50.5
+base_openai,Base OpenAI,scenario_073,voltage_rank_add_scale_plot,kundur,uploaded,False,38.8333
+base_openai,Base OpenAI,scenario_074,voltage_rank_add_scale_plot,kundur,uploaded,False,48.8333
+base_openai,Base OpenAI,scenario_075,threshold_slack_add_extremes,kundur,uploaded,False,48.2567
+base_openai,Base OpenAI,scenario_076,threshold_slack_add_extremes,kundur,uploaded,False,48.2567
+base_openai,Base OpenAI,scenario_077,threshold_slack_add_extremes,kundur,uploaded,False,48.2567
+base_openai,Base OpenAI,scenario_078,threshold_slack_add_extremes,kundur,uploaded,False,48.2567
+base_openai,Base OpenAI,scenario_079,extremes_pv_scale_barplot,kundur,uploaded,False,43.3333
+base_openai,Base OpenAI,scenario_080,extremes_pv_scale_barplot,kundur,uploaded,False,53.3333
+base_openai,Base OpenAI,scenario_081,extremes_pv_scale_barplot,kundur,uploaded,False,53.3333
+base_openai,Base OpenAI,scenario_082,low_buses_add_slack_plot,kundur,uploaded,False,47.9233
+base_openai,Base OpenAI,scenario_083,low_buses_add_slack_plot,kundur,uploaded,False,48.8333
+base_openai,Base OpenAI,scenario_084,low_buses_add_slack_plot,kundur,uploaded,False,48.8333
+base_openai,Base OpenAI,scenario_085,line_topk_scale_threshold_plot,pjm5,builtin,False,43.06
+base_openai,Base OpenAI,scenario_086,line_topk_scale_threshold_plot,pjm5,builtin,False,43.8533
+base_openai,Base OpenAI,scenario_087,line_topk_scale_threshold_plot,pjm5,builtin,False,48.7767
+base_openai,Base OpenAI,scenario_088,line_topk_scale_threshold_plot,pjm5,builtin,False,35.5367
+base_openai,Base OpenAI,scenario_089,voltage_then_slack_line_threshold,pjm5,builtin,False,52.4333
+base_openai,Base OpenAI,scenario_090,voltage_then_slack_line_threshold,pjm5,builtin,False,34.9033
+base_openai,Base OpenAI,scenario_091,voltage_then_slack_line_threshold,pjm5,builtin,False,45.5867
+base_openai,Base OpenAI,scenario_092,voltage_then_slack_line_threshold,pjm5,builtin,False,45.5867
+base_openai,Base OpenAI,scenario_093,line_topk_scale_threshold_plot,pjm5,uploaded,False,43.8533
+base_openai,Base OpenAI,scenario_094,line_topk_scale_threshold_plot,pjm5,uploaded,False,48.7767
+base_openai,Base OpenAI,scenario_095,line_topk_scale_threshold_plot,pjm5,uploaded,False,43.8533
+base_openai,Base OpenAI,scenario_096,line_topk_scale_threshold_plot,pjm5,uploaded,False,48.7767
+base_openai,Base OpenAI,scenario_097,voltage_then_slack_line_threshold,pjm5,uploaded,False,45.5867
+base_openai,Base OpenAI,scenario_098,voltage_then_slack_line_threshold,pjm5,uploaded,False,45.5867
+base_openai,Base OpenAI,scenario_099,voltage_then_slack_line_threshold,pjm5,uploaded,False,45.5867
+base_openai,Base OpenAI,scenario_100,voltage_then_slack_line_threshold,pjm5,uploaded,False,45.5867
+fine_tuned,Fine-tuned,scenario_001,voltage_rank_add_scale_plot,ieee14,builtin,True,100.0
+fine_tuned,Fine-tuned,scenario_002,voltage_rank_add_scale_plot,ieee14,builtin,True,100.0
+fine_tuned,Fine-tuned,scenario_003,voltage_rank_add_scale_plot,ieee14,builtin,True,100.0
+fine_tuned,Fine-tuned,scenario_004,voltage_rank_add_scale_plot,ieee14,builtin,True,100.0
+fine_tuned,Fine-tuned,scenario_005,threshold_slack_add_extremes,ieee14,builtin,True,100.0
+fine_tuned,Fine-tuned,scenario_006,threshold_slack_add_extremes,ieee14,builtin,False,41.6667
+fine_tuned,Fine-tuned,scenario_007,threshold_slack_add_extremes,ieee14,builtin,True,100.0
+fine_tuned,Fine-tuned,scenario_008,threshold_slack_add_extremes,ieee14,builtin,True,100.0
+fine_tuned,Fine-tuned,scenario_009,extremes_pv_scale_barplot,ieee14,builtin,False,73.3333
+fine_tuned,Fine-tuned,scenario_010,extremes_pv_scale_barplot,ieee14,builtin,True,100.0
+fine_tuned,Fine-tuned,scenario_011,extremes_pv_scale_barplot,ieee14,builtin,True,100.0
+fine_tuned,Fine-tuned,scenario_012,low_buses_add_slack_plot,ieee14,builtin,True,100.0
+fine_tuned,Fine-tuned,scenario_013,low_buses_add_slack_plot,ieee14,builtin,True,100.0
+fine_tuned,Fine-tuned,scenario_014,low_buses_add_slack_plot,ieee14,builtin,True,100.0
+fine_tuned,Fine-tuned,scenario_015,voltage_rank_add_scale_plot,ieee14,uploaded,False,65.5
+fine_tuned,Fine-tuned,scenario_016,voltage_rank_add_scale_plot,ieee14,uploaded,True,100.0
+fine_tuned,Fine-tuned,scenario_017,voltage_rank_add_scale_plot,ieee14,uploaded,True,100.0
+fine_tuned,Fine-tuned,scenario_018,voltage_rank_add_scale_plot,ieee14,uploaded,True,100.0
+fine_tuned,Fine-tuned,scenario_019,threshold_slack_add_extremes,ieee14,uploaded,False,63.2567
+fine_tuned,Fine-tuned,scenario_020,threshold_slack_add_extremes,ieee14,uploaded,True,100.0
+fine_tuned,Fine-tuned,scenario_021,threshold_slack_add_extremes,ieee14,uploaded,False,41.6667
+fine_tuned,Fine-tuned,scenario_022,threshold_slack_add_extremes,ieee14,uploaded,True,100.0
+fine_tuned,Fine-tuned,scenario_023,extremes_pv_scale_barplot,ieee14,uploaded,True,100.0
+fine_tuned,Fine-tuned,scenario_024,extremes_pv_scale_barplot,ieee14,uploaded,False,68.3333
+fine_tuned,Fine-tuned,scenario_025,extremes_pv_scale_barplot,ieee14,uploaded,True,100.0
+fine_tuned,Fine-tuned,scenario_026,low_buses_add_slack_plot,ieee14,uploaded,True,100.0
+fine_tuned,Fine-tuned,scenario_027,low_buses_add_slack_plot,ieee14,uploaded,True,100.0
+fine_tuned,Fine-tuned,scenario_028,low_buses_add_slack_plot,ieee14,uploaded,True,100.0
+fine_tuned,Fine-tuned,scenario_029,voltage_rank_add_scale_plot,ieee39,builtin,True,100.0
+fine_tuned,Fine-tuned,scenario_030,voltage_rank_add_scale_plot,ieee39,builtin,True,100.0
+fine_tuned,Fine-tuned,scenario_031,voltage_rank_add_scale_plot,ieee39,builtin,True,100.0
+fine_tuned,Fine-tuned,scenario_032,voltage_rank_add_scale_plot,ieee39,builtin,True,100.0
+fine_tuned,Fine-tuned,scenario_033,threshold_slack_add_extremes,ieee39,builtin,False,41.6667
+fine_tuned,Fine-tuned,scenario_034,threshold_slack_add_extremes,ieee39,builtin,True,100.0
+fine_tuned,Fine-tuned,scenario_035,threshold_slack_add_extremes,ieee39,builtin,False,64.7267
+fine_tuned,Fine-tuned,scenario_036,threshold_slack_add_extremes,ieee39,builtin,False,64.7267
+fine_tuned,Fine-tuned,scenario_037,extremes_pv_scale_barplot,ieee39,builtin,True,100.0
+fine_tuned,Fine-tuned,scenario_038,extremes_pv_scale_barplot,ieee39,builtin,False,53.3333
+fine_tuned,Fine-tuned,scenario_039,extremes_pv_scale_barplot,ieee39,builtin,False,66.6667
+fine_tuned,Fine-tuned,scenario_040,low_buses_add_slack_plot,ieee39,builtin,True,100.0
+fine_tuned,Fine-tuned,scenario_041,low_buses_add_slack_plot,ieee39,builtin,True,100.0
+fine_tuned,Fine-tuned,scenario_042,low_buses_add_slack_plot,ieee39,builtin,True,100.0
+fine_tuned,Fine-tuned,scenario_043,voltage_rank_add_scale_plot,ieee39,uploaded,True,100.0
+fine_tuned,Fine-tuned,scenario_044,voltage_rank_add_scale_plot,ieee39,uploaded,False,53.3333
+fine_tuned,Fine-tuned,scenario_045,voltage_rank_add_scale_plot,ieee39,uploaded,True,100.0
+fine_tuned,Fine-tuned,scenario_046,voltage_rank_add_scale_plot,ieee39,uploaded,True,100.0
+fine_tuned,Fine-tuned,scenario_047,threshold_slack_add_extremes,ieee39,uploaded,False,83.53
+fine_tuned,Fine-tuned,scenario_048,threshold_slack_add_extremes,ieee39,uploaded,False,70.0
+fine_tuned,Fine-tuned,scenario_049,threshold_slack_add_extremes,ieee39,uploaded,False,83.3333
+fine_tuned,Fine-tuned,scenario_050,threshold_slack_add_extremes,ieee39,uploaded,False,55.0
+fine_tuned,Fine-tuned,scenario_051,extremes_pv_scale_barplot,ieee39,uploaded,False,98.61
+fine_tuned,Fine-tuned,scenario_052,extremes_pv_scale_barplot,ieee39,uploaded,False,98.61
+fine_tuned,Fine-tuned,scenario_053,extremes_pv_scale_barplot,ieee39,uploaded,False,53.3333
+fine_tuned,Fine-tuned,scenario_054,low_buses_add_slack_plot,ieee39,uploaded,True,100.0
+fine_tuned,Fine-tuned,scenario_055,low_buses_add_slack_plot,ieee39,uploaded,True,100.0
+fine_tuned,Fine-tuned,scenario_056,low_buses_add_slack_plot,ieee39,uploaded,True,100.0
+fine_tuned,Fine-tuned,scenario_057,voltage_rank_add_scale_plot,kundur,builtin,True,100.0
+fine_tuned,Fine-tuned,scenario_058,voltage_rank_add_scale_plot,kundur,builtin,False,50.5
+fine_tuned,Fine-tuned,scenario_059,voltage_rank_add_scale_plot,kundur,builtin,False,25.0
+fine_tuned,Fine-tuned,scenario_060,voltage_rank_add_scale_plot,kundur,builtin,True,100.0
+fine_tuned,Fine-tuned,scenario_061,threshold_slack_add_extremes,kundur,builtin,True,100.0
+fine_tuned,Fine-tuned,scenario_062,threshold_slack_add_extremes,kundur,builtin,False,38.3333
+fine_tuned,Fine-tuned,scenario_063,threshold_slack_add_extremes,kundur,builtin,False,64.1667
+fine_tuned,Fine-tuned,scenario_064,threshold_slack_add_extremes,kundur,builtin,False,49.7267
+fine_tuned,Fine-tuned,scenario_065,extremes_pv_scale_barplot,kundur,builtin,True,100.0
+fine_tuned,Fine-tuned,scenario_066,extremes_pv_scale_barplot,kundur,builtin,False,98.61
+fine_tuned,Fine-tuned,scenario_067,extremes_pv_scale_barplot,kundur,builtin,True,100.0
+fine_tuned,Fine-tuned,scenario_068,low_buses_add_slack_plot,kundur,builtin,True,100.0
+fine_tuned,Fine-tuned,scenario_069,low_buses_add_slack_plot,kundur,builtin,True,100.0
+fine_tuned,Fine-tuned,scenario_070,low_buses_add_slack_plot,kundur,builtin,True,100.0
+fine_tuned,Fine-tuned,scenario_071,voltage_rank_add_scale_plot,kundur,uploaded,True,100.0
+fine_tuned,Fine-tuned,scenario_072,voltage_rank_add_scale_plot,kundur,uploaded,False,85.0
+fine_tuned,Fine-tuned,scenario_073,voltage_rank_add_scale_plot,kundur,uploaded,True,100.0
+fine_tuned,Fine-tuned,scenario_074,voltage_rank_add_scale_plot,kundur,uploaded,True,100.0
+fine_tuned,Fine-tuned,scenario_075,threshold_slack_add_extremes,kundur,uploaded,True,100.0
+fine_tuned,Fine-tuned,scenario_076,threshold_slack_add_extremes,kundur,uploaded,False,81.8633
+fine_tuned,Fine-tuned,scenario_077,threshold_slack_add_extremes,kundur,uploaded,True,100.0
+fine_tuned,Fine-tuned,scenario_078,threshold_slack_add_extremes,kundur,uploaded,False,63.2567
+fine_tuned,Fine-tuned,scenario_079,extremes_pv_scale_barplot,kundur,uploaded,False,53.3333
+fine_tuned,Fine-tuned,scenario_080,extremes_pv_scale_barplot,kundur,uploaded,True,100.0
+fine_tuned,Fine-tuned,scenario_081,extremes_pv_scale_barplot,kundur,uploaded,False,97.2233
+fine_tuned,Fine-tuned,scenario_082,low_buses_add_slack_plot,kundur,uploaded,False,66.6667
+fine_tuned,Fine-tuned,scenario_083,low_buses_add_slack_plot,kundur,uploaded,True,100.0
+fine_tuned,Fine-tuned,scenario_084,low_buses_add_slack_plot,kundur,uploaded,False,73.3333
+fine_tuned,Fine-tuned,scenario_085,line_topk_scale_threshold_plot,pjm5,builtin,True,100.0
+fine_tuned,Fine-tuned,scenario_086,line_topk_scale_threshold_plot,pjm5,builtin,True,100.0
+fine_tuned,Fine-tuned,scenario_087,line_topk_scale_threshold_plot,pjm5,builtin,False,85.0
+fine_tuned,Fine-tuned,scenario_088,line_topk_scale_threshold_plot,pjm5,builtin,False,85.0
+fine_tuned,Fine-tuned,scenario_089,voltage_then_slack_line_threshold,pjm5,builtin,True,100.0
+fine_tuned,Fine-tuned,scenario_090,voltage_then_slack_line_threshold,pjm5,builtin,False,63.1533
+fine_tuned,Fine-tuned,scenario_091,voltage_then_slack_line_threshold,pjm5,builtin,False,55.0
+fine_tuned,Fine-tuned,scenario_092,voltage_then_slack_line_threshold,pjm5,builtin,False,89.9333
+fine_tuned,Fine-tuned,scenario_093,line_topk_scale_threshold_plot,pjm5,uploaded,True,100.0
+fine_tuned,Fine-tuned,scenario_094,line_topk_scale_threshold_plot,pjm5,uploaded,False,85.0
+fine_tuned,Fine-tuned,scenario_095,line_topk_scale_threshold_plot,pjm5,uploaded,True,100.0
+fine_tuned,Fine-tuned,scenario_096,line_topk_scale_threshold_plot,pjm5,uploaded,False,85.0
+fine_tuned,Fine-tuned,scenario_097,voltage_then_slack_line_threshold,pjm5,uploaded,False,89.9333
+fine_tuned,Fine-tuned,scenario_098,voltage_then_slack_line_threshold,pjm5,uploaded,True,100.0
+fine_tuned,Fine-tuned,scenario_099,voltage_then_slack_line_threshold,pjm5,uploaded,False,55.0
+fine_tuned,Fine-tuned,scenario_100,voltage_then_slack_line_threshold,pjm5,uploaded,False,63.1533
+rag,RAG,scenario_001,voltage_rank_add_scale_plot,ieee14,builtin,True,100.0
+rag,RAG,scenario_002,voltage_rank_add_scale_plot,ieee14,builtin,True,100.0
+rag,RAG,scenario_003,voltage_rank_add_scale_plot,ieee14,builtin,True,100.0
+rag,RAG,scenario_004,voltage_rank_add_scale_plot,ieee14,builtin,True,100.0
+rag,RAG,scenario_005,threshold_slack_add_extremes,ieee14,builtin,True,100.0
+rag,RAG,scenario_006,threshold_slack_add_extremes,ieee14,builtin,True,100.0
+rag,RAG,scenario_007,threshold_slack_add_extremes,ieee14,builtin,True,100.0
+rag,RAG,scenario_008,threshold_slack_add_extremes,ieee14,builtin,True,100.0
+rag,RAG,scenario_009,extremes_pv_scale_barplot,ieee14,builtin,True,100.0
+rag,RAG,scenario_010,extremes_pv_scale_barplot,ieee14,builtin,True,100.0
+rag,RAG,scenario_011,extremes_pv_scale_barplot,ieee14,builtin,True,100.0
+rag,RAG,scenario_012,low_buses_add_slack_plot,ieee14,builtin,True,100.0
+rag,RAG,scenario_013,low_buses_add_slack_plot,ieee14,builtin,True,100.0
+rag,RAG,scenario_014,low_buses_add_slack_plot,ieee14,builtin,True,100.0
+rag,RAG,scenario_015,voltage_rank_add_scale_plot,ieee14,uploaded,True,100.0
+rag,RAG,scenario_016,voltage_rank_add_scale_plot,ieee14,uploaded,True,100.0
+rag,RAG,scenario_017,voltage_rank_add_scale_plot,ieee14,uploaded,True,100.0
+rag,RAG,scenario_018,voltage_rank_add_scale_plot,ieee14,uploaded,True,100.0
+rag,RAG,scenario_019,threshold_slack_add_extremes,ieee14,uploaded,True,100.0
+rag,RAG,scenario_020,threshold_slack_add_extremes,ieee14,uploaded,True,100.0
+rag,RAG,scenario_021,threshold_slack_add_extremes,ieee14,uploaded,True,100.0
+rag,RAG,scenario_022,threshold_slack_add_extremes,ieee14,uploaded,True,100.0
+rag,RAG,scenario_023,extremes_pv_scale_barplot,ieee14,uploaded,True,100.0
+rag,RAG,scenario_024,extremes_pv_scale_barplot,ieee14,uploaded,True,100.0
+rag,RAG,scenario_025,extremes_pv_scale_barplot,ieee14,uploaded,True,100.0
+rag,RAG,scenario_026,low_buses_add_slack_plot,ieee14,uploaded,True,100.0
+rag,RAG,scenario_027,low_buses_add_slack_plot,ieee14,uploaded,True,100.0
+rag,RAG,scenario_028,low_buses_add_slack_plot,ieee14,uploaded,True,100.0
+rag,RAG,scenario_029,voltage_rank_add_scale_plot,ieee39,builtin,True,100.0
+rag,RAG,scenario_030,voltage_rank_add_scale_plot,ieee39,builtin,True,100.0
+rag,RAG,scenario_031,voltage_rank_add_scale_plot,ieee39,builtin,True,100.0
+rag,RAG,scenario_032,voltage_rank_add_scale_plot,ieee39,builtin,True,100.0
+rag,RAG,scenario_033,threshold_slack_add_extremes,ieee39,builtin,True,100.0
+rag,RAG,scenario_034,threshold_slack_add_extremes,ieee39,builtin,True,100.0
+rag,RAG,scenario_035,threshold_slack_add_extremes,ieee39,builtin,True,100.0
+rag,RAG,scenario_036,threshold_slack_add_extremes,ieee39,builtin,True,100.0
+rag,RAG,scenario_037,extremes_pv_scale_barplot,ieee39,builtin,True,100.0
+rag,RAG,scenario_038,extremes_pv_scale_barplot,ieee39,builtin,True,100.0
+rag,RAG,scenario_039,extremes_pv_scale_barplot,ieee39,builtin,True,100.0
+rag,RAG,scenario_040,low_buses_add_slack_plot,ieee39,builtin,True,100.0
+rag,RAG,scenario_041,low_buses_add_slack_plot,ieee39,builtin,True,100.0
+rag,RAG,scenario_042,low_buses_add_slack_plot,ieee39,builtin,True,100.0
+rag,RAG,scenario_043,voltage_rank_add_scale_plot,ieee39,uploaded,True,100.0
+rag,RAG,scenario_044,voltage_rank_add_scale_plot,ieee39,uploaded,True,100.0
+rag,RAG,scenario_045,voltage_rank_add_scale_plot,ieee39,uploaded,True,100.0
+rag,RAG,scenario_046,voltage_rank_add_scale_plot,ieee39,uploaded,True,100.0
+rag,RAG,scenario_047,threshold_slack_add_extremes,ieee39,uploaded,True,100.0
+rag,RAG,scenario_048,threshold_slack_add_extremes,ieee39,uploaded,True,100.0
+rag,RAG,scenario_049,threshold_slack_add_extremes,ieee39,uploaded,True,100.0
+rag,RAG,scenario_050,threshold_slack_add_extremes,ieee39,uploaded,True,100.0
+rag,RAG,scenario_051,extremes_pv_scale_barplot,ieee39,uploaded,True,100.0
+rag,RAG,scenario_052,extremes_pv_scale_barplot,ieee39,uploaded,True,100.0
+rag,RAG,scenario_053,extremes_pv_scale_barplot,ieee39,uploaded,True,100.0
+rag,RAG,scenario_054,low_buses_add_slack_plot,ieee39,uploaded,True,100.0
+rag,RAG,scenario_055,low_buses_add_slack_plot,ieee39,uploaded,True,100.0
+rag,RAG,scenario_056,low_buses_add_slack_plot,ieee39,uploaded,True,100.0
+rag,RAG,scenario_057,voltage_rank_add_scale_plot,kundur,builtin,True,100.0
+rag,RAG,scenario_058,voltage_rank_add_scale_plot,kundur,builtin,True,100.0
+rag,RAG,scenario_059,voltage_rank_add_scale_plot,kundur,builtin,True,100.0
+rag,RAG,scenario_060,voltage_rank_add_scale_plot,kundur,builtin,True,100.0
+rag,RAG,scenario_061,threshold_slack_add_extremes,kundur,builtin,True,100.0
+rag,RAG,scenario_062,threshold_slack_add_extremes,kundur,builtin,True,100.0
+rag,RAG,scenario_063,threshold_slack_add_extremes,kundur,builtin,True,100.0
+rag,RAG,scenario_064,threshold_slack_add_extremes,kundur,builtin,True,100.0
+rag,RAG,scenario_065,extremes_pv_scale_barplot,kundur,builtin,True,100.0
+rag,RAG,scenario_066,extremes_pv_scale_barplot,kundur,builtin,True,100.0
+rag,RAG,scenario_067,extremes_pv_scale_barplot,kundur,builtin,True,100.0
+rag,RAG,scenario_068,low_buses_add_slack_plot,kundur,builtin,True,100.0
+rag,RAG,scenario_069,low_buses_add_slack_plot,kundur,builtin,True,100.0
+rag,RAG,scenario_070,low_buses_add_slack_plot,kundur,builtin,True,100.0
+rag,RAG,scenario_071,voltage_rank_add_scale_plot,kundur,uploaded,True,100.0
+rag,RAG,scenario_072,voltage_rank_add_scale_plot,kundur,uploaded,True,100.0
+rag,RAG,scenario_073,voltage_rank_add_scale_plot,kundur,uploaded,True,100.0
+rag,RAG,scenario_074,voltage_rank_add_scale_plot,kundur,uploaded,True,100.0
+rag,RAG,scenario_075,threshold_slack_add_extremes,kundur,uploaded,True,100.0
+rag,RAG,scenario_076,threshold_slack_add_extremes,kundur,uploaded,True,100.0
+rag,RAG,scenario_077,threshold_slack_add_extremes,kundur,uploaded,True,100.0
+rag,RAG,scenario_078,threshold_slack_add_extremes,kundur,uploaded,True,100.0
+rag,RAG,scenario_079,extremes_pv_scale_barplot,kundur,uploaded,True,100.0
+rag,RAG,scenario_080,extremes_pv_scale_barplot,kundur,uploaded,True,100.0
+rag,RAG,scenario_081,extremes_pv_scale_barplot,kundur,uploaded,True,100.0
+rag,RAG,scenario_082,low_buses_add_slack_plot,kundur,uploaded,True,100.0
+rag,RAG,scenario_083,low_buses_add_slack_plot,kundur,uploaded,True,100.0
+rag,RAG,scenario_084,low_buses_add_slack_plot,kundur,uploaded,True,100.0
+rag,RAG,scenario_085,line_topk_scale_threshold_plot,pjm5,builtin,True,100.0
+rag,RAG,scenario_086,line_topk_scale_threshold_plot,pjm5,builtin,True,100.0
+rag,RAG,scenario_087,line_topk_scale_threshold_plot,pjm5,builtin,True,100.0
+rag,RAG,scenario_088,line_topk_scale_threshold_plot,pjm5,builtin,True,100.0
+rag,RAG,scenario_089,voltage_then_slack_line_threshold,pjm5,builtin,True,100.0
+rag,RAG,scenario_090,voltage_then_slack_line_threshold,pjm5,builtin,True,100.0
+rag,RAG,scenario_091,voltage_then_slack_line_threshold,pjm5,builtin,True,100.0
+rag,RAG,scenario_092,voltage_then_slack_line_threshold,pjm5,builtin,True,100.0
+rag,RAG,scenario_093,line_topk_scale_threshold_plot,pjm5,uploaded,True,100.0
+rag,RAG,scenario_094,line_topk_scale_threshold_plot,pjm5,uploaded,True,100.0
+rag,RAG,scenario_095,line_topk_scale_threshold_plot,pjm5,uploaded,True,100.0
+rag,RAG,scenario_096,line_topk_scale_threshold_plot,pjm5,uploaded,True,100.0
+rag,RAG,scenario_097,voltage_then_slack_line_threshold,pjm5,uploaded,True,100.0
+rag,RAG,scenario_098,voltage_then_slack_line_threshold,pjm5,uploaded,True,100.0
+rag,RAG,scenario_099,voltage_then_slack_line_threshold,pjm5,uploaded,True,100.0
+rag,RAG,scenario_100,voltage_then_slack_line_threshold,pjm5,uploaded,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_001,voltage_rank_add_scale_plot,ieee14,builtin,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_002,voltage_rank_add_scale_plot,ieee14,builtin,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_003,voltage_rank_add_scale_plot,ieee14,builtin,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_004,voltage_rank_add_scale_plot,ieee14,builtin,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_005,threshold_slack_add_extremes,ieee14,builtin,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_006,threshold_slack_add_extremes,ieee14,builtin,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_007,threshold_slack_add_extremes,ieee14,builtin,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_008,threshold_slack_add_extremes,ieee14,builtin,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_009,extremes_pv_scale_barplot,ieee14,builtin,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_010,extremes_pv_scale_barplot,ieee14,builtin,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_011,extremes_pv_scale_barplot,ieee14,builtin,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_012,low_buses_add_slack_plot,ieee14,builtin,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_013,low_buses_add_slack_plot,ieee14,builtin,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_014,low_buses_add_slack_plot,ieee14,builtin,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_015,voltage_rank_add_scale_plot,ieee14,uploaded,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_016,voltage_rank_add_scale_plot,ieee14,uploaded,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_017,voltage_rank_add_scale_plot,ieee14,uploaded,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_018,voltage_rank_add_scale_plot,ieee14,uploaded,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_019,threshold_slack_add_extremes,ieee14,uploaded,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_020,threshold_slack_add_extremes,ieee14,uploaded,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_021,threshold_slack_add_extremes,ieee14,uploaded,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_022,threshold_slack_add_extremes,ieee14,uploaded,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_023,extremes_pv_scale_barplot,ieee14,uploaded,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_024,extremes_pv_scale_barplot,ieee14,uploaded,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_025,extremes_pv_scale_barplot,ieee14,uploaded,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_026,low_buses_add_slack_plot,ieee14,uploaded,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_027,low_buses_add_slack_plot,ieee14,uploaded,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_028,low_buses_add_slack_plot,ieee14,uploaded,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_029,voltage_rank_add_scale_plot,ieee39,builtin,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_030,voltage_rank_add_scale_plot,ieee39,builtin,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_031,voltage_rank_add_scale_plot,ieee39,builtin,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_032,voltage_rank_add_scale_plot,ieee39,builtin,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_033,threshold_slack_add_extremes,ieee39,builtin,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_034,threshold_slack_add_extremes,ieee39,builtin,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_035,threshold_slack_add_extremes,ieee39,builtin,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_036,threshold_slack_add_extremes,ieee39,builtin,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_037,extremes_pv_scale_barplot,ieee39,builtin,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_038,extremes_pv_scale_barplot,ieee39,builtin,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_039,extremes_pv_scale_barplot,ieee39,builtin,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_040,low_buses_add_slack_plot,ieee39,builtin,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_041,low_buses_add_slack_plot,ieee39,builtin,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_042,low_buses_add_slack_plot,ieee39,builtin,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_043,voltage_rank_add_scale_plot,ieee39,uploaded,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_044,voltage_rank_add_scale_plot,ieee39,uploaded,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_045,voltage_rank_add_scale_plot,ieee39,uploaded,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_046,voltage_rank_add_scale_plot,ieee39,uploaded,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_047,threshold_slack_add_extremes,ieee39,uploaded,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_048,threshold_slack_add_extremes,ieee39,uploaded,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_049,threshold_slack_add_extremes,ieee39,uploaded,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_050,threshold_slack_add_extremes,ieee39,uploaded,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_051,extremes_pv_scale_barplot,ieee39,uploaded,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_052,extremes_pv_scale_barplot,ieee39,uploaded,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_053,extremes_pv_scale_barplot,ieee39,uploaded,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_054,low_buses_add_slack_plot,ieee39,uploaded,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_055,low_buses_add_slack_plot,ieee39,uploaded,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_056,low_buses_add_slack_plot,ieee39,uploaded,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_057,voltage_rank_add_scale_plot,kundur,builtin,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_058,voltage_rank_add_scale_plot,kundur,builtin,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_059,voltage_rank_add_scale_plot,kundur,builtin,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_060,voltage_rank_add_scale_plot,kundur,builtin,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_061,threshold_slack_add_extremes,kundur,builtin,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_062,threshold_slack_add_extremes,kundur,builtin,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_063,threshold_slack_add_extremes,kundur,builtin,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_064,threshold_slack_add_extremes,kundur,builtin,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_065,extremes_pv_scale_barplot,kundur,builtin,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_066,extremes_pv_scale_barplot,kundur,builtin,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_067,extremes_pv_scale_barplot,kundur,builtin,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_068,low_buses_add_slack_plot,kundur,builtin,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_069,low_buses_add_slack_plot,kundur,builtin,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_070,low_buses_add_slack_plot,kundur,builtin,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_071,voltage_rank_add_scale_plot,kundur,uploaded,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_072,voltage_rank_add_scale_plot,kundur,uploaded,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_073,voltage_rank_add_scale_plot,kundur,uploaded,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_074,voltage_rank_add_scale_plot,kundur,uploaded,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_075,threshold_slack_add_extremes,kundur,uploaded,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_076,threshold_slack_add_extremes,kundur,uploaded,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_077,threshold_slack_add_extremes,kundur,uploaded,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_078,threshold_slack_add_extremes,kundur,uploaded,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_079,extremes_pv_scale_barplot,kundur,uploaded,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_080,extremes_pv_scale_barplot,kundur,uploaded,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_081,extremes_pv_scale_barplot,kundur,uploaded,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_082,low_buses_add_slack_plot,kundur,uploaded,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_083,low_buses_add_slack_plot,kundur,uploaded,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_084,low_buses_add_slack_plot,kundur,uploaded,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_085,line_topk_scale_threshold_plot,pjm5,builtin,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_086,line_topk_scale_threshold_plot,pjm5,builtin,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_087,line_topk_scale_threshold_plot,pjm5,builtin,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_088,line_topk_scale_threshold_plot,pjm5,builtin,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_089,voltage_then_slack_line_threshold,pjm5,builtin,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_090,voltage_then_slack_line_threshold,pjm5,builtin,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_091,voltage_then_slack_line_threshold,pjm5,builtin,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_092,voltage_then_slack_line_threshold,pjm5,builtin,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_093,line_topk_scale_threshold_plot,pjm5,uploaded,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_094,line_topk_scale_threshold_plot,pjm5,uploaded,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_095,line_topk_scale_threshold_plot,pjm5,uploaded,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_096,line_topk_scale_threshold_plot,pjm5,uploaded,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_097,voltage_then_slack_line_threshold,pjm5,uploaded,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_098,voltage_then_slack_line_threshold,pjm5,uploaded,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_099,voltage_then_slack_line_threshold,pjm5,uploaded,True,100.0
+fine_tuned_rag,Fine-tuned + RAG,scenario_100,voltage_then_slack_line_threshold,pjm5,uploaded,True,100.0

@@ -1,0 +1,7 @@
+Next follow-up: rebuild the script for the updated study, code only.
+Keep using the same built-in case from earlier in this conversation.
+Keep the same study, scale every PQ load by 1.030, rerun power flow, and report every line whose absolute sending-end phase angle is above 0.080 radians.
+- The script must end by printing exactly one line that starts with RESULT_JSON=
+- The JSON object must contain these keys: scale_factor, angle_threshold, selected_line_ids, selected_count.
+- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.
+- Round float values in RESULT_JSON to 6 decimals.

@@ -1,0 +1,50 @@
+{
+  "actual_result_json": null,
+  "artifact_passed": true,
+  "artifact_paths": [],
+  "artifact_score": 5.0,
+  "code": "# required_dependencies: andes,json\nimport andes\nimport json\n\n# Load PJM 5-bus case\ncase = andes.get_case(\"5bus/pjm5bus.json\")\nssa = andes.load(case, setup=True, no_output=True, log=False)\n\n# Set slack-bus voltage target\nslack_bus_idx = ssa.Slack.idx.v\nssb_voltage_target = 1.020\nssa.Slack.set_voltage(slack_bus_idx, ssb_voltage_target)\n\n# Scale every PQ load by 1.050\nscale_factor = 1.050\nssa.PQ.set_p(ssa.PQ.idx.v, ssa.PQ.p.v * scale_factor)\nssa.PQ.set_q(ssa.PQ.idx.v, ssa.PQ.q.v * scale_factor)\n\n# Run power flow\nandes.run_power_flow(ssa)\n\n# Extract line metrics (sending-end phase angles)\nangle_threshold = 0.120\nline_angles = ssa.Line.angle1.v  # Sending-end angle\nline_ids = ssa.Line.idx.v\n\n# Select lines with angles above the threshold\nselected_lines = [(line_ids[i], line_angles[i]) for i in range(len(line_angles)) if abs(line_angles[i]) > angle_threshold]\nselected_line_ids = [line[0] for line in selected_lines]\nselected_count = len(selected_line_ids)\n\n# Prepare JSON output\nresult_json = {\n    \"slack_setpoint\": ssb_voltage_target,\n    \"scale_factor\": scale_factor,\n    \"angle_threshold\": angle_threshold,\n    \"selected_line_ids\": selected_line_ids,\n    \"selected_count\": selected_count\n}\n\n# Print the result\nprint(f\"RESULT_JSON={json.dumps(result_json)}\")",
+  "continuity_score": 6.0,
+  "execution_output": "STDERR:\nTraceback (most recent call last):\n  File \"/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_091/turn_03/workspace/generated_code.py\", line 46, in <module>\n    ssa.Slack.set_voltage(slack_bus_idx, ssb_voltage_target)\n    ^^^^^^^^^^^^^^^^^^^^^\nAttributeError: 'Slack' object has no attribute 'set_voltage'\n\n",
+  "execution_passed": false,
+  "execution_score": 0.0,
+  "expected_result_json": {
+    "angle_threshold": 0.12,
+    "scale_factor": 1.05,
+    "selected_count": 5,
+    "selected_line_ids": [
+      "0",
+      "1",
+      "2",
+      "5",
+      "6"
+    ],
+    "slack_setpoint": 1.02
+  },
+  "failure_categories": [
+    "grounding",
+    "continuity",
+    "execution",
+    "semantic"
+  ],
+  "format_score": 10.0,
+  "format_valid": true,
+  "grounding_score": 15.38,
+  "issues": [
+    "Missing code requirement: PQ scale call",
+    "Missing code requirement: line angle array",
+    "Missing code requirement: Slack set call",
+    "Code block 1: For line-angle analysis, use the ANDES line-angle result arrays such as `ssa.Line.a1.e`.",
+    "Execution failed. Return code: 1",
+    "RESULT_JSON was missing or could not be parsed."
+  ],
+  "prompt": "Next follow-up: rebuild the script for the updated study, code only.\nKeep the slack-bus adjustment from the previous turn.\nAlso scale every PQ load by 1.050, rerun power flow, and report all lines whose absolute sending-end phase angle is above 0.120 radians.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: slack_setpoint, scale_factor, angle_threshold, selected_line_ids, selected_count.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.",
+  "response": "```python\n# required_dependencies: andes,json\nimport andes\nimport json\n\n# Load PJM 5-bus case\ncase = andes.get_case(\"5bus/pjm5bus.json\")\nssa = andes.load(case, setup=True, no_output=True, log=False)\n\n# Set slack-bus voltage target\nslack_bus_idx = ssa.Slack.idx.v\nssb_voltage_target = 1.020\nssa.Slack.set_voltage(slack_bus_idx, ssb_voltage_target)\n\n# Scale every PQ load by 1.050\nscale_factor = 1.050\nssa.PQ.set_p(ssa.PQ.idx.v, ssa.PQ.p.v * scale_factor)\nssa.PQ.set_q(ssa.PQ.idx.v, ssa.PQ.q.v * scale_factor)\n\n# Run power flow\nandes.run_power_flow(ssa)\n\n# Extract line metrics (sending-end phase angles)\nangle_threshold = 0.120\nline_angles = ssa.Line.angle1.v  # Sending-end angle\nline_ids = ssa.Line.idx.v\n\n# Select lines with angles above the threshold\nselected_lines = [(line_ids[i], line_angles[i]) for i in range(len(line_angles)) if abs(line_angles[i]) > angle_threshold]\nselected_line_ids = [line[0] for line in selected_lines]\nselected_count = len(selected_line_ids)\n\n# Prepare JSON output\nresult_json = {\n    \"slack_setpoint\": ssb_voltage_target,\n    \"scale_factor\": scale_factor,\n    \"angle_threshold\": angle_threshold,\n    \"selected_line_ids\": selected_line_ids,\n    \"selected_count\": selected_count\n}\n\n# Print the result\nprint(f\"RESULT_JSON={json.dumps(result_json)}\")\n```",
+  "result_json_parse_error": "RESULT_JSON marker not found in stdout.",
+  "score_total": 36.38,
+  "semantic_passed": false,
+  "semantic_score": 0.0,
+  "turn_id": 3,
+  "turn_passed": false,
+  "used_template_fallback": false
+}

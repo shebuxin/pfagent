@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+    branches: ["main", "master"]
+  pull_request:
+
+# Cancel older runs on the same ref when a new commit arrives, so
+# force-push / rapid iteration doesn't keep stale runners hot.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Test (conda pfagent env)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        # conda-incubator/setup-miniconda needs a login shell so its
+        # environment activation sticks across steps.
+        shell: bash -l {0}
+    env:
+      PYTHONPATH: ${{ github.workspace }}:${{ github.workspace }}/text-to-sim
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Miniconda
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          activate-environment: pfagent
+          environment-file: environment.pfagent.yml
+          auto-activate-base: false
+
+      - name: Report runtime versions
+        run: |
+          python --version
+          python -c "import andes; print('andes', andes.__version__)"
+          python -c "import sys; print('pythonpath:', sys.path[:4])"
+
+      # Fast pin against byte-level drift in the refactor-guarded public
+      # API of rag_chatbot.py (see docs/REFACTOR_STAGE0_BASELINE.md).
+      # Isolated from the full suite because it is sub-second and gives
+      # the clearest failure signal when a refactor breaks a snapshot.
+      - name: Snapshot guard (rag_chatbot public exports)
+        run: python -m unittest text-to-sim.tests.test_rag_chatbot_snapshots -v
+
+      - name: Unit tests (text-to-sim)
+        run: python -m unittest discover -s text-to-sim/tests -p "test_*.py"
+
+      - name: Verification tests
+        run: python -m unittest discover -s verification/tests -p "test_*.py"
+
+      - name: Fine-tune dataset smoke
+        run: python knowledge/finetuning/scripts/smoke_test_finetune_examples.py

@@ -1,0 +1,30 @@
+import json
+import andes
+import numpy as np
+
+def _round_float(value):
+    return round(float(value), 6)
+
+ssa = andes.load(
+    andes.get_case("ieee14/ieee14_full.xlsx"),
+    setup=False,
+    no_output=True,
+)
+
+ssa.setup()
+pv_setpoint = 1.01
+ssa.PV.set(src="v0", idx=[ssa.PV.idx.v[0]], attr="v", value=[pv_setpoint])
+ssa.PFlow.run()
+
+bus_ids = np.asarray(ssa.Bus.idx.v, dtype=int)
+bus_v = np.asarray(ssa.Bus.v.v, dtype=float)
+pv_bus = int(ssa.PV.bus.v[0])
+pv_index = int(np.where(bus_ids == pv_bus)[0][0])
+threshold = 1.015
+result = {
+    "pv_bus": pv_bus,
+    "pv_setpoint": _round_float(1.01),
+    "pv_voltage": _round_float(bus_v[pv_index]),
+    "selected_count": int(np.sum(bus_v > threshold)),
+}
+print("RESULT_JSON=" + json.dumps(result, sort_keys=True))

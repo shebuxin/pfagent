@@ -1,0 +1,62 @@
+{
+  "actual_result_json": null,
+  "artifact_passed": false,
+  "artifact_paths": [],
+  "artifact_score": 0.0,
+  "code": "",
+  "continuity_score": 0.0,
+  "execution_output": null,
+  "execution_passed": false,
+  "execution_score": 0.0,
+  "expected_result_json": {
+    "plot_file": "scenario_082_turn3_line.png",
+    "selected_bus_ids": [
+      8,
+      7
+    ],
+    "selected_voltages": [
+      0.953437,
+      0.953586
+    ],
+    "slack_setpoint": 0.99,
+    "slack_voltage": 0.99
+  },
+  "failure_categories": [
+    "format",
+    "grounding",
+    "continuity",
+    "execution",
+    "semantic",
+    "artifact"
+  ],
+  "format_score": 0.0,
+  "format_valid": false,
+  "grounding_score": 0.0,
+  "issues": [
+    "Response was not exactly one fenced Python code block.",
+    "Missing code requirement: case reference",
+    "Missing code requirement: uploaded case loading",
+    "Missing code requirement: plot save filename",
+    "Missing code requirement: plot save call",
+    "Missing code requirement: Slack set call",
+    "Missing code requirement: Slack setpoint",
+    "Missing code requirement: add PQ call",
+    "Missing code requirement: added load idx",
+    "Missing code requirement: added load bus",
+    "Missing code requirement: added load p0",
+    "Missing code requirement: added load q0",
+    "Execution was not attempted.",
+    "Execution was not attempted.",
+    "Plot filename mismatch: expected scenario_082_turn3_line.png, got None",
+    "Expected plot artifact not found: scenario_082_turn3_line.png"
+  ],
+  "prompt": "Follow-up request: update the previous study and return a fresh complete script.\nKeep the added load from the previous turn.\nAlso set the slack-bus voltage target to 0.990, rerun power flow, and save a line plot of bus voltages to 'scenario_082_turn3_line.png'.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: slack_setpoint, slack_voltage, selected_bus_ids, selected_voltages, plot_file.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.\n- `selected_bus_ids` and `selected_voltages` should again represent the lowest-voltage buses in ascending voltage order.\n\nRuntime file context:\n- Working directory for execution: verification/artifacts_recheck_20260403_parallel/fine_tuned/20260403_162926/raw/fine_tuned/scenario_082/turn_03/workspace\n- Uploaded files available during execution:\n- verify_kundur_082.xlsx\n- Use this exact filename directly in andes.load(...).\n- Do not wrap the uploaded filename with andes.get_case(...).\n",
+  "response": "import json\nimport andes\nimport numpy as np\nimport os\nimport matplotlib.pyplot as plt\n\ndef _round_float(value):\n    return round(float(value), 6)\n\ncwd = os.getcwd()\ncase_path = os.path.join(cwd, \"verify_kundur_082.xlsx\")\nssa = andes.load(case_path, setup=False, no_output=True)\n\nssa.add(\n    \"PQ\",\n    param_dict={\n        \"bus\": 4,\n        \"idx\": \"PQ_VERIFY_082_D\",\n        \"p0\": 0.014,\n        \"q0\": 0.008,\n    },\n)\n\nssa.setup()\nslack_setpoint = 0.99\nssa.Slack.set(src=\"v0\", idx=[ssa.Slack.idx.v[0]], attr=\"v\", value=[slack_setpoint])\nssa.PFlow.run()\n\nbus_ids = np.asarray(ssa.Bus.idx.v)\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nslack_bus = int(ssa.Slack.bus.v[0])\nslack_index = int(np.where(bus_ids == slack_bus)[0][0])\nslack_voltage = _round_float(bus_v[slack_index])\nplot_file = \"scenario_082_turn3_line.png\"\nplt.figure(figsize=(10, 4))\nplt.plot(bus_ids, bus_v, marker=\"o\", linewidth=1.5)\nplt.xticks(rotation=90)\nplt.xlabel(\"Bus\")\nplt.ylabel(\"Voltage (p.u.)\")\nplt.tight_layout()\nplt.savefig(plot_file, dpi=150)\nplt.close()\ntop_k = 2\nrank_indices = np.argsort(bus_v)[:top_k]\nresult = {\n    \"slack_setpoint\": _round_float(0.99),\n    \"slack_voltage\": slack_voltage,\n    \"selected_bus_ids\": [int(bus_ids[i]) for i in rank_indices],\n    \"selected_voltages\": [_round_float(bus_v[i]) for i in rank_indices],\n    \"plot_file\": plot_file,\n}\nprint(\"RESULT_JSON=\" + json.dumps(result, sort_keys=True))",
+  "result_json_parse_error": "Execution not attempted.",
+  "score_total": 0.0,
+  "semantic_passed": false,
+  "semantic_score": 0.0,
+  "turn_id": 3,
+  "turn_passed": false,
+  "used_template_fallback": false
+}

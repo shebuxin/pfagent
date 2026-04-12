@@ -1,0 +1,50 @@
+{
+  "actual_result_json": null,
+  "artifact_passed": true,
+  "artifact_paths": [],
+  "artifact_score": 5.0,
+  "code": "# required_dependencies: andes\nimport andes\n\n# Load the built-in PJM 5-bus case\ncase = andes.load(andes.get_case(\"5bus/pjm5bus.json\"), setup=True, no_output=True, log=False)\n\n# Set the slack-bus voltage target\nslack_bus_idx = case.bus.idx.slack\ncase.slack.set_voltage_target(slack_bus_idx, 1.030)\n\n# Scale every PQ load by 1.060\nscaled_load = case.PQ.p * 1.060\ncase.PQ.set_p(scaled_load)\n\n# Rerun power flow\ncase.run_power_flow()\n\n# Extract line angles and determine selected lines\nline_angles = abs(case.Line.send_angle.v)\nangle_threshold = 0.150\nselected_line_ids = [i for i, angle in enumerate(line_angles) if angle > angle_threshold]\nselected_count = len(selected_line_ids)\n\n# Prepare the result JSON\nRESULT_JSON = {\n    \"slack_setpoint\": 1.030,\n    \"scale_factor\": 1.060,\n    \"angle_threshold\": angle_threshold,\n    \"selected_line_ids\": selected_line_ids,\n    \"selected_count\": selected_count,\n}\n\n# Print the result JSON\nprint(f\"RESULT_JSON={RESULT_JSON}\")",
+  "continuity_score": 6.0,
+  "execution_output": "STDERR:\nTraceback (most recent call last):\n  File \"/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_092/turn_03/workspace/generated_code.py\", line 42, in <module>\n    slack_bus_idx = case.bus.idx.slack\n                    ^^^^^^^^\nAttributeError: 'System' object has no attribute 'bus'. Did you mean: 'Bus'?\n\n",
+  "execution_passed": false,
+  "execution_score": 0.0,
+  "expected_result_json": {
+    "angle_threshold": 0.15,
+    "scale_factor": 1.06,
+    "selected_count": 5,
+    "selected_line_ids": [
+      "0",
+      "1",
+      "2",
+      "5",
+      "6"
+    ],
+    "slack_setpoint": 1.03
+  },
+  "failure_categories": [
+    "grounding",
+    "continuity",
+    "execution",
+    "semantic"
+  ],
+  "format_score": 10.0,
+  "format_valid": true,
+  "grounding_score": 15.38,
+  "issues": [
+    "Missing code requirement: PQ scale call",
+    "Missing code requirement: line angle array",
+    "Missing code requirement: Slack set call",
+    "Code block 1: For line-angle analysis, use the ANDES line-angle result arrays such as `ssa.Line.a1.e`.",
+    "Execution failed. Return code: 1",
+    "RESULT_JSON was missing or could not be parsed."
+  ],
+  "prompt": "Please keep the conversation context and send one new complete script only.\nKeep the slack-bus adjustment from the previous turn.\nAlso scale every PQ load by 1.060, rerun power flow, and report all lines whose absolute sending-end phase angle is above 0.150 radians.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: slack_setpoint, scale_factor, angle_threshold, selected_line_ids, selected_count.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.",
+  "response": "```python\n# required_dependencies: andes\nimport andes\n\n# Load the built-in PJM 5-bus case\ncase = andes.load(andes.get_case(\"5bus/pjm5bus.json\"), setup=True, no_output=True, log=False)\n\n# Set the slack-bus voltage target\nslack_bus_idx = case.bus.idx.slack\ncase.slack.set_voltage_target(slack_bus_idx, 1.030)\n\n# Scale every PQ load by 1.060\nscaled_load = case.PQ.p * 1.060\ncase.PQ.set_p(scaled_load)\n\n# Rerun power flow\ncase.run_power_flow()\n\n# Extract line angles and determine selected lines\nline_angles = abs(case.Line.send_angle.v)\nangle_threshold = 0.150\nselected_line_ids = [i for i, angle in enumerate(line_angles) if angle > angle_threshold]\nselected_count = len(selected_line_ids)\n\n# Prepare the result JSON\nRESULT_JSON = {\n    \"slack_setpoint\": 1.030,\n    \"scale_factor\": 1.060,\n    \"angle_threshold\": angle_threshold,\n    \"selected_line_ids\": selected_line_ids,\n    \"selected_count\": selected_count,\n}\n\n# Print the result JSON\nprint(f\"RESULT_JSON={RESULT_JSON}\")\n```",
+  "result_json_parse_error": "RESULT_JSON marker not found in stdout.",
+  "score_total": 36.38,
+  "semantic_passed": false,
+  "semantic_score": 0.0,
+  "turn_id": 3,
+  "turn_passed": false,
+  "used_template_fallback": false
+}

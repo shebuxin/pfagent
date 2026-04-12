@@ -1,0 +1,7 @@
+STDERR:
+Traceback (most recent call last):
+  File "/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_073/turn_02/workspace/generated_code.py", line 45, in <module>
+    bus_7_idx = ssa.BUS.idx.v[ssa.BUS.id.v == 7]
+                ^^^^^^^
+AttributeError: 'System' object has no attribute 'BUS'. Did you mean: 'Bus'?
+

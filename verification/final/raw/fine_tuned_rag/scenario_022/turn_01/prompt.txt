@@ -1,0 +1,16 @@
+Please answer with one runnable Python script only and nothing else.
+Use my uploaded file verify_ieee14_022.xlsx from the current working directory.
+Run power flow, count all buses above 1.030 p.u., and also return the two lowest-voltage buses.
+- The script must end by printing exactly one line that starts with RESULT_JSON=
+- The JSON object must contain these keys: threshold, selected_bus_ids, selected_count, lowest_bus_ids, lowest_voltages.
+- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.
+- Round float values in RESULT_JSON to 6 decimals.
+- `selected_bus_ids` should list every bus above the threshold.
+- `lowest_bus_ids` should contain exactly two buses in ascending voltage order.
+
+Runtime file context:
+- Working directory for execution: verification/artifacts_recheck_20260403_parallel/fine_tuned_rag/20260403_162927/raw/fine_tuned_rag/scenario_022/turn_01/workspace
+- Uploaded files available during execution:
+- verify_ieee14_022.xlsx
+- Use this exact filename directly in andes.load(...).
+- Do not wrap the uploaded filename with andes.get_case(...).

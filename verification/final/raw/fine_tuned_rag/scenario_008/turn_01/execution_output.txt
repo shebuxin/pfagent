@@ -1,0 +1,3 @@
+STDOUT:
+RESULT_JSON={"lowest_bus_ids": [3, 4], "lowest_voltages": [1.01, 1.011403], "selected_bus_ids": [1, 2, 6, 8], "selected_count": 4, "threshold": 1.03}
+

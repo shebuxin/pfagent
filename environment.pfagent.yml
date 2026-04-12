@@ -1,0 +1,19 @@
+name: pfagent
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.11
+  - pip
+  - setuptools
+  - wheel
+  - pip:
+      - -r text-to-sim/requirements.txt
+      # ANDES 2.0 introduced ssa.Line.set_status(...) which the runtime
+      # alignment work (verification/runtime_alignment_report_20260404.md)
+      # relies on. Older releases lack this method and will regress the
+      # structured-codegen oracle test. See docs/REFACTOR_STAGE0_BASELINE.md.
+      - andes>=2.0.0,<3.0.0
+      - matplotlib
+      - openpyxl
+      - xlrd

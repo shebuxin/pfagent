@@ -1,0 +1,147 @@
+{
+  "blueprint": "threshold_slack_add_extremes",
+  "case_family": "kundur",
+  "case_source": "builtin",
+  "scenario_id": "scenario_064",
+  "source_case_path": "kundur/kundur_full.xlsx",
+  "turns": [
+    {
+      "actual_result_json": null,
+      "artifact_passed": true,
+      "artifact_paths": [],
+      "artifact_score": 5.0,
+      "code": "# required_dependencies: numpy,pandas,json\nimport os\nimport andes\nimport numpy as np\nimport pandas as pd\nimport json\n\n# Load the Kundur full case\ncase_path = andes.get_case(\"kundur/kundur_full.xlsx\")\nssa = andes.load(case_path, setup=True, no_output=True, log=False)\n\n# Run the power flow\nandes.run_power_flow(ssa)\n\n# Set the voltage threshold\nthreshold = 1.020\n\n# Count all buses above the threshold\nbuses_above_threshold = np.where(ssa.Bus.v.v > threshold)[0]\nselected_bus_ids = buses_above_threshold.tolist()\nselected_count = len(selected_bus_ids)\n\n# Find the two lowest-voltage buses\nlowest_voltage_indices = np.argsort(ssa.Bus.v.v)[:2]\nlowest_bus_ids = lowest_voltage_indices.tolist()\nlowest_voltages = [round(ssa.Bus.v.v[bus_id], 6) for bus_id in lowest_bus_ids]\n\n# Create the result JSON\nresult_json = {\n    \"threshold\": round(threshold, 6),\n    \"selected_bus_ids\": selected_bus_ids,\n    \"selected_count\": selected_count,\n    \"lowest_bus_ids\": lowest_bus_ids,\n    \"lowest_voltages\": lowest_voltages\n}\n\n# Print the result\nprint(f'RESULT_JSON={json.dumps(result_json)}')",
+      "continuity_score": 15.0,
+      "execution_output": "STDERR:\nTraceback (most recent call last):\n  File \"/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_064/turn_01/workspace/generated_code.py\", line 47, in <module>\n    andes.run_power_flow(ssa)\n    ^^^^^^^^^^^^^^^^^^^^\nAttributeError: module 'andes' has no attribute 'run_power_flow'\n\n",
+      "execution_passed": false,
+      "execution_score": 0.0,
+      "expected_result_json": {
+        "lowest_bus_ids": [
+          8,
+          7
+        ],
+        "lowest_voltages": [
+          0.954,
+          0.956218
+        ],
+        "selected_bus_ids": [],
+        "selected_count": 0,
+        "threshold": 1.02
+      },
+      "failure_categories": [
+        "format",
+        "execution",
+        "semantic"
+      ],
+      "format_score": 0.0,
+      "format_valid": false,
+      "grounding_score": 25.0,
+      "issues": [
+        "Response was not exactly one fenced Python code block.",
+        "Execution failed. Return code: 1",
+        "RESULT_JSON was missing or could not be parsed."
+      ],
+      "prompt": "Write one complete runnable Python script only, inside a single ```python block.\nUse the built-in Kundur full case.\nRun power flow, count all buses above 1.020 p.u., and also return the two lowest-voltage buses.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: threshold, selected_bus_ids, selected_count, lowest_bus_ids, lowest_voltages.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.\n- `selected_bus_ids` should list every bus above the threshold.\n- `lowest_bus_ids` should contain exactly two buses in ascending voltage order.",
+      "response": "Thank you for your patience. Here's the corrected and complete Python script that loads the Kundur full case, runs the power flow, counts all buses above 1.020 p.u., and identifies the two lowest-voltage buses. The script ends with the required JSON output format.\n\n```python\n# required_dependencies: numpy,pandas,json\nimport os\nimport andes\nimport numpy as np\nimport pandas as pd\nimport json\n\n# Load the Kundur full case\ncase_path = andes.get_case(\"kundur/kundur_full.xlsx\")\nssa = andes.load(case_path, setup=True, no_output=True, log=False)\n\n# Run the power flow\nandes.run_power_flow(ssa)\n\n# Set the voltage threshold\nthreshold = 1.020\n\n# Count all buses above the threshold\nbuses_above_threshold = np.where(ssa.Bus.v.v > threshold)[0]\nselected_bus_ids = buses_above_threshold.tolist()\nselected_count = len(selected_bus_ids)\n\n# Find the two lowest-voltage buses\nlowest_voltage_indices = np.argsort(ssa.Bus.v.v)[:2]\nlowest_bus_ids = lowest_voltage_indices.tolist()\nlowest_voltages = [round(ssa.Bus.v.v[bus_id], 6) for bus_id in lowest_bus_ids]\n\n# Create the result JSON\nresult_json = {\n    \"threshold\": round(threshold, 6),\n    \"selected_bus_ids\": selected_bus_ids,\n    \"selected_count\": selected_count,\n    \"lowest_bus_ids\": lowest_bus_ids,\n    \"lowest_voltages\": lowest_voltages\n}\n\n# Print the result\nprint(f'RESULT_JSON={json.dumps(result_json)}')\n```",
+      "result_json_parse_error": "RESULT_JSON marker not found in stdout.",
+      "score_total": 45.0,
+      "semantic_passed": false,
+      "semantic_score": 0.0,
+      "turn_id": 1,
+      "turn_passed": false,
+      "used_template_fallback": false
+    },
+    {
+      "actual_result_json": null,
+      "artifact_passed": true,
+      "artifact_paths": [],
+      "artifact_score": 5.0,
+      "code": "# required_dependencies: numpy,pandas,json\nimport os\nimport andes\nimport numpy as np\nimport pandas as pd\nimport json\n\n# Load the Kundur full case\ncase_path = andes.get_case(\"kundur/kundur_full.xlsx\")\nssa = andes.load(case_path, setup=True, no_output=True, log=False)\n\n# Set the slack-bus voltage target\nslack_bus_idx = ssa.Bus.idx.v[0]  # Assuming the first bus is the slack bus\nslack_setpoint = 1.020\nssa.Bus.v.set(slack_setpoint, idx=slack_bus_idx)\n\n# Run the power flow\nandes.run_power_flow(ssa)\n\n# Get the slack bus voltage\nslack_voltage = round(ssa.Bus.v.v[slack_bus_idx], 6)\n\n# Count how many buses fall below 0.970 p.u.\nbuses_below_threshold = np.where(ssa.Bus.v.v < 0.970)[0]\nselected_count = len(buses_below_threshold)\n\n# Create the result JSON\nresult_json = {\n    \"slack_bus\": slack_bus_idx,\n    \"slack_setpoint\": round(slack_setpoint, 6),\n    \"slack_voltage\": slack_voltage,\n    \"selected_count\": selected_count\n}\n\n# Print the result\nprint(f'RESULT_JSON={json.dumps(result_json)}')",
+      "continuity_score": 15.0,
+      "execution_output": "STDERR:\nTraceback (most recent call last):\n  File \"/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_064/turn_02/workspace/generated_code.py\", line 49, in <module>\n    ssa.Bus.v.set(slack_setpoint, idx=slack_bus_idx)\n    ^^^^^^^^^^^^^\nAttributeError: 'Algeb' object has no attribute 'set'\n\n",
+      "execution_passed": false,
+      "execution_score": 0.0,
+      "expected_result_json": {
+        "selected_count": 3,
+        "slack_bus": 1,
+        "slack_setpoint": 1.02,
+        "slack_voltage": 1.02
+      },
+      "failure_categories": [
+        "format",
+        "grounding",
+        "execution",
+        "semantic"
+      ],
+      "format_score": 0.0,
+      "format_valid": false,
+      "grounding_score": 18.18,
+      "issues": [
+        "Response was not exactly one fenced Python code block.",
+        "Missing code requirement: Slack set call",
+        "Code block 1: Use `ssa.Bus.v.v`, not `ssa.Bus.v`, when you need bus voltage magnitudes.",
+        "Code block 1: The prompt asks for slack bus results; use the ANDES Slack model (for example `ssa.Slack.bus.v`).",
+        "Execution failed. Return code: 1",
+        "RESULT_JSON was missing or could not be parsed."
+      ],
+      "prompt": "Next follow-up: rebuild the script for the updated study, code only.\nKeep using the same built-in case from earlier in this conversation.\nKeep the same study, set the slack-bus voltage target to 1.020, rerun power flow, and report the slack bus voltage plus how many buses fall below 0.970 p.u.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: slack_bus, slack_setpoint, slack_voltage, selected_count.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.",
+      "response": "Here's the updated Python script based on your new requirements. It sets the slack-bus voltage target to 1.020, reruns the power flow, and reports the slack bus voltage along with the count of buses that fall below 0.970 p.u.\n\n```python\n# required_dependencies: numpy,pandas,json\nimport os\nimport andes\nimport numpy as np\nimport pandas as pd\nimport json\n\n# Load the Kundur full case\ncase_path = andes.get_case(\"kundur/kundur_full.xlsx\")\nssa = andes.load(case_path, setup=True, no_output=True, log=False)\n\n# Set the slack-bus voltage target\nslack_bus_idx = ssa.Bus.idx.v[0]  # Assuming the first bus is the slack bus\nslack_setpoint = 1.020\nssa.Bus.v.set(slack_setpoint, idx=slack_bus_idx)\n\n# Run the power flow\nandes.run_power_flow(ssa)\n\n# Get the slack bus voltage\nslack_voltage = round(ssa.Bus.v.v[slack_bus_idx], 6)\n\n# Count how many buses fall below 0.970 p.u.\nbuses_below_threshold = np.where(ssa.Bus.v.v < 0.970)[0]\nselected_count = len(buses_below_threshold)\n\n# Create the result JSON\nresult_json = {\n    \"slack_bus\": slack_bus_idx,\n    \"slack_setpoint\": round(slack_setpoint, 6),\n    \"slack_voltage\": slack_voltage,\n    \"selected_count\": selected_count\n}\n\n# Print the result\nprint(f'RESULT_JSON={json.dumps(result_json)}')\n```",
+      "result_json_parse_error": "RESULT_JSON marker not found in stdout.",
+      "score_total": 38.18,
+      "semantic_passed": false,
+      "semantic_score": 0.0,
+      "turn_id": 2,
+      "turn_passed": false,
+      "used_template_fallback": false
+    },
+    {
+      "actual_result_json": null,
+      "artifact_passed": true,
+      "artifact_paths": [],
+      "artifact_score": 5.0,
+      "code": "# required_dependencies: numpy,pandas,json\nimport os\nimport andes\nimport numpy as np\nimport pandas as pd\nimport json\n\n# Load the Kundur full case\ncase_path = andes.get_case(\"kundur/kundur_full.xlsx\")\nssa = andes.load(case_path, setup=True, no_output=True, log=False)\n\n# Set the slack-bus voltage target\nslack_bus_idx = ssa.Bus.idx.v[0]  # Assuming the first bus is the slack bus\nslack_setpoint = 1.020\nssa.Bus.v.set(slack_setpoint, idx=slack_bus_idx)\n\n# Add a new PQ load at bus 9\nnew_load_idx = ssa.PQ.add(\"PQ_VERIFY_064_B\", bus=9, p0=0.018, q0=0.013)\n\n# Run the power flow\nandes.run_power_flow(ssa)\n\n# Get the maximum and minimum voltage buses\nmax_voltage_idx = np.argmax(ssa.Bus.v.v)\nmin_voltage_idx = np.argmin(ssa.Bus.v.v)\n\n# Collect required results\nmax_bus = max_voltage_idx\nmax_voltage = round(ssa.Bus.v.v[max_bus], 6)\nmin_bus = min_voltage_idx\nmin_voltage = round(ssa.Bus.v.v[min_bus], 6)\ntotal_pq_count = len(ssa.PQ.idx.v)\n\n# Create the result JSON\nresult_json = {\n    \"added_load_idx\": new_load_idx,\n    \"max_bus\": max_bus,\n    \"max_voltage\": max_voltage,\n    \"min_bus\": min_bus,\n    \"min_voltage\": min_voltage,\n    \"total_pq_count\": total_pq_count\n}\n\n# Print the result\nprint(f'RESULT_JSON={json.dumps(result_json)}')",
+      "continuity_score": 6.0,
+      "execution_output": "STDERR:\nTraceback (most recent call last):\n  File \"/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_064/turn_03/workspace/generated_code.py\", line 49, in <module>\n    ssa.Bus.v.set(slack_setpoint, idx=slack_bus_idx)\n    ^^^^^^^^^^^^^\nAttributeError: 'Algeb' object has no attribute 'set'\n\n",
+      "execution_passed": false,
+      "execution_score": 0.0,
+      "expected_result_json": {
+        "added_load_idx": "PQ_VERIFY_064_B",
+        "max_bus": 1,
+        "max_voltage": 1.02,
+        "min_bus": 8,
+        "min_voltage": 0.954982,
+        "total_pq_count": 3
+      },
+      "failure_categories": [
+        "format",
+        "grounding",
+        "continuity",
+        "execution",
+        "semantic"
+      ],
+      "format_score": 0.0,
+      "format_valid": false,
+      "grounding_score": 20.59,
+      "issues": [
+        "Response was not exactly one fenced Python code block.",
+        "Missing code requirement: add PQ call",
+        "Missing code requirement: Slack set call",
+        "Code block 1: Use `ssa.Bus.v.v`, not `ssa.Bus.v`, when you need bus voltage magnitudes.",
+        "Code block 1: For add-before-setup workflows, load the case with `setup=False` before calling `ssa.add(...)`.",
+        "Code block 1: For add-before-setup workflows, call `ssa.setup()` after `ssa.add(...)` and before `ssa.PFlow.run()`.",
+        "Execution failed. Return code: 1",
+        "RESULT_JSON was missing or could not be parsed."
+      ],
+      "prompt": "Please keep the conversation context and send one new complete script only.\nKeep the adjusted slack-bus setting from the last turn.\nAlso add a new PQ load before setup at bus 9 with idx 'PQ_VERIFY_064_B', p0=0.018, and q0=0.013.\nRerun power flow and report the maximum-voltage bus, minimum-voltage bus, and the total number of PQ loads now present.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: added_load_idx, max_bus, max_voltage, min_bus, min_voltage, total_pq_count.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.",
+      "response": "Here's the complete Python script that incorporates your latest requirements. It adds a new PQ load at bus 9, keeps the slack-bus setting, reruns the power flow, and reports the required information in the specified JSON format.\n\n```python\n# required_dependencies: numpy,pandas,json\nimport os\nimport andes\nimport numpy as np\nimport pandas as pd\nimport json\n\n# Load the Kundur full case\ncase_path = andes.get_case(\"kundur/kundur_full.xlsx\")\nssa = andes.load(case_path, setup=True, no_output=True, log=False)\n\n# Set the slack-bus voltage target\nslack_bus_idx = ssa.Bus.idx.v[0]  # Assuming the first bus is the slack bus\nslack_setpoint = 1.020\nssa.Bus.v.set(slack_setpoint, idx=slack_bus_idx)\n\n# Add a new PQ load at bus 9\nnew_load_idx = ssa.PQ.add(\"PQ_VERIFY_064_B\", bus=9, p0=0.018, q0=0.013)\n\n# Run the power flow\nandes.run_power_flow(ssa)\n\n# Get the maximum and minimum voltage buses\nmax_voltage_idx = np.argmax(ssa.Bus.v.v)\nmin_voltage_idx = np.argmin(ssa.Bus.v.v)\n\n# Collect required results\nmax_bus = max_voltage_idx\nmax_voltage = round(ssa.Bus.v.v[max_bus], 6)\nmin_bus = min_voltage_idx\nmin_voltage = round(ssa.Bus.v.v[min_bus], 6)\ntotal_pq_count = len(ssa.PQ.idx.v)\n\n# Create the result JSON\nresult_json = {\n    \"added_load_idx\": new_load_idx,\n    \"max_bus\": max_bus,\n    \"max_voltage\": max_voltage,\n    \"min_bus\": min_bus,\n    \"min_voltage\": min_voltage,\n    \"total_pq_count\": total_pq_count\n}\n\n# Print the result\nprint(f'RESULT_JSON={json.dumps(result_json)}')\n```",
+      "result_json_parse_error": "RESULT_JSON marker not found in stdout.",
+      "score_total": 31.59,
+      "semantic_passed": false,
+      "semantic_score": 0.0,
+      "turn_id": 3,
+      "turn_passed": false,
+      "used_template_fallback": false
+    }
+  ],
+  "uploaded_filename": null
+}

@@ -1,0 +1,36 @@
+{
+  "actual_result_json": {
+    "max_bus": 36,
+    "max_voltage": 1.0635,
+    "min_bus": 7,
+    "min_voltage": 0.929955
+  },
+  "artifact_passed": true,
+  "artifact_paths": [],
+  "artifact_score": 5.0,
+  "code": "# required_dependencies: andes,numpy\nimport json\nimport andes\nimport numpy as np\nimport os\n\nscript_dir = os.getcwd()\ncase = os.path.join(script_dir, \"verify_ieee39_051.xlsx\")\nssa = andes.load(case, setup=False, no_output=True, log=False)\n\nssa.setup()\n\nssa.PFlow.run()\n\nbus_ids = np.asarray(ssa.Bus.idx.v, dtype=int)\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\n\nresult_json = {}\nresult_json[\"max_bus\"] = int(bus_ids[int(np.argmax(bus_v))])\nresult_json[\"max_voltage\"] = round(float(bus_v[int(np.argmax(bus_v))]), 6)\nresult_json[\"min_bus\"] = int(bus_ids[int(np.argmin(bus_v))])\nresult_json[\"min_voltage\"] = round(float(bus_v[int(np.argmin(bus_v))]), 6)\n\nprint(\"RESULT_JSON=\" + json.dumps(result_json, sort_keys=True))",
+  "continuity_score": 15.0,
+  "execution_output": "STDOUT:\nRESULT_JSON={\"max_bus\": 36, \"max_voltage\": 1.0635, \"min_bus\": 7, \"min_voltage\": 0.929955}\n\n",
+  "execution_passed": true,
+  "execution_score": 20.0,
+  "expected_result_json": {
+    "max_bus": 36,
+    "max_voltage": 1.0635,
+    "min_bus": 7,
+    "min_voltage": 0.929955
+  },
+  "failure_categories": [],
+  "format_score": 10.0,
+  "format_valid": true,
+  "grounding_score": 25.0,
+  "issues": [],
+  "prompt": "Write one complete runnable Python script only, inside a single ```python block.\nUse my uploaded file verify_ieee39_051.xlsx from the current working directory.\nRun power flow and report the maximum-voltage bus and minimum-voltage bus.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: max_bus, max_voltage, min_bus, min_voltage.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.\n\nRuntime file context:\n- Working directory for execution: verification/artifacts_recheck_20260403_parallel/rag/20260403_162928/raw/rag/scenario_051/turn_01/workspace\n- Uploaded files available during execution:\n- verify_ieee39_051.xlsx\n- Use this exact filename directly in andes.load(...).\n- Do not wrap the uploaded filename with andes.get_case(...).\n",
+  "response": "```python\n# required_dependencies: andes,numpy\nimport json\nimport andes\nimport numpy as np\nimport os\n\nscript_dir = os.getcwd()\ncase = os.path.join(script_dir, \"verify_ieee39_051.xlsx\")\nssa = andes.load(case, setup=False, no_output=True, log=False)\n\nssa.setup()\n\nssa.PFlow.run()\n\nbus_ids = np.asarray(ssa.Bus.idx.v, dtype=int)\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\n\nresult_json = {}\nresult_json[\"max_bus\"] = int(bus_ids[int(np.argmax(bus_v))])\nresult_json[\"max_voltage\"] = round(float(bus_v[int(np.argmax(bus_v))]), 6)\nresult_json[\"min_bus\"] = int(bus_ids[int(np.argmin(bus_v))])\nresult_json[\"min_voltage\"] = round(float(bus_v[int(np.argmin(bus_v))]), 6)\n\nprint(\"RESULT_JSON=\" + json.dumps(result_json, sort_keys=True))\n```",
+  "result_json_parse_error": null,
+  "score_total": 100.0,
+  "semantic_passed": true,
+  "semantic_score": 25.0,
+  "turn_id": 1,
+  "turn_passed": true,
+  "used_template_fallback": false
+}

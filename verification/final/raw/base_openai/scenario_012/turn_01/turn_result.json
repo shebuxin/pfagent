@@ -1,0 +1,41 @@
+{
+  "actual_result_json": null,
+  "artifact_passed": true,
+  "artifact_paths": [],
+  "artifact_score": 5.0,
+  "code": "# required_dependencies: andes\nimport andes\n\n# Load the IEEE 14 full case\ncase = andes.load(andes.get_case(\"ieee14/ieee14_full.xlsx\"), setup=True, no_output=True, log=False)\n\n# Run the power flow\ncase.run()\n\n# Get voltage data\nvoltages = case.Bus.v.v  # Bus voltages\nbus_ids = case.Bus.idx.v  # Bus IDs\n\n# Find the 2 lowest-voltage buses\nlowest_voltage_indices = sorted(range(len(voltages)), key=lambda i: voltages[i])[:2]\nselected_bus_ids = [int(bus_ids[i]) for i in lowest_voltage_indices]\nselected_voltages = [round(float(voltages[i]), 6) for i in lowest_voltage_indices]\n\n# Create the result JSON object\nRESULT_JSON = {\n    \"selected_bus_ids\": selected_bus_ids,\n    \"selected_voltages\": selected_voltages\n}\n\n# Print the result\nprint(f\"RESULT_JSON={RESULT_JSON}\")",
+  "continuity_score": 15.0,
+  "execution_output": "STDERR:\nTraceback (most recent call last):\n  File \"/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_012/turn_01/workspace/generated_code.py\", line 42, in <module>\n    case.run()\n    ^^^^^^^^\nAttributeError: 'System' object has no attribute 'run'\n\n",
+  "execution_passed": false,
+  "execution_score": 0.0,
+  "expected_result_json": {
+    "selected_bus_ids": [
+      3,
+      4
+    ],
+    "selected_voltages": [
+      1.01,
+      1.011403
+    ]
+  },
+  "failure_categories": [
+    "execution",
+    "semantic"
+  ],
+  "format_score": 10.0,
+  "format_valid": true,
+  "grounding_score": 25.0,
+  "issues": [
+    "Execution failed. Return code: 1",
+    "RESULT_JSON was missing or could not be parsed."
+  ],
+  "prompt": "Please answer with one runnable Python script only and nothing else.\nUse the built-in IEEE 14 full case.\nRun power flow and report the 2 lowest-voltage buses.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: selected_bus_ids, selected_voltages.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.\n- `selected_bus_ids` and `selected_voltages` should represent the lowest-voltage buses in ascending voltage order.",
+  "response": "```python\n# required_dependencies: andes\nimport andes\n\n# Load the IEEE 14 full case\ncase = andes.load(andes.get_case(\"ieee14/ieee14_full.xlsx\"), setup=True, no_output=True, log=False)\n\n# Run the power flow\ncase.run()\n\n# Get voltage data\nvoltages = case.Bus.v.v  # Bus voltages\nbus_ids = case.Bus.idx.v  # Bus IDs\n\n# Find the 2 lowest-voltage buses\nlowest_voltage_indices = sorted(range(len(voltages)), key=lambda i: voltages[i])[:2]\nselected_bus_ids = [int(bus_ids[i]) for i in lowest_voltage_indices]\nselected_voltages = [round(float(voltages[i]), 6) for i in lowest_voltage_indices]\n\n# Create the result JSON object\nRESULT_JSON = {\n    \"selected_bus_ids\": selected_bus_ids,\n    \"selected_voltages\": selected_voltages\n}\n\n# Print the result\nprint(f\"RESULT_JSON={RESULT_JSON}\")\n```",
+  "result_json_parse_error": "RESULT_JSON marker not found in stdout.",
+  "score_total": 55.0,
+  "semantic_passed": false,
+  "semantic_score": 0.0,
+  "turn_id": 1,
+  "turn_passed": false,
+  "used_template_fallback": false
+}

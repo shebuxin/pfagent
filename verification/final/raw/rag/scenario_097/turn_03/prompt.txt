@@ -1,0 +1,14 @@
+Follow-up request: update the previous study and return a fresh complete script.
+Keep the slack-bus adjustment from the previous turn.
+Also scale every PQ load by 1.030, rerun power flow, and report all lines whose absolute sending-end phase angle is above 0.080 radians.
+- The script must end by printing exactly one line that starts with RESULT_JSON=
+- The JSON object must contain these keys: slack_setpoint, scale_factor, angle_threshold, selected_line_ids, selected_count.
+- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.
+- Round float values in RESULT_JSON to 6 decimals.
+
+Runtime file context:
+- Working directory for execution: verification/artifacts_recheck_20260403_parallel/rag/20260403_162928/raw/rag/scenario_097/turn_03/workspace
+- Uploaded files available during execution:
+- verify_pjm5_097.json
+- Use this exact filename directly in andes.load(...).
+- Do not wrap the uploaded filename with andes.get_case(...).

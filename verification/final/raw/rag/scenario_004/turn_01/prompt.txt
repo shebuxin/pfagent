@@ -1,0 +1,8 @@
+Return exactly one runnable Python code block and no prose.
+Use the built-in IEEE 14 full case.
+Run power flow and report the top-5 highest-voltage buses plus the slack-bus voltage.
+- The script must end by printing exactly one line that starts with RESULT_JSON=
+- The JSON object must contain these keys: slack_bus, slack_voltage, selected_bus_ids, selected_voltages.
+- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.
+- Round float values in RESULT_JSON to 6 decimals.
+- `selected_bus_ids` and `selected_voltages` should represent the top highest-voltage buses in descending order.

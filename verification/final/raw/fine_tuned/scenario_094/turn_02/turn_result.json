@@ -1,0 +1,43 @@
+{
+  "actual_result_json": null,
+  "artifact_passed": true,
+  "artifact_paths": [],
+  "artifact_score": 5.0,
+  "code": "# required_dependencies: andes,json\nimport andes\nimport json\n\ndef _round_float(value):\n    return round(float(value), 6)\n\nssa = andes.load(\n    \"verify_pjm5_094.json\",\n    setup=False,\n    no_output=True,\n)\n\nssa.setup()\nscale_factor = 1.04\nssa.PQ.set(src=\"p0\", idx=ssa.PQ.idx.v, attr=\"v\", value=scale_factor * ssa.PQ.p0.v)\nssa.PQ.set(src=\"q0\", idx=ssa.PQ.idx.v, attr=\"v\", value=scale_factor * ssa.PQ.q0.v)\nssa.PFlow.run()\n\nline_ids = ssa.Line.idx.v\nabs_a1 = abs(ssa.Line.a1.e)\nangle_threshold = 0.1\nmask = abs_a1 > angle_threshold\nresult = {\n    \"scale_factor\": _round_float(1.04),\n    \"angle_threshold\": _round_float(angle_threshold),\n    \"selected_line_ids\": [str(value) for value in line_ids[mask]],\n    \"selected_count\": int(mask.sum()),\n}\nprint(\"RESULT_JSON=\" + json.dumps(result, sort_keys=True))",
+  "continuity_score": 15.0,
+  "execution_output": "STDERR:\nTraceback (most recent call last):\n  File \"/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/fine_tuned/20260403_162926/raw/fine_tuned/scenario_094/turn_02/workspace/generated_code.py\", line 61, in <module>\n    \"selected_line_ids\": [str(value) for value in line_ids[mask]],\n                                                  ~~~~~~~~^^^^^^\nTypeError: only integer scalar arrays can be converted to a scalar index\n\n",
+  "execution_passed": false,
+  "execution_score": 0.0,
+  "expected_result_json": {
+    "angle_threshold": 0.1,
+    "scale_factor": 1.04,
+    "selected_count": 5,
+    "selected_line_ids": [
+      "0",
+      "1",
+      "2",
+      "5",
+      "6"
+    ]
+  },
+  "failure_categories": [
+    "execution",
+    "semantic"
+  ],
+  "format_score": 10.0,
+  "format_valid": true,
+  "grounding_score": 25.0,
+  "issues": [
+    "Execution failed. Return code: 1",
+    "RESULT_JSON was missing or could not be parsed."
+  ],
+  "prompt": "Please keep the conversation context and send one new complete script only.\nKeep using the same uploaded study file from earlier in this conversation.\nKeep the same study, scale every PQ load by 1.040, rerun power flow, and report every line whose absolute sending-end phase angle is above 0.100 radians.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: scale_factor, angle_threshold, selected_line_ids, selected_count.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.\n\nRuntime file context:\n- Working directory for execution: verification/artifacts_recheck_20260403_parallel/fine_tuned/20260403_162926/raw/fine_tuned/scenario_094/turn_02/workspace\n- Uploaded files available during execution:\n- verify_pjm5_094.json\n- Use this exact filename directly in andes.load(...).\n- Do not wrap the uploaded filename with andes.get_case(...).\n",
+  "response": "```python\n# required_dependencies: andes,json\nimport andes\nimport json\n\ndef _round_float(value):\n    return round(float(value), 6)\n\nssa = andes.load(\n    \"verify_pjm5_094.json\",\n    setup=False,\n    no_output=True,\n)\n\nssa.setup()\nscale_factor = 1.04\nssa.PQ.set(src=\"p0\", idx=ssa.PQ.idx.v, attr=\"v\", value=scale_factor * ssa.PQ.p0.v)\nssa.PQ.set(src=\"q0\", idx=ssa.PQ.idx.v, attr=\"v\", value=scale_factor * ssa.PQ.q0.v)\nssa.PFlow.run()\n\nline_ids = ssa.Line.idx.v\nabs_a1 = abs(ssa.Line.a1.e)\nangle_threshold = 0.1\nmask = abs_a1 > angle_threshold\nresult = {\n    \"scale_factor\": _round_float(1.04),\n    \"angle_threshold\": _round_float(angle_threshold),\n    \"selected_line_ids\": [str(value) for value in line_ids[mask]],\n    \"selected_count\": int(mask.sum()),\n}\nprint(\"RESULT_JSON=\" + json.dumps(result, sort_keys=True))\n```",
+  "result_json_parse_error": "RESULT_JSON marker not found in stdout.",
+  "score_total": 55.0,
+  "semantic_passed": false,
+  "semantic_score": 0.0,
+  "turn_id": 2,
+  "turn_passed": false,
+  "used_template_fallback": false
+}

@@ -1,0 +1,48 @@
+{
+  "actual_result_json": null,
+  "artifact_passed": true,
+  "artifact_paths": [],
+  "artifact_score": 5.0,
+  "code": "# required_dependencies: pandas\nimport pandas as pd\nimport andes\nimport numpy as np\nimport os\n\n# Load the IEEE 39 case\ncase = andes.get_case(\"ieee39/ieee39.xlsx\")\nssa = andes.load(case, setup=True, no_output=True, log=False)\n\n# Add a new PQ load at bus 10\nbus_idx = np.where(ssa.Bus.idx.v == 10)[0][0]\nssa.PQ.add(idx='PQ_VERIFY_030_A', bus=bus_idx, p0=0.013, q0=0.008)\n\n# Rerun power flow\nandes.run_power_flow(ssa)\n\n# Get bus voltages\nvoltages = ssa.Bus.voltage.v\nbus_ids = ssa.Bus.idx.v\n\n# Define threshold for minimum voltage\nthreshold = 0.960\n\n# Identify buses below threshold and find the minimum voltage bus\nselected_bus_indices = np.where(voltages < threshold)[0]\nselected_bus_ids = list(bus_ids[selected_bus_indices])\nselected_count = len(selected_bus_ids)\nmin_voltage_idx = np.argmin(voltages)\nmin_bus = int(bus_ids[min_voltage_idx])\nmin_voltage = round(float(voltages[min_voltage_idx]), 6)\n\n# Prepare the result JSON\nRESULT_JSON = {\n    \"added_load_idx\": \"PQ_VERIFY_030_A\",\n    \"added_load_bus\": 10,\n    \"threshold\": threshold,\n    \"selected_bus_ids\": sorted(selected_bus_ids),\n    \"selected_count\": selected_count,\n    \"min_bus\": min_bus,\n    \"min_voltage\": min_voltage\n}\n\n# Print the result\nprint(\"RESULT_JSON=\", RESULT_JSON)",
+  "continuity_score": 15.0,
+  "execution_output": "STDERR:\nTraceback (most recent call last):\n  File \"/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_030/turn_02/workspace/generated_code.py\", line 46, in <module>\n    bus_idx = np.where(ssa.Bus.idx.v == 10)[0][0]\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: Calling nonzero on 0d arrays is not allowed. Use np.atleast_1d(scalar).nonzero() instead. If the context of this error is of the form `arr[nonzero(cond)]`, just use `arr[cond]`.\n\n",
+  "execution_passed": false,
+  "execution_score": 0.0,
+  "expected_result_json": {
+    "added_load_bus": 10,
+    "added_load_idx": "PQ_VERIFY_030_A",
+    "min_bus": 7,
+    "min_voltage": 0.929971,
+    "selected_bus_ids": [
+      7,
+      8
+    ],
+    "selected_count": 2,
+    "threshold": 0.96
+  },
+  "failure_categories": [
+    "grounding",
+    "execution",
+    "semantic"
+  ],
+  "format_score": 10.0,
+  "format_valid": true,
+  "grounding_score": 20.59,
+  "issues": [
+    "Missing code requirement: add PQ call",
+    "Code block 1: Use `ssa.Bus.v.v`, not `ssa.Bus.v`, when you need bus voltage magnitudes.",
+    "Code block 1: For add-before-setup workflows, load the case with `setup=False` before calling `ssa.add(...)`.",
+    "Code block 1: For add-before-setup workflows, call `ssa.setup()` after `ssa.add(...)` and before `ssa.PFlow.run()`.",
+    "Execution failed. Return code: 1",
+    "RESULT_JSON was missing or could not be parsed."
+  ],
+  "prompt": "Please keep the conversation context and send one new complete script only.\nKeep using the same built-in case from earlier in this conversation.\nKeep the same case, add one new PQ load before setup at bus 10 with idx 'PQ_VERIFY_030_A', p0=0.013, and q0=0.008.\nAfter rerunning power flow, report every bus below 0.960 p.u. together with the minimum-voltage bus.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: added_load_idx, added_load_bus, threshold, selected_bus_ids, selected_count, min_bus, min_voltage.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.\n- `selected_bus_ids` should list all buses below the threshold in ascending bus order.",
+  "response": "```python\n# required_dependencies: pandas\nimport pandas as pd\nimport andes\nimport numpy as np\nimport os\n\n# Load the IEEE 39 case\ncase = andes.get_case(\"ieee39/ieee39.xlsx\")\nssa = andes.load(case, setup=True, no_output=True, log=False)\n\n# Add a new PQ load at bus 10\nbus_idx = np.where(ssa.Bus.idx.v == 10)[0][0]\nssa.PQ.add(idx='PQ_VERIFY_030_A', bus=bus_idx, p0=0.013, q0=0.008)\n\n# Rerun power flow\nandes.run_power_flow(ssa)\n\n# Get bus voltages\nvoltages = ssa.Bus.voltage.v\nbus_ids = ssa.Bus.idx.v\n\n# Define threshold for minimum voltage\nthreshold = 0.960\n\n# Identify buses below threshold and find the minimum voltage bus\nselected_bus_indices = np.where(voltages < threshold)[0]\nselected_bus_ids = list(bus_ids[selected_bus_indices])\nselected_count = len(selected_bus_ids)\nmin_voltage_idx = np.argmin(voltages)\nmin_bus = int(bus_ids[min_voltage_idx])\nmin_voltage = round(float(voltages[min_voltage_idx]), 6)\n\n# Prepare the result JSON\nRESULT_JSON = {\n    \"added_load_idx\": \"PQ_VERIFY_030_A\",\n    \"added_load_bus\": 10,\n    \"threshold\": threshold,\n    \"selected_bus_ids\": sorted(selected_bus_ids),\n    \"selected_count\": selected_count,\n    \"min_bus\": min_bus,\n    \"min_voltage\": min_voltage\n}\n\n# Print the result\nprint(\"RESULT_JSON=\", RESULT_JSON)\n```",
+  "result_json_parse_error": "RESULT_JSON marker not found in stdout.",
+  "score_total": 50.59,
+  "semantic_passed": false,
+  "semantic_score": 0.0,
+  "turn_id": 2,
+  "turn_passed": false,
+  "used_template_fallback": false
+}

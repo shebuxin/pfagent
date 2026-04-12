@@ -1,0 +1,7 @@
+STDERR:
+Traceback (most recent call last):
+  File "/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_062/turn_03/workspace/generated_code.py", line 46, in <module>
+    ssa.Bus.voltage_target.set(slack_bus_index, 1.000)
+    ^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Bus' object has no attribute 'voltage_target'
+

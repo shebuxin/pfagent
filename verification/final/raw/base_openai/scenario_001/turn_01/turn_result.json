@@ -1,0 +1,43 @@
+{
+  "actual_result_json": null,
+  "artifact_passed": true,
+  "artifact_paths": [],
+  "artifact_score": 5.0,
+  "code": "# required_dependencies: andes\nimport andes\nimport json\nimport numpy as np\n\n# Load the IEEE 14 full case\ncase = andes.get_case(\"ieee14/ieee14_full.xlsx\")\nssa = andes.load(case, setup=True, no_output=True, log=False)\n\n# Run power flow\nandes.run_power_flow(ssa)\n\n# Get slack bus voltage and its index\nslack_bus_idx = ssa.slack.bus.v[0]  # Assuming there is at least one slack bus\nslack_voltage = ssa.bus.v[slack_bus_idx]\n\n# Get all bus voltages and their IDs\nvoltages = ssa.bus.v\nbus_ids = np.arange(len(voltages))\n\n# Get top-2 highest voltages and their respective bus IDs\nsorted_indices = np.argsort(voltages)[::-1][:2]\nselected_bus_ids = bus_ids[sorted_indices].tolist()\nselected_voltages = np.round(voltages[sorted_indices].tolist(), 6)\n\n# Prepare the result JSON\nresult_json = {\n    \"slack_bus\": int(slack_bus_idx),\n    \"slack_voltage\": round(float(slack_voltage), 6),\n    \"selected_bus_ids\": selected_bus_ids,\n    \"selected_voltages\": selected_voltages\n}\n\n# Print the result\nprint(f\"RESULT_JSON={json.dumps(result_json)}\")",
+  "continuity_score": 15.0,
+  "execution_output": "STDERR:\nTraceback (most recent call last):\n  File \"/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_001/turn_01/workspace/generated_code.py\", line 45, in <module>\n    andes.run_power_flow(ssa)\n    ^^^^^^^^^^^^^^^^^^^^\nAttributeError: module 'andes' has no attribute 'run_power_flow'\n\n",
+  "execution_passed": false,
+  "execution_score": 0.0,
+  "expected_result_json": {
+    "selected_bus_ids": [
+      6,
+      2
+    ],
+    "selected_voltages": [
+      1.03,
+      1.03
+    ],
+    "slack_bus": 1,
+    "slack_voltage": 1.03
+  },
+  "failure_categories": [
+    "execution",
+    "semantic"
+  ],
+  "format_score": 10.0,
+  "format_valid": true,
+  "grounding_score": 25.0,
+  "issues": [
+    "Execution failed. Return code: 1",
+    "RESULT_JSON was missing or could not be parsed."
+  ],
+  "prompt": "Write one complete runnable Python script only, inside a single ```python block.\nUse the built-in IEEE 14 full case.\nRun power flow and report the top-2 highest-voltage buses plus the slack-bus voltage.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: slack_bus, slack_voltage, selected_bus_ids, selected_voltages.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.\n- `selected_bus_ids` and `selected_voltages` should represent the top highest-voltage buses in descending order.",
+  "response": "```python\n# required_dependencies: andes\nimport andes\nimport json\nimport numpy as np\n\n# Load the IEEE 14 full case\ncase = andes.get_case(\"ieee14/ieee14_full.xlsx\")\nssa = andes.load(case, setup=True, no_output=True, log=False)\n\n# Run power flow\nandes.run_power_flow(ssa)\n\n# Get slack bus voltage and its index\nslack_bus_idx = ssa.slack.bus.v[0]  # Assuming there is at least one slack bus\nslack_voltage = ssa.bus.v[slack_bus_idx]\n\n# Get all bus voltages and their IDs\nvoltages = ssa.bus.v\nbus_ids = np.arange(len(voltages))\n\n# Get top-2 highest voltages and their respective bus IDs\nsorted_indices = np.argsort(voltages)[::-1][:2]\nselected_bus_ids = bus_ids[sorted_indices].tolist()\nselected_voltages = np.round(voltages[sorted_indices].tolist(), 6)\n\n# Prepare the result JSON\nresult_json = {\n    \"slack_bus\": int(slack_bus_idx),\n    \"slack_voltage\": round(float(slack_voltage), 6),\n    \"selected_bus_ids\": selected_bus_ids,\n    \"selected_voltages\": selected_voltages\n}\n\n# Print the result\nprint(f\"RESULT_JSON={json.dumps(result_json)}\")\n```",
+  "result_json_parse_error": "RESULT_JSON marker not found in stdout.",
+  "score_total": 55.0,
+  "semantic_passed": false,
+  "semantic_score": 0.0,
+  "turn_id": 1,
+  "turn_passed": false,
+  "used_template_fallback": false
+}

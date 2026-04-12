@@ -1,0 +1,52 @@
+{
+  "actual_result_json": {
+    "angle_threshold": 0.15,
+    "scale_factor": 1.06,
+    "selected_count": 0,
+    "selected_line_ids": [],
+    "slack_setpoint": 1.03
+  },
+  "artifact_passed": true,
+  "artifact_paths": [],
+  "artifact_score": 5.0,
+  "code": "# required_dependencies: numpy\nimport json\nimport numpy as np\nimport andes\n\ndef _round_float(value):\n    return round(float(value), 6)\n\nssa = andes.load(\n    andes.get_case(\"5bus/pjm5bus.json\"),\n    setup=False,\n    no_output=True,\n)\n\nssa.setup()\nslack_setpoint = 1.03\nssa.Slack.set(src=\"v0\", idx=[ssa.Slack.idx.v[0]], attr=\"v\", value=[slack_setpoint])\nscale_factor = 1.06\nssa.PQ.set(src=\"p0\", idx=ssa.PQ.idx.v, attr=\"v\", value=scale_factor * ssa.PQ.p0.v)\nssa.PQ.set(src=\"q0\", idx=ssa.PQ.idx.v, attr=\"v\", value=scale_factor * ssa.PQ.q0.v)\nssa.PFlow.run()\n\nbus_ids = np.asarray(ssa.Bus.idx.v)\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nline_ids = np.asarray(ssa.Line.idx.v)\nline_bus1 = np.asarray(ssa.Line.bus1.v)\nline_bus2 = np.asarray(ssa.Line.bus2.v)\nline_a1 = np.asarray(ssa.Line.a1.v, dtype=float)\nslack_bus = int(ssa.Slack.bus.v[0])\nslack_index = int(np.where(bus_ids == slack_bus)[0][0])\nslack_voltage = _round_float(bus_v[slack_index])\nangle_threshold = 0.15\nmask = np.isin(line_bus1, bus_ids)\ncandidate_ids = line_ids[mask]\ncandidate_a1 = line_a1[mask]\ncandidate_bus1 = line_bus1[mask]\ncandidate_bus2 = line_bus2[mask]\nbus_index_map = {bus_id: idx for idx, bus_id in enumerate(bus_ids)}\ncandidate_a1 = np.asarray([abs(candidate_a1[i] * (bus_v[bus_index_map[candidate_bus1[i]]] - bus_v[bus_index_map[candidate_bus2[i]]])) for i in range(len(candidate_ids))])\nmask = candidate_a1 > angle_threshold\nresult = {\n    \"slack_setpoint\": _round_float(1.03),\n    \"scale_factor\": _round_float(1.06),\n    \"angle_threshold\": _round_float(angle_threshold),\n    \"selected_line_ids\": [int(value) for value in candidate_ids[mask]],\n    \"selected_count\": int(np.sum(mask)),\n}\nprint(\"RESULT_JSON=\" + json.dumps(result, sort_keys=True))",
+  "continuity_score": 15.0,
+  "execution_output": "STDOUT:\nRESULT_JSON={\"angle_threshold\": 0.15, \"scale_factor\": 1.06, \"selected_count\": 0, \"selected_line_ids\": [], \"slack_setpoint\": 1.03}\n\n",
+  "execution_passed": true,
+  "execution_score": 20.0,
+  "expected_result_json": {
+    "angle_threshold": 0.15,
+    "scale_factor": 1.06,
+    "selected_count": 5,
+    "selected_line_ids": [
+      "0",
+      "1",
+      "2",
+      "5",
+      "6"
+    ],
+    "slack_setpoint": 1.03
+  },
+  "failure_categories": [
+    "grounding",
+    "semantic"
+  ],
+  "format_score": 10.0,
+  "format_valid": true,
+  "grounding_score": 21.15,
+  "issues": [
+    "Missing code requirement: line angle array",
+    "Code block 1: For line-angle analysis, use the ANDES line-angle result arrays such as `ssa.Line.a1.e`.",
+    "selected_line_ids: expected list length 5, got 0",
+    "selected_count: expected 5, got 0"
+  ],
+  "prompt": "Please keep the conversation context and send one new complete script only.\nKeep the slack-bus adjustment from the previous turn.\nAlso scale every PQ load by 1.060, rerun power flow, and report all lines whose absolute sending-end phase angle is above 0.150 radians.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: slack_setpoint, scale_factor, angle_threshold, selected_line_ids, selected_count.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.",
+  "response": "```python\n# required_dependencies: numpy\nimport json\nimport numpy as np\nimport andes\n\ndef _round_float(value):\n    return round(float(value), 6)\n\nssa = andes.load(\n    andes.get_case(\"5bus/pjm5bus.json\"),\n    setup=False,\n    no_output=True,\n)\n\nssa.setup()\nslack_setpoint = 1.03\nssa.Slack.set(src=\"v0\", idx=[ssa.Slack.idx.v[0]], attr=\"v\", value=[slack_setpoint])\nscale_factor = 1.06\nssa.PQ.set(src=\"p0\", idx=ssa.PQ.idx.v, attr=\"v\", value=scale_factor * ssa.PQ.p0.v)\nssa.PQ.set(src=\"q0\", idx=ssa.PQ.idx.v, attr=\"v\", value=scale_factor * ssa.PQ.q0.v)\nssa.PFlow.run()\n\nbus_ids = np.asarray(ssa.Bus.idx.v)\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nline_ids = np.asarray(ssa.Line.idx.v)\nline_bus1 = np.asarray(ssa.Line.bus1.v)\nline_bus2 = np.asarray(ssa.Line.bus2.v)\nline_a1 = np.asarray(ssa.Line.a1.v, dtype=float)\nslack_bus = int(ssa.Slack.bus.v[0])\nslack_index = int(np.where(bus_ids == slack_bus)[0][0])\nslack_voltage = _round_float(bus_v[slack_index])\nangle_threshold = 0.15\nmask = np.isin(line_bus1, bus_ids)\ncandidate_ids = line_ids[mask]\ncandidate_a1 = line_a1[mask]\ncandidate_bus1 = line_bus1[mask]\ncandidate_bus2 = line_bus2[mask]\nbus_index_map = {bus_id: idx for idx, bus_id in enumerate(bus_ids)}\ncandidate_a1 = np.asarray([abs(candidate_a1[i] * (bus_v[bus_index_map[candidate_bus1[i]]] - bus_v[bus_index_map[candidate_bus2[i]]])) for i in range(len(candidate_ids))])\nmask = candidate_a1 > angle_threshold\nresult = {\n    \"slack_setpoint\": _round_float(1.03),\n    \"scale_factor\": _round_float(1.06),\n    \"angle_threshold\": _round_float(angle_threshold),\n    \"selected_line_ids\": [int(value) for value in candidate_ids[mask]],\n    \"selected_count\": int(np.sum(mask)),\n}\nprint(\"RESULT_JSON=\" + json.dumps(result, sort_keys=True))\n```",
+  "result_json_parse_error": null,
+  "score_total": 86.15,
+  "semantic_passed": false,
+  "semantic_score": 15.0,
+  "turn_id": 3,
+  "turn_passed": false,
+  "used_template_fallback": false
+}

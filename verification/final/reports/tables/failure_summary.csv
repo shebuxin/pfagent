@@ -1,0 +1,13 @@
+model_label,failure_category,count
+Base OpenAI,execution,300
+Base OpenAI,semantic,300
+Base OpenAI,grounding,240
+Base OpenAI,continuity,88
+Base OpenAI,artifact,68
+Base OpenAI,format,39
+Fine-tuned,semantic,81
+Fine-tuned,execution,69
+Fine-tuned,grounding,39
+Fine-tuned,continuity,17
+Fine-tuned,format,15
+Fine-tuned,artifact,10

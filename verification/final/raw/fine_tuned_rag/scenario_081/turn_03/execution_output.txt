@@ -1,0 +1,3 @@
+STDOUT:
+RESULT_JSON={"max_bus": 2, "max_voltage": 1.01, "min_bus": 7, "min_voltage": 0.948405, "plot_file": "scenario_081_turn3_bar.png", "scale_factor": 1.05}
+

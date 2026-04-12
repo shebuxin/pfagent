@@ -1,0 +1,6 @@
+{
+  "max_bus": 6,
+  "max_voltage": 1.03,
+  "min_bus": 3,
+  "min_voltage": 1.01
+}

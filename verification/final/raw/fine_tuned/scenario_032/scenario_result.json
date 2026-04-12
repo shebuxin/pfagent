@@ -1,0 +1,168 @@
+{
+  "blueprint": "voltage_rank_add_scale_plot",
+  "case_family": "ieee39",
+  "case_source": "builtin",
+  "scenario_id": "scenario_032",
+  "source_case_path": "ieee39/ieee39.xlsx",
+  "turns": [
+    {
+      "actual_result_json": {
+        "selected_bus_ids": [
+          36,
+          35,
+          30,
+          19,
+          31
+        ],
+        "selected_voltages": [
+          1.0635,
+          1.0493,
+          1.0475,
+          1.042357,
+          1.04
+        ],
+        "slack_bus": 39,
+        "slack_voltage": 1.03
+      },
+      "artifact_passed": true,
+      "artifact_paths": [],
+      "artifact_score": 5.0,
+      "code": "# required_dependencies: numpy,andes,json\nimport json\nimport numpy as np\nimport andes\n\ndef _round_float(value):\n    return round(float(value), 6)\n\nssa = andes.load(\n    andes.get_case(\"ieee39/ieee39.xlsx\"),\n    setup=True,\n    no_output=True,\n)\n\nssa.PFlow.run()\n\nbus_ids = np.asarray(ssa.Bus.idx.v)\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nslack_bus = int(ssa.Slack.bus.v[0])\nslack_index = int(np.where(bus_ids == slack_bus)[0][0])\nslack_voltage = _round_float(bus_v[slack_index])\ntop_k = 5\nrank_indices = np.argsort(bus_v)[-top_k:][::-1]\nresult = {\n    \"slack_bus\": slack_bus,\n    \"slack_voltage\": slack_voltage,\n    \"selected_bus_ids\": [int(bus_ids[i]) for i in rank_indices],\n    \"selected_voltages\": [_round_float(bus_v[i]) for i in rank_indices],\n}\nprint(\"RESULT_JSON=\" + json.dumps(result, sort_keys=True))",
+      "continuity_score": 15.0,
+      "execution_output": "STDOUT:\nRESULT_JSON={\"selected_bus_ids\": [36, 35, 30, 19, 31], \"selected_voltages\": [1.0635, 1.0493, 1.0475, 1.042357, 1.04], \"slack_bus\": 39, \"slack_voltage\": 1.03}\n\n",
+      "execution_passed": true,
+      "execution_score": 20.0,
+      "expected_result_json": {
+        "selected_bus_ids": [
+          36,
+          35,
+          30,
+          19,
+          31
+        ],
+        "selected_voltages": [
+          1.0635,
+          1.0493,
+          1.0475,
+          1.042357,
+          1.04
+        ],
+        "slack_bus": 39,
+        "slack_voltage": 1.03
+      },
+      "failure_categories": [],
+      "format_score": 10.0,
+      "format_valid": true,
+      "grounding_score": 25.0,
+      "issues": [],
+      "prompt": "Return exactly one runnable Python code block and no prose.\nUse the built-in IEEE 39 case.\nRun power flow and report the top-5 highest-voltage buses plus the slack-bus voltage.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: slack_bus, slack_voltage, selected_bus_ids, selected_voltages.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.\n- `selected_bus_ids` and `selected_voltages` should represent the top highest-voltage buses in descending order.",
+      "response": "```python\n# required_dependencies: numpy,andes,json\nimport json\nimport numpy as np\nimport andes\n\ndef _round_float(value):\n    return round(float(value), 6)\n\nssa = andes.load(\n    andes.get_case(\"ieee39/ieee39.xlsx\"),\n    setup=True,\n    no_output=True,\n)\n\nssa.PFlow.run()\n\nbus_ids = np.asarray(ssa.Bus.idx.v)\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nslack_bus = int(ssa.Slack.bus.v[0])\nslack_index = int(np.where(bus_ids == slack_bus)[0][0])\nslack_voltage = _round_float(bus_v[slack_index])\ntop_k = 5\nrank_indices = np.argsort(bus_v)[-top_k:][::-1]\nresult = {\n    \"slack_bus\": slack_bus,\n    \"slack_voltage\": slack_voltage,\n    \"selected_bus_ids\": [int(bus_ids[i]) for i in rank_indices],\n    \"selected_voltages\": [_round_float(bus_v[i]) for i in rank_indices],\n}\nprint(\"RESULT_JSON=\" + json.dumps(result, sort_keys=True))\n```",
+      "result_json_parse_error": null,
+      "score_total": 100.0,
+      "semantic_passed": true,
+      "semantic_score": 25.0,
+      "turn_id": 1,
+      "turn_passed": true,
+      "used_template_fallback": false
+    },
+    {
+      "actual_result_json": {
+        "added_load_bus": 20,
+        "added_load_idx": "PQ_VERIFY_032_A",
+        "min_bus": 7,
+        "min_voltage": 0.929974,
+        "selected_bus_ids": [
+          3,
+          4,
+          7,
+          8,
+          15,
+          18
+        ],
+        "selected_count": 6,
+        "threshold": 0.98
+      },
+      "artifact_passed": true,
+      "artifact_paths": [],
+      "artifact_score": 5.0,
+      "code": "# required_dependencies: numpy,andes,json\nimport json\nimport numpy as np\nimport andes\n\ndef _round_float(value):\n    return round(float(value), 6)\n\nssa = andes.load(\n    andes.get_case(\"ieee39/ieee39.xlsx\"),\n    setup=False,\n    no_output=True,\n)\n\nssa.add(\n    \"PQ\",\n    param_dict={\n        \"bus\": 20,\n        \"idx\": \"PQ_VERIFY_032_A\",\n        \"p0\": 0.019,\n        \"q0\": 0.012,\n    },\n)\n\nssa.setup()\nssa.PFlow.run()\n\nbus_ids = np.asarray(ssa.Bus.idx.v)\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nthreshold = 0.98\nmask = bus_v < threshold\nmin_index = int(np.argmin(bus_v))\nresult = {\n    \"added_load_idx\": \"PQ_VERIFY_032_A\",\n    \"added_load_bus\": 20,\n    \"threshold\": _round_float(threshold),\n    \"selected_bus_ids\": [int(value) for value in np.sort(bus_ids[mask])],\n    \"selected_count\": int(np.sum(mask)),\n    \"min_bus\": int(bus_ids[min_index]),\n    \"min_voltage\": _round_float(bus_v[min_index]),\n}\nprint(\"RESULT_JSON=\" + json.dumps(result, sort_keys=True))",
+      "continuity_score": 15.0,
+      "execution_output": "STDOUT:\nRESULT_JSON={\"added_load_bus\": 20, \"added_load_idx\": \"PQ_VERIFY_032_A\", \"min_bus\": 7, \"min_voltage\": 0.929974, \"selected_bus_ids\": [3, 4, 7, 8, 15, 18], \"selected_count\": 6, \"threshold\": 0.98}\n\n",
+      "execution_passed": true,
+      "execution_score": 20.0,
+      "expected_result_json": {
+        "added_load_bus": 20,
+        "added_load_idx": "PQ_VERIFY_032_A",
+        "min_bus": 7,
+        "min_voltage": 0.929974,
+        "selected_bus_ids": [
+          3,
+          4,
+          7,
+          8,
+          15,
+          18
+        ],
+        "selected_count": 6,
+        "threshold": 0.98
+      },
+      "failure_categories": [],
+      "format_score": 10.0,
+      "format_valid": true,
+      "grounding_score": 25.0,
+      "issues": [],
+      "prompt": "Please revise the prior script for this next step and return one full script only.\nKeep using the same built-in case from earlier in this conversation.\nKeep the same case, add one new PQ load before setup at bus 20 with idx 'PQ_VERIFY_032_A', p0=0.019, and q0=0.012.\nAfter rerunning power flow, report every bus below 0.980 p.u. together with the minimum-voltage bus.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: added_load_idx, added_load_bus, threshold, selected_bus_ids, selected_count, min_bus, min_voltage.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.\n- `selected_bus_ids` should list all buses below the threshold in ascending bus order.",
+      "response": "```python\n# required_dependencies: numpy,andes,json\nimport json\nimport numpy as np\nimport andes\n\ndef _round_float(value):\n    return round(float(value), 6)\n\nssa = andes.load(\n    andes.get_case(\"ieee39/ieee39.xlsx\"),\n    setup=False,\n    no_output=True,\n)\n\nssa.add(\n    \"PQ\",\n    param_dict={\n        \"bus\": 20,\n        \"idx\": \"PQ_VERIFY_032_A\",\n        \"p0\": 0.019,\n        \"q0\": 0.012,\n    },\n)\n\nssa.setup()\nssa.PFlow.run()\n\nbus_ids = np.asarray(ssa.Bus.idx.v)\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nthreshold = 0.98\nmask = bus_v < threshold\nmin_index = int(np.argmin(bus_v))\nresult = {\n    \"added_load_idx\": \"PQ_VERIFY_032_A\",\n    \"added_load_bus\": 20,\n    \"threshold\": _round_float(threshold),\n    \"selected_bus_ids\": [int(value) for value in np.sort(bus_ids[mask])],\n    \"selected_count\": int(np.sum(mask)),\n    \"min_bus\": int(bus_ids[min_index]),\n    \"min_voltage\": _round_float(bus_v[min_index]),\n}\nprint(\"RESULT_JSON=\" + json.dumps(result, sort_keys=True))\n```",
+      "result_json_parse_error": null,
+      "score_total": 100.0,
+      "semantic_passed": true,
+      "semantic_score": 25.0,
+      "turn_id": 2,
+      "turn_passed": true,
+      "used_template_fallback": false
+    },
+    {
+      "actual_result_json": {
+        "max_bus": 36,
+        "max_voltage": 1.0635,
+        "min_bus": 7,
+        "min_voltage": 0.923406,
+        "plot_file": "scenario_032_turn3_line.png",
+        "scale_factor": 1.05
+      },
+      "artifact_passed": true,
+      "artifact_paths": [
+        "scenario_032_turn3_line.png"
+      ],
+      "artifact_score": 5.0,
+      "code": "# required_dependencies: numpy,andes,json,matplotlib\nimport json\nimport numpy as np\nimport andes\nimport matplotlib.pyplot as plt\n\ndef _round_float(value):\n    return round(float(value), 6)\n\nssa = andes.load(\n    andes.get_case(\"ieee39/ieee39.xlsx\"),\n    setup=False,\n    no_output=True,\n)\n\nssa.add(\n    \"PQ\",\n    param_dict={\n        \"bus\": 20,\n        \"idx\": \"PQ_VERIFY_032_A\",\n        \"p0\": 0.019,\n        \"q0\": 0.012,\n    },\n)\n\nssa.setup()\nscale_factor = 1.05\nssa.PQ.set(src=\"p0\", idx=ssa.PQ.idx.v, attr=\"v\", value=scale_factor * ssa.PQ.p0.v)\nssa.PQ.set(src=\"q0\", idx=ssa.PQ.idx.v, attr=\"v\", value=scale_factor * ssa.PQ.q0.v)\nssa.PFlow.run()\n\nbus_ids = np.asarray(ssa.Bus.idx.v)\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nplot_file = \"scenario_032_turn3_line.png\"\nplt.figure(figsize=(10, 4))\nplt.plot(bus_ids, bus_v, marker=\"o\", linewidth=1.5)\nplt.xticks(rotation=90)\nplt.xlabel(\"Bus\")\nplt.ylabel(\"Voltage (p.u.)\")\nplt.tight_layout()\nplt.savefig(plot_file, dpi=150)\nplt.close()\nmax_index = int(np.argmax(bus_v))\nmin_index = int(np.argmin(bus_v))\nresult = {\n    \"scale_factor\": _round_float(1.05),\n    \"max_bus\": int(bus_ids[max_index]),\n    \"max_voltage\": _round_float(bus_v[max_index]),\n    \"min_bus\": int(bus_ids[min_index]),\n    \"min_voltage\": _round_float(bus_v[min_index]),\n    \"plot_file\": plot_file,\n}\nprint(\"RESULT_JSON=\" + json.dumps(result, sort_keys=True))",
+      "continuity_score": 15.0,
+      "execution_output": "STDOUT:\nRESULT_JSON={\"max_bus\": 36, \"max_voltage\": 1.0635, \"min_bus\": 7, \"min_voltage\": 0.923406, \"plot_file\": \"scenario_032_turn3_line.png\", \"scale_factor\": 1.05}\n\n",
+      "execution_passed": true,
+      "execution_score": 20.0,
+      "expected_result_json": {
+        "max_bus": 36,
+        "max_voltage": 1.0635,
+        "min_bus": 7,
+        "min_voltage": 0.923406,
+        "plot_file": "scenario_032_turn3_line.png",
+        "scale_factor": 1.05
+      },
+      "failure_categories": [],
+      "format_score": 10.0,
+      "format_valid": true,
+      "grounding_score": 25.0,
+      "issues": [],
+      "prompt": "Next follow-up: rebuild the script for the updated study, code only.\nKeep the added load from the previous step.\nAlso scale every PQ load by a factor of 1.050 after setup, rerun power flow, and save a line plot of bus voltage magnitude to 'scenario_032_turn3_line.png'.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: scale_factor, max_bus, max_voltage, min_bus, min_voltage, plot_file.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.\n- `plot_file` must exactly match the saved filename.",
+      "response": "```python\n# required_dependencies: numpy,andes,json,matplotlib\nimport json\nimport numpy as np\nimport andes\nimport matplotlib.pyplot as plt\n\ndef _round_float(value):\n    return round(float(value), 6)\n\nssa = andes.load(\n    andes.get_case(\"ieee39/ieee39.xlsx\"),\n    setup=False,\n    no_output=True,\n)\n\nssa.add(\n    \"PQ\",\n    param_dict={\n        \"bus\": 20,\n        \"idx\": \"PQ_VERIFY_032_A\",\n        \"p0\": 0.019,\n        \"q0\": 0.012,\n    },\n)\n\nssa.setup()\nscale_factor = 1.05\nssa.PQ.set(src=\"p0\", idx=ssa.PQ.idx.v, attr=\"v\", value=scale_factor * ssa.PQ.p0.v)\nssa.PQ.set(src=\"q0\", idx=ssa.PQ.idx.v, attr=\"v\", value=scale_factor * ssa.PQ.q0.v)\nssa.PFlow.run()\n\nbus_ids = np.asarray(ssa.Bus.idx.v)\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nplot_file = \"scenario_032_turn3_line.png\"\nplt.figure(figsize=(10, 4))\nplt.plot(bus_ids, bus_v, marker=\"o\", linewidth=1.5)\nplt.xticks(rotation=90)\nplt.xlabel(\"Bus\")\nplt.ylabel(\"Voltage (p.u.)\")\nplt.tight_layout()\nplt.savefig(plot_file, dpi=150)\nplt.close()\nmax_index = int(np.argmax(bus_v))\nmin_index = int(np.argmin(bus_v))\nresult = {\n    \"scale_factor\": _round_float(1.05),\n    \"max_bus\": int(bus_ids[max_index]),\n    \"max_voltage\": _round_float(bus_v[max_index]),\n    \"min_bus\": int(bus_ids[min_index]),\n    \"min_voltage\": _round_float(bus_v[min_index]),\n    \"plot_file\": plot_file,\n}\nprint(\"RESULT_JSON=\" + json.dumps(result, sort_keys=True))\n```",
+      "result_json_parse_error": null,
+      "score_total": 100.0,
+      "semantic_passed": true,
+      "semantic_score": 25.0,
+      "turn_id": 3,
+      "turn_passed": true,
+      "used_template_fallback": false
+    }
+  ],
+  "uploaded_filename": null
+}

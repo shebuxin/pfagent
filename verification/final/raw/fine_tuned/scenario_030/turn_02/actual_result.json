@@ -1,0 +1,12 @@
+{
+  "added_load_bus": 10,
+  "added_load_idx": "PQ_VERIFY_030_A",
+  "min_bus": 7,
+  "min_voltage": 0.929971,
+  "selected_bus_ids": [
+    7,
+    8
+  ],
+  "selected_count": 2,
+  "threshold": 0.96
+}

@@ -1,0 +1,7 @@
+Follow-up request: update the previous study and return a fresh complete script.
+Keep using the same built-in case from earlier in this conversation.
+Keep the same study, set the slack-bus voltage target to 1.025, rerun power flow, and report the slack bus voltage plus how many buses fall below 1.005 p.u.
+- The script must end by printing exactly one line that starts with RESULT_JSON=
+- The JSON object must contain these keys: slack_bus, slack_setpoint, slack_voltage, selected_count.
+- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.
+- Round float values in RESULT_JSON to 6 decimals.

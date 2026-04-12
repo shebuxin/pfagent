@@ -1,0 +1,49 @@
+{
+  "actual_result_json": null,
+  "artifact_passed": true,
+  "artifact_paths": [],
+  "artifact_score": 5.0,
+  "code": "# required_dependencies: andes\nimport andes\n\n# Load the IEEE 39 case\ncase = andes.get_case(\"ieee39/ieee39.xlsx\")\nssa = andes.load(case, setup=True, no_output=True, log=False)\n\n# Run power flow\nandes.run_power_flow(ssa)\n\n# Extracting slack bus voltage and identifying top 5 highest voltage buses\nslack_bus = ssa.bus.idx[ssa.bus.slack.v][0]\nslack_voltage = round(ssa.bus.Vmag.v[slack_bus], 6)\nvoltages = ssa.bus.Vmag.v\nbus_ids = ssa.bus.idx.v\n\n# Getting top 5 highest voltage buses\nsorted_indices = sorted(range(len(voltages)), key=lambda i: voltages[i], reverse=True)[:5]\nselected_bus_ids = [int(bus_ids[i]) for i in sorted_indices]\nselected_voltages = [round(float(voltages[i]), 6) for i in sorted_indices]\n\n# Prepare Result JSON\nRESULT_JSON = {\n    \"slack_bus\": int(slack_bus),\n    \"slack_voltage\": slack_voltage,\n    \"selected_bus_ids\": selected_bus_ids,\n    \"selected_voltages\": selected_voltages\n}\n\nprint(\"RESULT_JSON=\", RESULT_JSON)",
+  "continuity_score": 15.0,
+  "execution_output": "STDERR:\nTraceback (most recent call last):\n  File \"/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_032/turn_01/workspace/generated_code.py\", line 43, in <module>\n    andes.run_power_flow(ssa)\n    ^^^^^^^^^^^^^^^^^^^^\nAttributeError: module 'andes' has no attribute 'run_power_flow'\n\n",
+  "execution_passed": false,
+  "execution_score": 0.0,
+  "expected_result_json": {
+    "selected_bus_ids": [
+      36,
+      35,
+      30,
+      19,
+      31
+    ],
+    "selected_voltages": [
+      1.0635,
+      1.0493,
+      1.0475,
+      1.042357,
+      1.04
+    ],
+    "slack_bus": 39,
+    "slack_voltage": 1.03
+  },
+  "failure_categories": [
+    "execution",
+    "semantic"
+  ],
+  "format_score": 10.0,
+  "format_valid": true,
+  "grounding_score": 25.0,
+  "issues": [
+    "Execution failed. Return code: 1",
+    "RESULT_JSON was missing or could not be parsed."
+  ],
+  "prompt": "Return exactly one runnable Python code block and no prose.\nUse the built-in IEEE 39 case.\nRun power flow and report the top-5 highest-voltage buses plus the slack-bus voltage.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: slack_bus, slack_voltage, selected_bus_ids, selected_voltages.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.\n- `selected_bus_ids` and `selected_voltages` should represent the top highest-voltage buses in descending order.",
+  "response": "```python\n# required_dependencies: andes\nimport andes\n\n# Load the IEEE 39 case\ncase = andes.get_case(\"ieee39/ieee39.xlsx\")\nssa = andes.load(case, setup=True, no_output=True, log=False)\n\n# Run power flow\nandes.run_power_flow(ssa)\n\n# Extracting slack bus voltage and identifying top 5 highest voltage buses\nslack_bus = ssa.bus.idx[ssa.bus.slack.v][0]\nslack_voltage = round(ssa.bus.Vmag.v[slack_bus], 6)\nvoltages = ssa.bus.Vmag.v\nbus_ids = ssa.bus.idx.v\n\n# Getting top 5 highest voltage buses\nsorted_indices = sorted(range(len(voltages)), key=lambda i: voltages[i], reverse=True)[:5]\nselected_bus_ids = [int(bus_ids[i]) for i in sorted_indices]\nselected_voltages = [round(float(voltages[i]), 6) for i in sorted_indices]\n\n# Prepare Result JSON\nRESULT_JSON = {\n    \"slack_bus\": int(slack_bus),\n    \"slack_voltage\": slack_voltage,\n    \"selected_bus_ids\": selected_bus_ids,\n    \"selected_voltages\": selected_voltages\n}\n\nprint(\"RESULT_JSON=\", RESULT_JSON)\n```",
+  "result_json_parse_error": "RESULT_JSON marker not found in stdout.",
+  "score_total": 55.0,
+  "semantic_passed": false,
+  "semantic_score": 0.0,
+  "turn_id": 1,
+  "turn_passed": false,
+  "used_template_fallback": false
+}

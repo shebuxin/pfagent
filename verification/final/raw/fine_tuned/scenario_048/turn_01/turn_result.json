@@ -1,0 +1,52 @@
+{
+  "actual_result_json": null,
+  "artifact_passed": true,
+  "artifact_paths": [],
+  "artifact_score": 5.0,
+  "code": "# required_dependencies: andes,json\nimport andes\nimport json\nimport os\n\ndef _round_float(value):\n    return round(float(value), 6)\n\ncwd = os.getcwd()\ncase_path = os.path.join(cwd, \"verify_ieee39_048.xlsx\")\nssa = andes.load(case_path, setup=False, no_output=True)\n\nssa.setup()\nssa.PFlow.run()\n\nbus_ids = ssa.Bus.idx.v\nbus_v = ssa.Bus.v.v\nthreshold = 1.03\nmask = bus_v > threshold\nlow_rank_indices = sorted(range(len(bus_v)), key=lambda i: bus_v[i])[:2]\nresult = {\n    \"threshold\": _round_float(threshold),\n    \"selected_bus_ids\": [int(value) for value in bus_ids[mask]],\n    \"selected_count\": int(mask.sum()),\n    \"lowest_bus_ids\": [int(bus_ids[i]) for i in low_rank_indices],\n    \"lowest_voltages\": [_round_float(bus_v[i]) for i in low_rank_indices],\n}\nprint(\"RESULT_JSON=\" + json.dumps(result, sort_keys=True))",
+  "continuity_score": 15.0,
+  "execution_output": "STDERR:\nTraceback (most recent call last):\n  File \"/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/fine_tuned/20260403_162926/raw/fine_tuned/scenario_048/turn_01/workspace/generated_code.py\", line 57, in <module>\n    \"selected_bus_ids\": [int(value) for value in bus_ids[mask]],\n                                                 ~~~~~~~^^^^^^\nTypeError: only integer scalar arrays can be converted to a scalar index\n\n",
+  "execution_passed": false,
+  "execution_score": 0.0,
+  "expected_result_json": {
+    "lowest_bus_ids": [
+      7,
+      8
+    ],
+    "lowest_voltages": [
+      0.929955,
+      0.943746
+    ],
+    "selected_bus_ids": [
+      19,
+      22,
+      30,
+      31,
+      35,
+      36,
+      39
+    ],
+    "selected_count": 7,
+    "threshold": 1.03
+  },
+  "failure_categories": [
+    "execution",
+    "semantic"
+  ],
+  "format_score": 10.0,
+  "format_valid": true,
+  "grounding_score": 25.0,
+  "issues": [
+    "Execution failed. Return code: 1",
+    "RESULT_JSON was missing or could not be parsed."
+  ],
+  "prompt": "Write one complete runnable Python script only, inside a single ```python block.\nUse my uploaded file verify_ieee39_048.xlsx from the current working directory.\nRun power flow, count all buses above 1.030 p.u., and also return the two lowest-voltage buses.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: threshold, selected_bus_ids, selected_count, lowest_bus_ids, lowest_voltages.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.\n- `selected_bus_ids` should list every bus above the threshold.\n- `lowest_bus_ids` should contain exactly two buses in ascending voltage order.\n\nRuntime file context:\n- Working directory for execution: verification/artifacts_recheck_20260403_parallel/fine_tuned/20260403_162926/raw/fine_tuned/scenario_048/turn_01/workspace\n- Uploaded files available during execution:\n- verify_ieee39_048.xlsx\n- Use this exact filename directly in andes.load(...).\n- Do not wrap the uploaded filename with andes.get_case(...).\n",
+  "response": "```python\n# required_dependencies: andes,json\nimport andes\nimport json\nimport os\n\ndef _round_float(value):\n    return round(float(value), 6)\n\ncwd = os.getcwd()\ncase_path = os.path.join(cwd, \"verify_ieee39_048.xlsx\")\nssa = andes.load(case_path, setup=False, no_output=True)\n\nssa.setup()\nssa.PFlow.run()\n\nbus_ids = ssa.Bus.idx.v\nbus_v = ssa.Bus.v.v\nthreshold = 1.03\nmask = bus_v > threshold\nlow_rank_indices = sorted(range(len(bus_v)), key=lambda i: bus_v[i])[:2]\nresult = {\n    \"threshold\": _round_float(threshold),\n    \"selected_bus_ids\": [int(value) for value in bus_ids[mask]],\n    \"selected_count\": int(mask.sum()),\n    \"lowest_bus_ids\": [int(bus_ids[i]) for i in low_rank_indices],\n    \"lowest_voltages\": [_round_float(bus_v[i]) for i in low_rank_indices],\n}\nprint(\"RESULT_JSON=\" + json.dumps(result, sort_keys=True))\n```",
+  "result_json_parse_error": "RESULT_JSON marker not found in stdout.",
+  "score_total": 55.0,
+  "semantic_passed": false,
+  "semantic_score": 0.0,
+  "turn_id": 1,
+  "turn_passed": false,
+  "used_template_fallback": false
+}

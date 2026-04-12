@@ -1,0 +1,8 @@
+Please revise the prior script for this next step and return one full script only.
+Keep using the same built-in case from earlier in this conversation.
+Keep the same study and add a new PQ load before setup at bus 4 with idx 'PQ_VERIFY_040_D', p0=0.014, and q0=0.008.
+After rerunning, report the slack-bus voltage and every bus below 0.950 p.u.
+- The script must end by printing exactly one line that starts with RESULT_JSON=
+- The JSON object must contain these keys: added_load_idx, slack_bus, slack_voltage, threshold, selected_bus_ids, selected_count.
+- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.
+- Round float values in RESULT_JSON to 6 decimals.

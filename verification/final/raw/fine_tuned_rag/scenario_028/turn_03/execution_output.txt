@@ -1,0 +1,3 @@
+STDOUT:
+RESULT_JSON={"plot_file": "scenario_028_turn3_line.png", "selected_bus_ids": [3, 4, 13, 10], "selected_voltages": [1.01, 1.011477, 1.014197, 1.014259], "slack_setpoint": 1.035, "slack_voltage": 1.035}
+

@@ -1,0 +1,28 @@
+stage_id,label,suite_group,turn_id,turn_pass_rate
+main_100_initial,100-scenario initial benchmark,main_suite,1,20.0
+main_100_initial,100-scenario initial benchmark,main_suite,2,3.0
+main_100_initial,100-scenario initial benchmark,main_suite,3,0.0
+main_100_optimized,100-scenario optimized benchmark,main_suite,1,100.0
+main_100_optimized,100-scenario optimized benchmark,main_suite,2,100.0
+main_100_optimized,100-scenario optimized benchmark,main_suite,3,100.0
+main_132_before_fix,132-scenario harder suite before fix,main_suite,1,85.61
+main_132_before_fix,132-scenario harder suite before fix,main_suite,2,78.79
+main_132_before_fix,132-scenario harder suite before fix,main_suite,3,75.76
+main_132_after_fix,132-scenario harder suite after fix,main_suite,1,100.0
+main_132_after_fix,132-scenario harder suite after fix,main_suite,2,100.0
+main_132_after_fix,132-scenario harder suite after fix,main_suite,3,100.0
+main_140_light,140-scenario light expansion,main_suite,1,100.0
+main_140_light,140-scenario light expansion,main_suite,2,100.0
+main_140_light,140-scenario light expansion,main_suite,3,100.0
+main_146_generalized,146-scenario generalized expansion,main_suite,1,95.89
+main_146_generalized,146-scenario generalized expansion,main_suite,2,95.89
+main_146_generalized,146-scenario generalized expansion,main_suite,3,95.89
+main_152_generalized,152-scenario generalized suite after fix,main_suite,1,100.0
+main_152_generalized,152-scenario generalized suite after fix,main_suite,2,100.0
+main_152_generalized,152-scenario generalized suite after fix,main_suite,3,100.0
+open_4_before_fix,4 open scenarios before adaptive evolution,open_suite,1,0.0
+open_4_before_fix,4 open scenarios before adaptive evolution,open_suite,2,0.0
+open_4_before_fix,4 open scenarios before adaptive evolution,open_suite,3,0.0
+open_4_after_fix,4 open scenarios after adaptive evolution,open_suite,1,100.0
+open_4_after_fix,4 open scenarios after adaptive evolution,open_suite,2,100.0
+open_4_after_fix,4 open scenarios after adaptive evolution,open_suite,3,100.0

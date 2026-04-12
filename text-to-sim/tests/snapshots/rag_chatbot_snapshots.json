@@ -1,0 +1,236 @@
+[
+  {
+    "args": [
+      "Explain why the voltage distribution barely changes after the line trip on a line in the IEEE 39 network."
+    ],
+    "case_id": "line_trip_voltage",
+    "func": "build_andes_explanation_fallback_response",
+    "output": "A line trip can leave the bus-voltage profile almost unchanged for a few common reasons. In a meshed system like IEEE 39-bus, the opened line may not be electrically critical because parallel paths absorb the redistribution. In that case, the biggest effect often shows up in branch flows or angles rather than in bus-voltage magnitudes. If the script picked an arbitrary line rather than screening several outages, it may also have selected a line with negligible voltage impact. A better N-1 check is to screen candidate line outages and compare the minimum bus voltage, the worst-voltage bus, or the maximum |ΔV| across buses."
+  },
+  {
+    "args": [
+      "Explain the voltage results from the previous run."
+    ],
+    "case_id": "unmatched_prompt",
+    "func": "build_andes_explanation_fallback_response",
+    "output": ""
+  },
+  {
+    "args": [
+      "Use the IEEE 14 case. Print the slack bus voltage and the top-3 highest bus voltages after running power flow."
+    ],
+    "case_id": "ieee14_slack_top3",
+    "func": "build_andes_fallback_response",
+    "output": "```python\n# required_dependencies: andes,numpy\nimport andes\nimport numpy as np\n\nssa = andes.load(\n    andes.get_case(\"ieee14/ieee14_full.xlsx\"),\n    setup=True,\n    no_output=True,\n    log=False,\n)\nssa.PFlow.run()\n\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nbus_id = np.asarray(ssa.Bus.idx.v, dtype=int)\nslack_bus = int(ssa.Slack.bus.v[0])\nslack_pos = int(np.where(bus_id == slack_bus)[0][0])\n\nprint(f\"Slack Bus {slack_bus}: {bus_v[slack_pos]:.4f} p.u.\")\nprint(\"Top 3 highest bus voltages:\")\nfor i in np.argsort(bus_v)[-3:][::-1]:\n    print(f\"Bus {int(bus_id[i])}: {bus_v[i]:.4f} p.u.\")\n```"
+  },
+  {
+    "args": [
+      "Use the IEEE 39 case. Add a PQ load at bus 12 and report the bus voltage at that bus after power flow."
+    ],
+    "case_id": "ieee39_pq_bus",
+    "func": "build_andes_fallback_response",
+    "output": "```python\n# required_dependencies: andes,numpy\nimport andes\nimport numpy as np\n\ntarget_bus = 12\n\nssa = andes.load(\n    andes.get_case(\"ieee39/ieee39.xlsx\"),\n    setup=True,\n    no_output=True,\n    log=False,\n)\nssa.PFlow.run()\n\nbus_ids = np.asarray(ssa.Bus.idx.v, dtype=int)\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\npq_buses = np.asarray(ssa.PQ.bus.v, dtype=int)\n\nbus_positions = np.where(bus_ids == target_bus)[0]\nif len(bus_positions) == 0:\n    raise ValueError(f\"Bus {target_bus} was not found in the case.\")\n\nbus_pos = int(bus_positions[0])\nhas_pq = target_bus in pq_buses\n\nif has_pq:\n    print(f\"PQ load found at bus {target_bus}. Bus {target_bus} voltage: {bus_v[bus_pos]:.4f} p.u.\")\nelse:\n    print(f\"No PQ load found at bus {target_bus}. Bus {target_bus} voltage: {bus_v[bus_pos]:.4f} p.u.\")\n```"
+  },
+  {
+    "args": [
+      "Generate runnable Python code only. Use the IEEE 14-bus case. Run power flow and print RESULT_JSON with key 'bus_voltages'."
+    ],
+    "case_id": "unmatched_prompt",
+    "func": "build_andes_fallback_response",
+    "output": ""
+  },
+  {
+    "args": [
+      ""
+    ],
+    "case_id": "empty",
+    "func": "extract_effective_user_context",
+    "output": ""
+  },
+  {
+    "args": [
+      "Run a power flow on the IEEE 14 bus case."
+    ],
+    "case_id": "plain_text",
+    "func": "extract_effective_user_context",
+    "output": "Run a power flow on the IEEE 14 bus case."
+  },
+  {
+    "args": [
+      "Just plain text without code."
+    ],
+    "case_id": "no_block",
+    "func": "extract_python_code_blocks",
+    "output": []
+  },
+  {
+    "args": [
+      "Preamble\n```python\nimport andes\nprint(1)\n```\nTail"
+    ],
+    "case_id": "single_block",
+    "func": "extract_python_code_blocks",
+    "output": [
+      "import andes\nprint(1)"
+    ]
+  },
+  {
+    "args": [
+      "```python\na = 1\n```\n\n```python\nb = 2\n```"
+    ],
+    "case_id": "two_blocks",
+    "func": "extract_python_code_blocks",
+    "output": [
+      "a = 1",
+      "b = 2"
+    ]
+  },
+  {
+    "args": [
+      "Please use the IEEE 14-bus case."
+    ],
+    "case_id": "ieee14_explicit",
+    "func": "infer_requested_builtin_case",
+    "output": "ieee14/ieee14_full.xlsx"
+  },
+  {
+    "args": [
+      "Run power flow on the IEEE 39 bus system."
+    ],
+    "case_id": "ieee39",
+    "func": "infer_requested_builtin_case",
+    "output": "ieee39/ieee39.xlsx"
+  },
+  {
+    "args": [
+      "Use the Kundur two-area system."
+    ],
+    "case_id": "kundur_explicit",
+    "func": "infer_requested_builtin_case",
+    "output": "kundur/kundur_full.xlsx"
+  },
+  {
+    "args": [
+      "Run a power flow analysis."
+    ],
+    "case_id": "none",
+    "func": "infer_requested_builtin_case",
+    "output": ""
+  },
+  {
+    "args": [
+      "Generate runnable Python code only. Use an ANDES built-in case. Compute bus voltages after power flow convergence and print a line beginning with 'RESULT_JSON:' containing key 'bus_voltages'."
+    ],
+    "case_id": "code_only_explicit",
+    "func": "is_code_only_request",
+    "output": true
+  },
+  {
+    "args": [
+      ""
+    ],
+    "case_id": "empty",
+    "func": "is_code_only_request",
+    "output": false
+  },
+  {
+    "args": [
+      "Explain the results I just received from the previous run."
+    ],
+    "case_id": "explanation_request",
+    "func": "is_code_only_request",
+    "output": false
+  },
+  {
+    "args": [
+      "Generate runnable Python code only. Use an ANDES built-in case. Compute bus voltages after power flow convergence and print a line beginning with 'RESULT_JSON:' containing key 'bus_voltages'."
+    ],
+    "case_id": "code_only",
+    "func": "is_explanatory_followup_request",
+    "output": false
+  },
+  {
+    "args": [
+      "Explain the results I just received from the previous run."
+    ],
+    "case_id": "explain_result",
+    "func": "is_explanatory_followup_request",
+    "output": true
+  },
+  {
+    "args": [
+      "Walk me through what the script did step by step."
+    ],
+    "case_id": "walk_me_through",
+    "func": "is_explanatory_followup_request",
+    "output": false
+  },
+  {
+    "args": [
+      "```python\nimport andes\nimport json\nssa = andes.load(andes.get_case('ieee14/ieee14.raw'), setup=True, no_output=True, log=False)\nssa.PFlow.run()\nprint('RESULT_JSON:' + json.dumps({'bus_voltages': list(ssa.Bus.v.v)}))\n```",
+      ""
+    ],
+    "case_id": "already_clean",
+    "func": "normalize_andes_response",
+    "output": [
+      "```python\nimport andes\nimport json\nssa = andes.load(andes.get_case('ieee14/ieee14.raw'), setup=True, no_output=True, log=False)\nssa.PFlow.run()\nprint('RESULT_JSON:' + json.dumps({'bus_voltages': list(ssa.Bus.v.v)}))\n```",
+      []
+    ]
+  },
+  {
+    "args": [
+      "```python\nimport andes\n\nssa = andes.load(\"kundur/kundur_full.xlsx\", setup=False, no_output=True, log=False)\nssa.add(model=\"PQ\", param_dict={\"bus\": 8, \"idx\": \"PQ_NEW_1\", \"p0\": 0.01, \"q0\": 0.01})\nssa.setup()\nssa.PFlow.run()\nprint(ssa.Bus.v.vn[0])\n```",
+      ""
+    ],
+    "case_id": "common_patterns",
+    "func": "normalize_andes_response",
+    "output": [
+      "```python\nimport andes\n\nssa = andes.load(andes.get_case(\"kundur/kundur_full.xlsx\"), setup=False, no_output=True, log=False)\nssa.add(\"PQ\", param_dict={\"bus\": 8, \"idx\": \"PQ_NEW_1\", \"p0\": 0.01, \"q0\": 0.01})\nssa.setup()\nssa.PFlow.run()\nprint(ssa.Bus.v.v[0])\n```",
+      [
+        "Replaced unsupported `Bus.v.vn` with `Bus.v.v`.",
+        "Rewrote `.add(model=...)` to `.add(<model_name>, ...)`.",
+        "Wrapped built-in ANDES case `kundur/kundur_full.xlsx` with `andes.get_case(...)`."
+      ]
+    ]
+  },
+  {
+    "args": [
+      "No python block here at all.",
+      "Generate runnable Python code only. Use an ANDES built-in case. Compute bus voltages after power flow convergence and print a line beginning with 'RESULT_JSON:' containing key 'bus_voltages'."
+    ],
+    "case_id": "no_code_block",
+    "func": "validate_response_code",
+    "output": [
+      false,
+      [
+        "Return one runnable Python script inside a ```python``` code block."
+      ]
+    ]
+  },
+  {
+    "args": [
+      "```python\nimport unittest\n\nclass Demo(unittest.TestCase):\n    def test_nothing(self):\n        self.assertTrue(True)\n```",
+      "Generate runnable Python code only. Use an ANDES built-in case. Compute bus voltages after power flow convergence and print a line beginning with 'RESULT_JSON:' containing key 'bus_voltages'."
+    ],
+    "case_id": "unittest_rejected",
+    "func": "validate_response_code",
+    "output": [
+      false,
+      [
+        "Code block 1: Built-in case requests must load the case through `andes.get_case(...)`.",
+        "Code block 1: Return one plain runnable Python script, not unittest/pytest scaffolding."
+      ]
+    ]
+  },
+  {
+    "args": [
+      "```python\nimport andes\nimport json\nssa = andes.load(andes.get_case('ieee14/ieee14.raw'), setup=True, no_output=True, log=False)\nssa.PFlow.run()\nprint('RESULT_JSON:' + json.dumps({'bus_voltages': list(ssa.Bus.v.v)}))\n```",
+      "Generate runnable Python code only. Use an ANDES built-in case. Compute bus voltages after power flow convergence and print a line beginning with 'RESULT_JSON:' containing key 'bus_voltages'."
+    ],
+    "case_id": "valid_runnable",
+    "func": "validate_response_code",
+    "output": [
+      true,
+      []
+    ]
+  }
+]

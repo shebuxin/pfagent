@@ -1,0 +1,47 @@
+{
+  "actual_result_json": null,
+  "artifact_passed": true,
+  "artifact_paths": [],
+  "artifact_score": 5.0,
+  "code": "# required_dependencies: andes\nimport andes\n\n# Load the built-in IEEE 14 full case\ncase = andes.get_case(\"ieee14/ieee14_full.xlsx\")\nssa = andes.load(case, setup=True, no_output=True, log=False)\n\n# Run power flow analysis\nandes.run_power_flow(ssa)\n\n# Extract bus voltages and their corresponding IDs\nbus_ids = ssa.Bus.idx.v\nvoltages = ssa.Bus.vmag.v\n\n# Combine bus ids and their voltages into a list of tuples\nbus_voltage_pairs = list(zip(bus_ids, voltages))\n\n# Sort by voltage\nsorted_buses = sorted(bus_voltage_pairs, key=lambda x: x[1])\n\n# Select the 4 lowest-voltage buses\nlowest_buses = sorted_buses[:4]\n\n# Separate the bus IDs and voltages\nselected_bus_ids = [int(bus[0]) for bus in lowest_buses]\nselected_voltages = [round(float(bus[1]), 6) for bus in lowest_buses]\n\n# Print the result in the required format\nRESULT_JSON = {\n    \"selected_bus_ids\": selected_bus_ids,\n    \"selected_voltages\": selected_voltages\n}\nprint(f\"RESULT_JSON={RESULT_JSON}\")",
+  "continuity_score": 15.0,
+  "execution_output": "STDERR:\nTraceback (most recent call last):\n  File \"/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_014/turn_01/workspace/generated_code.py\", line 43, in <module>\n    andes.run_power_flow(ssa)\n    ^^^^^^^^^^^^^^^^^^^^\nAttributeError: module 'andes' has no attribute 'run_power_flow'\n\n",
+  "execution_passed": false,
+  "execution_score": 0.0,
+  "expected_result_json": {
+    "selected_bus_ids": [
+      3,
+      4,
+      13,
+      10
+    ],
+    "selected_voltages": [
+      1.01,
+      1.011403,
+      1.01445,
+      1.015542
+    ]
+  },
+  "failure_categories": [
+    "grounding",
+    "execution",
+    "semantic"
+  ],
+  "format_score": 10.0,
+  "format_valid": true,
+  "grounding_score": 25.0,
+  "issues": [
+    "Code block 1: Use `ssa.Bus.v.v`, not `ssa.Bus.v`, when you need bus voltage magnitudes.",
+    "Execution failed. Return code: 1",
+    "RESULT_JSON was missing or could not be parsed."
+  ],
+  "prompt": "Write one complete runnable Python script only, inside a single ```python block.\nUse the built-in IEEE 14 full case.\nRun power flow and report the 4 lowest-voltage buses.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: selected_bus_ids, selected_voltages.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.\n- `selected_bus_ids` and `selected_voltages` should represent the lowest-voltage buses in ascending voltage order.",
+  "response": "```python\n# required_dependencies: andes\nimport andes\n\n# Load the built-in IEEE 14 full case\ncase = andes.get_case(\"ieee14/ieee14_full.xlsx\")\nssa = andes.load(case, setup=True, no_output=True, log=False)\n\n# Run power flow analysis\nandes.run_power_flow(ssa)\n\n# Extract bus voltages and their corresponding IDs\nbus_ids = ssa.Bus.idx.v\nvoltages = ssa.Bus.vmag.v\n\n# Combine bus ids and their voltages into a list of tuples\nbus_voltage_pairs = list(zip(bus_ids, voltages))\n\n# Sort by voltage\nsorted_buses = sorted(bus_voltage_pairs, key=lambda x: x[1])\n\n# Select the 4 lowest-voltage buses\nlowest_buses = sorted_buses[:4]\n\n# Separate the bus IDs and voltages\nselected_bus_ids = [int(bus[0]) for bus in lowest_buses]\nselected_voltages = [round(float(bus[1]), 6) for bus in lowest_buses]\n\n# Print the result in the required format\nRESULT_JSON = {\n    \"selected_bus_ids\": selected_bus_ids,\n    \"selected_voltages\": selected_voltages\n}\nprint(f\"RESULT_JSON={RESULT_JSON}\")\n```",
+  "result_json_parse_error": "RESULT_JSON marker not found in stdout.",
+  "score_total": 55.0,
+  "semantic_passed": false,
+  "semantic_score": 0.0,
+  "turn_id": 1,
+  "turn_passed": false,
+  "used_template_fallback": false
+}

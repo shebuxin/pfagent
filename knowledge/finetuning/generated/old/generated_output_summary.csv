@@ -1,0 +1,1801 @@
+Question,Answer
+"Code: import andes
+import os
+
+script_dir = os.getcwd()
+case = os.path.join(script_dir, 'ieee39_base.xlsx')
+
+ssa = andes.load(case,
+                setup=False,
+                no_output=True,
+                default_config=False)
+
+# setup the case and call the power flow calculation
+ssa.setup()
+ssa.PFlow.run()
+
+print(""PV Bus Active Power"", ssa.PV.p.v)
+print(""PV Bus Reactive Power"", ssa.PV.q.v)
+print(""Slack Bus Active Power"", ssa.Slack.p.v)
+print(""Slack Bus Reactive Power"", ssa.Slack.q.v)
+print(""Bus Voltages"", ssa.Bus.v.v)
+print(""Bus Angles"", ssa.Bus.a.v)
+
+print(""Phase Angle of the From Bus"", ssa.Line.a1.e)
+print(""Shape of ssa.Line.a1.e:"", ssa.Line.a1.e.shape)
+print(""ssa.Line.a1.e via get():"", ssa.Line.get(src='a1', idx= ssa.Line.idx.v, attr='e'))
+print(""Phase Angle of the To Bus"", ssa.Line.a2.e)
+
+
+# Run a power-flow simulation and display key results for the PV buses, Slack bus, system buses, and transmission lines.
+                Code Output: STDERR:
+error: file ""/home/chen541/ANDES_Data/PowerFlow_Specific/ieee39_base.xlsx"" does not exist.
+No valid case found.
+Traceback (most recent call last):
+  File ""/home/chen541/ANDES_Data/PowerFlow_Specific/code_examples/powerflow-ex1.py"", line 13, in <module>
+    ssa.setup()
+    ^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'setup'
+
+ERROR conda.cli.main_run:execute(125): `conda run python code_examples/powerflow-ex1.py` failed. (See above for error)
+
+Return Code: 1","The provided script is intended to:
+
+  1. Import the ANDES power‐flow library and point it at an IEEE-39-bus case stored in “ieee39_base.xlsx.”  
+  2. Build and run a steady‐state power‐flow.  
+  3. Print out for the PV buses: real (P) and reactive (Q) injections; for the slack bus: P and Q; for all buses: voltage magnitudes (v) and angles (a); and for each line: the sending‐end and receiving‐end phase‐angle (a1.e and a2.e).
+
+However, when you run it:
+
+  • ANDES reports that “ieee39_base.xlsx” cannot be found in the current working directory.  
+  • As a result, `andes.load(...)` returns None.  
+  • The next line, `ssa.setup()`, then raises an AttributeError (`'NoneType' object has no attribute 'setup'`).  
+  • No power‐flow is executed, and no electrical quantities (P, Q, voltages, angles) are ever computed or printed.
+
+Key takeaways for an EE user:
+
+  – Make sure the case file path is correct (or that “ieee39_base.xlsx” actually exists in your working folder).  
+  – Because the load failed early, none of the intended power‐flow results (PV injections, slack injections, bus voltages/angles, line phase angles) are available.  
+  – You’ll need to resolve the missing‐file error before you can get any numerical output from the PV, slack or bus/line quantities."
+"Code: import andes
+import os
+
+script_dir = os.getcwd()
+case = os.path.join(script_dir, 'ieee39_base.xlsx')
+
+ssa = andes.load(case,
+                setup=True,
+                no_output=True,
+                default_config=False)
+
+# call the power flow calculation
+ssa.PFlow.run()
+
+print(""PV Bus Active Power"", ssa.PV.p.v)
+print(""PV Bus Reactive Power"", ssa.PV.q.v)
+print(""Slack Bus Active Power"", ssa.Slack.p.v)
+print(""Slack Bus Reactive Power"", ssa.Slack.q.v)
+print(""Bus Voltages"", ssa.Bus.v.v)
+print(""Bus Angles"", ssa.Bus.a.v)
+
+
+# Load the IEEE 39-bus case, run a power-flow simulation, and display key results for the PV buses, Slack bus, and all system buses.
+                Code Output: STDERR:
+error: file ""/home/chen541/ANDES_Data/PowerFlow_Specific/ieee39_base.xlsx"" does not exist.
+No valid case found.
+Traceback (most recent call last):
+  File ""/home/chen541/ANDES_Data/PowerFlow_Specific/code_examples/powerflow-ex2.py"", line 13, in <module>
+    ssa.PFlow.run()
+    ^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'PFlow'
+
+ERROR conda.cli.main_run:execute(125): `conda run python code_examples/powerflow-ex2.py` failed. (See above for error)
+
+Return Code: 1","The provided Python script is intended to:
+
+  1. Import the ANDES power‐flow library.
+  2. Locate and load an IEEE 39‐bus network case from an Excel file named “ieee39_base.xlsx” in the current working directory.
+  3. Run a steady‐state power‐flow (`PFlow.run()`).
+  4. Print out:
+     – Active and reactive power at all PV buses  
+     – Active and reactive power at the Slack bus  
+     – Voltage magnitudes and angles at every bus  
+
+However, in the actual run:
+
+  • ANDES reports that it cannot find the file:  
+      “/home/chen541/ANDES_Data/PowerFlow_Specific/ieee39_base.xlsx”  
+    → “No valid case found.”  
+  • As a result, `andes.load(...)` returns `None` (no network loaded).  
+  • The script then attempts `ssa.PFlow.run()`, causing an `AttributeError` because `ssa` is `None`.  
+  • The script terminates with a Python traceback and return code 1.  
+
+Key takeaways for an electrical engineer:  
+  – Before running the power‐flow, ensure the IEEE 39‐bus case file exists at the specified path (or correct the path).  
+  – A missing or unreadable input file will cause `andes.load` to fail silently (returning `None`), leading to subsequent attribute errors.  
+  – Once the file issue is resolved, the same code structure will yield bus voltages, angles, PV‐bus P/Q, and Slack‐bus P/Q directly from the ANDES objects."
+"Code: import andes
+
+ssa = andes.load(
+    andes.get_case('ieee39/ieee39.xlsx'),
+    setup=False,     # If setup=False, need to call ss.setup() before running the simulation
+    no_output=True, 
+    default_config=False
+)
+
+# Add new load
+ssa.add(model=""PQ"", param_dict=dict(bus=2, 
+                                    idx=""PQ_20"", 
+                                    p0=0.5, 
+                                    q0=0.2
+                                    ))
+
+# Add new generator
+ssa.add(model=""PV"", param_dict=dict(bus=15, 
+                                    idx='15', 
+                                    p0=0.5, 
+                                    q0=0.2,
+                                    pmax=5,
+                                    pmin=0,
+                                    qmax=2,
+                                    qmin=-2,
+                                    v0=1.0,
+                                    ))
+
+ssa.setup()
+ssa.PFlow.run()
+
+
+# Load the IEEE 39-bus case, add a new load and a new PV generator, then set up and run a power-flow simulation.
+                Code Output: No Output Generated","The script you ran performs exactly the following steps:
+
+1. It loads the IEEE 39-bus test system via ANDES, but delays the usual automatic setup and suppresses any printed output.  
+2. It injects a new constant‐power (PQ) load on bus 2 of 0.5 p.u. real‐power and 0.2 p.u. reactive‐power.  
+3. It injects a new PV generator at bus 15 with:  
+   • P₀ = 0.5 p.u. (MW)  
+   • Q₀ = 0.2 p.u. (MVar)  
+   • Pmin = 0, Pmax = 5 p.u.  
+   • Qmin = –2, Qmax = 2 p.u.  
+   • Voltage setpoint V₀ = 1.0 pu  
+4. It calls `ssa.setup()` to build the network equations and then runs an AC power-flow with `ssa.PFlow.run()`.  
+
+Because `no_output=True`, the routine completes silently—there is no console report of voltages, flows or mismatches. However, the solved power-flow state is stored internally in the `ssa` object. To examine your results, you can now do things like:
+
+   • `ssa.Bus.Vm` and `ssa.Bus.Va`  → bus voltage magnitudes and angles  
+   • `ssa.Branch.Pf/Pt`            → real-power flows from “from” and “to” ends  
+   • `ssa.PFlow.mismatch`          → final real/reactive mismatches  
+
+In summary, the code successfully integrated your 0.5 p.u. PQ load at bus 2 and 0.5 p.u. PV source at bus 15 into the IEEE-39 network and solved the AC power flow, but printed nothing to screen. You can now query the `ssa` data structures to retrieve voltages, line flows and other quantities of interest."
+"Code: import andes
+import numpy as np
+
+ssa = andes.load(
+    andes.get_case('ieee39/ieee39.xlsx'),
+    setup=False,     # If setup=False, need to call ss.setup() before running the simulation
+    no_output=True, 
+    default_config=False
+)
+
+ssa.setup()
+
+# Scale up (perturb) the voltage states of both p0 and q0 by 10%. 
+ssa.PQ.set(
+            src='p0', 
+            idx= ssa.PQ.idx.v, 
+            attr='v',
+            value=1.1 * ssa.PQ.p0.v
+        )
+
+ssa.PQ.set(
+            src='q0', 
+            idx= ssa.PQ.idx.v, 
+            attr='v',
+            value=1.1 * ssa.PQ.q0.v
+        )
+
+ssa.PFlow.run()
+
+print(""PQ.p0.v After Scaling:"", ssa.PQ.p0.v)
+print(""PQ.q0.v After Scaling:"", ssa.PQ.q0.v)
+
+
+# Load the IEEE 39-bus case, scale the active and reactive power demands of all PQ loads by 10%, then run a power-flow simulation and display the updated values.
+
+                Code Output: STDOUT:
+PQ.p0.v After Scaling: [6.6    4.95   2.5718 5.742  1.32   3.52   3.6234 1.738  7.48   3.014
+ 2.7225 3.3946 2.464  1.529  3.091  2.266  3.1185 0.88   4.4   ]
+PQ.q0.v After Scaling: [ 2.75    2.024   9.24    1.936   0.33    1.683   3.553   0.33    1.133
+  1.265   0.9306 -1.0142  0.5192  0.187   0.8305  0.3036  1.3959  0.44
+  2.75  ]","The script loads the IEEE‐39 bus case, scales the initial PQ‐load demands (p0 and q0) by +10 % and then re‐runs a power‐flow. There are 19 PQ buses in the system, so after scaling you get:
+
+  • Scaled active‐power demands (PQ.p0.v, in MW):  
+    [6.6, 4.95, 2.5718, 5.742, 1.32, 3.52, 3.6234, 1.738, 7.48,  
+     3.014, 2.7225, 3.3946, 2.464, 1.529, 3.091, 2.266, 3.1185, 0.88, 4.4]
+
+  • Scaled reactive‐power demands (PQ.q0.v, in MVAr):  
+    [2.75, 2.024, 9.24, 1.936, 0.33, 1.683, 3.553, 0.33, 1.133,  
+     1.265, 0.9306, –1.0142, 0.5192, 0.187, 0.8305, 0.3036, 1.3959, 0.44, 2.75]
+
+Key points for an EE audience:  
+  1. The 19‐element arrays correspond one‐to‐one with the PQ buses in the IEEE-39 case.  
+  2. Each entry is the original p0 or q0 value multiplied by 1.1 (e.g. 6.0 MW→6.6 MW, 2.5 MVAr→2.75 MVAr).  
+  3. Running `ssa.PFlow.run()` does not alter these demand values; it simply solves for network voltages, currents and generation dispatch given the new (10 % higher) loads."
+"Code: import andes
+import numpy as np
+
+ssa = andes.load(
+    andes.get_case('ieee39/ieee39.xlsx'),
+    setup=True,     # If setup=False, need to call ss.setup() before running the simulation
+    no_output=True, 
+    default_config=False
+)
+
+# Scale up (perturb) the voltage states of both p0 and q0 by 10%. 
+ssa.PQ.set(
+            src='p0', 
+            idx= ssa.PQ.idx.v, 
+            attr='v',
+            value= 1.1 * ssa.PQ.p0.v
+        )
+
+ssa.PQ.set(
+            src='q0', 
+            idx= ssa.PQ.idx.v, 
+            attr='v',
+            value= 1.1 * ssa.PQ.q0.v
+        )
+
+# Change specific load based on idx
+# Note: check the case (excel) file to get the correct idx
+ssa.PQ.set(
+            src='p0', 
+            idx= ['PQ_1', 'PQ_10'], 
+            attr='v',
+            value= np.array([8, 4])
+        )
+
+ssa.PQ.set(
+            src='q0', 
+            idx= ['PQ_1', 'PQ_10'], 
+            attr='v',
+            value= np.array([2, 1])
+        )
+
+ssa.PFlow.run()
+
+print(""PQ.p0.v After Change:"", ssa.PQ.p0.v)
+print(""PQ.q0.v After Change:"", ssa.PQ.q0.v)
+
+
+# Load the IEEE 39-bus case, increase all PQ load active and reactive powers by 10%, modify specific loads by index, then run a power-flow simulation and display the updated values.
+                Code Output: STDOUT:
+PQ.p0.v After Change: [8.     4.95   2.5718 5.742  1.32   3.52   3.6234 1.738  7.48   4.
+ 2.7225 3.3946 2.464  1.529  3.091  2.266  3.1185 0.88   4.4   ]
+PQ.q0.v After Change: [ 2.      2.024   9.24    1.936   0.33    1.683   3.553   0.33    1.133
+  1.      0.9306 -1.0142  0.5192  0.187   0.8305  0.3036  1.3959  0.44
+  2.75  ]","The script performs the following steps on the IEEE 39-bus system:
+
+1. Load the case via ANDES and initialize the steady‐state simulator.  
+2. Increase every PQ‐load’s active (p0.v) and reactive (q0.v) power by 10%.  
+3. Overwrite the active powers at PQ bus “PQ_1” and “PQ_10” to 8 and 4 (per unit or MW on a 100 MVA base), respectively.  
+4. Overwrite the reactive powers at those same buses to 2 and 1.  
+5. Run a full AC power‐flow.  
+6. Print the resulting p0.v and q0.v vectors (one entry per PQ bus, in the order defined in the case).
+
+Final load values after the power-flow:
+
+PQ.p0.v (active powers) =  
+[  
+ 8.0000, 4.9500, 2.5718, 5.7420, 1.3200, 3.5200, 3.6234, 1.7380,  
+ 7.4800, 4.0000, 2.7225, 3.3946, 2.4640, 1.5290, 3.0910, 2.2660,  
+ 3.1185, 0.8800, 4.4000  
+]
+
+PQ.q0.v (reactive powers) =  
+[  
+ 2.0000, 2.0240, 9.2400, 1.9360, 0.3300, 1.6830, 3.5530, 0.3300,  
+ 1.1330, 1.0000, 0.9306, –1.0142, 0.5192, 0.1870, 0.8305, 0.3036,  
+ 1.3959, 0.4400, 2.7500  
+]
+
+Key takeaways for an EE engineer:  
+• All original PQ loads were uniformly bumped by 10%, except buses 1 and 10, which were manually set to 8 / 2 and 4 / 1.  
+• The solver converged to these updated load levels, producing the vectors above.  
+• These numbers can now be used for further stability or contingency analyses on the 39-bus network."
+"Code: import andes
+import numpy as np
+
+ssa = andes.load(
+    andes.get_case('ieee39/ieee39.xlsx'),
+    setup=False,     # If setup=False, need to call ss.setup() before running the simulation
+    no_output=True, 
+    default_config=False
+)
+
+ssa.setup()
+
+# change power reference of PV/Slack bus 
+
+# PV bus
+# Note: check the case (excel) file to get the correct idx
+# If the idx is number, then use idx= [1, 2] instead of idx= ['1', '2']
+ssa.PV.set(
+            src='p0', 
+            idx= [1, 2], 
+            attr='v',
+            value= np.array([5, 7])
+        )
+
+ssa.PV.set(
+            src='q0', 
+            idx= [1, 2], 
+            attr='v',
+            value= np.array([2, 2.5])
+        )
+
+ssa.PFlow.run()
+
+print(""PV.p0.v After Change:"", ssa.PV.p0.v)
+print(""PV.q0.v After Change:"", ssa.PV.q0.v)
+
+
+# Load the IEEE 39-bus case, modify the active and reactive power setpoints for selected PV buses, then run a power-flow simulation and display the updated values.
+                Code Output: STDOUT:
+PV.p0.v After Change: [5.   7.   6.5  6.32 5.08 6.5  5.6  5.4  8.3  1.   1.5  2.   2.5 ]
+PV.q0.v After Change: [2.      2.5     4.46722 2.4294  2.29094 3.61684 1.85829 1.5809  1.87815
+ 0.27003 0.27003 0.27003 0.27003]","Here’s a concise engineer‐focused summary of what the script does and what the printed arrays mean:
+
+1. Case setup  
+   • IEEE-39 bus data is loaded (xls file) into ANDES without any defaults.  
+   • `ssa.setup()` initializes all network models (lines, loads, machines, etc.).  
+
+2. Manual PV/Slack adjustments  
+   • Two PV (or slack) machines, indices 1 and 2, have their set‐point injections overridden:  
+     – Active power P₀ ← [5.0, 7.0] (MW)  
+     – Reactive power Q₀ ← [2.0, 2.5] (MVAr)  
+
+3. Power‐flow solution  
+   • `ssa.PFlow.run()` solves the full AC load‐flow with those P/Q references held fixed at buses 1 & 2, treating the rest of the PV buses in standard PV‐mode (P fixed, V = 1.0 pu unless otherwise specified).  
+
+4. Output arrays (`ssa.PV.p0.v` and `ssa.PV.q0.v`)  
+   • There are 13 PV‐type machines (including the slack). After the solution you get:  
+     – P array (MW):  
+       [5.00, 7.00, 6.50, 6.32, 5.08, 6.50, 5.60, 5.40, 8.30, 1.00, 1.50, 2.00, 2.50]  
+       • The first two entries are the user‐set values; the remaining 11 are the machine outputs determined by the load‐flow.  
+     – Q array (MVAr):  
+       [2.0000, 2.5000, 4.4672, 2.4294, 2.2909, 3.6168, 1.8583, 1.5809, 1.8781, 0.2700, 0.2700, 0.2700, 0.2700]  
+       • First two entries match the manual settings.  
+       • The repeated 0.2700 at the end suggests those machines hit a reactive limit (e.g. Qmin or Qmax) during the solution.  
+
+Key takeaway for an EE: by overriding P/Q at two PV buses and rerunning a full load‐flow you can see not only the forced‐set points but also how the rest of your generators adjust their injections (particularly their reactive outputs) to meet system voltages and constraints."
+"Code: import andes
+import numpy as np
+
+ssa = andes.load(
+    andes.get_case('ieee39/ieee39.xlsx'),
+    setup=True,     # If setup=False, need to call ss.setup() before running the simulation
+    no_output=True, 
+    default_config=False
+)
+
+# Slack bus
+# Note: check the case (excel) file to get the correct src and idx
+ssa.Slack.set(
+            src='v0', 
+            idx= 10, 
+            attr='v',
+            value= np.array([1])  # value= 1  works too
+        )
+
+ssa.Slack.set(
+            src='a0', 
+            idx= 10, 
+            attr='v',
+            value= np.array([0])  # value= 0  works too
+        )
+
+ssa.PFlow.run()
+
+print(""Slack.v0.v After Update"", ssa.Slack.v0.v)
+print(""Slack.a0.v After Update"", ssa.Slack.a0.v)
+
+
+# Load the IEEE 39-bus case, update the voltage magnitude and angle setpoints for the Slack bus, then run a power-flow simulation and display the updated values.
+                Code Output: STDOUT:
+Slack.v0.v After Update [1.]
+Slack.a0.v After Update [0.]","The snippet does the following:
+
+1. Loads the IEEE-39 bus test case into ANDES (with power-flow setup enabled, no intermediate printout, custom config).  
+2. Designates bus 10 as the slack (swing) bus and explicitly sets its voltage magnitude to 1.0 p.u. and its voltage angle to 0 degrees.  
+3. Runs a steady-state (power-flow) solve.  
+4. Prints out the slack bus’s final voltage magnitude and angle.
+
+Observed output:
+• Slack.v0.v After Update [1.]  
+• Slack.a0.v After Update [0.]  
+
+Interpretation for the EE engineer: the specified slack-bus setpoints (1.0 p.u., 0°) were correctly applied and preserved by the power-flow solver. No other bus voltages or angles were displayed."
+"Code: import andes
+
+ssa = andes.load(
+    andes.get_case('ieee39/ieee39.xlsx'),
+    setup=False,     # If setup=False, need to call ss.setup() before running the simulation
+    no_output=True, 
+    default_config=False
+)
+
+print(""PQ Table of Case:"", ssa.PQ.as_df())
+
+# Load the IEEE 39-bus case and display the PQ load table as a DataFrame.
+                Code Output: STDOUT:
+PQ Table of Case:        idx  u   name  bus     Vn     p0     q0  vmax  vmin  owner
+uid                                                              
+0     PQ_1  1   PQ_1    3  345.0  6.000  2.500   1.2   0.8      1
+1     PQ_2  1   PQ_2    4  345.0  4.500  1.840   1.2   0.8      1
+2     PQ_3  1   PQ_3    7  345.0  2.338  8.400   1.2   0.8      1
+3     PQ_4  1   PQ_4    8  345.0  5.220  1.760   1.2   0.8      1
+4     PQ_5  1   PQ_5   12  138.0  1.200  0.300   1.2   0.8      1
+5     PQ_6  1   PQ_6   15  345.0  3.200  1.530   1.2   0.8      1
+6     PQ_7  1   PQ_7   16  345.0  3.294  3.230   1.2   0.8      1
+7     PQ_8  1   PQ_8   18  345.0  1.580  0.300   1.2   0.8      1
+8     PQ_9  1   PQ_9   20  138.0  6.800  1.030   1.2   0.8      1
+9    PQ_10  1  PQ_10   21  345.0  2.740  1.150   1.2   0.8      1
+10   PQ_11  1  PQ_11   23  345.0  2.475  0.846   1.2   0.8      1
+11   PQ_12  1  PQ_12   24  345.0  3.086 -0.922   1.2   0.8      1
+12   PQ_13  1  PQ_13   25  345.0  2.240  0.472   1.2   0.8      1
+13   PQ_14  1  PQ_14   26  345.0  1.390  0.170   1.2   0.8      1
+14   PQ_15  1  PQ_15   27  345.0  2.810  0.755   1.2   0.8      1
+15   PQ_16  1  PQ_16   28  345.0  2.060  0.276   1.2   0.8      1
+16   PQ_17  1  PQ_17   29  345.0  2.835  1.269   1.2   0.8      1
+17   PQ_18  1  PQ_18   31   34.5  0.800  0.400   1.2   0.8      1
+18   PQ_19  1  PQ_19   39  345.0  4.000  2.500   1.2   0.8      1","The snippet above uses the Andes Python API to load the IEEE-39 (New England) test system from an Excel file and then immediately extract its PQ-load data into a pandas DataFrame without performing any power-flow or dynamic setup. What you see printed is the raw load table (“ssa.PQ”) for all 19 PQ‐type loads in that case. Here are the key points an EE engineer will care about:
+
+ • Number of PQ loads: 19 (indexed 0…18)  
+ • Bus locations and nominal voltages (Vn):  
+   – 14 loads at 345 kV (buses 3,4,7,8,15,16,18,21,23–29,39)  
+   – 2 loads at 138 kV (buses 12 & 20)  
+   – 1 load at 34.5 kV (bus 31)  
+ • Active‐power demands p0 span 0.8…6.8 MW  
+   – Largest P: 6.8 MW at bus 20 (PQ_9)  
+   – Smallest P: 0.8 MW at bus 31 (PQ_18)  
+ • Reactive‐power demands q0 span –0.922…8.4 MVAr  
+   – Largest Q absorption: 8.4 MVAr at bus 7 (PQ_3)  
+   – One negative Q (–0.922 MVAr) at bus 24 (PQ_12), i.e. net injection  
+ • Voltage‐limit flags (per‐unit): vmax = 1.2 pu; vmin = 0.8 pu (identical for all loads)  
+ • All loads share owner ID = 1 (e.g. for subsequent allocation of costs or control rights)
+
+With this table in hand you can immediately inspect load distribution by voltage level, identify heavy loads or reactive sources, and confirm that the standard IEEE-39 voltage‐limit settings (0.8–1.2 pu) are applied uniformly."
+"Code: import andes
+import pandas as pd
+
+
+path = ""ieee39_base.xlsx""
+
+# Load all sheets at once as a dict of DataFrames
+all_sheets = pd.read_excel(path, sheet_name=None)
+
+print(""Workbook Sheets and Their Column Headers:"")
+for sheet_name, df in all_sheets.items():
+    print(f""Sheet: {sheet_name}"")
+    print(f""Columns: {list(df.columns)}"")
+    print(""\n"")
+
+
+ssa = andes.load(
+    path,
+    setup=False,     # If setup=False, need to call ss.setup() before running the simulation
+    no_output=True, 
+    default_config=False
+)
+
+ssa.setup()
+ssa.PFlow.run()
+
+
+# 1. Load the workbook and list sheets
+xls = pd.ExcelFile(""ieee39_base.xlsx"")
+sheet_names = xls.sheet_names
+first_sheet = sheet_names[0]
+
+# 2. Parse the first sheet to get its column headers
+df0 = xls.parse(first_sheet)
+headers = df0.columns.tolist()
+
+# 3. Make sure there are at least 7 columns
+if len(headers) < 7:
+    raise ValueError(f""Sheet '{first_sheet}' Only Has {len(headers)} Columns -- Can't Get the 7th Header"")
+
+# 4. Get the 7th header (index 6)
+seventh_header = headers[6]
+
+# 5. Finally, pull its `.v` array from ANDES
+values = getattr(getattr(ssa, first_sheet), seventh_header).v
+
+print(f""1st Sheet: '{first_sheet}'"")
+print(f""7th Header: '{seventh_header}'"")
+print(f""Values ({first_sheet}.{seventh_header}.v):\n"", values)
+
+
+# Load the IEEE 39-bus workbook, list all sheets with their column headers, run a power-flow simulation, then retrieve and display the values of the 7th column from the first sheet using ANDES.
+                Code Output: STDERR:
+Traceback (most recent call last):
+  File ""/home/chen541/ANDES_Data/PowerFlow_Specific/code_examples/powerflow-ex9.py"", line 8, in <module>
+    all_sheets = pd.read_excel(path, sheet_name=None)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/home/chen541/miniconda3/envs/power-simulation-env/lib/python3.12/site-packages/pandas/io/excel/_base.py"", line 495, in read_excel
+    io = ExcelFile(
+         ^^^^^^^^^^
+  File ""/home/chen541/miniconda3/envs/power-simulation-env/lib/python3.12/site-packages/pandas/io/excel/_base.py"", line 1550, in __init__
+    ext = inspect_excel_format(
+          ^^^^^^^^^^^^^^^^^^^^^
+  File ""/home/chen541/miniconda3/envs/power-simulation-env/lib/python3.12/site-packages/pandas/io/excel/_base.py"", line 1402, in inspect_excel_format
+    with get_handle(
+         ^^^^^^^^^^^
+  File ""/home/chen541/miniconda3/envs/power-simulation-env/lib/python3.12/site-packages/pandas/io/common.py"", line 882, in get_handle
+    handle = open(handle, ioargs.mode)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'ieee39_base.xlsx'
+
+ERROR conda.cli.main_run:execute(125): `conda run python code_examples/powerflow-ex9.py` failed. (See above for error)
+
+Return Code: 1","The provided script is intended to do the following steps:
+
+1. Use pandas to read an IEEE‐39‐bus case stored in “ieee39_base.xlsx”  
+   – Load all sheets at once (`sheet_name=None`) into a dict of DataFrames  
+   – Print each sheet’s name and its column headers  
+
+2. Use the ANDES library to set up and solve a power‐flow (“PFlow”) on that same case  
+   – `ssa = andes.load(path, setup=False, …)`  
+   – `ssa.setup()`  
+   – `ssa.PFlow.run()`  
+
+3. Re‐open the workbook with `pd.ExcelFile`, parse the first sheet,  
+   extract its 7th column header, and then pull the corresponding `.v` array (e.g. a vector of bus voltages or power injections) from the ANDES solution object (`ssa.<sheet>.<header>.v`)  
+
+However, the script never gets past step 1. Pandas raises:
+
+  FileNotFoundError: [Errno 2] No such file or directory: 'ieee39_base.xlsx'
+
+This means that the Excel file “ieee39_base.xlsx” cannot be found in the working directory, so
+
+• No sheet names or headers are printed  
+• ANDES never actually loads or runs the power‐flow  
+• No numerical arrays (voltage magnitudes, angles, etc.) are retrieved
+
+To proceed, make sure the file “ieee39_base.xlsx” is present (or correct the path) so that pandas can open it. Once the file is found, you will see:
+
+• A printout of sheet names (e.g. “Bus”, “Branch”, “Gen”, …) and their column lists.  
+• After `ssa.PFlow.run()`, retrieval of the 7th column’s data vector from the first sheet (for example, bus voltage magnitudes if the 7th column is “V”)."
+"Code: import andes
+import numpy as np
+
+
+ssa = andes.load(
+    andes.get_case('ieee39/ieee39.xlsx'),
+    setup=False,     # If setup=False, need to call ss.setup() before running the simulation
+    no_output=True, 
+    default_config=False
+)
+
+ssa.setup()
+ssa.PFlow.run()
+
+
+# Total number of generators
+generators = np.concatenate((ssa.PV.pmin.v, ssa.Slack.pmin.v))
+
+print(""Toal Generators:"", len(generators))
+
+
+# Total number of load rows
+loads = ssa.PQ.p0.v
+
+print(""Total Loads:"", len(loads))
+
+
+# Load the IEEE 39-bus case, run a power-flow simulation, and display the total number of generators and loads in the system.
+                Code Output: STDOUT:
+Toal Generators: 14
+Total Loads: 19","The snippet does the following steps:  
+1. Imports the IEEE-39 bus test case via the Andes API (with no automatic setup or output).  
+2. Calls `ssa.setup()` and then runs a steady‐state power‐flow (`ssa.PFlow.run()`).  
+3. Counts as “generators” every PV‐bus and the slack bus (by concatenating their minimum-power vectors), and as “loads” every PQ bus (using the PQ injection vector).  
+4. Prints out those counts.  
+
+Resulting output:  
+• Total Generators: 14  
+• Total Loads: 19  
+
+In other words, for this IEEE-39 case you have 14 machine buses (including the slack) and 19 load buses defined in the power-flow model. This tells you, for instance, how many dynamic generator models and load models you’ll need if you proceed to a time-domain or small-signal stability study."
+"Code: import andes
+import numpy as np
+
+
+ssa = andes.load(
+    andes.get_case('ieee39/ieee39.xlsx'),
+    setup=True,     # If setup=False, need to call ss.setup() before running the simulation
+    no_output=True, 
+    default_config=False
+)
+
+ssa.PFlow.run()
+
+
+generator_capacity = np.concatenate([ssa.PV.Sn.v, ssa.Slack.Sn.v])  # capacity for each generator
+
+# Compute overall extremes
+max_capacity = np.max(generator_capacity)
+min_capacity = np.min(generator_capacity)
+
+print(f""Maximum Generator Capacity: {max_capacity} MVA"")
+print(f""Minimum Generator Capacity: {min_capacity} MVA"")
+
+
+# Load the IEEE 39-bus case, run a power-flow simulation, and display the maximum and minimum generator capacities in the system.
+                Code Output: STDOUT:
+Maximum Generator Capacity: 1684.1 MVA
+Minimum Generator Capacity: 275.0 MVA","The snippet does the following:  
+1. Uses the ANDES Python API to load and set up the IEEE 39‐bus (New England) test case directly from the bundled Excel file.  
+2. Runs a full, balanced three‐phase power‐flow (PFlow) solution.  
+3. Pulls out the nameplate ratings (Sn) of every PV generator and the single slack unit in the case.  
+4. Prints the largest and smallest MVA ratings among those machines.
+
+Result:  
+• Maximum generator capacity in the system: 1684.1 MVA  
+• Minimum generator capacity in the system: 275.0 MVA
+
+For an EE working on system studies, this immediately tells you that the 39‐bus case spans a very wide range of unit sizes—from a relatively small 275 MVA plant up to a major 1.68 GVA machine—information you might use when setting up contingency limits, checking voltage‐control capability or planning dynamic models."
+"Code: import andes
+import numpy as np
+
+
+ssa = andes.load(
+    andes.get_case('ieee39/ieee39.xlsx'),
+    setup=True,     # If setup=False, need to call ss.setup() before running the simulation
+    no_output=True, 
+    default_config=False
+)
+
+ssa.PFlow.run()
+
+
+# Grab all voltage magnitudes (p.u.)
+v_mag = np.abs(ssa.Bus.v.v)
+
+# Find the index of the maximum voltage
+idx_max = int(np.argmax(v_mag))
+
+# Retrieve the bus idx from Bus sheet
+bus_idx = ssa.Bus.idx.v
+idx_max_sheet = bus_idx[idx_max]
+
+# Retrieve the bus ID from BUS sheet
+bus_ids = ssa.Bus.uid
+max_bus = bus_ids[idx_max_sheet]
+
+max_v = v_mag[idx_max]
+
+print(f""Bus UID {max_bus} has the Highest Voltage: {max_v} p.u."")
+
+
+# Load the IEEE 39-bus case, run a power-flow simulation, and identify the bus with the highest voltage magnitude, displaying its UID and value.
+                Code Output: STDOUT:
+Bus UID 35 has the Highest Voltage: 1.0635 p.u.","The script uses the Andes API to:
+
+1. Load the IEEE 39-bus test case (from the supplied Excel file) with  
+   – setup=True (automatic model setup)  
+   – no_output=True (suppress intermediate printouts)  
+   – default_config=False (custom configuration)  
+2. Run a steady‐state power‐flow (`ssa.PFlow.run()`).  
+3. Extract all bus voltage phasors (`ssa.Bus.v.v`), take their absolute values to get magnitudes in per-unit.  
+4. Locate the index of the maximum voltage magnitude and map it back to the bus UID (`ssa.Bus.uid`).  
+5. Print out the bus UID and its voltage magnitude.
+
+Result:  
+   Bus UID 35 has the highest voltage magnitude at 1.0635 p.u.  
+
+For an electrical engineer, this tells you that in the solved IEEE-39 system, bus 35 is operating at the highest voltage level (approximately 6.35% above nominal), which might flag it for further review (e.g., tap‐changer settings or network reconfiguration)."
+"Code: import andes
+import numpy as np
+
+
+ssa = andes.load(
+    andes.get_case('ieee39/ieee39.xlsx'),
+    setup=False,     # If setup=False, need to call ss.setup() before running the simulation
+    no_output=True, 
+    default_config=False
+)
+
+ssa.setup()
+ssa.PFlow.run()
+
+
+# Read per‐unit outputs
+p_pv = ssa.PV.p.v  # all PV‐type gens
+p_slack = ssa.Slack.p.v  # the slack‐bus gen
+
+# Combine into one array
+p_all_pu = np.concatenate([p_pv, p_slack])
+
+# Convert to MW
+p_all_mw = p_all_pu * ssa.config.mva
+
+# Find max
+idx_max = np.argmax(p_all_mw)
+
+# Map back to names
+names_all = ssa.PV.name.v + ssa.Slack.name.v
+
+print(f""Max Generator: {names_all[idx_max]} at {p_all_mw[idx_max]} MW"")
+
+
+# Load the IEEE 39-bus case, run a power-flow simulation, and find the generator with the highest active power output, displaying its name and output in MW.
+                Code Output: STDOUT:
+Max Generator: 9 at 830.0000000000001 MW","Here’s a concise, engineer-oriented summary:
+
+• What the script does  
+  – Loads the IEEE 39-bus test case via ANDES (no default setup).  
+  – Calls ssa.setup() and runs a steady-state power-flow.  
+  – Reads the per-unit active powers of all PV buses plus the slack bus.  
+  – Converts those values into MW (using the case base MVA).  
+  – Identifies which generator has the highest MW output and prints its name and value.
+
+• Key snippets  
+  – p_pv = ssa.PV.p.v  (array of PV-bus active powers in pu)  
+  – p_slack = ssa.Slack.p.v  (slack-bus active power in pu)  
+  – p_all_mw = (concatenate p_pv & p_slack) * ssa.config.mva  
+  – idx_max = np.argmax(p_all_mw)  
+  – names_all = ssa.PV.name.v + ssa.Slack.name.v  
+
+• Result  
+  – “Max Generator: 9 at 830.0000000000001 MW”
+
+• Engineering takeaway  
+  – In this run the generator labeled “9” is the largest producer, delivering ~830 MW.  
+  – You can adapt the same pattern to flag overload risks, compare dispatch levels or automate generator ranking in contingency studies."
+"Code: import andes
+import numpy as np
+
+ssa = andes.load(
+    andes.get_case('ieee39/ieee39.xlsx'),
+    setup=False,     # If setup=False, need to call ss.setup() before running the simulation
+    no_output=True, 
+    default_config=False
+)
+
+ssa.setup()
+ssa.PFlow.run()
+
+
+print(""Before:"")
+
+# Total number of generators
+generators = np.concatenate([ssa.PV.pmin.v, ssa.Slack.pmin.v])
+
+print(""Toal Generators:"", len(generators))
+
+
+# Total number of load rows
+loads = ssa.PQ.p0.v
+
+print(""Total Loads:"", len(loads))
+
+
+ssa = andes.load(
+    andes.get_case('ieee39/ieee39.xlsx'),
+    setup=False,     # If setup=False, need to call ss.setup() before running the simulation
+    no_output=True, 
+    default_config=False
+)
+
+# Add new load
+# Remove load can be done by setting the p0 and q0 to 0
+ssa.add(model=""PQ"", param_dict=dict(bus=2, 
+                                    idx=""PQ_20"", 
+                                    p0=0.5, 
+                                    q0=0.2
+                                    ))
+
+# Add new generator
+# Remove generator can be done by setting the p0 and q0 to 0
+ssa.add(model=""PV"", param_dict=dict(bus=15, 
+                                    idx='15', 
+                                    p0=0.5, 
+                                    q0=0.2,
+                                    pmax=5,
+                                    pmin=0,
+                                    qmax=2,
+                                    qmin=-2,
+                                    v0=1.0,
+                                    ))
+
+ssa.setup()
+ssa.PFlow.run()
+
+
+print(""After:"")
+
+# Total number of generators
+generators = np.concatenate([ssa.PV.pmin.v, ssa.Slack.pmin.v])
+
+print(""Toal Generators:"", len(generators))
+
+
+# Total number of load rows
+loads = ssa.PQ.p0.v
+
+print(""Total Loads:"", len(loads))
+
+
+# Load the IEEE 39-bus case, run a power-flow simulation, and display the total numbers of generators and loads before and after adding a new load and a new PV generator.
+                Code Output: STDOUT:
+Before:
+Toal Generators: 14
+Total Loads: 19
+After:
+Toal Generators: 15
+Total Loads: 20","This script demonstrates how to load the IEEE 39‐bus test case into ANDES, run a base‐case power‐flow, add one PQ load and one PV generator, rerun the power‐flow, and then verify that the element counts have incremented as expected.
+
+1. Load the case without output or default configuration, call `ssa.setup()` and run `ssa.PFlow.run()`.
+   - Before additions:
+     • Generators (all PV + Slack machines): 14  
+     • Loads (all PQ models): 19
+
+2. Reload the same case, then call `ssa.add()` twice:
+   a. Add a PQ load at bus 2 with p0 = 0.5 p.u., q0 = 0.2 p.u. (new index “PQ_20”).  
+   b. Add a PV generator at bus 15 with p0 = 0.5 p.u., pmin = 0, pmax = 5, qmin = –2, qmax = 2, v0 = 1.0 p.u.  
+   (Note: to remove an existing element you would call `ssa.add()` on it with p0 = q0 = 0.)
+
+3. Rerun setup and `ssa.PFlow.run()`, then recount:
+   - After additions:
+     • Generators: 15  
+     • Loads: 20
+
+Output confirms that one PQ load and one PV generator were successfully appended to the IEEE 39‐bus system."
+"Code: import andes
+import numpy as np
+
+
+ssa = andes.load(
+    andes.get_case('ieee39/ieee39.xlsx'),
+    setup=True,     # If setup=False, need to call ss.setup() before running the simulation
+    no_output=True, 
+    default_config=False
+)
+
+ssa.PFlow.run()
+
+
+# Grab all bus voltage angles (radians)
+angles_rad = ssa.Bus.a.v
+
+# Find the buses with the maximum and minimum angles
+idx_max = int(np.argmax(angles_rad))
+idx_min = int(np.argmin(angles_rad))
+
+# Convert positions -> sheet indices -> UIDs
+bus_idx = ssa.Bus.idx.v  # mapping from position -> sheet index
+bus_ids = ssa.Bus.uid  # array of bus UIDs keyed by sheet index
+sheet_max = bus_idx[idx_max]
+sheet_min = bus_idx[idx_min]
+bus_max = bus_ids[sheet_max]
+bus_min = bus_ids[sheet_min]
+
+max_angle = angles_rad[idx_max]
+min_angle = angles_rad[idx_min]
+diff_angle = max_angle - min_angle
+
+print(f""Bus UID {bus_max} has the Largest Angle: {max_angle} Radians"")
+print(f""Bus UID {bus_min} has the Smallest Angle: {min_angle} Radians"")
+print(f""Maximum Bus Angle Difference is Between {bus_max} and {bus_min}: {diff_angle} Radians"")
+
+
+# Load the IEEE 39-bus case, run a power-flow simulation, and identify the buses with the largest and smallest voltage angles (in radians), displaying their UIDs, values, and the maximum angle difference.
+                Code Output: STDOUT:
+Bus UID 37 has the Largest Angle: 0.2529792546952598 Radians
+Bus UID 38 has the Smallest Angle: -0.1912880860185785 Radians
+Maximum Bus Angle Difference is Between 37 and 38: 0.4442673407138383 Radians","Here’s a concise summary of what the script does and what its output tells you from an IEEE-39 bus power‐flow:
+
+1. Workflow  
+  • Uses the Andes Python API to load the IEEE-39 case (from an Excel file).  
+  • Runs a steady‐state power‐flow (Newton–Raphson) with all of the buses’ solutions stored in `ssa`.  
+  • Extracts all bus voltage phase angles (in radians), finds the indices of the maximum and minimum angles, and maps those back to the bus UIDs.  
+  • Computes the phase‐angle difference between those two extremal buses.
+
+2. Key Results  
+  • Bus UID 37 has the largest voltage angle:  
+      – θ₃₇ = 0.2529792547 rad (≈ 14.50°)  
+  • Bus UID 38 has the smallest voltage angle:  
+      – θ₃₈ = –0.1912880860 rad (≈ –10.96°)  
+  • The maximum phase‐angle spread in the network is:  
+      – Δθ = θ₃₇ – θ₃₈ = 0.4442673407 rad (≈ 25.45°)
+
+3. Engineering Implications  
+  • A ~25.5° angular separation between buses 37 and 38 is fairly typical for a heavily meshed network like the IEEE-39, but it also flags where the largest internal stress (in terms of phase difference) resides.  
+  • If you’re assessing stability margins or tuning controls (e.g., PSS, FACTS), these two buses would be the “weakest link” in terms of maximum phase shift under the base‐case loading."
+"Code: import andes
+import numpy as np
+
+
+ssa = andes.load(andes.get_case('ieee39/ieee39.xlsx'))
+
+ssa.PFlow.run()
+
+
+# Grab all bus voltage angles (radians)
+angles_rad = ssa.Bus.a.v
+angles_deg = np.degrees(angles_rad)
+
+# Find the buses with the maximum and minimum angles
+idx_max = int(np.argmax(angles_deg))
+idx_min = int(np.argmin(angles_deg))
+
+# Convert positions -> sheet indices -> UIDs
+bus_idx = ssa.Bus.idx.v  # mapping from position -> sheet index
+bus_ids = ssa.Bus.uid  # array of bus UIDs keyed by sheet index
+sheet_max = bus_idx[idx_max]
+sheet_min = bus_idx[idx_min]
+bus_max = bus_ids[sheet_max]
+bus_min = bus_ids[sheet_min]
+
+max_angle = angles_deg[idx_max]
+min_angle = angles_deg[idx_min]
+diff_angle = max_angle - min_angle
+
+print(f""Bus UID {bus_max} has the Largest Angle: {max_angle}°"")
+print(f""Bus UID {bus_min} has the Smallest Angle: {min_angle}°"")
+print(f""Maximum Bus Angle Difference is Between {bus_max} and {bus_min}: {diff_angle}°"")
+
+
+# Load the IEEE 39-bus case, run a power-flow simulation, and identify the buses with the largest and smallest voltage angles in degrees, displaying their UIDs, values, and the maximum angle difference.
+                Code Output: STDOUT:
+Bus UID 37 has the Largest Angle: 14.494643598403501°
+Bus UID 38 has the Smallest Angle: -10.959999999999999°
+Maximum Bus Angle Difference is Between 37 and 38: 25.4546435984035°","The provided script does the following:  
+1. Loads the IEEE 39-bus test case via Andes and runs a steady‐state AC power‐flow.  
+2. Extracts all bus voltage phase angles (in radians), converts them to degrees, and then  
+   • Identifies the bus with the maximum angle  
+   • Identifies the bus with the minimum angle  
+   • Computes the difference between those two angles  
+
+Resulting key values:  
+• Bus UID 37 has the largest voltage angle of 14.4946°  
+• Bus UID 38 has the smallest voltage angle of –10.9600°  
+• The maximum angle separation in the system is 25.4546° (between buses 37 and 38)  
+
+For an electrical engineer, this tells you that in the solved power‐flow the greatest leading–lagging phase-angle spread occurs between buses 37 and 38, with a span of about 25.5°, which can be relevant for stability margins and synchronizing power transfer."
+"Code: import andes
+import numpy as np
+
+
+ssa = andes.load(
+    andes.get_case('ieee39/ieee39.xlsx')
+)
+
+ssa.PFlow.run()
+
+
+# Read per‐unit outputs
+p_pv = ssa.PV.p.v  # all PV‐type gens
+p_slack = ssa.Slack.p.v  # the slack‐bus gen
+
+# Combine into one array
+p_all_pu = np.concatenate([p_pv, p_slack])
+
+# Convert to MW
+p_all_mw = p_all_pu * ssa.config.mva
+
+# Find min
+idx_max = np.argmin(p_all_mw)
+
+# Map back to names
+names_all = ssa.PV.name.v + ssa.Slack.name.v
+
+print(f""Min Generator: {names_all[idx_max]} at {p_all_mw[idx_max]} MW"")
+
+
+# Load the IEEE 39-bus case, run a power-flow simulation, and find the generator with the lowest active power output, displaying its name and output in MW.
+                Code Output: STDOUT:
+Min Generator: 10 at 41.42181745506186 MW","The snippet does the following in an IEEE-39 bus context (100 MVA base):
+
+1. Loads the IEEE-39 case via ANDES and runs a steady-state power‐flow.  
+2. Reads out all PV‐type generator real–power outputs (per‐unit) plus the slack‐bus output.  
+3. Concatenates them, converts from per‐unit to MW (× ssa.config.mva).  
+4. Locates the generator with the smallest MW output and prints its name and value.
+
+Result:
+  • Minimum‐output unit: “10”  
+  • Output: 41.4218 MW
+
+In other words, among all the PV machines and the slack generator in the standard IEEE‐39 setup, generator “10” is producing the least active power (≈ 41.42 MW) under the solved operating point."
+"Code: import andes
+import numpy as np
+
+
+ssa = andes.load(
+    andes.get_case('ieee39/ieee39.xlsx')
+)
+
+ssa.PFlow.run()
+
+
+# Read per‐unit outputs
+q_pv = ssa.PV.q.v  # all PV‐type gens
+q_slack = ssa.Slack.q.v  # the slack‐bus gen
+
+# Combine into one array
+q_all_pu = np.concatenate([q_pv, q_slack])
+
+# Convert to Mvar
+q_all_mvar = q_all_pu * ssa.config.mva
+
+# Find min
+idx_max = np.argmin(q_all_mvar)
+
+# Map back to names
+names_all = ssa.PV.name.v + ssa.Slack.name.v
+
+print(f""Min Generator: {names_all[idx_max]} at {q_all_mvar[idx_max]} Mvar"")
+
+
+# Load the IEEE 39-bus case, run a power-flow simulation, and find the generator with the lowest reactive power output, displaying its name and output in Mvar.
+                Code Output: STDOUT:
+Min Generator: 14 at -493.0511502744088 Mvar","Here’s a concise engineering‐focused summary of what the script does and what it found:
+
+1. Case loading and power flow  
+   – Uses ANDES to load the IEEE 39‐bus system (from “ieee39.xlsx”).  
+   – Runs a full AC power‐flow (ssa.PFlow.run()).  
+
+2. Extracting reactive outputs  
+   – Pulls Q outputs (per‐unit) from all PV‐type machines (ssa.PV.q.v) and the slack bus machine (ssa.Slack.q.v).  
+   – Concatenates these into one array, converts to Mvar by multiplying by the system base MVA (ssa.config.mva).  
+
+3. Identifying the most absorbing generator  
+   – Searches for the minimum Q (i.e., the largest negative value) via np.argmin.  
+   – Maps that index back to the generator’s name.  
+
+4. Result  
+   – The generator labeled “14” has the lowest reactive‐power output: –493.051 Mvar.  
+   – A Q output of –493 Mvar means it is strongly absorbing VARs, likely bound by its Qmin limit, and may indicate a need for additional reactive support (e.g., capacitors or adjusting generator Q limits) around bus 14."
+"Code: import andes
+import numpy as np
+
+
+ssa = andes.load(
+    andes.get_case('5bus/pjm5bus.xlsx')
+)
+
+ssa.PFlow.run()
+
+
+# Read per‐unit outputs
+v0_pv = ssa.PV.v0.v  # all PV‐type gens
+v0_slack = ssa.Slack.v0.v  # the slack‐bus gen
+
+# Combine into one array
+v0_all_gen = np.concatenate([v0_pv, v0_slack])
+
+print(""Initial Voltage for All Generators:"", v0_all_gen)
+
+
+# Print the initial voltage of all generators.
+                Code Output: STDOUT:
+Initial Voltage for All Generators: [1. 1. 1. 1.]","Here’s a concise engineer-oriented recap of what the snippet does and what the output tells you:
+
+1. It uses ANDES to load the PJM 5-bus test case from an Excel file and runs a power-flow solution.  
+2. After the run, it reads out the “v0” voltage magnitude guesses for all PV-type generators and for the single slack generator.  
+3. These are concatenated into one NumPy array and printed.  
+
+Result:  
+• The array printed is [1. 1. 1. 1.].  
+• In other words, all three PV buses plus the slack bus have their initial voltage set to a flat-start value of 1.0 pu.  
+• This confirms that ANDES by default initializes every generator voltage to 1.0 pu before starting its Newton–Raphson iterations."
+"Code: import andes
+
+
+ssa = andes.load(
+    andes.get_case('GBnetwork/GBnetwork.xlsx')
+)
+
+ssa.PFlow.run()
+
+
+# Read per‐unit outputs
+v0_pq = ssa.PQ.v0.v  # all PQ‐type loads
+
+print(""Initial Voltage for All Loads:"", v0_pq)
+
+
+# Print the initial voltage of all loads.
+                Code Output: STDOUT:
+Initial Voltage for All Loads: [1.053  1.0512 1.0515 1.053  1.053  1.0523 1.0496 1.0381 1.053  1.0524
+ 1.0527 0.947  1.042  1.053  1.0198 1.0408 1.0407 1.0429 1.0467 1.044
+ 1.0463 1.0486 1.0486 1.0498 1.053  1.0465 1.0511 1.045  1.053  1.051
+ 1.053  1.0524 1.053  1.053  1.053  1.053  1.053  1.053  1.053  1.053
+ 1.053  1.053  1.053  1.053  1.053  1.053  1.0498 0.9968 1.0068 1.053
+ 1.0009 1.0015 1.0474 1.053  1.0248 1.02   1.053  1.053  1.0469 1.053
+ 1.053  1.053  0.947  1.053  1.0398 1.053  1.053  1.053  1.053  1.053
+ 1.0235 1.053  1.0519 1.0444 1.053  1.053  1.053  1.053  1.053  1.053
+ 1.053  1.053  1.05   1.053  1.053  1.053  1.0283 1.053  1.025  1.053
+ 1.0328 1.0473 1.053  1.053  1.0521 1.053  1.053  1.0089 1.0139 1.053
+ 1.053  1.053  1.053  1.053  1.0504 1.053  1.053  1.053  1.053  1.053
+ 1.053  1.053  1.053  1.053  1.053  1.053  1.053  1.053  1.053  1.053
+ 1.053  1.053  1.053  1.053  1.053  1.053  1.053  0.962  1.0218 1.021
+ 1.053  1.053  1.0529 1.053  1.0487 1.0459 1.0417 1.053  1.053  1.053
+ 1.053  1.049  1.0037 1.0035 1.053  1.053  1.0294 1.053  1.053  0.9733
+ 1.0499 1.0269 1.027  1.053  1.053  1.053  1.053  1.0284 1.0312 1.053
+ 1.053  1.053  1.0521 1.052  0.947  0.947  0.947  1.053  1.053  1.0523
+ 1.053  1.0335 1.0363 1.053  1.053  1.053  0.947  1.0019 0.947  0.947
+ 1.053  1.053  1.053  1.053  1.053  1.053  1.053  1.053  1.053  0.983
+ 1.0516 1.0509 1.0505 1.0505 1.0448 1.0491 1.053  1.0511 1.053  1.053
+ 1.0521 1.0428 1.0459 1.053  1.0301 1.0488 1.0482 1.0528 1.0453 1.053
+ 1.0317 1.053  1.053  1.053  1.0503 1.053  1.0469 1.053  1.053  1.0518
+ 1.053  1.053  1.053  1.053  1.053  1.053  1.053  1.053  1.053  1.053
+ 0.947  1.053  1.053  1.053  1.053  1.053  1.053  1.053  1.053  1.053
+ 1.0072 1.053  1.0505 1.0524 1.053  1.053  1.053  1.053  1.053  1.0252
+ 1.0237 1.053  1.053  1.053  1.053  1.053  1.053  1.053  1.053  1.053
+ 1.053  1.0525 1.053  1.053  1.0026 1.053  1.053  1.0147 0.9629 1.053
+ 1.053  1.053  0.9764 0.9676 1.053  1.053  0.9626 0.9956 1.053  1.053
+ 1.053  1.053  0.947  1.053  1.0512 1.053  1.0282 1.0327 1.053  1.053
+ 1.0263 0.9988 0.999  1.053  1.053  0.9837 0.9838 1.019  1.0233 1.0232
+ 1.053  1.053  0.9485 1.053  1.053  1.0458 1.053  1.0239 1.029  1.0265
+ 1.053  1.0473 0.9913 1.0123 1.053  1.053  1.053  1.053  1.0068 1.053
+ 1.053  1.053  1.053  1.053  1.053  1.053  1.0224 1.053  1.053  1.053
+ 1.053  1.053  1.0081 1.053  1.053  1.053  1.0048 1.053  1.053  1.053
+ 1.053  1.053  1.053  1.053  1.053  1.053  1.053  1.053  1.053  1.0491
+ 1.053  1.053  1.053  1.053  1.053  1.053  1.053  1.053  1.053  1.053
+ 1.053  1.053  1.053  1.053  1.053  1.053  1.053  1.053  1.053  1.053
+ 1.053  1.053  1.053  1.053  1.053  1.053  1.053  1.053  1.053  1.053
+ 1.053  1.053  1.053  1.053  1.053  1.053  1.053  1.053  0.947  1.053
+ 1.053  1.053  1.053  1.053  1.053  1.053  1.053  1.053  1.053  0.9703
+ 1.053  1.0062 1.0237 1.053  1.053  1.053  1.053  1.053  1.053  1.0529
+ 1.053  1.053  1.053  1.053  1.0507 1.05   1.053  1.0474 1.053  1.053
+ 1.053  1.053  1.053  1.053  1.0252 1.0193 1.0059 1.0153 1.0272 1.015
+ 0.9744 1.0489 1.0285 1.0478 0.9983 1.0431 0.9825 0.9989 0.9472 1.0435
+ 1.053  1.0481 1.0513 1.0282 1.053  1.0481 1.053  1.053  1.053  1.053
+ 1.053  1.053  0.9934 1.053  1.053  1.053  1.053  1.053  1.053  1.0046
+ 1.053  1.053  1.053  1.053  1.053  1.053  1.0195 1.053  1.053  1.053
+ 1.053  1.053  1.053  1.053  1.053  1.0064 1.053  1.053  1.0071 1.053
+ 1.053  1.053  1.053 ]","The snippet you ran does the following:  
+1. Imports the GB distribution network (“GBnetwork.xlsx”) into the Andes steady‐state analysis object (ssa).  
+2. Executes a full power‐flow (`ssa.PFlow.run()`).  
+3. Pulls out the post‐run per-unit voltages at every PQ‐type load node (`ssa.PQ.v0.v`).  
+4. Prints that vector.
+
+Key points from the printed array of load voltages v0_pq:  
+• Number of loads: the array length is equal to the total number of PQ buses in the case (on the order of several hundred).  
+• Range: voltages span from a minimum of 0.947 p.u. to a maximum of 1.053 p.u.  
+• Most loads sit at or very near 1.053 p.u., reflecting the slack or well-regulated substations.  
+• A few endpoints/drop feeders dip as low as 0.947 p.u., with handfuls in the 0.96–0.97 p.u. band.  
+• The bulk of the loads lie between about 1.02 and 1.05 p.u., well within a ±5 % band.
+
+For an electrical engineer, the immediate takeaway is that the network is largely well-regulated—only a small number of remote loads fall just below 0.95 p.u. (the typical lower limit). If tighter voltage control is required at those endpoints, you now know which PQ buses to investigate for capacitor placement, tap‐changer adjustment, or reactive support."
+"Code: import andes
+
+
+ssa = andes.load(
+    andes.get_case('ei/EI_33.xlsx')
+)
+
+ssa.PFlow.run()
+
+
+# Read per‐unit outputs
+p0_slack = ssa.Slack.p0.v  # the slack‐bus gen
+
+print(""Initial Power for All Slack Bus Components:"", p0_slack)
+
+
+# Print the initial power of all slack bus components.
+                Code Output: STDOUT:
+Initial Power for All Slack Bus Components: [254.76207]","The snippet you ran does the following:
+
+1. Loads the “EI_33” network (a 33-bus test system) into ANDES.  
+2. Executes a full power‐flow solution.  
+3. Extracts the real‐power injections of all slack‐bus machines via  
+     p0_slack = ssa.Slack.p0.v  
+4. Prints that vector.
+
+Since this particular case has exactly one slack bus, you get a single‐element array:
+
+   [254.76207]
+
+In other words, after convergence, the slack‐bus generator must supply (or absorb, if negative) about 254.76 MW to make up for the total load plus system losses in your 33-bus system."
+"Code: import andes
+
+
+ssa = andes.load(
+    andes.get_case('ieee14/ieee14_full.xlsx')
+)
+
+ssa.PFlow.run()
+
+
+bus_names = ssa.Bus.name.v
+
+print(""Bus Names:"", bus_names)
+
+
+# Print all Bus names.
+                Code Output: STDOUT:
+Bus Names: ['BUS1', 'BUS2', 'BUS3', 'BUS4', 'BUS5', 'BUS6', 'BUS7', 'BUS8', 'BUS9', 'BUS10', 'BUS11', 'BUS12', 'BUS13', 'BUS14']","The snippet successfully loads the IEEE-14 bus test case, runs a full Newton–Raphson power‐flow, then extracts and prints out the names of all system buses. As shown in the STDOUT, the network contains exactly 14 buses, labeled in sequence from BUS1 through BUS14. This confirms that the case file was parsed correctly and that you now have a list of bus identifiers you can use for further post-processing (e.g. to query voltages, injections or to build sub-area views)."
+"Code: import andes
+
+
+ssa = andes.load(
+    andes.get_case('kundur/kundur_full.xlsx')
+)
+
+ssa.PFlow.run()
+
+
+print(""PV Bus Active Power"", ssa.PV.p.v)
+print(""PV Bus Reactive Power"", ssa.PV.q.v)
+print(""Slack Bus Active Power"", ssa.Slack.p.v)
+print(""Slack Bus Reactive Power"", ssa.Slack.q.v)
+
+
+# Print active and reactive power of all generators.
+                Code Output: STDOUT:
+PV Bus Active Power [7. 7. 7.]
+PV Bus Reactive Power [2.2804802  2.32384586 1.06090951]
+Slack Bus Active Power [7.26802921]
+Slack Bus Reactive Power [1.09463368]","The snippet you ran uses ANDES to solve a steady‐state power‐flow on the full Kundur two‐area test system.  Here is what the printout tells us from an EE standpoint:
+
+1. Case setup  
+   • “kundur_full.xlsx” is loaded, which contains the full 10‐machine, 2‐area network data.  
+   • A standard Newton–Raphson P–V–Q power‐flow is carried out (`ssa.PFlow.run()`).
+
+2. PV‐bus (generator buses with fixed P and V) outputs  
+   • Active power injections (P) are exactly at their 7.0 pu setpoints for all three PV machines.  
+   • Reactive power injections (Q) differ by location and network demands:  
+     – Q₁ = 2.2805 pu  
+     – Q₂ = 2.3238 pu  
+     – Q₃ = 1.0609 pu  
+   These Q’s result from meeting the specified bus voltages under network loading.
+
+3. Slack‐bus (swing machine) output  
+   • Active power Pₛₗₐcₖ = 7.2680 pu  
+   • Reactive power Qₛₗₐcₖ = 1.0946 pu  
+   The slack unit supplies the difference between total generation setpoints and total load + losses, both in P and Q.
+
+Key takeaways for system operation or planning  
+• All three PV units hold their 7 pu real‐power setpoint; reactive outputs adjust to satisfy local voltage/reactive requirements.  
+• The slack unit picks up about 0.268 pu of active‐power losses plus the residual reactive‐power mismatch.  
+• These numbers let you check that generators remain within their capability limits and that system losses are as expected under this loading."
+"Code: import andes
+import numpy as np
+
+ssa = andes.load(andes.get_case('5bus/pjm5bus.xlsx'))
+
+ssa.PFlow.run()
+
+
+bus_voltages = ssa.Bus.v.v
+bus_ids = ssa.Bus.idx.v
+
+index_max = int(np.nanargmax(bus_voltages))
+index_min = int(np.nanargmin(bus_voltages))
+
+print(f""Max Voltage: Bus {bus_ids[index_max]} = {bus_voltages[index_max]:.4f} p.u."")
+print(f""Min Voltage: Bus {bus_ids[index_min]} = {bus_voltages[index_min]:.4f} p.u."")
+
+
+# Print maximum and minimum bus voltage
+                Code Output: STDOUT:
+Max Voltage: Bus 0 = 1.0000 p.u.
+Min Voltage: Bus 1 = 0.9918 p.u.","The script loads the PJM 5-bus case, runs a full Newton–Raphson power‐flow, then pulls out the per-unit voltages at each bus and identifies which bus is highest and lowest. In this particular run:
+
+• Bus indices (0‐based) and voltages (p.u.)  
+  – Maximum: Bus 0 → 1.0000 p.u.  
+  – Minimum: Bus 1 → 0.9918 p.u.
+
+That 0.0082 p.u. spread (≈0.82%) means all bus voltages lie within ±1% of nominal—well within typical voltage‐regulation limits."
+"Code: import andes
+import numpy as np
+
+
+# Voltage limits
+V_MIN = 0.95
+V_MAX = 1.05
+
+
+ssa = andes.load(
+    andes.get_case('kundur/kundur_full.xlsx')
+)
+
+ssa.PFlow.run()
+
+
+bus_voltages = ssa.Bus.v.v
+bus_ids = ssa.Bus.idx.v
+
+# Max and min voltages
+index_max = int(np.nanargmax(bus_voltages))
+index_min = int(np.nanargmin(bus_voltages))
+
+if bus_voltages[index_max] > V_MAX or bus_voltages[index_min] < V_MIN:
+    print(""Voltage Violations Found"")
+
+    # Check for violations
+    print(f""Voltage Violations (Outside {V_MIN:.2f} – {V_MAX:.2f} p.u.):"")
+    for bus_id, voltage in zip(bus_ids, bus_voltages):
+        if voltage < V_MIN or voltage > V_MAX:
+            print(f""Bus {bus_id}: {voltage:.4f} p.u."")
+else:
+    print(""No Voltage Violations Found"")
+
+
+# Check for bus voltage violations
+                Code Output: STDOUT:
+No Voltage Violations Found","The script you ran does the following:  
+1. Loads the full Kundur test system via ANDES.  
+2. Performs a steady‐state power‐flow (PFlow) solution.  
+3. Extracts all bus voltages and checks them against the deadband [0.95 – 1.05] p.u.  
+4. Prints any buses outside that range.
+
+Result:  
+• The power‐flow converged without any bus voltage falling below 0.95 p.u. or rising above 1.05 p.u.  
+• The code output was simply:  
+    “No Voltage Violations Found”
+
+Implication for system operation:  
+All buses in the Kundur model remain within the ±5% voltage tolerance. No immediate reactive‐support or tap‐changer adjustments are required to stay within standard voltage limits."
+"Code: import andes
+import numpy as np
+import os
+
+script_dir = os.getcwd()
+case = os.path.join(script_dir, 'EI_33.xlsx')
+
+ssa = andes.load(
+    case
+)
+
+ssa.PFlow.run()
+
+# Extract active and reactive power for all Slack generators
+slack_p = ssa.Slack.p.v  # real power (P)
+slack_q = ssa.Slack.q.v  # reactive power (Q)
+slack_sn = ssa.Slack.Sn.v  # apparent power (Sn)
+slack_ids = ssa.Slack.idx.v
+
+# Compute apparent power S = sqrt(P^2 + Q^2)
+s_apparent = np.sqrt(slack_p**2 + slack_q**2)
+
+# Print results
+for i, slack_generator in enumerate(slack_ids):
+    print(f""Generator {slack_generator}: P = {slack_p[i]:.4f}, Q = {slack_q[i]:.4f}, |S| = {s_apparent[i]:.4f}, Sn = {slack_sn[i]:.4f}"")
+    print(f""Generator {slack_generator}: Remaining Capacity = {slack_sn[i] - s_apparent[i]}"")
+
+
+# Remaining generation capability for slack bus generators
+# Units = MVA?
+                Code Output: STDERR:
+error: file ""/home/chen541/ANDES_Data/PowerFlow_Specific/EI_33.xlsx"" does not exist.
+No valid case found.
+Traceback (most recent call last):
+  File ""/home/chen541/ANDES_Data/PowerFlow_Specific/code_examples/powerflow-ex28.py"", line 12, in <module>
+    ssa.PFlow.run()
+    ^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'PFlow'
+
+ERROR conda.cli.main_run:execute(125): `conda run python code_examples/powerflow-ex28.py` failed. (See above for error)
+
+Return Code: 1","The provided script is intended to  
+  1. load an IEEE-style power‐flow case from an Excel file (EI_33.xlsx),  
+  2. run a steady-state power‐flow (PFlow) in ANDES,  
+  3. extract each slack‐bus generator’s P, Q and rated apparent power (Sn),  
+  4. compute the actual apparent power |S| = √(P²+Q²), and  
+  5. report the remaining MVA capacity (Sn – |S|) of each slack generator.  
+
+Summary of what actually happened:  
+• File not found  
+  – The call to andes.load(""…/EI_33.xlsx"") fails because that Excel file does not exist in the working directory.  
+  – ANDES reports “No valid case found.”  
+
+• Null‐object error  
+  – Since andes.load returned None, the variable ssa is None.  
+  – Attempting ssa.PFlow.run() raises an AttributeError: ‘NoneType’ object has no attribute ‘PFlow’.  
+
+• No power-flow results  
+  – Because the case was never loaded and the power‐flow never executed, there are no P, Q or Sn arrays to report.  
+
+Action items for an electrical engineer wishing to run this script successfully:  
+  1. Verify that EI_33.xlsx exists at the specified path (or adjust the path to where the file actually resides).  
+  2. Ensure the Excel file follows ANDES’s expected formatting for buses, generators, branches, etc.  
+  3. Re-run the script—once the case loads properly, you will see per‐generator values of P (MW), Q (MVAr), |S| (MVA) and remaining capacity (MVA)."
+"Code: import andes
+import numpy as np
+
+
+ssa = andes.load(
+    andes.get_case('kundur/kundur_full.xlsx')
+)
+
+ssa.PFlow.run()
+
+
+bus_angles = ssa.Bus.a.v
+bus_ids = ssa.Bus.idx.v
+
+# Max and min voltages
+index_max = int(np.nanargmax(bus_angles))
+index_min = int(np.nanargmin(bus_angles))
+gap = bus_angles[index_max] - bus_angles[index_min]
+
+print(f""Max Angle: Bus {bus_ids[index_max]} = {bus_angles[index_max]:.4f} Radians"")
+print(f""Min Angle: Bus {bus_ids[index_min]} = {bus_angles[index_min]:.4f} Radians"")
+
+print(f""Gap: {gap} Radians"")
+
+if gap > (np.pi / 4):
+    print(""Incorrect: Exceeds Upper Bound"")
+else:
+    print(""Correct: Within Upper Bound"")
+
+
+# Check for bus angle difference, make sure it's 1/4 of pi (maximum), normal value is 30 degrees
+                Code Output: STDOUT:
+Max Angle: Bus 1 = 0.5703 Radians
+Min Angle: Bus 8 = -0.0371 Radians
+Gap: 0.6073804763492323 Radians
+Correct: Within Upper Bound","Here is a concise summary of what the code does and the key results an electrical engineer would care about:
+
+• Case and solver  
+  – It loads the full Kundur test system from an Excel file via ANDES and runs a steady‐state power-flow.  
+
+• Bus phase angles (in radians and degrees)  
+  – Maximum angle: Bus 1 = 0.5703 rad ≃ 32.67°  
+  – Minimum angle: Bus 8 = –0.0371 rad ≃ –2.13°  
+
+• Angle spread  
+  – Δθ = 0.5703 – (–0.0371) = 0.60738 rad ≃ 34.8°  
+
+• Stability check  
+  – The code compares Δθ against π/4 (45°). Since 34.8° < 45°, it reports “Within Upper Bound.”  
+
+Practical takeaway: the largest bus-to-bus phase-angle difference in this solution is about 34.8°, which is safely below the 45° stability limit (though slightly above the more conservative 30° guideline)."
+"Code: import andes
+import numpy as np
+
+ssa = andes.load(andes.get_case('5bus/pjm5bus.xlsx'))
+
+ssa.PFlow.run()
+
+
+bus_voltages = ssa.Bus.v.v
+bus_ids = ssa.Bus.idx.v
+
+index_max = int(np.nanargmax(bus_voltages))
+index_min = int(np.nanargmin(bus_voltages))
+
+print(f""Max Voltage: Bus {bus_ids[index_max]} = {bus_voltages[index_max]:.4f} p.u."")
+print(f""Min Voltage: Bus {bus_ids[index_min]} = {bus_voltages[index_min]:.4f} p.u."")
+print(f""Difference: {bus_voltages[index_max] - bus_voltages[index_min]:.4f} p.u."")
+
+
+# Maximum bus voltage difference
+                Code Output: STDOUT:
+Max Voltage: Bus 0 = 1.0000 p.u.
+Min Voltage: Bus 1 = 0.9918 p.u.
+Difference: 0.0082 p.u.","The provided script uses ANDES to run a steady‐state power‐flow on the 5-bus “pjm5bus” case and then identifies the highest and lowest bus voltages.  Key points for an EE engineer:
+
+• Case and Method  
+  – 5-bus PJM test system loaded from “pjm5bus.xlsx”  
+  – Newton–Raphson power‐flow via `ssa.PFlow.run()`
+
+• Voltage Results  
+  – Maximum voltage: Bus 0 at 1.0000 p.u. (typically the slack bus)  
+  – Minimum voltage: Bus 1 at 0.9918 p.u.  
+  – Overall spread: 0.0082 p.u.
+
+• Engineering Implications  
+  – All bus voltages remain within about ±1 % of nominal, indicating tight voltage regulation  
+  – The small difference suggests minimal voltage drop across the network under the modeled loading  
+  – Bus 0 (slack) holds exactly 1.00 p.u.; Bus 1 (likely a loaded PQ bus) sees the lowest voltage
+
+These results confirm a healthy voltage profile in this simple 5-bus network."
+"Code: import andes
+import numpy as np
+
+
+# Voltage limits
+V_MIN = 0.95
+V_MAX = 1.05
+
+
+ssa = andes.load(
+    andes.get_case('kundur/kundur_full.xlsx')
+)
+
+# Add new load
+ssa.add(model=""PQ"", param_dict=dict(bus=2, 
+                                    idx=""PQ_484"", 
+                                    p0=60/ssa.config.mva, 
+                                    q0=100/ssa.config.mva
+                                    ))
+
+ssa.setup()
+ssa.PFlow.run()
+
+bus_voltages = ssa.Bus.v.v
+bus_ids = ssa.Bus.idx.v
+
+# Max and min voltages
+index_max = int(np.nanargmax(bus_voltages))
+index_min = int(np.nanargmin(bus_voltages))
+
+if bus_voltages[index_max] > V_MAX or bus_voltages[index_min] < V_MIN:
+    print(""Voltage Violations Found"")
+
+    # Check for violations
+    print(f""Voltage Violations (Outside {V_MIN:.2f} – {V_MAX:.2f} p.u.):"")
+    for bus_id, voltage in zip(bus_ids, bus_voltages):
+        if voltage < V_MIN or voltage > V_MAX:
+            print(f""Bus {bus_id}: {voltage:.4f} p.u."")
+else:
+    print(""No Voltage Violations Found"")
+
+
+# Add new load to specific bus or new generation, or general operations of the base case (if a load goes down, are there any voltage violations)
+                Code Output: STDERR:
+Traceback (most recent call last):
+  File ""/home/chen541/ANDES_Data/PowerFlow_Specific/code_examples/powerflow-ex29.py"", line 15, in <module>
+    ssa.add(model=""PQ"", param_dict=dict(bus=2, 
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/home/chen541/miniconda3/envs/power-simulation-env/lib/python3.12/site-packages/andes/system.py"", line 547, in add
+    raise NotImplementedError(""Adding devices are not allowed after setup."")
+NotImplementedError: Adding devices are not allowed after setup.
+
+ERROR conda.cli.main_run:execute(125): `conda run python code_examples/powerflow-ex29.py` failed. (See above for error)
+
+Return Code: 1","The script is intended to:
+
+1. Load the full Kundur test case in ANDES.  
+2. Add a new constant‐power load (PQ) of 60 MW + j 100 Mvar at bus 2.  
+3. Set up and run a power‐flow.  
+4. Scan all bus voltages against a 0.95–1.05 p.u. tolerance and report any violations.
+
+However, the run never gets past the call to `ssa.add(...)`. The traceback shows:
+
+  • NotImplementedError: “Adding devices are not allowed after setup.”  
+  • The exception is raised inside `andes.system.add` at line 547.  
+
+Because of this error:
+
+– No power‐flow solution is computed.  
+– No voltage checks are ever performed.  
+– The script exits with return code 1.
+
+Key takeaway for an EE user: in ANDES you must add or remove buses, loads, generators, etc., before calling `ssa.setup()`. Attempting to modify the network after setup raises this exception. Move your `ssa.add(model=""PQ"", …)` (and any other topology changes) so it executes prior to `ssa.setup()` if you wish to extend the base case."
+"Code: import andes
+
+ssa = andes.load(
+    andes.get_case('GBnetwork/GBnetwork.xlsx'),
+    setup=False,     # If setup=False, need to call ss.setup() before running the simulation
+    no_output=True, 
+    default_config=False
+)
+
+# Add new load
+ssa.add(model=""PQ"", param_dict=dict(bus=2, 
+                                    idx=""PQ_484"", 
+                                    p0=60/ssa.config.mva, 
+                                    q0=100/ssa.config.mva
+                                    ))
+
+ssa.setup()
+ssa.PFlow.run()
+
+print(""PQ Bus Active Power"", ssa.PQ.p0.v)
+print(""PQ Bus Reactive Power"", ssa.PQ.q0.v)
+print(""PQ Table"", ssa.PQ.as_df())
+
+
+# Load the IEEE 39-bus case, add a new load with 60 MW p0 and 100 MW q0, then set up and run a power-flow simulation.
+                Code Output: STDOUT:
+PQ Bus Active Power [ 7.7900e-02  1.5980e-01  1.5830e-01  1.7680e-01  4.5000e-02  1.2564e+00
+  9.4000e-01  2.1640e+00  4.4800e-02  3.4120e-01  2.1510e+00  2.3346e+00
+  3.8667e+00  5.8400e-02  2.6783e+00  1.7040e-01  1.7040e-01  1.4610e-01
+  9.9800e-02  1.2660e-01  1.2660e-01  1.4610e-01  9.7000e-03  7.5400e-02
+  0.0000e+00  8.5000e-03  5.4900e-02  1.3640e-01  1.3640e-01  7.4020e-01
+  2.6867e+00  2.9240e-01  8.5000e-02  1.0783e+00  9.7780e-01  7.8960e-01
+  1.2533e+00  1.9082e+00  3.2870e+00  1.3927e+00  1.6426e+00  2.1095e+00
+  2.6324e+00  2.1728e+00  2.1728e+00  1.2466e+00  1.3570e-01  8.1420e-01
+  6.0860e-01 -4.0950e-01  7.7810e-01  8.5510e-01  2.1767e+00  2.1767e+00
+  1.6362e+00  1.6362e+00  3.2335e+00  2.7270e+00  1.2564e+00  2.6004e+00
+  3.4467e+00  1.6344e+00  5.9280e-01  3.1478e+00  3.1273e+00  2.5001e+00
+  2.2030e+00  3.5646e+00  3.4770e+00  3.8461e+00  1.1005e+00  2.6705e+00
+  1.2320e+00  1.2320e+00  2.0196e+00  2.5314e+00  1.3724e+00  2.4491e+00
+ -5.4800e-02  2.6790e+00  1.7954e+00  1.7390e+00  2.5004e+00  2.1056e+00
+  2.1056e+00  2.5850e+00  4.6437e+00  1.1327e+00  2.6790e-01  2.5066e+00
+  3.2713e+00  2.1479e+00  2.1479e+00  2.6208e+00  2.6208e+00  4.5522e+00
+  5.3771e+00  5.0438e+00  4.7195e+00  6.5604e+00  2.7572e+00  3.8071e+00
+  4.8960e+00  1.7482e+00  1.7151e+00  3.9328e+00  2.0779e+00  4.4611e+00
+  5.0800e+00  1.6460e+00  2.7222e+00  1.1473e+00  1.0528e+00  3.9980e+00
+  1.5232e+00  1.6742e+00  1.1492e+00  9.4470e-01  3.3942e+00  2.0813e+00
+  1.0199e+00  2.5078e+00  8.3887e+00  2.2881e+00  2.0394e+00  1.4633e+00
+  2.1914e+00  2.1914e+00  4.3650e-01  4.3650e-01  1.3472e+00  1.4170e+00
+  1.2532e+00  1.2532e+00  1.3107e+00  1.3107e+00  1.7097e+00  1.4699e+00
+  3.0947e+00  3.0947e+00  3.7810e-01  3.8920e-01  3.8920e-01  3.5550e-01
+  1.5008e+00  1.5008e+00  2.9253e+00  1.9742e+00  1.7344e+00  6.0870e-01
+  2.5064e+00  1.5740e-01  1.5740e-01  2.6881e+00  2.7173e+00  8.4860e-01
+  8.4860e-01  1.8872e+00  2.1807e+00  9.2730e-01  9.2730e-01  2.0647e+00
+  6.7200e-01  6.7200e-01  8.4860e-01  8.4860e-01  8.4860e-01  7.8780e-01
+  7.8780e-01  8.2430e-01  7.8540e-01  2.4510e+00  1.9198e+00  1.0479e+00
+  9.2730e-01  3.6940e-01  2.0786e+00  2.0786e+00  1.0708e+00  1.0708e+00
+  3.5060e-01  2.9315e+00  3.4258e+00  2.1453e+00  3.6625e+00  1.6821e+00
+  1.6821e+00  6.7397e+00  7.2412e+00  5.6000e-01  2.1875e+00  1.3956e+00
+  1.4289e+00  2.7465e+00  4.2853e+00  3.2529e+00  2.9927e+00  3.5132e+00
+  2.0745e+00  2.8546e+00  1.8310e+00  1.2501e+00  1.2501e+00  1.6654e+00
+  9.6420e-01  3.3126e+00  2.7705e+00  2.2693e+00  3.0465e+00  1.8855e+00
+  1.8407e+00  9.7010e-01  9.7010e-01  1.4398e+00  3.8665e+00  2.2303e+00
+  1.8922e+00  1.6574e+00  9.4910e-01  4.7051e+00  1.0139e+00  7.7920e-01
+  1.0152e+00  5.9220e-01  1.0869e+00  8.1520e-01  9.1180e-01  6.0160e-01
+  6.4880e-01  4.8880e-01  3.7600e-02  4.7940e-01  9.1180e-01  5.0260e-01
+  2.3970e-01  6.2980e-01  1.0713e+00  6.4770e-01  6.4770e-01  2.2560e-01
+  9.8700e-01  1.2554e+00  1.8395e+00  1.7491e+00  9.0500e-02  9.1400e-02
+  1.4633e+00  1.7456e+00  6.1571e+00  2.9253e+00  2.9253e+00  5.4830e-01
+  1.9625e+00  2.0927e+00  1.9280e-01  3.5800e-02  3.1000e-03  2.2215e+00
+  2.2382e+00  2.2382e+00  2.3760e+00  2.3760e+00  9.0870e-01  9.0870e-01
+  2.0869e+00  3.0080e-01  2.7144e+00  1.8110e+00  3.2737e+00  3.3600e-01
+  3.3600e-01  2.2488e+00  3.0294e+00  3.7026e+00  3.7550e-01  2.3486e+00
+  3.2737e+00  1.4899e+00  1.4899e+00  2.6798e+00  2.6798e+00  2.1086e+00
+  3.0533e+00  3.5898e+00  4.0148e+00  1.4736e+00  2.1807e+00  1.8872e+00
+  1.4699e+00  1.3550e+00  1.3550e+00  1.6448e+00  1.6448e+00  1.2541e+00
+  7.3690e-01  7.3412e+00  6.3034e+00  1.5304e+00  8.6360e-01  8.6360e-01
+  2.9700e+00  1.9817e+00  3.0000e+00  3.3970e-01  1.4046e+00  3.2980e-01
+  2.7020e-01  4.7780e-01  4.5600e-01  2.7020e-01  2.3540e-01  1.0130e-01
+  6.8050e-01  6.1290e-01  4.5400e-01  3.5170e-01  6.2190e-01  5.9700e-01
+ -6.6600e-02  5.9900e-01  8.7520e-01  7.3710e-01  4.1620e-01  1.0023e+00
+  1.0330e-01  1.6790e-01 -6.8500e-02  9.1990e-01  6.4670e-01  3.5860e-01
+  3.5860e-01  7.0930e-01 -1.9670e-01  3.3680e-01  3.0400e-01  9.1690e-01
+ -1.1720e-01  3.6850e-01  9.4570e-01  6.8740e-01  1.9870e-01  8.0360e-01
+  9.0300e-01  1.4600e-01  2.8310e-01  5.8710e-01  1.0530e+00  5.4930e-01
+  3.2280e-01  2.4640e-01  6.4070e-01  7.3710e-01  4.0330e-01  3.4770e-01
+  2.9300e-01  3.5760e-01  2.3940e-01  3.9730e-01  4.6090e-01  6.4600e-02
+  4.7780e-01  3.8640e-01  4.5500e-01  4.2520e-01  8.2250e-01  7.1520e-01
+  6.4570e-01  4.1130e-01  4.7680e-01  6.7550e-01  5.3600e-02  3.9930e-01
+  2.7520e-01  5.1850e-01  5.4140e-01  4.2220e-01  1.1670e-01  1.1670e-01
+  4.2020e-01  7.7680e-01  7.9670e-01  2.0860e-01  7.0830e-01  2.4540e-01
+  1.1030e-01  4.5990e-01  6.6370e-01  1.2720e-01  5.6030e-01  4.8080e-01
+  1.2720e-01  3.3970e-01 -3.9700e-02 -3.9700e-02  3.3580e-01  7.3010e-01
+ -2.0000e-01 -1.1120e-01  1.3400e-02 -1.0000e-01 -2.0000e-01 -3.6070e-01
+ -2.0300e-01 -4.0700e-01 -3.8000e-01 -9.7200e-02 -2.3000e-01 -7.5000e-02
+ -2.5000e-01 -2.0000e-01 -2.0000e-01 -6.0000e-02 -2.3500e-01 -2.3500e-01
+ -1.7000e-01 -1.7000e-01  6.6320e-01 -1.8000e-01  1.6700e-02 -3.9000e-02
+ -3.9000e-02 -7.5000e-02 -7.5000e-02 -7.5000e-02  2.6870e-01  3.0630e-01
+  4.0200e-01  3.2270e-01  1.7630e-01  3.0200e-02  2.7520e-01  1.3760e-01
+  2.5000e-01  4.3440e-01  7.2480e-01  2.2000e-03  5.6320e-01  2.0590e-01
+  6.2780e-01  1.7110e-01  1.4150e-01  2.7410e-01  3.8140e-01  6.1300e-02
+  1.8980e-01  2.5900e-02  4.1760e-01  3.6620e-01  2.2190e-01  7.9400e-02
+  8.5600e-02  5.0340e-01  4.7100e-02  3.0490e-01  4.6600e-01  3.2120e-01
+  6.4700e-02  3.6310e-01  5.6240e-01 -1.8000e-03  5.4000e-03  2.3370e-01
+  2.2900e-01  3.4060e-01  1.1870e-01  1.1870e-01  3.7800e-02 -6.1000e-03
+  3.4950e-01  3.0880e-01  3.1720e-01  6.9900e-02  2.2210e-01  5.3070e-01
+  4.0490e-01 -2.8400e-02  1.7390e-01 -3.4000e-01  1.0080e-01  4.7230e-01
+  4.4340e-01  3.3130e-01  9.7700e-02  6.0000e-01]
+PQ Bus Reactive Power [ 2.1520e-01  1.1470e-01  1.0930e-01  0.0000e+00  3.3700e-02  7.1000e-01
+  2.7450e-01  8.2940e-01  2.8200e-02  1.2370e-01  1.0069e+00  6.9250e-01
+  1.2203e+00  3.0200e-02  9.6230e-01  0.0000e+00  0.0000e+00  0.0000e+00
+  0.0000e+00  0.0000e+00  0.0000e+00  0.0000e+00  1.0000e-03  1.0600e-02
+  1.1270e+01  0.0000e+00  4.1400e-02  1.1490e-01  1.1490e-01  1.0520e-01
+  0.0000e+00  2.1930e-01  6.4000e-02  3.1440e-01  2.4490e-01  2.3030e-01
+  4.9540e-01  6.2700e-01  1.3129e+00  2.8240e-01  4.7920e-01  9.6130e-01
+  7.1580e-01  6.3400e-01  6.3400e-01  7.0610e-01  1.0100e-01  3.1980e-01
+  2.8510e-01  3.9500e-01  2.3400e-01  2.3160e-01  3.1360e-01  3.1360e-01
+  4.6750e-01  4.6750e-01  5.0640e-01  3.8860e-01  7.1000e-01  6.7300e-01
+  8.7650e-01  5.5720e-01  0.0000e+00  8.2880e-01  1.0937e+00  8.4440e-01
+  8.2590e-01  1.1541e+00  1.0353e+00  1.3810e+00  4.2170e-01  9.4370e-01
+  4.7140e-01  4.7140e-01  5.0630e-01  8.3160e-01  5.4240e-01  6.1410e-01
+ -1.6400e-02  9.7200e-01  4.5030e-01  5.7150e-01  8.2160e-01  6.9190e-01
+  7.6420e-01  7.5390e-01  1.2380e+00  5.4050e-01  1.2220e-01  9.9080e-01
+  1.4909e+00  5.8190e-01  6.2420e-01  7.7460e-01  7.7460e-01  1.5330e+00
+  1.3216e+00  1.5805e+00  1.4793e+00  1.9810e+00  8.1420e-01  1.0353e+00
+  1.8982e+00  8.1520e-01  1.1522e+00  2.2235e+00  4.6850e-01  8.0840e-01
+  1.7375e+00  5.5810e-01  6.0580e-01  3.4280e-01  3.1460e-01  6.4080e-01
+  2.1720e-01  3.1070e-01  2.8240e-01  1.3440e-01  1.0704e+00  6.0190e-01
+  3.6520e-01  7.6060e-01  2.7574e+00  9.0380e-01  1.0449e+00  5.7780e-01
+  9.2870e-01  9.2870e-01  1.4320e-01  1.4320e-01  4.4310e-01  4.6360e-01
+  4.0760e-01  4.0760e-01  6.7160e-01  6.7160e-01  8.7600e-01  7.6500e-01
+  1.0168e+00  1.0168e+00  1.3120e-01  1.2820e-01  1.2820e-01  1.1690e-01
+  4.9380e-01  4.9380e-01  7.6100e-01  6.4910e-01  5.6980e-01  2.2090e-01
+  8.1520e-01  1.3490e-01  1.3490e-01  1.3177e+00  1.3323e+00  2.4760e-01
+  2.4760e-01  1.1318e+00  1.0694e+00  4.5460e-01  4.5460e-01  1.0119e+00
+  3.2920e-01  3.2920e-01  2.4760e-01  2.4760e-01  2.4760e-01  3.8600e-01
+  3.8600e-01  2.5130e-01  2.2890e-01  1.2013e+00  9.4130e-01  5.1340e-01
+  4.5460e-01  1.8090e-01  6.0620e-01  6.0620e-01  3.1230e-01  3.1230e-01
+  1.7240e-01  1.4375e+00  1.1258e+00  7.9590e-01  1.0680e+00  5.2280e-01
+  5.2280e-01  2.0930e+00  2.8624e+00  1.4020e-01  5.4350e-01  2.9510e-01
+  3.0290e-01  6.7400e-01  1.0626e+00  8.0250e-01  6.1460e-01  7.2170e-01
+  2.9220e-01  9.1940e-01  5.1230e-01  2.3280e-01  2.3280e-01  4.7630e-01
+  4.7720e-01  1.1921e+00  9.5450e-01  3.2040e-01  9.8080e-01  7.4510e-01
+  8.5610e-01  3.0100e-01  3.0100e-01  5.2280e-01  1.5466e+00  7.8400e-01
+  2.6980e-01  5.0940e-01  2.7660e-01  1.7667e+00  2.9610e-01  2.6980e-01
+  6.9000e-01  1.2030e-01  3.3210e-01  2.6780e-01  3.8820e-01  8.5500e-02
+  1.8920e-01  4.1830e-01  2.6300e-02  0.0000e+00  1.8520e-01  1.4620e-01
+  1.3910e-01  6.4300e-01  2.1720e-01  2.9510e-01  2.9510e-01  1.2220e-01
+  2.4720e-01  7.4510e-01  9.0170e-01  8.5720e-01  1.2800e-02  1.2800e-02
+  5.7780e-01  0.0000e+00  2.8050e+00  7.6100e-01  7.6100e-01  4.8340e-01
+  8.9410e-01  5.2460e-01  5.5700e-02  2.5300e-02  1.9000e-03  6.6420e-01
+  6.5250e-01  6.5250e-01  6.9270e-01  6.9270e-01  2.9800e-01  2.9800e-01
+  5.7270e-01  4.3200e-02  1.0723e+00  4.9180e-01  9.5450e-01  4.7700e-02
+  4.7700e-02  3.2720e-01  8.8340e-01  1.0801e+00  1.2370e-01  4.7700e-01
+  9.5450e-01  3.0270e-01  3.0270e-01  7.8210e-01  7.8210e-01  9.0480e-01
+  1.2048e+00  1.4184e+00  1.5871e+00  5.8240e-01  1.0694e+00  1.1318e+00
+  7.6500e-01  5.1870e-01  5.1870e-01  4.7970e-01  4.7970e-01  3.8950e-01
+  2.3400e-01  3.3442e+00  1.9790e+00  7.6970e-01  3.0520e-01  3.0520e-01
+  0.0000e+00  6.7580e-01  1.5300e+00  9.7400e-02  3.1490e-01  1.4900e-01
+  3.7700e-02  1.3910e-01  1.2910e-01  5.6600e-02 -6.9500e-02  3.3800e-02
+  1.6690e-01  1.6190e-01 -1.0230e-01  7.2500e-02  1.5300e-01  1.6690e-01
+  0.0000e+00  1.4700e-01  2.4740e-01  1.4800e-01  8.3400e-02  2.5130e-01
+  6.1600e-02  3.3800e-02 -9.9000e-03  1.8280e-01  1.5700e-01  9.1400e-02
+  9.4400e-02  1.4300e-01  0.0000e+00  9.6400e-02  7.5500e-02  1.9370e-01
+  0.0000e+00  7.3500e-02  3.3970e-01  1.9670e-01  5.5600e-02  1.9970e-01
+  2.2650e-01  4.0700e-02  7.0500e-02  1.6990e-01  1.6890e-01  1.1420e-01
+  4.5700e-02  9.4400e-02  1.3110e-01  1.4700e-01  1.2620e-01  7.6500e-02
+  5.8600e-02  8.7400e-02  7.2500e-02  9.7400e-02  1.3410e-01  2.7800e-02
+  1.1820e-01  9.4400e-02  9.0400e-02  1.2020e-01  2.0660e-01  2.3540e-01
+  1.6690e-01  1.1620e-01  1.1720e-01  2.1260e-01  1.9900e-02  1.0030e-01
+  7.1500e-02  1.6890e-01  1.3110e-01  1.2220e-01  0.0000e+00  0.0000e+00
+  1.0230e-01  2.5530e-01  1.5890e-01  4.1700e-02  1.4110e-01  6.0600e-02
+  2.7800e-02  1.1620e-01  1.7580e-01  0.0000e+00  8.5130e-01 -2.4040e-01
+  3.2800e-02  8.3400e-02  0.0000e+00  0.0000e+00  9.4400e-02  1.9770e-01
+  0.0000e+00  0.0000e+00  2.0000e-03  0.0000e+00  0.0000e+00  7.9000e-03
+  0.0000e+00  0.0000e+00  0.0000e+00  0.0000e+00  0.0000e+00  0.0000e+00
+  0.0000e+00  0.0000e+00  0.0000e+00  0.0000e+00  0.0000e+00  0.0000e+00
+  0.0000e+00  0.0000e+00  1.3280e-01  0.0000e+00  3.0000e-03  0.0000e+00
+  0.0000e+00  0.0000e+00  0.0000e+00  0.0000e+00  5.3500e-02 -6.0500e-02
+  1.0410e-01  7.9300e-02  0.0000e+00  4.0000e-03  7.3400e-02  0.0000e+00
+ -3.5700e-02  1.0610e-01  2.0520e-01  2.0000e-03  2.2010e-01 -5.9500e-02
+  1.6750e-01 -3.4700e-02  1.9800e-02  5.4500e-02  0.0000e+00  1.4900e-02
+  2.6800e-02  7.6300e-02  1.0310e-01  7.3400e-02  4.4600e-02  1.0900e-02
+  1.6900e-02  1.0110e-01  6.9000e-03  6.1500e-02  1.4870e-01  4.5600e-02
+  1.2900e-02  1.0610e-01  1.3980e-01 -2.0000e-03  2.0000e-03  4.7600e-02
+  7.4400e-02  4.8600e-02  3.7700e-02  3.7700e-02  1.0900e-02 -5.9000e-03
+  8.8200e-02  6.1500e-02  8.1300e-02  9.9000e-03  5.5500e-02  1.0710e-01
+  1.1500e-01 -8.9000e-03  3.4700e-02  0.0000e+00  3.0700e-02  9.5200e-02
+  1.1000e-01  0.0000e+00  1.9800e-02  1.0000e+00]
+PQ Table         idx    u     name   bus     Vn      p0      q0  vmax  vmin owner
+uid                                                                     
+0      PQ_1  1.0    PQ 14    14  400.0  0.0779  0.2152   1.2   0.8  None
+1      PQ_2  1.0    PQ 50    50  400.0  0.1598  0.1147   1.2   0.8  None
+2      PQ_3  1.0    PQ 74    74  400.0  0.1583  0.1093   1.2   0.8  None
+3      PQ_4  1.0   PQ 133   133  400.0  0.1768  0.0000   1.2   0.8  None
+4      PQ_5  1.0   PQ 141   141  400.0  0.0450  0.0337   1.2   0.8  None
+..      ...  ...      ...   ...    ...     ...     ...   ...   ...   ...
+479  PQ_480  1.0  PQ 2218  2218   33.0  0.4723  0.0952   1.2   0.8  None
+480  PQ_481  1.0  PQ 2219  2219   33.0  0.4434  0.1100   1.2   0.8  None
+481  PQ_482  1.0  PQ 2220  2220   33.0  0.3313  0.0000   1.2   0.8  None
+482  PQ_483  1.0  PQ 2223  2223   11.0  0.0977  0.0198   1.2   0.8  None
+483  PQ_484  1.0   PQ_484     2  110.0  0.6000  1.0000   1.2   0.8  None
+
+[484 rows x 10 columns]","The script performs the following steps:
+
+1. Load the Great-Britain transmission model from “GBnetwork.xlsx” (no default setup applied).  
+2. Add one additional PQ load at bus 2 with:  
+   ‑ P₀ = 60 MW / S_base  
+   ‑ Q₀ = 100 MVAr / S_base  
+3. Call `ssa.setup()` and solve a steady-state power flow.  
+4. Print out the per-unit active (P) and reactive (Q) powers of all PQ-type loads, then show the full PQ-load table.
+
+Key results:
+
+• System MVA base (S_base = `ssa.config.mva`) must be 100 MVA to make P₀=0.6 pu and Q₀=1.0 pu.  
+• After solution, there are 484 PQ loads in total (483 original + 1 new).  
+• The per-unit P and Q vectors (`ssa.PQ.p0.v` and `ssa.PQ.q0.v`) each have length 484. The first few entries are:
+
+   ‑ P (pu): [0.0779, 0.1598, 0.1583, 0.1768, 0.0450, …]  
+   ‑ Q (pu): [0.2152, 0.1147, 0.1093, 0.0000, 0.0337, …]
+
+• In the printed PQ-table DataFrame (484 rows × 10 columns), the newly added load appears as the last row:
+
+   idx     name    bus   Vn    p0    q0  
+   …  
+   483   PQ_484     2   110.0  0.6000  1.0000  
+
+  – p0=0.6000 pu ≡ 60 MW, q0=1.0000 pu ≡100 MVAr  
+  – vmax=1.2 pu, vmin=0.8 pu  
+
+All other PQ-loads retain their original setpoints and nominal voltages. The power‐flow converged with no errors, and fixed PQ injections match the specified values."

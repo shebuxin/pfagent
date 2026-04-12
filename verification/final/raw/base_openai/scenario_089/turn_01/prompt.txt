@@ -1,0 +1,7 @@
+Give me code only: one full Python script in one fenced block.
+Use the built-in PJM 5-bus case.
+Run power flow and report the maximum-voltage bus, minimum-voltage bus, and slack-bus voltage.
+- The script must end by printing exactly one line that starts with RESULT_JSON=
+- The JSON object must contain these keys: slack_bus, slack_voltage, max_bus, max_voltage, min_bus, min_voltage.
+- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.
+- Round float values in RESULT_JSON to 6 decimals.

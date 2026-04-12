@@ -1,0 +1,16 @@
+STDERR:
+Traceback (most recent call last):
+  File "/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_070/turn_03/workspace/generated_code.py", line 50, in <module>
+    ssa.PQ.add(buses=bus_7_idx, p0=p0, q0=q0, idx=pq_load_idx)
+  File "/home/bshe/miniconda3/envs/pfagent/lib/python3.11/site-packages/andes/core/model/modeldata.py", line 162, in add
+    violation = instance.add(value)
+                ^^^^^^^^^^^^^^^^^^^
+  File "/home/bshe/miniconda3/envs/pfagent/lib/python3.11/site-packages/andes/core/param.py", line 324, in add
+    super().add(value)
+  File "/home/bshe/miniconda3/envs/pfagent/lib/python3.11/site-packages/andes/core/param.py", line 112, in add
+    value = self._sanitize(value)
+            ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bshe/miniconda3/envs/pfagent/lib/python3.11/site-packages/andes/core/param.py", line 180, in _sanitize
+    raise ValueError(f'Mandatory parameter {self.owner.class_name}.{self.name} is missing')
+ValueError: Mandatory parameter PQ.bus is missing
+

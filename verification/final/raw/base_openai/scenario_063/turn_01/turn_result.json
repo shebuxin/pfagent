@@ -1,0 +1,46 @@
+{
+  "actual_result_json": null,
+  "artifact_passed": true,
+  "artifact_paths": [],
+  "artifact_score": 5.0,
+  "code": "# required_dependencies: pandas\nimport pandas as pd\nimport andes\n\n# Load the built-in Kundur full case\ncase = andes.get_case(\"kundur/kundur_full.xlsx\")\nssa = andes.load(case, setup=True, no_output=True, log=False)\n\n# Run power flow\nandes.run_power_flow(ssa)\n\n# Define threshold\nthreshold = 1.010\n\n# Count buses above the threshold\nabove_threshold = ssa.Bus.voltage.v > threshold\nselected_bus_ids = ssa.Bus.idx.v[above_threshold].tolist()\nselected_count = len(selected_bus_ids)\n\n# Find the two lowest-voltage buses\nvoltages = ssa.Bus.voltage.v\nlowest_bus_ids = ssa.Bus.idx.v[voltages.argsort()][:2].tolist()\nlowest_voltages = [round(voltages[bus_id], 6) for bus_id in lowest_bus_ids]\n\n# Constructing the final JSON-like output\nRESULT_JSON = {\n    \"threshold\": round(threshold, 6),\n    \"selected_bus_ids\": selected_bus_ids,\n    \"selected_count\": selected_count,\n    \"lowest_bus_ids\": lowest_bus_ids,\n    \"lowest_voltages\": lowest_voltages\n}\n\nprint(f\"RESULT_JSON={RESULT_JSON}\")",
+  "continuity_score": 15.0,
+  "execution_output": "STDERR:\nTraceback (most recent call last):\n  File \"/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_063/turn_01/workspace/generated_code.py\", line 44, in <module>\n    andes.run_power_flow(ssa)\n    ^^^^^^^^^^^^^^^^^^^^\nAttributeError: module 'andes' has no attribute 'run_power_flow'\n\n",
+  "execution_passed": false,
+  "execution_score": 0.0,
+  "expected_result_json": {
+    "lowest_bus_ids": [
+      8,
+      7
+    ],
+    "lowest_voltages": [
+      0.954,
+      0.956218
+    ],
+    "selected_bus_ids": [],
+    "selected_count": 0,
+    "threshold": 1.01
+  },
+  "failure_categories": [
+    "grounding",
+    "execution",
+    "semantic"
+  ],
+  "format_score": 10.0,
+  "format_valid": true,
+  "grounding_score": 25.0,
+  "issues": [
+    "Code block 1: Use `ssa.Bus.v.v`, not `ssa.Bus.v`, when you need bus voltage magnitudes.",
+    "Execution failed. Return code: 1",
+    "RESULT_JSON was missing or could not be parsed."
+  ],
+  "prompt": "Return exactly one runnable Python code block and no prose.\nUse the built-in Kundur full case.\nRun power flow, count all buses above 1.010 p.u., and also return the two lowest-voltage buses.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: threshold, selected_bus_ids, selected_count, lowest_bus_ids, lowest_voltages.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.\n- `selected_bus_ids` should list every bus above the threshold.\n- `lowest_bus_ids` should contain exactly two buses in ascending voltage order.",
+  "response": "```python\n# required_dependencies: pandas\nimport pandas as pd\nimport andes\n\n# Load the built-in Kundur full case\ncase = andes.get_case(\"kundur/kundur_full.xlsx\")\nssa = andes.load(case, setup=True, no_output=True, log=False)\n\n# Run power flow\nandes.run_power_flow(ssa)\n\n# Define threshold\nthreshold = 1.010\n\n# Count buses above the threshold\nabove_threshold = ssa.Bus.voltage.v > threshold\nselected_bus_ids = ssa.Bus.idx.v[above_threshold].tolist()\nselected_count = len(selected_bus_ids)\n\n# Find the two lowest-voltage buses\nvoltages = ssa.Bus.voltage.v\nlowest_bus_ids = ssa.Bus.idx.v[voltages.argsort()][:2].tolist()\nlowest_voltages = [round(voltages[bus_id], 6) for bus_id in lowest_bus_ids]\n\n# Constructing the final JSON-like output\nRESULT_JSON = {\n    \"threshold\": round(threshold, 6),\n    \"selected_bus_ids\": selected_bus_ids,\n    \"selected_count\": selected_count,\n    \"lowest_bus_ids\": lowest_bus_ids,\n    \"lowest_voltages\": lowest_voltages\n}\n\nprint(f\"RESULT_JSON={RESULT_JSON}\")\n```",
+  "result_json_parse_error": "RESULT_JSON marker not found in stdout.",
+  "score_total": 55.0,
+  "semantic_passed": false,
+  "semantic_score": 0.0,
+  "turn_id": 1,
+  "turn_passed": false,
+  "used_template_fallback": false
+}

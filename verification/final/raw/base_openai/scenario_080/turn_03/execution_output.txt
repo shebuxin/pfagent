@@ -1,0 +1,14 @@
+STDERR:
+Traceback (most recent call last):
+  File "/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_080/turn_03/workspace/generated_code.py", line 45, in <module>
+    ssa.PV.set(pv_index, 'Vtarget', 1.000)
+  File "/home/bshe/miniconda3/envs/pfagent/lib/python3.11/site-packages/andes/core/model/model.py", line 617, in set
+    uid = self.idx2uid(idx)
+          ^^^^^^^^^^^^^^^^^
+  File "/home/bshe/miniconda3/envs/pfagent/lib/python3.11/site-packages/andes/core/model/model.py", line 454, in idx2uid
+    return self._one_idx2uid(idx)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bshe/miniconda3/envs/pfagent/lib/python3.11/site-packages/andes/core/model/model.py", line 470, in _one_idx2uid
+    raise KeyError("<%s>: device not exist with idx=%s." %
+KeyError: '<PV>: device not exist with idx=Vtarget.'
+

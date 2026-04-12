@@ -1,0 +1,48 @@
+{
+  "actual_result_json": null,
+  "artifact_passed": true,
+  "artifact_paths": [],
+  "artifact_score": 5.0,
+  "code": "# required_dependencies: pandas\nimport pandas as pd\nimport andes\n\n# Load the IEEE 39 case\ncase = andes.get_case(\"ieee39/ieee39.xlsx\")\nssa = andes.load(case, setup=True, no_output=True, log=False)\n\n# Run power flow\nandes.run_power_flow(ssa)\n\n# Get bus voltages\nvoltages = ssa.Bus.voltage.v\nbus_ids = ssa.Bus.idx.v\n\n# Identify the slack bus and its voltage\nslack_bus_idx = ssa.Bus.slack.v[0]\nslack_voltage = float(voltages[slack_bus_idx])\n\n# Get top 3 highest voltage buses\nhigh_voltage_indices = voltages.argsort()[-3:][::-1]\nselected_bus_ids = list(bus_ids[high_voltage_indices])\nselected_voltages = [round(float(voltages[idx]), 6) for idx in high_voltage_indices]\n\n# Prepare the result JSON\nRESULT_JSON = {\n    \"slack_bus\": int(slack_bus_idx),\n    \"slack_voltage\": round(slack_voltage, 6),\n    \"selected_bus_ids\": selected_bus_ids,\n    \"selected_voltages\": selected_voltages\n}\n\n# Print the result\nprint(\"RESULT_JSON=\", RESULT_JSON)",
+  "continuity_score": 15.0,
+  "execution_output": "STDERR:\nTraceback (most recent call last):\n  File \"/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_030/turn_01/workspace/generated_code.py\", line 44, in <module>\n    andes.run_power_flow(ssa)\n    ^^^^^^^^^^^^^^^^^^^^\nAttributeError: module 'andes' has no attribute 'run_power_flow'\n\n",
+  "execution_passed": false,
+  "execution_score": 0.0,
+  "expected_result_json": {
+    "selected_bus_ids": [
+      36,
+      35,
+      30
+    ],
+    "selected_voltages": [
+      1.0635,
+      1.0493,
+      1.0475
+    ],
+    "slack_bus": 39,
+    "slack_voltage": 1.03
+  },
+  "failure_categories": [
+    "grounding",
+    "execution",
+    "semantic"
+  ],
+  "format_score": 10.0,
+  "format_valid": true,
+  "grounding_score": 25.0,
+  "issues": [
+    "Code block 1: Use `ssa.Bus.v.v`, not `ssa.Bus.v`, when you need bus voltage magnitudes.",
+    "Code block 1: Use `ssa.Slack.bus.v[0]` to access the slack bus; `ssa.Bus.slack` is not a valid attribute.",
+    "Execution failed. Return code: 1",
+    "RESULT_JSON was missing or could not be parsed."
+  ],
+  "prompt": "Give me code only: one full Python script in one fenced block.\nUse the built-in IEEE 39 case.\nRun power flow and report the top-3 highest-voltage buses plus the slack-bus voltage.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: slack_bus, slack_voltage, selected_bus_ids, selected_voltages.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.\n- `selected_bus_ids` and `selected_voltages` should represent the top highest-voltage buses in descending order.",
+  "response": "```python\n# required_dependencies: pandas\nimport pandas as pd\nimport andes\n\n# Load the IEEE 39 case\ncase = andes.get_case(\"ieee39/ieee39.xlsx\")\nssa = andes.load(case, setup=True, no_output=True, log=False)\n\n# Run power flow\nandes.run_power_flow(ssa)\n\n# Get bus voltages\nvoltages = ssa.Bus.voltage.v\nbus_ids = ssa.Bus.idx.v\n\n# Identify the slack bus and its voltage\nslack_bus_idx = ssa.Bus.slack.v[0]\nslack_voltage = float(voltages[slack_bus_idx])\n\n# Get top 3 highest voltage buses\nhigh_voltage_indices = voltages.argsort()[-3:][::-1]\nselected_bus_ids = list(bus_ids[high_voltage_indices])\nselected_voltages = [round(float(voltages[idx]), 6) for idx in high_voltage_indices]\n\n# Prepare the result JSON\nRESULT_JSON = {\n    \"slack_bus\": int(slack_bus_idx),\n    \"slack_voltage\": round(slack_voltage, 6),\n    \"selected_bus_ids\": selected_bus_ids,\n    \"selected_voltages\": selected_voltages\n}\n\n# Print the result\nprint(\"RESULT_JSON=\", RESULT_JSON)\n```",
+  "result_json_parse_error": "RESULT_JSON marker not found in stdout.",
+  "score_total": 55.0,
+  "semantic_passed": false,
+  "semantic_score": 0.0,
+  "turn_id": 1,
+  "turn_passed": false,
+  "used_template_fallback": false
+}

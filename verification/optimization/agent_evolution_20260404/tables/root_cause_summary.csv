@@ -1,0 +1,7 @@
+signature_id,label,count,example_turns,activated_packs
+device_idx_cast_to_int,String device idx was cast to int,2,"['open_scenario_002/turn_02', 'open_scenario_004/turn_02']",['string_device_idx_guardrail']
+positional_idx_used_as_device_idx,Bus number or array index was used as device idx,4,"['open_scenario_001/turn_02', 'open_scenario_001/turn_03', 'open_scenario_002/turn_03']","['targeted_device_resolution', 'string_device_idx_guardrail']"
+open_ended_pq_percentage_language,Open-ended percentage demand phrasing was not grounded,3,"['open_scenario_001/turn_02', 'open_scenario_002/turn_02', 'open_scenario_004/turn_02']","['pq_percentage_scaling', 'targeted_device_resolution']"
+open_ended_pv_regulator_language,Open-ended regulator phrasing was not grounded,2,"['open_scenario_003/turn_01', 'open_scenario_003/turn_02']","['pv_regulator_aliases', 'targeted_device_resolution']"
+corridor_outage_language,Corridor phrasing was not mapped to line outage status edits,4,"['open_scenario_001/turn_03', 'open_scenario_002/turn_03', 'open_scenario_003/turn_03']","['corridor_outage_aliases', 'line_outage_api_guardrail']"
+n1_outage_set_language,Outage-set language was not mapped to N-1 screening,1,['open_scenario_004/turn_03'],"['n1_outage_set_aliases', 'line_outage_api_guardrail']"

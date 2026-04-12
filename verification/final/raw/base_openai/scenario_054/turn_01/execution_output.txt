@@ -1,0 +1,7 @@
+STDERR:
+Traceback (most recent call last):
+  File "/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_054/turn_01/workspace/generated_code.py", line 46, in <module>
+    andes.run_power_flow(ssa)
+    ^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'andes' has no attribute 'run_power_flow'
+

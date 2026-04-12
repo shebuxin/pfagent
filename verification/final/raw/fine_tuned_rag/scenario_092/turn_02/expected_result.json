@@ -1,0 +1,18 @@
+{
+  "selected_line_ids": [
+    "2",
+    "5",
+    "1",
+    "0",
+    "6"
+  ],
+  "selected_line_metrics": [
+    2.471739,
+    2.171224,
+    1.600348,
+    1.485696,
+    1.485696
+  ],
+  "slack_setpoint": 1.03,
+  "slack_voltage": 1.03
+}

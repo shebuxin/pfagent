@@ -1,0 +1,32 @@
+name: Feature Request
+description: Propose a new capability for PFAGENT.
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What user need or development gap does this solve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      description: Describe the desired feature and its intended behavior.
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - agent runtime
+        - prompting / RAG
+        - verification
+        - fine-tuning pipeline
+        - docs / release process
+    validations:
+      required: true
+

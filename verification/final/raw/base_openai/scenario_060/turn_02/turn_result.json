@@ -1,0 +1,50 @@
+{
+  "actual_result_json": null,
+  "artifact_passed": true,
+  "artifact_paths": [],
+  "artifact_score": 5.0,
+  "code": "# required_dependencies: andes,json\nimport andes\nimport json\n\n# Load the Kundur full case\ncase = andes.get_case(\"kundur/kundur_full.xlsx\")\nssa = andes.load(case, setup=True, no_output=True, log=False)\n\n# Add a new PQ load at bus 9\nnew_load_idx = 'PQ_VERIFY_060_A'\np0 = 0.019\nq0 = 0.012\nbus_9_idx = np.where(ssa.PQ.bus.v == 9)[0][0]\nssa.PQ.add(new_load_idx, bus_9_idx, p0, q0)\n\n# Setup is required before running power flow\nandes.setup(ssa)\n\n# Run power flow\nandes.run_power_flow(ssa)\n\n# Identify buses below 0.970 p.u.\nthreshold = 0.970\nbus_voltages = ssa.PQ.v.v\nbus_ids = ssa.PQ.bus.v\n\nselected_bus_ids = [int(bus_ids[i]) for i in range(len(bus_voltages)) if bus_voltages[i] < threshold]\nselected_bus_ids.sort()  # Sort the selected bus ids\n\n# Find the minimum voltage bus\nmin_voltage_idx = np.argmin(bus_voltages)\nmin_bus = int(bus_ids[min_voltage_idx])\nmin_voltage = round(bus_voltages[min_voltage_idx], 6)\n\n# Prepare the result JSON\nresult_json = {\n    \"added_load_idx\": new_load_idx,\n    \"added_load_bus\": 9,\n    \"threshold\": threshold,\n    \"selected_bus_ids\": selected_bus_ids,\n    \"selected_count\": len(selected_bus_ids),\n    \"min_bus\": min_bus,\n    \"min_voltage\": min_voltage\n}\n\n# Print the result\nprint(\"RESULT_JSON=\" + json.dumps(result_json))",
+  "continuity_score": 15.0,
+  "execution_output": "STDERR:\nTraceback (most recent call last):\n  File \"/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_060/turn_02/workspace/generated_code.py\", line 47, in <module>\n    bus_9_idx = np.where(ssa.PQ.bus.v == 9)[0][0]\n                ^^\nNameError: name 'np' is not defined\n\n",
+  "execution_passed": false,
+  "execution_score": 0.0,
+  "expected_result_json": {
+    "added_load_bus": 9,
+    "added_load_idx": "PQ_VERIFY_060_A",
+    "min_bus": 8,
+    "min_voltage": 0.953846,
+    "selected_bus_ids": [
+      6,
+      7,
+      8,
+      9
+    ],
+    "selected_count": 4,
+    "threshold": 0.97
+  },
+  "failure_categories": [
+    "grounding",
+    "execution",
+    "semantic"
+  ],
+  "format_score": 10.0,
+  "format_valid": true,
+  "grounding_score": 20.59,
+  "issues": [
+    "Missing code requirement: add PQ call",
+    "Code block 1: For add-before-setup workflows, load the case with `setup=False` before calling `ssa.add(...)`.",
+    "Code block 1: For add-before-setup workflows, call `ssa.setup()` after `ssa.add(...)` and before `ssa.PFlow.run()`.",
+    "Code block 1: The new PQ load should include the requested bus number `9` in the add call.",
+    "Execution failed. Return code: 1",
+    "RESULT_JSON was missing or could not be parsed."
+  ],
+  "prompt": "Please revise the prior script for this next step and return one full script only.\nKeep using the same built-in case from earlier in this conversation.\nKeep the same case, add one new PQ load before setup at bus 9 with idx 'PQ_VERIFY_060_A', p0=0.019, and q0=0.012.\nAfter rerunning power flow, report every bus below 0.970 p.u. together with the minimum-voltage bus.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: added_load_idx, added_load_bus, threshold, selected_bus_ids, selected_count, min_bus, min_voltage.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.\n- `selected_bus_ids` should list all buses below the threshold in ascending bus order.",
+  "response": "```python\n# required_dependencies: andes,json\nimport andes\nimport json\n\n# Load the Kundur full case\ncase = andes.get_case(\"kundur/kundur_full.xlsx\")\nssa = andes.load(case, setup=True, no_output=True, log=False)\n\n# Add a new PQ load at bus 9\nnew_load_idx = 'PQ_VERIFY_060_A'\np0 = 0.019\nq0 = 0.012\nbus_9_idx = np.where(ssa.PQ.bus.v == 9)[0][0]\nssa.PQ.add(new_load_idx, bus_9_idx, p0, q0)\n\n# Setup is required before running power flow\nandes.setup(ssa)\n\n# Run power flow\nandes.run_power_flow(ssa)\n\n# Identify buses below 0.970 p.u.\nthreshold = 0.970\nbus_voltages = ssa.PQ.v.v\nbus_ids = ssa.PQ.bus.v\n\nselected_bus_ids = [int(bus_ids[i]) for i in range(len(bus_voltages)) if bus_voltages[i] < threshold]\nselected_bus_ids.sort()  # Sort the selected bus ids\n\n# Find the minimum voltage bus\nmin_voltage_idx = np.argmin(bus_voltages)\nmin_bus = int(bus_ids[min_voltage_idx])\nmin_voltage = round(bus_voltages[min_voltage_idx], 6)\n\n# Prepare the result JSON\nresult_json = {\n    \"added_load_idx\": new_load_idx,\n    \"added_load_bus\": 9,\n    \"threshold\": threshold,\n    \"selected_bus_ids\": selected_bus_ids,\n    \"selected_count\": len(selected_bus_ids),\n    \"min_bus\": min_bus,\n    \"min_voltage\": min_voltage\n}\n\n# Print the result\nprint(\"RESULT_JSON=\" + json.dumps(result_json))\n```",
+  "result_json_parse_error": "RESULT_JSON marker not found in stdout.",
+  "score_total": 50.59,
+  "semantic_passed": false,
+  "semantic_score": 0.0,
+  "turn_id": 2,
+  "turn_passed": false,
+  "used_template_fallback": false
+}

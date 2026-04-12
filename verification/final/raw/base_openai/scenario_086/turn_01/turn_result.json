@@ -1,0 +1,47 @@
+{
+  "actual_result_json": null,
+  "artifact_passed": true,
+  "artifact_paths": [],
+  "artifact_score": 5.0,
+  "code": "# required_dependencies: pandas\nimport andes\nimport pandas as pd\n\n# Load the built-in PJM 5-bus case\ncase = andes.load(andes.get_case(\"5bus/pjm5bus.json\"), setup=True, no_output=True)\n\n# Run power flow\ncase.run_power_flow()\n\n# Get the phase angle metrics\nline_angles = abs(case.Line.angle.v)\nline_ids = case.Line.idx.v\n\n# Create a DataFrame to sort the lines\nlines_df = pd.DataFrame({\n    'line_id': line_ids,\n    'absolute_angle': line_angles\n})\n\n# Get the top 3 lines by absolute sending-end phase angles\ntop_lines = lines_df.nlargest(3, 'absolute_angle')\n\n# Prepare the RESULT_JSON output\nRESULT_JSON = {\n    \"selected_line_ids\": top_lines['line_id'].astype(int).tolist(),\n    \"selected_line_metrics\": [round(angle, 6) for angle in top_lines['absolute_angle'].tolist()]\n}\n\n# Print the RESULT_JSON\nprint(f\"RESULT_JSON={RESULT_JSON}\")",
+  "continuity_score": 15.0,
+  "execution_output": "STDERR:\nTraceback (most recent call last):\n  File \"/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_086/turn_01/workspace/generated_code.py\", line 43, in <module>\n    case.run_power_flow()\n    ^^^^^^^^^^^^^^^^^^^\nAttributeError: 'System' object has no attribute 'run_power_flow'\n\n",
+  "execution_passed": false,
+  "execution_score": 0.0,
+  "expected_result_json": {
+    "selected_line_ids": [
+      "2",
+      "5",
+      "1"
+    ],
+    "selected_line_metrics": [
+      2.488387,
+      2.15862,
+      1.596229
+    ]
+  },
+  "failure_categories": [
+    "grounding",
+    "execution",
+    "semantic"
+  ],
+  "format_score": 10.0,
+  "format_valid": true,
+  "grounding_score": 18.75,
+  "issues": [
+    "Missing code requirement: line angle array",
+    "Code block 1: For line-angle analysis, use the ANDES line-angle result arrays such as `ssa.Line.a1.e`.",
+    "Code block 1: The prompt asks for three ranked results; use sorting or argpartition to select them explicitly.",
+    "Execution failed. Return code: 1",
+    "RESULT_JSON was missing or could not be parsed."
+  ],
+  "prompt": "Give me code only: one full Python script in one fenced block.\nUse the built-in PJM 5-bus case.\nRun power flow and report the top-3 lines by absolute sending-end phase angle.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: selected_line_ids, selected_line_metrics.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.\n- `selected_line_metrics` should contain the absolute sending-end phase angles in descending order.",
+  "response": "```python\n# required_dependencies: pandas\nimport andes\nimport pandas as pd\n\n# Load the built-in PJM 5-bus case\ncase = andes.load(andes.get_case(\"5bus/pjm5bus.json\"), setup=True, no_output=True)\n\n# Run power flow\ncase.run_power_flow()\n\n# Get the phase angle metrics\nline_angles = abs(case.Line.angle.v)\nline_ids = case.Line.idx.v\n\n# Create a DataFrame to sort the lines\nlines_df = pd.DataFrame({\n    'line_id': line_ids,\n    'absolute_angle': line_angles\n})\n\n# Get the top 3 lines by absolute sending-end phase angles\ntop_lines = lines_df.nlargest(3, 'absolute_angle')\n\n# Prepare the RESULT_JSON output\nRESULT_JSON = {\n    \"selected_line_ids\": top_lines['line_id'].astype(int).tolist(),\n    \"selected_line_metrics\": [round(angle, 6) for angle in top_lines['absolute_angle'].tolist()]\n}\n\n# Print the RESULT_JSON\nprint(f\"RESULT_JSON={RESULT_JSON}\")\n```",
+  "result_json_parse_error": "RESULT_JSON marker not found in stdout.",
+  "score_total": 48.75,
+  "semantic_passed": false,
+  "semantic_score": 0.0,
+  "turn_id": 1,
+  "turn_passed": false,
+  "used_template_fallback": false
+}

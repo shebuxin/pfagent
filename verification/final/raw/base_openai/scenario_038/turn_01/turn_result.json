@@ -1,0 +1,37 @@
+{
+  "actual_result_json": null,
+  "artifact_passed": true,
+  "artifact_paths": [],
+  "artifact_score": 5.0,
+  "code": "# required_dependencies: andes\nimport andes\nimport numpy as np\n\n# Load IEEE 39 case\ncase = andes.load(andes.get_case(\"ieee39/ieee39.xlsx\"), setup=True)\n\n# Run power flow\ncase.run()\n\n# Inspect results\nbus_voltage = case.V[:]\nmax_idx = np.argmax(bus_voltage)\nmin_idx = np.argmin(bus_voltage)\n\n# Prepare result JSON\nresult_json = {\n    \"max_bus\": int(case.bus[max_idx]),\n    \"max_voltage\": round(float(bus_voltage[max_idx]), 6),\n    \"min_bus\": int(case.bus[min_idx]),\n    \"min_voltage\": round(float(bus_voltage[min_idx]), 6)\n}\n\n# Print the result\nprint(\"RESULT_JSON=\", result_json)",
+  "continuity_score": 15.0,
+  "execution_output": "STDERR:\nTraceback (most recent call last):\n  File \"/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_038/turn_01/workspace/generated_code.py\", line 43, in <module>\n    case.run()\n    ^^^^^^^^\nAttributeError: 'System' object has no attribute 'run'\n\n",
+  "execution_passed": false,
+  "execution_score": 0.0,
+  "expected_result_json": {
+    "max_bus": 36,
+    "max_voltage": 1.0635,
+    "min_bus": 7,
+    "min_voltage": 0.929955
+  },
+  "failure_categories": [
+    "execution",
+    "semantic"
+  ],
+  "format_score": 10.0,
+  "format_valid": true,
+  "grounding_score": 25.0,
+  "issues": [
+    "Execution failed. Return code: 1",
+    "RESULT_JSON was missing or could not be parsed."
+  ],
+  "prompt": "Return exactly one runnable Python code block and no prose.\nUse the built-in IEEE 39 case.\nRun power flow and report the maximum-voltage bus and minimum-voltage bus.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: max_bus, max_voltage, min_bus, min_voltage.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.",
+  "response": "```python\n# required_dependencies: andes\nimport andes\nimport numpy as np\n\n# Load IEEE 39 case\ncase = andes.load(andes.get_case(\"ieee39/ieee39.xlsx\"), setup=True)\n\n# Run power flow\ncase.run()\n\n# Inspect results\nbus_voltage = case.V[:]\nmax_idx = np.argmax(bus_voltage)\nmin_idx = np.argmin(bus_voltage)\n\n# Prepare result JSON\nresult_json = {\n    \"max_bus\": int(case.bus[max_idx]),\n    \"max_voltage\": round(float(bus_voltage[max_idx]), 6),\n    \"min_bus\": int(case.bus[min_idx]),\n    \"min_voltage\": round(float(bus_voltage[min_idx]), 6)\n}\n\n# Print the result\nprint(\"RESULT_JSON=\", result_json)\n```",
+  "result_json_parse_error": "RESULT_JSON marker not found in stdout.",
+  "score_total": 55.0,
+  "semantic_passed": false,
+  "semantic_score": 0.0,
+  "turn_id": 1,
+  "turn_passed": false,
+  "used_template_fallback": false
+}

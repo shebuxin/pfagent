@@ -1,0 +1,42 @@
+{
+  "actual_result_json": null,
+  "artifact_passed": true,
+  "artifact_paths": [],
+  "artifact_score": 5.0,
+  "code": "# required_dependencies: numpy\nimport json\nimport numpy as np\nimport andes\n\ndef _round_float(value):\n    return round(float(value), 6)\n\nssa = andes.load(\n    andes.get_case(\"kundur/kundur_full.xlsx\"),\n    setup=False,\n    no_output=True,\n)\n\nssa.PQ.add(\n    param_dict={\n        \"bus\": 6,\n        \"idx\": \"PQ_VERIFY_058_A\",\n        \"p0\": 0.013,\n        \"q0\": 0.008,\n    }\n)\n\nssa.setup()\nssa.PFlow.run()\n\nbus_ids = np.asarray(ssa.Bus.idx.v)\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nthreshold = 0.95\nmask = bus_v < threshold\nmin_index = int(np.argmin(bus_v))\nresult = {\n    \"added_load_idx\": \"PQ_VERIFY_058_A\",\n    \"added_load_bus\": 6,\n    \"threshold\": _round_float(threshold),\n    \"selected_bus_ids\": [int(value) for value in bus_ids[mask]],\n    \"selected_count\": int(np.sum(mask)),\n    \"min_bus\": int(bus_ids[min_index]),\n    \"min_voltage\": _round_float(bus_v[min_index]),\n}\nprint(\"RESULT_JSON=\" + json.dumps(result, sort_keys=True))",
+  "continuity_score": 15.0,
+  "execution_output": "STDERR:\nTraceback (most recent call last):\n  File \"/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/fine_tuned/20260403_162926/raw/fine_tuned/scenario_058/turn_02/workspace/generated_code.py\", line 49, in <module>\n    ssa.PQ.add(\n  File \"/home/bshe/miniconda3/envs/pfagent/lib/python3.11/site-packages/andes/core/model/modeldata.py\", line 149, in add\n    idx = kwargs['idx']\n          ~~~~~~^^^^^^^\nKeyError: 'idx'\n\n",
+  "execution_passed": false,
+  "execution_score": 0.0,
+  "expected_result_json": {
+    "added_load_bus": 6,
+    "added_load_idx": "PQ_VERIFY_058_A",
+    "min_bus": 8,
+    "min_voltage": 0.953973,
+    "selected_bus_ids": [],
+    "selected_count": 0,
+    "threshold": 0.95
+  },
+  "failure_categories": [
+    "grounding",
+    "execution",
+    "semantic"
+  ],
+  "format_score": 10.0,
+  "format_valid": true,
+  "grounding_score": 20.59,
+  "issues": [
+    "Missing code requirement: add PQ call",
+    "Execution failed. Return code: 1",
+    "RESULT_JSON was missing or could not be parsed."
+  ],
+  "prompt": "Please keep the conversation context and send one new complete script only.\nKeep using the same built-in case from earlier in this conversation.\nKeep the same case, add one new PQ load before setup at bus 6 with idx 'PQ_VERIFY_058_A', p0=0.013, and q0=0.008.\nAfter rerunning power flow, report every bus below 0.950 p.u. together with the minimum-voltage bus.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: added_load_idx, added_load_bus, threshold, selected_bus_ids, selected_count, min_bus, min_voltage.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.\n- `selected_bus_ids` should list all buses below the threshold in ascending bus order.",
+  "response": "```python\n# required_dependencies: numpy\nimport json\nimport numpy as np\nimport andes\n\ndef _round_float(value):\n    return round(float(value), 6)\n\nssa = andes.load(\n    andes.get_case(\"kundur/kundur_full.xlsx\"),\n    setup=False,\n    no_output=True,\n)\n\nssa.PQ.add(\n    param_dict={\n        \"bus\": 6,\n        \"idx\": \"PQ_VERIFY_058_A\",\n        \"p0\": 0.013,\n        \"q0\": 0.008,\n    }\n)\n\nssa.setup()\nssa.PFlow.run()\n\nbus_ids = np.asarray(ssa.Bus.idx.v)\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nthreshold = 0.95\nmask = bus_v < threshold\nmin_index = int(np.argmin(bus_v))\nresult = {\n    \"added_load_idx\": \"PQ_VERIFY_058_A\",\n    \"added_load_bus\": 6,\n    \"threshold\": _round_float(threshold),\n    \"selected_bus_ids\": [int(value) for value in bus_ids[mask]],\n    \"selected_count\": int(np.sum(mask)),\n    \"min_bus\": int(bus_ids[min_index]),\n    \"min_voltage\": _round_float(bus_v[min_index]),\n}\nprint(\"RESULT_JSON=\" + json.dumps(result, sort_keys=True))\n```",
+  "result_json_parse_error": "RESULT_JSON marker not found in stdout.",
+  "score_total": 50.59,
+  "semantic_passed": false,
+  "semantic_score": 0.0,
+  "turn_id": 2,
+  "turn_passed": false,
+  "used_template_fallback": false
+}

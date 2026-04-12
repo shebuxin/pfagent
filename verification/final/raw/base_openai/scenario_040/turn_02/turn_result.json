@@ -1,0 +1,48 @@
+{
+  "actual_result_json": null,
+  "artifact_passed": true,
+  "artifact_paths": [],
+  "artifact_score": 5.0,
+  "code": "# required_dependencies: numpy, pandas, andes\nimport numpy as np\nimport pandas as pd\nimport andes\n\n# Load the built-in IEEE 39 case\ncase = andes.load(andes.get_case(\"ieee39/ieee39.xlsx\"), setup=True, no_output=True, log=False)\n\n# Add a new PQ load before setup at bus 4\nbus_idx = np.where(case.Bus.idx == 4)[0]\nif bus_idx.size == 0:\n    raise ValueError(\"Bus 4 not found.\")\nbus_idx = bus_idx[0]\n\ncase.PQ.add('PQ_VERIFY_040_D', bus=bus_idx, p0=0.014, q0=0.008)\n\n# Run power flow\nandes.run_power_flow(case)\n\n# Report the slack bus voltage and buses below the threshold\nslack_bus = case.Slack.idx[0]\nslack_voltage = case.Bus.v[case.Slack.idx[0]]\nthreshold = 0.950\n\n# Find buses below the threshold\nbelow_threshold_indices = np.where(case.Bus.v < threshold)[0]\nselected_bus_ids = case.Bus.idx[below_threshold_indices].tolist()\nselected_count = len(selected_bus_ids)\n\n# Prepare the result JSON\nRESULT_JSON = {\n    'added_load_idx': 'PQ_VERIFY_040_D',\n    'slack_bus': slack_bus,\n    'slack_voltage': round(slack_voltage, 6),\n    'threshold': threshold,\n    'selected_bus_ids': selected_bus_ids,\n    'selected_count': selected_count\n}\n\n# Print the result JSON\nprint(\"RESULT_JSON=\", RESULT_JSON)",
+  "continuity_score": 15.0,
+  "execution_output": "STDERR:\nTraceback (most recent call last):\n  File \"/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_040/turn_02/workspace/generated_code.py\", line 44, in <module>\n    bus_idx = np.where(case.Bus.idx == 4)[0]\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: Calling nonzero on 0d arrays is not allowed. Use np.atleast_1d(scalar).nonzero() instead. If the context of this error is of the form `arr[nonzero(cond)]`, just use `arr[cond]`.\n\n",
+  "execution_passed": false,
+  "execution_score": 0.0,
+  "expected_result_json": {
+    "added_load_idx": "PQ_VERIFY_040_D",
+    "selected_bus_ids": [
+      7,
+      8
+    ],
+    "selected_count": 2,
+    "slack_bus": 39,
+    "slack_voltage": 1.03,
+    "threshold": 0.95
+  },
+  "failure_categories": [
+    "grounding",
+    "execution",
+    "semantic"
+  ],
+  "format_score": 10.0,
+  "format_valid": true,
+  "grounding_score": 20.59,
+  "issues": [
+    "Missing code requirement: add PQ call",
+    "Code block 1: Use `ssa.Bus.v.v`, not `ssa.Bus.v`, when you need bus voltage magnitudes.",
+    "Code block 1: Use `ssa.Bus.idx.v`, not `ssa.Bus.idx`, when you need bus IDs.",
+    "Code block 1: For add-before-setup workflows, load the case with `setup=False` before calling `ssa.add(...)`.",
+    "Code block 1: For add-before-setup workflows, call `ssa.setup()` after `ssa.add(...)` and before `ssa.PFlow.run()`.",
+    "Execution failed. Return code: 1",
+    "RESULT_JSON was missing or could not be parsed."
+  ],
+  "prompt": "Please revise the prior script for this next step and return one full script only.\nKeep using the same built-in case from earlier in this conversation.\nKeep the same study and add a new PQ load before setup at bus 4 with idx 'PQ_VERIFY_040_D', p0=0.014, and q0=0.008.\nAfter rerunning, report the slack-bus voltage and every bus below 0.950 p.u.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: added_load_idx, slack_bus, slack_voltage, threshold, selected_bus_ids, selected_count.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.",
+  "response": "```python\n# required_dependencies: numpy, pandas, andes\nimport numpy as np\nimport pandas as pd\nimport andes\n\n# Load the built-in IEEE 39 case\ncase = andes.load(andes.get_case(\"ieee39/ieee39.xlsx\"), setup=True, no_output=True, log=False)\n\n# Add a new PQ load before setup at bus 4\nbus_idx = np.where(case.Bus.idx == 4)[0]\nif bus_idx.size == 0:\n    raise ValueError(\"Bus 4 not found.\")\nbus_idx = bus_idx[0]\n\ncase.PQ.add('PQ_VERIFY_040_D', bus=bus_idx, p0=0.014, q0=0.008)\n\n# Run power flow\nandes.run_power_flow(case)\n\n# Report the slack bus voltage and buses below the threshold\nslack_bus = case.Slack.idx[0]\nslack_voltage = case.Bus.v[case.Slack.idx[0]]\nthreshold = 0.950\n\n# Find buses below the threshold\nbelow_threshold_indices = np.where(case.Bus.v < threshold)[0]\nselected_bus_ids = case.Bus.idx[below_threshold_indices].tolist()\nselected_count = len(selected_bus_ids)\n\n# Prepare the result JSON\nRESULT_JSON = {\n    'added_load_idx': 'PQ_VERIFY_040_D',\n    'slack_bus': slack_bus,\n    'slack_voltage': round(slack_voltage, 6),\n    'threshold': threshold,\n    'selected_bus_ids': selected_bus_ids,\n    'selected_count': selected_count\n}\n\n# Print the result JSON\nprint(\"RESULT_JSON=\", RESULT_JSON)\n```",
+  "result_json_parse_error": "RESULT_JSON marker not found in stdout.",
+  "score_total": 50.59,
+  "semantic_passed": false,
+  "semantic_score": 0.0,
+  "turn_id": 2,
+  "turn_passed": false,
+  "used_template_fallback": false
+}

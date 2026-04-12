@@ -1,0 +1,66 @@
+{
+  "version": "1.1",
+  "description": "Few-shot templates for ANDES code generation in Power Flow Agent.",
+  "examples": [
+    {
+      "id": "builtin_ieee14_voltage_summary",
+      "tags": [
+        "builtin_case",
+        "andes",
+        "powerflow"
+      ],
+      "user": "Generate runnable Python code only. Use an ANDES built-in IEEE 14 case, run power flow, and print slack bus voltage plus the top-3 highest bus voltages.",
+      "assistant": "```python\n# required_dependencies: andes,numpy\nimport andes\nimport numpy as np\n\nssa = andes.load(\n    andes.get_case(\"ieee14/ieee14_full.xlsx\"),\n    setup=True,\n    no_output=True,\n    log=False,\n)\nssa.PFlow.run()\n\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nbus_id = np.asarray(ssa.Bus.idx.v, dtype=int)\nslack_bus = int(ssa.Slack.bus.v[0])\nslack_idx = int(np.where(bus_id == slack_bus)[0][0])\n\nprint(f\"Slack Bus {slack_bus}: {bus_v[slack_idx]:.4f} p.u.\")\nprint(\"Top 3 highest bus voltages:\")\nfor i in np.argsort(bus_v)[-3:][::-1]:\n    print(f\"Bus {int(bus_id[i])}: {bus_v[i]:.4f} p.u.\")\n```"
+    },
+    {
+      "id": "builtin_kundur_add_load_before_setup",
+      "tags": [
+        "builtin_case",
+        "andes",
+        "topology_change"
+      ],
+      "user": "Generate runnable Python code only. Use the built-in kundur_full case, add one new PQ load before setup, run power flow, and report any bus voltage outside [0.95, 1.05].",
+      "assistant": "```python\n# required_dependencies: andes\nimport andes\n\nV_MIN = 0.95\nV_MAX = 1.05\n\nssa = andes.load(\n    andes.get_case(\"kundur/kundur_full.xlsx\"),\n    setup=False,\n    no_output=True,\n    log=False,\n)\n\nssa.add(\n    \"PQ\",\n    param_dict={\n        \"bus\": 8,\n        \"idx\": \"PQ_NEW_1\",\n        \"p0\": 0.01,\n        \"q0\": 0.01,\n    },\n)\n\nssa.setup()\nssa.PFlow.run()\n\nviolations = [\n    (int(bus), float(v))\n    for bus, v in zip(ssa.Bus.idx.v, ssa.Bus.v.v)\n    if v < V_MIN or v > V_MAX\n]\n\nif not violations:\n    print(\"No voltage violations found.\")\nelse:\n    print(\"Voltage violations:\")\n    for bus, v in violations:\n        print(f\"Bus {bus}: {v:.4f} p.u.\")\n```"
+    },
+    {
+      "id": "uploaded_ieee39_voltage_extremes",
+      "tags": [
+        "uploaded_case",
+        "andes",
+        "powerflow"
+      ],
+      "user": "Generate runnable Python code only. Use my uploaded file uploaded_ieee39.xlsx in current directory, run power flow, and print the buses with the maximum and minimum voltages.",
+      "assistant": "```python\n# required_dependencies: andes,numpy\nimport andes\nimport numpy as np\nimport os\n\nscript_dir = os.getcwd()\ncase = os.path.join(script_dir, \"uploaded_ieee39.xlsx\")\nif not os.path.exists(case):\n    raise FileNotFoundError(f\"Missing uploaded case file: {case}\")\n\nssa = andes.load(case, setup=True, no_output=True, log=False)\nssa.PFlow.run()\n\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nbus_id = np.asarray(ssa.Bus.idx.v, dtype=int)\nmax_i = int(np.argmax(bus_v))\nmin_i = int(np.argmin(bus_v))\n\nprint(f\"Highest voltage bus: {int(bus_id[max_i])}, V={bus_v[max_i]:.4f} p.u.\")\nprint(f\"Lowest voltage bus: {int(bus_id[min_i])}, V={bus_v[min_i]:.4f} p.u.\")\n```"
+    },
+    {
+      "id": "uploaded_ieee39_voltage_plot",
+      "tags": [
+        "uploaded_case",
+        "andes",
+        "plot"
+      ],
+      "user": "Generate runnable Python code only. Use my uploaded file uploaded_ieee39.xlsx, run power flow, and plot the voltage profile.",
+      "assistant": "```python\n# required_dependencies: andes,numpy,matplotlib\nimport andes\nimport numpy as np\nimport matplotlib.pyplot as plt\nimport os\n\nscript_dir = os.getcwd()\ncase = os.path.join(script_dir, \"uploaded_ieee39.xlsx\")\nif not os.path.exists(case):\n    raise FileNotFoundError(f\"Missing uploaded case file: {case}\")\n\nssa = andes.load(case, setup=True, no_output=True, log=False)\nssa.PFlow.run()\n\nbus_id = np.asarray(ssa.Bus.idx.v, dtype=float)\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\n\nplt.figure(figsize=(10, 4))\nplt.plot(bus_id, bus_v, marker=\"o\")\nplt.xlabel(\"Bus ID\")\nplt.ylabel(\"Voltage Magnitude (p.u.)\")\nplt.title(\"Voltage Profile\")\nplt.grid(True, alpha=0.3)\nplt.tight_layout()\nplt.show()\n```"
+    },
+    {
+      "id": "builtin_case_line_angle_ranking",
+      "tags": [
+        "builtin_case",
+        "andes",
+        "line_angles"
+      ],
+      "user": "Generate runnable Python code only. Use pjm5bus built-in case, run power flow, and print the top-5 lines by absolute sending-end phase angle.",
+      "assistant": "```python\n# required_dependencies: andes,numpy\nimport andes\nimport numpy as np\n\nssa = andes.load(\n    andes.get_case(\"5bus/pjm5bus.json\"),\n    setup=True,\n    no_output=True,\n    log=False,\n)\nssa.PFlow.run()\n\nline_ids = np.asarray(ssa.Line.idx.v, dtype=int)\na1 = np.asarray(ssa.Line.a1.e, dtype=float)\norder = np.argsort(np.abs(a1))[::-1][:5]\n\nprint(\"Top lines by absolute sending-end phase angle:\")\nfor i in order:\n    print(f\"Line {int(line_ids[i])}: a1={a1[i]:.4f} rad\")\n```"
+    },
+    {
+      "id": "uploaded_ieee39_resolve_pv_idx_before_modify",
+      "tags": [
+        "uploaded_case",
+        "andes",
+        "modification"
+      ],
+      "user": "Generate runnable Python code only. Use my uploaded file grid39_for_review.xlsx, inspect the case to find the PV device connected to bus 31, set its voltage target to 1.045, rerun power flow, and print the resolved PV idx together with the resulting bus voltage.",
+      "assistant": "```python\n# required_dependencies: andes,numpy\nimport andes\nimport numpy as np\nimport os\n\nscript_dir = os.getcwd()\ncase = os.path.join(script_dir, \"grid39_for_review.xlsx\")\nif not os.path.exists(case):\n    raise FileNotFoundError(f\"Missing uploaded case file: {case}\")\n\nssa = andes.load(case, setup=False, no_output=True, log=False)\nssa.setup()\n\ntarget_bus = 31\npv_buses = np.asarray(ssa.PV.bus.v, dtype=int)\npv_idx = np.asarray(ssa.PV.idx.v)\nmatch = np.where(pv_buses == target_bus)[0]\nif len(match) == 0:\n    raise ValueError(f\"No PV device found at bus {target_bus}.\")\n\ntarget_pos = int(match[0])\ntarget_idx = [pv_idx[target_pos]]\nssa.PV.set(src=\"v0\", idx=target_idx, attr=\"v\", value=[1.045])\nssa.PFlow.run()\n\nbus_id = np.asarray(ssa.Bus.idx.v, dtype=int)\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nbus_pos = int(np.where(bus_id == target_bus)[0][0])\n\nprint(f\"Resolved PV idx: {target_idx[0]}\")\nprint(f\"Bus {target_bus} voltage: {bus_v[bus_pos]:.4f} p.u.\")\n```"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+Give me code only: one full Python script in one fenced block.
+Use the built-in IEEE 39 case.
+Run power flow, count all buses above 1.020 p.u., and also return the two lowest-voltage buses.
+- The script must end by printing exactly one line that starts with RESULT_JSON=
+- The JSON object must contain these keys: threshold, selected_bus_ids, selected_count, lowest_bus_ids, lowest_voltages.
+- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.
+- Round float values in RESULT_JSON to 6 decimals.
+- `selected_bus_ids` should list every bus above the threshold.
+- `lowest_bus_ids` should contain exactly two buses in ascending voltage order.

@@ -1,0 +1,150 @@
+{
+  "blueprint": "low_buses_add_slack_plot",
+  "case_family": "kundur",
+  "case_source": "builtin",
+  "scenario_id": "scenario_068",
+  "source_case_path": "kundur/kundur_full.xlsx",
+  "turns": [
+    {
+      "actual_result_json": null,
+      "artifact_passed": true,
+      "artifact_paths": [],
+      "artifact_score": 5.0,
+      "code": "# required_dependencies: pandas\nimport andes\nimport pandas as pd\n\n# Load the Kundur full case\ncase = andes.get_case(\"kundur/kundur_full.xlsx\")\nssa = andes.load(case, setup=True, no_output=True, log=False)\n\n# Run the power flow\nandes.run(\"powerflow\", ssa)\n\n# Get the bus voltages\nbus_voltages = pd.DataFrame({\n    'bus_id': ssa.Bus.idx.v,\n    'voltage': ssa.Bus.vmag.v\n})\n\n# Find the two lowest voltage buses\nlowest_buses = bus_voltages.nsmallest(2, 'voltage').sort_values('voltage')\n\n# Prepare the result\nRESULT_JSON = {\n    \"selected_bus_ids\": lowest_buses['bus_id'].tolist(),\n    \"selected_voltages\": [round(v, 6) for v in lowest_buses['voltage'].tolist()]\n}\n\n# Print the result\nprint(f\"RESULT_JSON={RESULT_JSON}\")",
+      "continuity_score": 15.0,
+      "execution_output": "STDERR:\nTraceback (most recent call last):\n  File \"/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_068/turn_01/workspace/generated_code.py\", line 44, in <module>\n    andes.run(\"powerflow\", ssa)\n  File \"/home/bshe/miniconda3/envs/pfagent/lib/python3.11/site-packages/andes/main.py\", line 650, in run\n    cases = _find_cases(filename, input_path)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/bshe/miniconda3/envs/pfagent/lib/python3.11/site-packages/andes/main.py\", line 491, in _find_cases\n    full_paths = os.path.join(path, file)\n                 ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<frozen posixpath>\", line 76, in join\nTypeError: expected str, bytes or os.PathLike object, not System\n\n",
+      "execution_passed": false,
+      "execution_score": 0.0,
+      "expected_result_json": {
+        "selected_bus_ids": [
+          8,
+          7
+        ],
+        "selected_voltages": [
+          0.954,
+          0.956218
+        ]
+      },
+      "failure_categories": [
+        "grounding",
+        "execution",
+        "semantic"
+      ],
+      "format_score": 10.0,
+      "format_valid": true,
+      "grounding_score": 25.0,
+      "issues": [
+        "Code block 1: Use `ssa.Bus.v.v`, not `ssa.Bus.v`, when you need bus voltage magnitudes.",
+        "Execution failed. Return code: 1",
+        "RESULT_JSON was missing or could not be parsed."
+      ],
+      "prompt": "Please answer with one runnable Python script only and nothing else.\nUse the built-in Kundur full case.\nRun power flow and report the 2 lowest-voltage buses.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: selected_bus_ids, selected_voltages.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.\n- `selected_bus_ids` and `selected_voltages` should represent the lowest-voltage buses in ascending voltage order.",
+      "response": "```python\n# required_dependencies: pandas\nimport andes\nimport pandas as pd\n\n# Load the Kundur full case\ncase = andes.get_case(\"kundur/kundur_full.xlsx\")\nssa = andes.load(case, setup=True, no_output=True, log=False)\n\n# Run the power flow\nandes.run(\"powerflow\", ssa)\n\n# Get the bus voltages\nbus_voltages = pd.DataFrame({\n    'bus_id': ssa.Bus.idx.v,\n    'voltage': ssa.Bus.vmag.v\n})\n\n# Find the two lowest voltage buses\nlowest_buses = bus_voltages.nsmallest(2, 'voltage').sort_values('voltage')\n\n# Prepare the result\nRESULT_JSON = {\n    \"selected_bus_ids\": lowest_buses['bus_id'].tolist(),\n    \"selected_voltages\": [round(v, 6) for v in lowest_buses['voltage'].tolist()]\n}\n\n# Print the result\nprint(f\"RESULT_JSON={RESULT_JSON}\")\n```",
+      "result_json_parse_error": "RESULT_JSON marker not found in stdout.",
+      "score_total": 55.0,
+      "semantic_passed": false,
+      "semantic_score": 0.0,
+      "turn_id": 1,
+      "turn_passed": false,
+      "used_template_fallback": false
+    },
+    {
+      "actual_result_json": null,
+      "artifact_passed": true,
+      "artifact_paths": [],
+      "artifact_score": 5.0,
+      "code": "# required_dependencies: pandas\nimport andes\nimport pandas as pd\n\n# Load the Kundur full case\ncase = andes.get_case(\"kundur/kundur_full.xlsx\")\nssa = andes.load(case, setup=True, no_output=True, log=False)\n\n# Add a new PQ load at bus 4\nbus_idx = np.where(ssa.Bus.idx.v == 4)[0][0]\nload_idx = ssa.PQ.add(idx='PQ_VERIFY_068_D', bus=bus_idx, p0=0.014, q0=0.008)\n\n# Rerun the power flow\nandes.run(\"powerflow\", ssa)\n\n# Get the slack bus information\nslack_bus_idx = ssa.Slack.idx.v[0]\nslack_voltage = ssa.Bus.vmag.v[slack_bus_idx]\n\n# Find all buses below 0.940 p.u.\nlow_voltage_buses = pd.DataFrame({\n    'bus_id': ssa.Bus.idx.v,\n    'voltage': ssa.Bus.vmag.v\n})\n\nbuses_below_threshold = low_voltage_buses[low_voltage_buses['voltage'] < 0.940]\n\n# Prepare the result\nRESULT_JSON = {\n    \"added_load_idx\": load_idx,\n    \"slack_bus\": slack_bus_idx,\n    \"slack_voltage\": round(slack_voltage, 6),\n    \"threshold\": 0.940,\n    \"selected_bus_ids\": buses_below_threshold['bus_id'].tolist(),\n    \"selected_count\": int(buses_below_threshold.shape[0])\n}\n\n# Print the result\nprint(f\"RESULT_JSON={RESULT_JSON}\")",
+      "continuity_score": 15.0,
+      "execution_output": "STDERR:\nTraceback (most recent call last):\n  File \"/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_068/turn_02/workspace/generated_code.py\", line 44, in <module>\n    bus_idx = np.where(ssa.Bus.idx.v == 4)[0][0]\n              ^^\nNameError: name 'np' is not defined\n\n",
+      "execution_passed": false,
+      "execution_score": 0.0,
+      "expected_result_json": {
+        "added_load_idx": "PQ_VERIFY_068_D",
+        "selected_bus_ids": [],
+        "selected_count": 0,
+        "slack_bus": 1,
+        "slack_voltage": 1.0,
+        "threshold": 0.94
+      },
+      "failure_categories": [
+        "grounding",
+        "execution",
+        "semantic"
+      ],
+      "format_score": 10.0,
+      "format_valid": true,
+      "grounding_score": 20.59,
+      "issues": [
+        "Missing code requirement: add PQ call",
+        "Code block 1: Use `ssa.Bus.v.v`, not `ssa.Bus.v`, when you need bus voltage magnitudes.",
+        "Code block 1: For add-before-setup workflows, load the case with `setup=False` before calling `ssa.add(...)`.",
+        "Code block 1: For add-before-setup workflows, call `ssa.setup()` after `ssa.add(...)` and before `ssa.PFlow.run()`.",
+        "Code block 1: The prompt asks for a count, so compute and print an explicit count with `len(...)` or `sum(...)`.",
+        "Execution failed. Return code: 1",
+        "RESULT_JSON was missing or could not be parsed."
+      ],
+      "prompt": "Please revise the prior script for this next step and return one full script only.\nKeep using the same built-in case from earlier in this conversation.\nKeep the same study and add a new PQ load before setup at bus 4 with idx 'PQ_VERIFY_068_D', p0=0.014, and q0=0.008.\nAfter rerunning, report the slack-bus voltage and every bus below 0.940 p.u.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: added_load_idx, slack_bus, slack_voltage, threshold, selected_bus_ids, selected_count.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.",
+      "response": "```python\n# required_dependencies: pandas\nimport andes\nimport pandas as pd\n\n# Load the Kundur full case\ncase = andes.get_case(\"kundur/kundur_full.xlsx\")\nssa = andes.load(case, setup=True, no_output=True, log=False)\n\n# Add a new PQ load at bus 4\nbus_idx = np.where(ssa.Bus.idx.v == 4)[0][0]\nload_idx = ssa.PQ.add(idx='PQ_VERIFY_068_D', bus=bus_idx, p0=0.014, q0=0.008)\n\n# Rerun the power flow\nandes.run(\"powerflow\", ssa)\n\n# Get the slack bus information\nslack_bus_idx = ssa.Slack.idx.v[0]\nslack_voltage = ssa.Bus.vmag.v[slack_bus_idx]\n\n# Find all buses below 0.940 p.u.\nlow_voltage_buses = pd.DataFrame({\n    'bus_id': ssa.Bus.idx.v,\n    'voltage': ssa.Bus.vmag.v\n})\n\nbuses_below_threshold = low_voltage_buses[low_voltage_buses['voltage'] < 0.940]\n\n# Prepare the result\nRESULT_JSON = {\n    \"added_load_idx\": load_idx,\n    \"slack_bus\": slack_bus_idx,\n    \"slack_voltage\": round(slack_voltage, 6),\n    \"threshold\": 0.940,\n    \"selected_bus_ids\": buses_below_threshold['bus_id'].tolist(),\n    \"selected_count\": int(buses_below_threshold.shape[0])\n}\n\n# Print the result\nprint(f\"RESULT_JSON={RESULT_JSON}\")\n```",
+      "result_json_parse_error": "RESULT_JSON marker not found in stdout.",
+      "score_total": 50.59,
+      "semantic_passed": false,
+      "semantic_score": 0.0,
+      "turn_id": 2,
+      "turn_passed": false,
+      "used_template_fallback": false
+    },
+    {
+      "actual_result_json": null,
+      "artifact_passed": false,
+      "artifact_paths": [],
+      "artifact_score": 0.0,
+      "code": "# required_dependencies: pandas, matplotlib\nimport andes\nimport pandas as pd\nimport matplotlib.pyplot as plt\n\n# Load the Kundur full case\ncase = andes.get_case(\"kundur/kundur_full.xlsx\")\nssa = andes.load(case, setup=True, no_output=True, log=False)\n\n# Add a new PQ load at bus 4\nbus_idx = np.where(ssa.Bus.idx.v == 4)[0][0]\nload_idx = ssa.PQ.add(idx='PQ_VERIFY_068_D', bus=bus_idx, p0=0.014, q0=0.008)\n\n# Set the slack-bus voltage target\nslack_bus_idx = ssa.Slack.idx.v[0]\nssa.Slack.v0.set(v0=0.990)\n\n# Rerun the power flow\nandes.run(\"powerflow\", ssa)\n\n# Get the slack bus voltage\nslack_voltage = ssa.Bus.vmag.v[slack_bus_idx]\n\n# Find the bus voltages\nbus_voltages = pd.DataFrame({\n    'bus_id': ssa.Bus.idx.v,\n    'voltage': ssa.Bus.vmag.v\n})\n\n# Prepare to save the line plot\nplt.figure(figsize=(10, 5))\nplt.plot(bus_voltages['bus_id'], bus_voltages['voltage'], marker='o')\nplt.title('Bus Voltages')\nplt.xlabel('Bus ID')\nplt.ylabel('Voltage (p.u.)')\nplt.axhline(y=0.990, color='r', linestyle='--', label='Slack Setpoint')\nplt.legend()\nplt.grid()\nplot_file = 'scenario_068_turn3_line.png'\nplt.savefig(plot_file)\nplt.close()\n\n# Get the two lowest voltage buses\nlowest_buses = bus_voltages.nsmallest(2, 'voltage').sort_values('voltage')\n\n# Prepare the result\nRESULT_JSON = {\n    \"slack_setpoint\": 0.990,\n    \"slack_voltage\": round(slack_voltage, 6),\n    \"selected_bus_ids\": lowest_buses['bus_id'].tolist(),\n    \"selected_voltages\": [round(v, 6) for v in lowest_buses['voltage'].tolist()],\n    \"plot_file\": plot_file\n}\n\n# Print the result\nprint(f\"RESULT_JSON={RESULT_JSON}\")",
+      "continuity_score": 10.91,
+      "execution_output": "STDERR:\nTraceback (most recent call last):\n  File \"/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_068/turn_03/workspace/generated_code.py\", line 45, in <module>\n    bus_idx = np.where(ssa.Bus.idx.v == 4)[0][0]\n              ^^\nNameError: name 'np' is not defined\n\n",
+      "execution_passed": false,
+      "execution_score": 0.0,
+      "expected_result_json": {
+        "plot_file": "scenario_068_turn3_line.png",
+        "selected_bus_ids": [
+          8,
+          7
+        ],
+        "selected_voltages": [
+          0.953437,
+          0.953586
+        ],
+        "slack_setpoint": 0.99,
+        "slack_voltage": 0.99
+      },
+      "failure_categories": [
+        "grounding",
+        "continuity",
+        "execution",
+        "semantic",
+        "artifact"
+      ],
+      "format_score": 10.0,
+      "format_valid": true,
+      "grounding_score": 20.0,
+      "issues": [
+        "Missing code requirement: Slack set call",
+        "Missing code requirement: add PQ call",
+        "Code block 1: Use `ssa.Bus.v.v`, not `ssa.Bus.v`, when you need bus voltage magnitudes.",
+        "Execution failed. Return code: 1",
+        "RESULT_JSON was missing or could not be parsed.",
+        "Plot filename mismatch: expected scenario_068_turn3_line.png, got None",
+        "Expected plot artifact not found: scenario_068_turn3_line.png"
+      ],
+      "prompt": "Next follow-up: rebuild the script for the updated study, code only.\nKeep the added load from the previous turn.\nAlso set the slack-bus voltage target to 0.990, rerun power flow, and save a line plot of bus voltages to 'scenario_068_turn3_line.png'.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: slack_setpoint, slack_voltage, selected_bus_ids, selected_voltages, plot_file.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.\n- `selected_bus_ids` and `selected_voltages` should again represent the lowest-voltage buses in ascending voltage order.",
+      "response": "```python\n# required_dependencies: pandas, matplotlib\nimport andes\nimport pandas as pd\nimport matplotlib.pyplot as plt\n\n# Load the Kundur full case\ncase = andes.get_case(\"kundur/kundur_full.xlsx\")\nssa = andes.load(case, setup=True, no_output=True, log=False)\n\n# Add a new PQ load at bus 4\nbus_idx = np.where(ssa.Bus.idx.v == 4)[0][0]\nload_idx = ssa.PQ.add(idx='PQ_VERIFY_068_D', bus=bus_idx, p0=0.014, q0=0.008)\n\n# Set the slack-bus voltage target\nslack_bus_idx = ssa.Slack.idx.v[0]\nssa.Slack.v0.set(v0=0.990)\n\n# Rerun the power flow\nandes.run(\"powerflow\", ssa)\n\n# Get the slack bus voltage\nslack_voltage = ssa.Bus.vmag.v[slack_bus_idx]\n\n# Find the bus voltages\nbus_voltages = pd.DataFrame({\n    'bus_id': ssa.Bus.idx.v,\n    'voltage': ssa.Bus.vmag.v\n})\n\n# Prepare to save the line plot\nplt.figure(figsize=(10, 5))\nplt.plot(bus_voltages['bus_id'], bus_voltages['voltage'], marker='o')\nplt.title('Bus Voltages')\nplt.xlabel('Bus ID')\nplt.ylabel('Voltage (p.u.)')\nplt.axhline(y=0.990, color='r', linestyle='--', label='Slack Setpoint')\nplt.legend()\nplt.grid()\nplot_file = 'scenario_068_turn3_line.png'\nplt.savefig(plot_file)\nplt.close()\n\n# Get the two lowest voltage buses\nlowest_buses = bus_voltages.nsmallest(2, 'voltage').sort_values('voltage')\n\n# Prepare the result\nRESULT_JSON = {\n    \"slack_setpoint\": 0.990,\n    \"slack_voltage\": round(slack_voltage, 6),\n    \"selected_bus_ids\": lowest_buses['bus_id'].tolist(),\n    \"selected_voltages\": [round(v, 6) for v in lowest_buses['voltage'].tolist()],\n    \"plot_file\": plot_file\n}\n\n# Print the result\nprint(f\"RESULT_JSON={RESULT_JSON}\")\n```",
+      "result_json_parse_error": "RESULT_JSON marker not found in stdout.",
+      "score_total": 40.91,
+      "semantic_passed": false,
+      "semantic_score": 0.0,
+      "turn_id": 3,
+      "turn_passed": false,
+      "used_template_fallback": false
+    }
+  ],
+  "uploaded_filename": null
+}

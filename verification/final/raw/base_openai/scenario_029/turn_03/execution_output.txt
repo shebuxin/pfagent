@@ -1,0 +1,6 @@
+STDERR:
+Traceback (most recent call last):
+  File "/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_029/turn_03/workspace/generated_code.py", line 50, in <module>
+    ssa.PQ.add(new_load_idx, bus=new_load_bus, p0=p0, q0=q0)
+TypeError: ModelData.add() takes 1 positional argument but 2 were given
+

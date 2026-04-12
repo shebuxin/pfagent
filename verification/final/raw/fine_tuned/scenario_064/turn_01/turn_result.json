@@ -1,0 +1,46 @@
+{
+  "actual_result_json": null,
+  "artifact_passed": true,
+  "artifact_paths": [],
+  "artifact_score": 5.0,
+  "code": "# required_dependencies: numpy\nimport json\nimport numpy as np\nimport andes\n\ndef _round_float(value):\n    return round(float(value), 6)\n\nssa = andes.load(\n    andes.get_case(\"kundur/kundur_full.xlsx\"),\n    setup=False,\n    no_output=True,\n)\n\nssa.PFlow.run()\n\nbus_ids = np.asarray(ssa.Bus.idx.v)\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nthreshold = 1.02\nmask = bus_v > threshold\ntop_k = 2\nrank_indices = np.argsort(bus_v)[:top_k]\nresult = {\n    \"threshold\": _round_float(threshold),\n    \"selected_bus_ids\": [int(value) for value in bus_ids[mask]],\n    \"selected_count\": int(np.sum(mask)),\n    \"lowest_bus_ids\": [int(bus_ids[i]) for i in rank_indices],\n    \"lowest_voltages\": [_round_float(bus_v[i]) for i in rank_indices],\n}\nprint(\"RESULT_JSON=\" + json.dumps(result, sort_keys=True))",
+  "continuity_score": 15.0,
+  "execution_output": "STDERR:\nTraceback (most recent call last):\n  File \"/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/fine_tuned/20260403_162926/raw/fine_tuned/scenario_064/turn_01/workspace/generated_code.py\", line 49, in <module>\n    ssa.PFlow.run()\n  File \"/home/bshe/miniconda3/envs/pfagent/lib/python3.11/site-packages/andes/routines/pflow.py\", line 299, in run\n    self.init()\n  File \"/home/bshe/miniconda3/envs/pfagent/lib/python3.11/site-packages/andes/routines/pflow.py\", line 88, in init\n    self.system.set_var_arrays(self.models, inplace=True, alloc=False)\n  File \"/home/bshe/miniconda3/envs/pfagent/lib/python3.11/site-packages/andes/system/facade.py\", line 584, in set_var_arrays\n    var.set_arrays(self.dae, inplace=inplace, alloc=alloc)\n  File \"/home/bshe/miniconda3/envs/pfagent/lib/python3.11/site-packages/andes/core/var.py\", line 203, in set_arrays\n    self._set_arrays_inplace(dae)\n  File \"/home/bshe/miniconda3/envs/pfagent/lib/python3.11/site-packages/andes/core/var.py\", line 214, in _set_arrays_inplace\n    slice_idx = slice(self.a[0], self.a[-1] + 1)\n                      ~~~~~~^^^\nIndexError: index 0 is out of bounds for axis 0 with size 0\n\n",
+  "execution_passed": false,
+  "execution_score": 0.0,
+  "expected_result_json": {
+    "lowest_bus_ids": [
+      8,
+      7
+    ],
+    "lowest_voltages": [
+      0.954,
+      0.956218
+    ],
+    "selected_bus_ids": [],
+    "selected_count": 0,
+    "threshold": 1.02
+  },
+  "failure_categories": [
+    "grounding",
+    "execution",
+    "semantic"
+  ],
+  "format_score": 10.0,
+  "format_valid": true,
+  "grounding_score": 25.0,
+  "issues": [
+    "Code block 1: When using `setup=False`, call `ssa.setup()` before running an ANDES routine.",
+    "Execution failed. Return code: 1",
+    "RESULT_JSON was missing or could not be parsed."
+  ],
+  "prompt": "Write one complete runnable Python script only, inside a single ```python block.\nUse the built-in Kundur full case.\nRun power flow, count all buses above 1.020 p.u., and also return the two lowest-voltage buses.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: threshold, selected_bus_ids, selected_count, lowest_bus_ids, lowest_voltages.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.\n- `selected_bus_ids` should list every bus above the threshold.\n- `lowest_bus_ids` should contain exactly two buses in ascending voltage order.",
+  "response": "```python\n# required_dependencies: numpy\nimport json\nimport numpy as np\nimport andes\n\ndef _round_float(value):\n    return round(float(value), 6)\n\nssa = andes.load(\n    andes.get_case(\"kundur/kundur_full.xlsx\"),\n    setup=False,\n    no_output=True,\n)\n\nssa.PFlow.run()\n\nbus_ids = np.asarray(ssa.Bus.idx.v)\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nthreshold = 1.02\nmask = bus_v > threshold\ntop_k = 2\nrank_indices = np.argsort(bus_v)[:top_k]\nresult = {\n    \"threshold\": _round_float(threshold),\n    \"selected_bus_ids\": [int(value) for value in bus_ids[mask]],\n    \"selected_count\": int(np.sum(mask)),\n    \"lowest_bus_ids\": [int(bus_ids[i]) for i in rank_indices],\n    \"lowest_voltages\": [_round_float(bus_v[i]) for i in rank_indices],\n}\nprint(\"RESULT_JSON=\" + json.dumps(result, sort_keys=True))\n```",
+  "result_json_parse_error": "RESULT_JSON marker not found in stdout.",
+  "score_total": 55.0,
+  "semantic_passed": false,
+  "semantic_score": 0.0,
+  "turn_id": 1,
+  "turn_passed": false,
+  "used_template_fallback": false
+}

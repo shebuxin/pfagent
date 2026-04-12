@@ -1,0 +1,8 @@
+pack_id,title,prompt_guidance_count
+corridor_outage_aliases,Interpret corridor phrasing as line outages,1
+line_outage_api_guardrail,Use line-status APIs instead of guessed PFlow setters,1
+n1_outage_set_aliases,Interpret outage-set language as N-1 screening,1
+pq_percentage_scaling,Interpret percentage demand changes as scale factors,1
+pv_regulator_aliases,Handle regulator-target phrasing for PV edits,1
+string_device_idx_guardrail,Preserve string-valued ANDES device identifiers,1
+targeted_device_resolution,Resolve targeted devices by bus before editing,2

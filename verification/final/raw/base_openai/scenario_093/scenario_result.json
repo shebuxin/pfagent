@@ -1,0 +1,150 @@
+{
+  "blueprint": "line_topk_scale_threshold_plot",
+  "case_family": "pjm5",
+  "case_source": "uploaded",
+  "scenario_id": "scenario_093",
+  "source_case_path": "5bus/pjm5bus.json",
+  "turns": [
+    {
+      "actual_result_json": null,
+      "artifact_passed": true,
+      "artifact_paths": [],
+      "artifact_score": 5.0,
+      "code": "# required_dependencies: andes\nimport andes\nimport os\nimport numpy as np\n\n# Load the uploaded case\nscript_dir = os.getcwd()\ncase_file = os.path.join(script_dir, \"verify_pjm5_093.json\")\nssa = andes.load(case_file, setup=True, no_output=True, log=False)\n\n# Run power flow\nandes.run_power_flow(ssa, log=False)\n\n# Get the sending-end phase angles for each line\nline_angles = np.abs(ssa.Line.angle.v)  # use absolute values\nline_ids = ssa.Line.idx.v                # retrieve line ids\n \n# Create a list of tuples (line_id, angle)\nline_metrics = [(line_id, angle) for line_id, angle in zip(line_ids, line_angles)]\n# Sort the lines by angle in descending order\nsorted_lines = sorted(line_metrics, key=lambda x: x[1], reverse=True)\n\n# Select the top-2 lines\nselected_lines = sorted_lines[:2]\n\n# Prepare the RESULT_JSON\nselected_line_ids = [line[0] for line in selected_lines]\nselected_line_metrics = [round(line[1], 6) for line in selected_lines]\n\nRESULT_JSON = {\n    \"selected_line_ids\": selected_line_ids,\n    \"selected_line_metrics\": selected_line_metrics\n}\n\n# Print the result\nprint(\"RESULT_JSON=\", RESULT_JSON)",
+      "continuity_score": 15.0,
+      "execution_output": "STDERR:\nTraceback (most recent call last):\n  File \"/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_093/turn_01/workspace/generated_code.py\", line 46, in <module>\n    andes.run_power_flow(ssa, log=False)\n    ^^^^^^^^^^^^^^^^^^^^\nAttributeError: module 'andes' has no attribute 'run_power_flow'\n\n",
+      "execution_passed": false,
+      "execution_score": 0.0,
+      "expected_result_json": {
+        "selected_line_ids": [
+          "2",
+          "5"
+        ],
+        "selected_line_metrics": [
+          2.488387,
+          2.15862
+        ]
+      },
+      "failure_categories": [
+        "grounding",
+        "execution",
+        "semantic"
+      ],
+      "format_score": 10.0,
+      "format_valid": true,
+      "grounding_score": 18.75,
+      "issues": [
+        "Missing code requirement: line angle array",
+        "Code block 1: For line-angle analysis, use the ANDES line-angle result arrays such as `ssa.Line.a1.e`.",
+        "Execution failed. Return code: 1",
+        "RESULT_JSON was missing or could not be parsed."
+      ],
+      "prompt": "Write one complete runnable Python script only, inside a single ```python block.\nUse my uploaded file verify_pjm5_093.json from the current working directory.\nRun power flow and report the top-2 lines by absolute sending-end phase angle.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: selected_line_ids, selected_line_metrics.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.\n- `selected_line_metrics` should contain the absolute sending-end phase angles in descending order.\n\nRuntime file context:\n- Working directory for execution: verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_093/turn_01/workspace\n- Uploaded files available during execution:\n- verify_pjm5_093.json\n- Use this exact filename directly in andes.load(...).\n- Do not wrap the uploaded filename with andes.get_case(...).\n",
+      "response": "```python\n# required_dependencies: andes\nimport andes\nimport os\nimport numpy as np\n\n# Load the uploaded case\nscript_dir = os.getcwd()\ncase_file = os.path.join(script_dir, \"verify_pjm5_093.json\")\nssa = andes.load(case_file, setup=True, no_output=True, log=False)\n\n# Run power flow\nandes.run_power_flow(ssa, log=False)\n\n# Get the sending-end phase angles for each line\nline_angles = np.abs(ssa.Line.angle.v)  # use absolute values\nline_ids = ssa.Line.idx.v                # retrieve line ids\n \n# Create a list of tuples (line_id, angle)\nline_metrics = [(line_id, angle) for line_id, angle in zip(line_ids, line_angles)]\n# Sort the lines by angle in descending order\nsorted_lines = sorted(line_metrics, key=lambda x: x[1], reverse=True)\n\n# Select the top-2 lines\nselected_lines = sorted_lines[:2]\n\n# Prepare the RESULT_JSON\nselected_line_ids = [line[0] for line in selected_lines]\nselected_line_metrics = [round(line[1], 6) for line in selected_lines]\n\nRESULT_JSON = {\n    \"selected_line_ids\": selected_line_ids,\n    \"selected_line_metrics\": selected_line_metrics\n}\n\n# Print the result\nprint(\"RESULT_JSON=\", RESULT_JSON)\n```",
+      "result_json_parse_error": "RESULT_JSON marker not found in stdout.",
+      "score_total": 48.75,
+      "semantic_passed": false,
+      "semantic_score": 0.0,
+      "turn_id": 1,
+      "turn_passed": false,
+      "used_template_fallback": false
+    },
+    {
+      "actual_result_json": null,
+      "artifact_passed": true,
+      "artifact_paths": [],
+      "artifact_score": 5.0,
+      "code": "# required_dependencies: andes\nimport andes\nimport os\nimport numpy as np\n\n# Load the uploaded case\nscript_dir = os.getcwd()\ncase_file = os.path.join(script_dir, \"verify_pjm5_093.json\")\nssa = andes.load(case_file, setup=True, no_output=True, log=False)\n\n# Scale every PQ load by 1.030\nscale_factor = 1.030\nssa.PQ.p.v *= scale_factor\nssa.PQ.q.v *= scale_factor\n\n# Run power flow\nandes.run_power_flow(ssa, log=False)\n\n# Get the sending-end phase angles for each line\nline_angles = np.abs(ssa.Line.angle.v)  # use absolute values\nangle_threshold = 0.080  # radians\n\n# Select lines with absolute sending-end phase angle above the threshold\nselected_lines = [line_id for line_id, angle in zip(ssa.Line.idx.v, line_angles) if angle > angle_threshold]\n\n# Prepare the RESULT_JSON\nselected_count = len(selected_lines)\n\nRESULT_JSON = {\n    \"scale_factor\": scale_factor,\n    \"angle_threshold\": angle_threshold,\n    \"selected_line_ids\": selected_lines,\n    \"selected_count\": selected_count\n}\n\n# Print the result\nprint(\"RESULT_JSON=\", RESULT_JSON)",
+      "continuity_score": 15.0,
+      "execution_output": "STDERR:\nTraceback (most recent call last):\n  File \"/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_093/turn_02/workspace/generated_code.py\", line 47, in <module>\n    ssa.PQ.p.v *= scale_factor\n    ^^^^^^^^\nAttributeError: 'PQ' object has no attribute 'p'. Did you mean: 'p0'?\n\n",
+      "execution_passed": false,
+      "execution_score": 0.0,
+      "expected_result_json": {
+        "angle_threshold": 0.08,
+        "scale_factor": 1.03,
+        "selected_count": 6,
+        "selected_line_ids": [
+          "0",
+          "1",
+          "2",
+          "4",
+          "5",
+          "6"
+        ]
+      },
+      "failure_categories": [
+        "grounding",
+        "execution",
+        "semantic"
+      ],
+      "format_score": 10.0,
+      "format_valid": true,
+      "grounding_score": 15.38,
+      "issues": [
+        "Missing code requirement: PQ scale call",
+        "Missing code requirement: line angle array",
+        "Code block 1: For line-angle analysis, use the ANDES line-angle result arrays such as `ssa.Line.a1.e`.",
+        "Execution failed. Return code: 1",
+        "RESULT_JSON was missing or could not be parsed."
+      ],
+      "prompt": "Next follow-up: rebuild the script for the updated study, code only.\nKeep using the same uploaded study file from earlier in this conversation.\nKeep the same study, scale every PQ load by 1.030, rerun power flow, and report every line whose absolute sending-end phase angle is above 0.080 radians.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: scale_factor, angle_threshold, selected_line_ids, selected_count.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.\n\nRuntime file context:\n- Working directory for execution: verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_093/turn_02/workspace\n- Uploaded files available during execution:\n- verify_pjm5_093.json\n- Use this exact filename directly in andes.load(...).\n- Do not wrap the uploaded filename with andes.get_case(...).\n",
+      "response": "```python\n# required_dependencies: andes\nimport andes\nimport os\nimport numpy as np\n\n# Load the uploaded case\nscript_dir = os.getcwd()\ncase_file = os.path.join(script_dir, \"verify_pjm5_093.json\")\nssa = andes.load(case_file, setup=True, no_output=True, log=False)\n\n# Scale every PQ load by 1.030\nscale_factor = 1.030\nssa.PQ.p.v *= scale_factor\nssa.PQ.q.v *= scale_factor\n\n# Run power flow\nandes.run_power_flow(ssa, log=False)\n\n# Get the sending-end phase angles for each line\nline_angles = np.abs(ssa.Line.angle.v)  # use absolute values\nangle_threshold = 0.080  # radians\n\n# Select lines with absolute sending-end phase angle above the threshold\nselected_lines = [line_id for line_id, angle in zip(ssa.Line.idx.v, line_angles) if angle > angle_threshold]\n\n# Prepare the RESULT_JSON\nselected_count = len(selected_lines)\n\nRESULT_JSON = {\n    \"scale_factor\": scale_factor,\n    \"angle_threshold\": angle_threshold,\n    \"selected_line_ids\": selected_lines,\n    \"selected_count\": selected_count\n}\n\n# Print the result\nprint(\"RESULT_JSON=\", RESULT_JSON)\n```",
+      "result_json_parse_error": "RESULT_JSON marker not found in stdout.",
+      "score_total": 45.38,
+      "semantic_passed": false,
+      "semantic_score": 0.0,
+      "turn_id": 2,
+      "turn_passed": false,
+      "used_template_fallback": false
+    },
+    {
+      "actual_result_json": null,
+      "artifact_passed": false,
+      "artifact_paths": [],
+      "artifact_score": 0.0,
+      "code": "# required_dependencies: andes, matplotlib\nimport andes\nimport os\nimport numpy as np\nimport matplotlib.pyplot as plt\n\n# Load the uploaded case\nscript_dir = os.getcwd()\ncase_file = os.path.join(script_dir, \"verify_pjm5_093.json\")\nssa = andes.load(case_file, setup=True, no_output=True, log=False)\n\n# Scale every PQ load by 1.030\nscale_factor = 1.030\nssa.PQ.p.v *= scale_factor\nssa.PQ.q.v *= scale_factor\n\n# Add a new PQ load at bus 1 with idx 'PQ_VERIFY_093_E'\nnew_idx = 'PQ_VERIFY_093_E'\nbus_number = 1\np0 = 0.012\nq0 = 0.006\nssa.PQ.insert(new_idx, bus_number, p0, q0)\n\n# Run power flow\nandes.run_power_flow(ssa, log=False)\n\n# Get bus voltage data\nvoltages = ssa.Bus.v.v\nbus_ids = ssa.Bus.idx.v\nmax_voltage = np.max(voltages)\nmin_voltage = np.min(voltages)\nmax_bus = bus_ids[np.argmax(voltages)]\nmin_bus = bus_ids[np.argmin(voltages)]\n\n# Save a line plot of bus voltages\nplt.figure()\nplt.plot(bus_ids, voltages, marker='o')\nplt.title('Bus Voltages')\nplt.xlabel('Bus ID')\nplt.ylabel('Voltage (p.u.)')\nplt.grid()\nplot_file = 'scenario_093_turn3_voltage.png'\nplt.savefig(plot_file)\nplt.close()\n\n# Prepare the RESULT_JSON\nRESULT_JSON = {\n    \"added_load_idx\": new_idx,\n    \"max_bus\": int(max_bus),\n    \"max_voltage\": round(max_voltage, 6),\n    \"min_bus\": int(min_bus),\n    \"min_voltage\": round(min_voltage, 6),\n    \"plot_file\": plot_file\n}\n\n# Print the result\nprint(\"RESULT_JSON=\", RESULT_JSON)",
+      "continuity_score": 6.0,
+      "execution_output": "STDERR:\nTraceback (most recent call last):\n  File \"/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_093/turn_03/workspace/generated_code.py\", line 48, in <module>\n    ssa.PQ.p.v *= scale_factor\n    ^^^^^^^^\nAttributeError: 'PQ' object has no attribute 'p'. Did you mean: 'p0'?\n\n",
+      "execution_passed": false,
+      "execution_score": 0.0,
+      "expected_result_json": {
+        "added_load_idx": "PQ_VERIFY_093_E",
+        "max_bus": 2,
+        "max_voltage": 1.0,
+        "min_bus": 1,
+        "min_voltage": 0.991488,
+        "plot_file": "scenario_093_turn3_voltage.png"
+      },
+      "failure_categories": [
+        "grounding",
+        "continuity",
+        "execution",
+        "semantic",
+        "artifact"
+      ],
+      "format_score": 10.0,
+      "format_valid": true,
+      "grounding_score": 21.43,
+      "issues": [
+        "Missing code requirement: add PQ call",
+        "Missing code requirement: PQ scale call",
+        "Code block 1: For add-before-setup workflows, load the case with `setup=False` before calling `ssa.add(...)`.",
+        "Code block 1: For add-before-setup workflows, call `ssa.setup()` after `ssa.add(...)` and before `ssa.PFlow.run()`.",
+        "Execution failed. Return code: 1",
+        "RESULT_JSON was missing or could not be parsed.",
+        "Plot filename mismatch: expected scenario_093_turn3_voltage.png, got None",
+        "Expected plot artifact not found: scenario_093_turn3_voltage.png"
+      ],
+      "prompt": "Please keep the conversation context and send one new complete script only.\nKeep the scaled PQ-load change from the previous turn.\nAlso add one new PQ load before setup at bus 1 with idx 'PQ_VERIFY_093_E', p0=0.012, and q0=0.006.\nAfter rerunning, save a line plot of bus voltages to 'scenario_093_turn3_voltage.png' and report the maximum-voltage bus and minimum-voltage bus.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: added_load_idx, max_bus, max_voltage, min_bus, min_voltage, plot_file.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.\n\nRuntime file context:\n- Working directory for execution: verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_093/turn_03/workspace\n- Uploaded files available during execution:\n- verify_pjm5_093.json\n- Use this exact filename directly in andes.load(...).\n- Do not wrap the uploaded filename with andes.get_case(...).\n",
+      "response": "```python\n# required_dependencies: andes, matplotlib\nimport andes\nimport os\nimport numpy as np\nimport matplotlib.pyplot as plt\n\n# Load the uploaded case\nscript_dir = os.getcwd()\ncase_file = os.path.join(script_dir, \"verify_pjm5_093.json\")\nssa = andes.load(case_file, setup=True, no_output=True, log=False)\n\n# Scale every PQ load by 1.030\nscale_factor = 1.030\nssa.PQ.p.v *= scale_factor\nssa.PQ.q.v *= scale_factor\n\n# Add a new PQ load at bus 1 with idx 'PQ_VERIFY_093_E'\nnew_idx = 'PQ_VERIFY_093_E'\nbus_number = 1\np0 = 0.012\nq0 = 0.006\nssa.PQ.insert(new_idx, bus_number, p0, q0)\n\n# Run power flow\nandes.run_power_flow(ssa, log=False)\n\n# Get bus voltage data\nvoltages = ssa.Bus.v.v\nbus_ids = ssa.Bus.idx.v\nmax_voltage = np.max(voltages)\nmin_voltage = np.min(voltages)\nmax_bus = bus_ids[np.argmax(voltages)]\nmin_bus = bus_ids[np.argmin(voltages)]\n\n# Save a line plot of bus voltages\nplt.figure()\nplt.plot(bus_ids, voltages, marker='o')\nplt.title('Bus Voltages')\nplt.xlabel('Bus ID')\nplt.ylabel('Voltage (p.u.)')\nplt.grid()\nplot_file = 'scenario_093_turn3_voltage.png'\nplt.savefig(plot_file)\nplt.close()\n\n# Prepare the RESULT_JSON\nRESULT_JSON = {\n    \"added_load_idx\": new_idx,\n    \"max_bus\": int(max_bus),\n    \"max_voltage\": round(max_voltage, 6),\n    \"min_bus\": int(min_bus),\n    \"min_voltage\": round(min_voltage, 6),\n    \"plot_file\": plot_file\n}\n\n# Print the result\nprint(\"RESULT_JSON=\", RESULT_JSON)\n```",
+      "result_json_parse_error": "RESULT_JSON marker not found in stdout.",
+      "score_total": 37.43,
+      "semantic_passed": false,
+      "semantic_score": 0.0,
+      "turn_id": 3,
+      "turn_passed": false,
+      "used_template_fallback": false
+    }
+  ],
+  "uploaded_filename": "verify_pjm5_093.json"
+}

@@ -1,0 +1,147 @@
+{
+  "blueprint": "threshold_slack_add_extremes",
+  "case_family": "ieee14",
+  "case_source": "builtin",
+  "scenario_id": "scenario_006",
+  "source_case_path": "ieee14/ieee14_full.xlsx",
+  "turns": [
+    {
+      "actual_result_json": null,
+      "artifact_passed": true,
+      "artifact_paths": [],
+      "artifact_score": 5.0,
+      "code": "# required_dependencies: andes,json\nimport andes\nimport json\n\n# Load the IEEE 14 full case\ncase = andes.load(andes.get_case(\"ieee14/ieee14_full.xlsx\"), setup=True, no_output=True)\n\n# Run power flow\ncase.run()\n\n# Define the voltage threshold\nthreshold = 1.020\n\n# Count all buses above threshold\nselected_bus_ids = case.Bus.idx.v[case.Bus.v >= threshold].tolist()\nselected_count = len(selected_bus_ids)\n\n# Get the lowest two voltage buses\nvoltages = case.Bus.v.tolist()\nlowest_bus_ids = sorted(range(len(voltages)), key=lambda i: voltages[i])[:2]\n\nlowest_voltages = [round(voltages[i], 6) for i in lowest_bus_ids]\n\n# Prepare the result in required JSON format\nRESULT_JSON = json.dumps({\n    \"threshold\": threshold,\n    \"selected_bus_ids\": selected_bus_ids,\n    \"selected_count\": selected_count,\n    \"lowest_bus_ids\": lowest_bus_ids,\n    \"lowest_voltages\": lowest_voltages\n})\n\nprint(f\"RESULT_JSON={RESULT_JSON}\")",
+      "continuity_score": 15.0,
+      "execution_output": "STDERR:\nTraceback (most recent call last):\n  File \"/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_006/turn_01/workspace/generated_code.py\", line 43, in <module>\n    case.run()\n    ^^^^^^^^\nAttributeError: 'System' object has no attribute 'run'\n\n",
+      "execution_passed": false,
+      "execution_score": 0.0,
+      "expected_result_json": {
+        "lowest_bus_ids": [
+          3,
+          4
+        ],
+        "lowest_voltages": [
+          1.01,
+          1.011403
+        ],
+        "selected_bus_ids": [
+          1,
+          2,
+          6,
+          7,
+          8,
+          9
+        ],
+        "selected_count": 6,
+        "threshold": 1.02
+      },
+      "failure_categories": [
+        "grounding",
+        "execution",
+        "semantic"
+      ],
+      "format_score": 10.0,
+      "format_valid": true,
+      "grounding_score": 25.0,
+      "issues": [
+        "Code block 1: Use `ssa.Bus.v.v`, not `ssa.Bus.v`, when you need bus voltage magnitudes.",
+        "Execution failed. Return code: 1",
+        "RESULT_JSON was missing or could not be parsed."
+      ],
+      "prompt": "Please answer with one runnable Python script only and nothing else.\nUse the built-in IEEE 14 full case.\nRun power flow, count all buses above 1.020 p.u., and also return the two lowest-voltage buses.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: threshold, selected_bus_ids, selected_count, lowest_bus_ids, lowest_voltages.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.\n- `selected_bus_ids` should list every bus above the threshold.\n- `lowest_bus_ids` should contain exactly two buses in ascending voltage order.",
+      "response": "```python\n# required_dependencies: andes,json\nimport andes\nimport json\n\n# Load the IEEE 14 full case\ncase = andes.load(andes.get_case(\"ieee14/ieee14_full.xlsx\"), setup=True, no_output=True)\n\n# Run power flow\ncase.run()\n\n# Define the voltage threshold\nthreshold = 1.020\n\n# Count all buses above threshold\nselected_bus_ids = case.Bus.idx.v[case.Bus.v >= threshold].tolist()\nselected_count = len(selected_bus_ids)\n\n# Get the lowest two voltage buses\nvoltages = case.Bus.v.tolist()\nlowest_bus_ids = sorted(range(len(voltages)), key=lambda i: voltages[i])[:2]\n\nlowest_voltages = [round(voltages[i], 6) for i in lowest_bus_ids]\n\n# Prepare the result in required JSON format\nRESULT_JSON = json.dumps({\n    \"threshold\": threshold,\n    \"selected_bus_ids\": selected_bus_ids,\n    \"selected_count\": selected_count,\n    \"lowest_bus_ids\": lowest_bus_ids,\n    \"lowest_voltages\": lowest_voltages\n})\n\nprint(f\"RESULT_JSON={RESULT_JSON}\")\n```",
+      "result_json_parse_error": "RESULT_JSON marker not found in stdout.",
+      "score_total": 55.0,
+      "semantic_passed": false,
+      "semantic_score": 0.0,
+      "turn_id": 1,
+      "turn_passed": false,
+      "used_template_fallback": false
+    },
+    {
+      "actual_result_json": null,
+      "artifact_passed": true,
+      "artifact_paths": [],
+      "artifact_score": 5.0,
+      "code": "# required_dependencies: andes,json\nimport andes\nimport json\n\n# Load the IEEE 14 full case\ncase = andes.load(andes.get_case(\"ieee14/ieee14_full.xlsx\"), setup=True, no_output=True)\n\n# Set the slack-bus voltage target\nslack_setpoint = 1.025\ncase.Slack.set(\"Vtarget\", slack_setpoint)\n\n# Rerun power flow\ncase.run()\n\n# Get the slack bus voltage\nslack_bus = case.Slack.idx.v[0]  # Assuming there's only one slack bus\nslack_voltage = round(case.Bus.v[slack_bus], 6)\n\n# Count buses below 1.005 p.u.\nselected_count = (case.Bus.v < 1.005).sum()\n\n# Prepare the result in required JSON format\nRESULT_JSON = json.dumps({\n    \"slack_bus\": slack_bus,\n    \"slack_setpoint\": slack_setpoint,\n    \"slack_voltage\": slack_voltage,\n    \"selected_count\": selected_count\n})\n\nprint(f\"RESULT_JSON={RESULT_JSON}\")",
+      "continuity_score": 15.0,
+      "execution_output": "STDERR:\nTraceback (most recent call last):\n  File \"/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_006/turn_02/workspace/generated_code.py\", line 44, in <module>\n    case.Slack.set(\"Vtarget\", slack_setpoint)\n  File \"/home/bshe/miniconda3/envs/pfagent/lib/python3.11/site-packages/andes/core/model/model.py\", line 601, in set\n    raise TypeError(\nTypeError: set() missing 'value'. Usage: ss.Slack.set('Vtarget', 1.025, <value>)\n\n",
+      "execution_passed": false,
+      "execution_score": 0.0,
+      "expected_result_json": {
+        "selected_count": 0,
+        "slack_bus": 1,
+        "slack_setpoint": 1.025,
+        "slack_voltage": 1.025
+      },
+      "failure_categories": [
+        "grounding",
+        "execution",
+        "semantic"
+      ],
+      "format_score": 10.0,
+      "format_valid": true,
+      "grounding_score": 25.0,
+      "issues": [
+        "Code block 1: Use `ssa.Bus.v.v`, not `ssa.Bus.v`, when you need bus voltage magnitudes.",
+        "Code block 1: When the prompt asks for slack bus voltage, read the slack bus number with `ssa.Slack.bus.v[0]`.",
+        "Execution failed. Return code: 1",
+        "RESULT_JSON was missing or could not be parsed."
+      ],
+      "prompt": "Follow-up request: update the previous study and return a fresh complete script.\nKeep using the same built-in case from earlier in this conversation.\nKeep the same study, set the slack-bus voltage target to 1.025, rerun power flow, and report the slack bus voltage plus how many buses fall below 1.005 p.u.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: slack_bus, slack_setpoint, slack_voltage, selected_count.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.",
+      "response": "```python\n# required_dependencies: andes,json\nimport andes\nimport json\n\n# Load the IEEE 14 full case\ncase = andes.load(andes.get_case(\"ieee14/ieee14_full.xlsx\"), setup=True, no_output=True)\n\n# Set the slack-bus voltage target\nslack_setpoint = 1.025\ncase.Slack.set(\"Vtarget\", slack_setpoint)\n\n# Rerun power flow\ncase.run()\n\n# Get the slack bus voltage\nslack_bus = case.Slack.idx.v[0]  # Assuming there's only one slack bus\nslack_voltage = round(case.Bus.v[slack_bus], 6)\n\n# Count buses below 1.005 p.u.\nselected_count = (case.Bus.v < 1.005).sum()\n\n# Prepare the result in required JSON format\nRESULT_JSON = json.dumps({\n    \"slack_bus\": slack_bus,\n    \"slack_setpoint\": slack_setpoint,\n    \"slack_voltage\": slack_voltage,\n    \"selected_count\": selected_count\n})\n\nprint(f\"RESULT_JSON={RESULT_JSON}\")\n```",
+      "result_json_parse_error": "RESULT_JSON marker not found in stdout.",
+      "score_total": 55.0,
+      "semantic_passed": false,
+      "semantic_score": 0.0,
+      "turn_id": 2,
+      "turn_passed": false,
+      "used_template_fallback": false
+    },
+    {
+      "actual_result_json": null,
+      "artifact_passed": true,
+      "artifact_paths": [],
+      "artifact_score": 5.0,
+      "code": "# required_dependencies: andes,json\nimport andes\nimport json\n\n# Load the IEEE 14 full case\ncase = andes.load(andes.get_case(\"ieee14/ieee14_full.xlsx\"), setup=True, no_output=True)\n\n# Set the slack-bus voltage target\nslack_setpoint = 1.025\ncase.Slack.set(\"Vtarget\", slack_setpoint)\n\n# Add a new PQ load before setup at bus 5\nadded_load_idx = case.PQ.add(bus=5, name='PQ_VERIFY_006_B', p0=0.014, q0=0.009)\n\n# Rerun power flow\ncase.run()\n\n# Report max and min voltage buses\nvoltages = case.Bus.v\nmax_bus = voltages.argmax()  # Bus with maximum voltage\nmin_bus = voltages.argmin()  # Bus with minimum voltage\n\n# Prepare the response data\nmax_voltage = round(voltages[max_bus], 6)\nmin_voltage = round(voltages[min_bus], 6)\ntotal_pq_count = len(case.PQ.idx.v)\n\n# Prepare the result in required JSON format\nRESULT_JSON = json.dumps({\n    \"added_load_idx\": added_load_idx,\n    \"max_bus\": max_bus,\n    \"max_voltage\": max_voltage,\n    \"min_bus\": min_bus,\n    \"min_voltage\": min_voltage,\n    \"total_pq_count\": total_pq_count\n})\n\nprint(f\"RESULT_JSON={RESULT_JSON}\")",
+      "continuity_score": 15.0,
+      "execution_output": "STDERR:\nTraceback (most recent call last):\n  File \"/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_006/turn_03/workspace/generated_code.py\", line 44, in <module>\n    case.Slack.set(\"Vtarget\", slack_setpoint)\n  File \"/home/bshe/miniconda3/envs/pfagent/lib/python3.11/site-packages/andes/core/model/model.py\", line 601, in set\n    raise TypeError(\nTypeError: set() missing 'value'. Usage: ss.Slack.set('Vtarget', 1.025, <value>)\n\n",
+      "execution_passed": false,
+      "execution_score": 0.0,
+      "expected_result_json": {
+        "added_load_idx": "PQ_VERIFY_006_B",
+        "max_bus": 6,
+        "max_voltage": 1.03,
+        "min_bus": 3,
+        "min_voltage": 1.01,
+        "total_pq_count": 12
+      },
+      "failure_categories": [
+        "grounding",
+        "execution",
+        "semantic"
+      ],
+      "format_score": 10.0,
+      "format_valid": true,
+      "grounding_score": 20.59,
+      "issues": [
+        "Missing code requirement: add PQ call",
+        "Code block 1: Use `ssa.Bus.v.v`, not `ssa.Bus.v`, when you need bus voltage magnitudes.",
+        "Code block 1: For add-before-setup workflows, load the case with `setup=False` before calling `ssa.add(...)`.",
+        "Code block 1: For add-before-setup workflows, call `ssa.setup()` after `ssa.add(...)` and before `ssa.PFlow.run()`.",
+        "Execution failed. Return code: 1",
+        "RESULT_JSON was missing or could not be parsed."
+      ],
+      "prompt": "Please revise the prior script for this next step and return one full script only.\nKeep the adjusted slack-bus setting from the last turn.\nAlso add a new PQ load before setup at bus 5 with idx 'PQ_VERIFY_006_B', p0=0.014, and q0=0.009.\nRerun power flow and report the maximum-voltage bus, minimum-voltage bus, and the total number of PQ loads now present.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: added_load_idx, max_bus, max_voltage, min_bus, min_voltage, total_pq_count.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.",
+      "response": "```python\n# required_dependencies: andes,json\nimport andes\nimport json\n\n# Load the IEEE 14 full case\ncase = andes.load(andes.get_case(\"ieee14/ieee14_full.xlsx\"), setup=True, no_output=True)\n\n# Set the slack-bus voltage target\nslack_setpoint = 1.025\ncase.Slack.set(\"Vtarget\", slack_setpoint)\n\n# Add a new PQ load before setup at bus 5\nadded_load_idx = case.PQ.add(bus=5, name='PQ_VERIFY_006_B', p0=0.014, q0=0.009)\n\n# Rerun power flow\ncase.run()\n\n# Report max and min voltage buses\nvoltages = case.Bus.v\nmax_bus = voltages.argmax()  # Bus with maximum voltage\nmin_bus = voltages.argmin()  # Bus with minimum voltage\n\n# Prepare the response data\nmax_voltage = round(voltages[max_bus], 6)\nmin_voltage = round(voltages[min_bus], 6)\ntotal_pq_count = len(case.PQ.idx.v)\n\n# Prepare the result in required JSON format\nRESULT_JSON = json.dumps({\n    \"added_load_idx\": added_load_idx,\n    \"max_bus\": max_bus,\n    \"max_voltage\": max_voltage,\n    \"min_bus\": min_bus,\n    \"min_voltage\": min_voltage,\n    \"total_pq_count\": total_pq_count\n})\n\nprint(f\"RESULT_JSON={RESULT_JSON}\")\n```",
+      "result_json_parse_error": "RESULT_JSON marker not found in stdout.",
+      "score_total": 50.59,
+      "semantic_passed": false,
+      "semantic_score": 0.0,
+      "turn_id": 3,
+      "turn_passed": false,
+      "used_template_fallback": false
+    }
+  ],
+  "uploaded_filename": null
+}

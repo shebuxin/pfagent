@@ -1,0 +1,30 @@
+[
+  {
+    "model_key": "rag",
+    "model_label": "RAG",
+    "scenarios": 100,
+    "scenario_pass_rate": 100.0,
+    "avg_conversation_score": 100.0
+  },
+  {
+    "model_key": "fine_tuned_rag",
+    "model_label": "Fine-tuned + RAG",
+    "scenarios": 100,
+    "scenario_pass_rate": 100.0,
+    "avg_conversation_score": 100.0
+  },
+  {
+    "model_key": "fine_tuned",
+    "model_label": "Fine-tuned",
+    "scenarios": 100,
+    "scenario_pass_rate": 58.0,
+    "avg_conversation_score": 86.44
+  },
+  {
+    "model_key": "base_openai",
+    "model_label": "Base OpenAI",
+    "scenarios": 100,
+    "scenario_pass_rate": 0.0,
+    "avg_conversation_score": 46.35
+  }
+]

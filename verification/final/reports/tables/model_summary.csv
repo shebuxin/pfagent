@@ -1,0 +1,5 @@
+model_key,model_label,scenarios,scenario_pass_rate,avg_conversation_score
+rag,RAG,100,100.0,100.0
+fine_tuned_rag,Fine-tuned + RAG,100,100.0,100.0
+fine_tuned,Fine-tuned,100,58.0,86.44
+base_openai,Base OpenAI,100,0.0,46.35

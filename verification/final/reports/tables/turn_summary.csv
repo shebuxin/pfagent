@@ -1,0 +1,13 @@
+model_label,turn_id,turn_pass_rate,avg_turn_score
+Base OpenAI,1,0.0,52.16
+Base OpenAI,2,0.0,47.75
+Base OpenAI,3,0.0,39.12
+Fine-tuned,1,85.0,94.4
+Fine-tuned,2,68.0,82.83
+Fine-tuned,3,66.0,82.09
+Fine-tuned + RAG,1,100.0,100.0
+Fine-tuned + RAG,2,100.0,100.0
+Fine-tuned + RAG,3,100.0,100.0
+RAG,1,100.0,100.0
+RAG,2,100.0,100.0
+RAG,3,100.0,100.0

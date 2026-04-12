@@ -1,0 +1,152 @@
+{
+  "blueprint": "voltage_then_slack_line_threshold",
+  "case_family": "pjm5",
+  "case_source": "builtin",
+  "scenario_id": "scenario_092",
+  "source_case_path": "5bus/pjm5bus.json",
+  "turns": [
+    {
+      "actual_result_json": null,
+      "artifact_passed": true,
+      "artifact_paths": [],
+      "artifact_score": 5.0,
+      "code": "# required_dependencies: andes\nimport andes\n\n# Load the built-in PJM 5-bus case\ncase = andes.load(andes.get_case(\"5bus/pjm5bus.json\"), setup=True, no_output=True, log=False)\n\n# Run power flow\ncase.run_power_flow()\n\n# Extract voltages and bus indices\nvoltages = case.bus.v\nslack_bus = case.bus.idx.slack\nslack_voltage = round(voltages[slack_bus], 6)\n\n# Find max and min voltage buses\nmax_voltage = round(max(voltages), 6)\nmin_voltage = round(min(voltages), 6)\nmax_bus = int(next(i for i, v in enumerate(voltages) if v == max_voltage))\nmin_bus = int(next(i for i, v in enumerate(voltages) if v == min_voltage))\n\n# Prepare the result JSON\nRESULT_JSON = {\n    \"slack_bus\": int(slack_bus),\n    \"slack_voltage\": slack_voltage,\n    \"max_bus\": max_bus,\n    \"max_voltage\": max_voltage,\n    \"min_bus\": min_bus,\n    \"min_voltage\": min_voltage,\n}\n\n# Print the result JSON\nprint(f\"RESULT_JSON={RESULT_JSON}\")",
+      "continuity_score": 15.0,
+      "execution_output": "STDERR:\nTraceback (most recent call last):\n  File \"/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_092/turn_01/workspace/generated_code.py\", line 42, in <module>\n    case.run_power_flow()\n    ^^^^^^^^^^^^^^^^^^^\nAttributeError: 'System' object has no attribute 'run_power_flow'\n\n",
+      "execution_passed": false,
+      "execution_score": 0.0,
+      "expected_result_json": {
+        "max_bus": 2,
+        "max_voltage": 1.0,
+        "min_bus": 1,
+        "min_voltage": 0.991799,
+        "slack_bus": 3,
+        "slack_voltage": 1.0
+      },
+      "failure_categories": [
+        "execution",
+        "semantic"
+      ],
+      "format_score": 10.0,
+      "format_valid": true,
+      "grounding_score": 25.0,
+      "issues": [
+        "Execution failed. Return code: 1",
+        "RESULT_JSON was missing or could not be parsed."
+      ],
+      "prompt": "Write one complete runnable Python script only, inside a single ```python block.\nUse the built-in PJM 5-bus case.\nRun power flow and report the maximum-voltage bus, minimum-voltage bus, and slack-bus voltage.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: slack_bus, slack_voltage, max_bus, max_voltage, min_bus, min_voltage.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.",
+      "response": "```python\n# required_dependencies: andes\nimport andes\n\n# Load the built-in PJM 5-bus case\ncase = andes.load(andes.get_case(\"5bus/pjm5bus.json\"), setup=True, no_output=True, log=False)\n\n# Run power flow\ncase.run_power_flow()\n\n# Extract voltages and bus indices\nvoltages = case.bus.v\nslack_bus = case.bus.idx.slack\nslack_voltage = round(voltages[slack_bus], 6)\n\n# Find max and min voltage buses\nmax_voltage = round(max(voltages), 6)\nmin_voltage = round(min(voltages), 6)\nmax_bus = int(next(i for i, v in enumerate(voltages) if v == max_voltage))\nmin_bus = int(next(i for i, v in enumerate(voltages) if v == min_voltage))\n\n# Prepare the result JSON\nRESULT_JSON = {\n    \"slack_bus\": int(slack_bus),\n    \"slack_voltage\": slack_voltage,\n    \"max_bus\": max_bus,\n    \"max_voltage\": max_voltage,\n    \"min_bus\": min_bus,\n    \"min_voltage\": min_voltage,\n}\n\n# Print the result JSON\nprint(f\"RESULT_JSON={RESULT_JSON}\")\n```",
+      "result_json_parse_error": "RESULT_JSON marker not found in stdout.",
+      "score_total": 55.0,
+      "semantic_passed": false,
+      "semantic_score": 0.0,
+      "turn_id": 1,
+      "turn_passed": false,
+      "used_template_fallback": false
+    },
+    {
+      "actual_result_json": null,
+      "artifact_passed": true,
+      "artifact_paths": [],
+      "artifact_score": 5.0,
+      "code": "# required_dependencies: andes\nimport andes\n\n# Load the built-in PJM 5-bus case\ncase = andes.load(andes.get_case(\"5bus/pjm5bus.json\"), setup=True, no_output=True, log=False)\n\n# Set the slack-bus voltage target\nslack_bus_idx = case.bus.idx.slack\ncase.slack.set_voltage_target(slack_bus_idx, 1.030)\n\n# Rerun power flow\ncase.run_power_flow()\n\n# Extract slack voltage and line angles\nslack_voltage = round(case.bus.v[slack_bus_idx], 6)\nline_angles = abs(case.Line.send_angle.v)\n\n# Get top 5 lines by absolute sending-end phase angle\ntop_5_lines = sorted(enumerate(line_angles), key=lambda x: x[1], reverse=True)[:5]\nselected_line_ids = [line[0] for line in top_5_lines]\nselected_line_metrics = [round(line[1], 6) for line in top_5_lines]\n\n# Prepare the result JSON\nRESULT_JSON = {\n    \"slack_setpoint\": 1.030,\n    \"slack_voltage\": slack_voltage,\n    \"selected_line_ids\": selected_line_ids,\n    \"selected_line_metrics\": selected_line_metrics,\n}\n\n# Print the result JSON\nprint(f\"RESULT_JSON={RESULT_JSON}\")",
+      "continuity_score": 15.0,
+      "execution_output": "STDERR:\nTraceback (most recent call last):\n  File \"/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_092/turn_02/workspace/generated_code.py\", line 42, in <module>\n    slack_bus_idx = case.bus.idx.slack\n                    ^^^^^^^^\nAttributeError: 'System' object has no attribute 'bus'. Did you mean: 'Bus'?\n\n",
+      "execution_passed": false,
+      "execution_score": 0.0,
+      "expected_result_json": {
+        "selected_line_ids": [
+          "2",
+          "5",
+          "1",
+          "0",
+          "6"
+        ],
+        "selected_line_metrics": [
+          2.471739,
+          2.171224,
+          1.600348,
+          1.485696,
+          1.485696
+        ],
+        "slack_setpoint": 1.03,
+        "slack_voltage": 1.03
+      },
+      "failure_categories": [
+        "grounding",
+        "execution",
+        "semantic"
+      ],
+      "format_score": 10.0,
+      "format_valid": true,
+      "grounding_score": 15.38,
+      "issues": [
+        "Missing code requirement: Slack set call",
+        "Missing code requirement: line angle array",
+        "Code block 1: For line-angle analysis, use the ANDES line-angle result arrays such as `ssa.Line.a1.e`.",
+        "Execution failed. Return code: 1",
+        "RESULT_JSON was missing or could not be parsed."
+      ],
+      "prompt": "Next follow-up: rebuild the script for the updated study, code only.\nKeep using the same built-in case from earlier in this conversation.\nKeep the same case, set the slack-bus voltage target to 1.030, rerun power flow, and report the top-5 lines by absolute sending-end phase angle.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: slack_setpoint, slack_voltage, selected_line_ids, selected_line_metrics.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.",
+      "response": "```python\n# required_dependencies: andes\nimport andes\n\n# Load the built-in PJM 5-bus case\ncase = andes.load(andes.get_case(\"5bus/pjm5bus.json\"), setup=True, no_output=True, log=False)\n\n# Set the slack-bus voltage target\nslack_bus_idx = case.bus.idx.slack\ncase.slack.set_voltage_target(slack_bus_idx, 1.030)\n\n# Rerun power flow\ncase.run_power_flow()\n\n# Extract slack voltage and line angles\nslack_voltage = round(case.bus.v[slack_bus_idx], 6)\nline_angles = abs(case.Line.send_angle.v)\n\n# Get top 5 lines by absolute sending-end phase angle\ntop_5_lines = sorted(enumerate(line_angles), key=lambda x: x[1], reverse=True)[:5]\nselected_line_ids = [line[0] for line in top_5_lines]\nselected_line_metrics = [round(line[1], 6) for line in top_5_lines]\n\n# Prepare the result JSON\nRESULT_JSON = {\n    \"slack_setpoint\": 1.030,\n    \"slack_voltage\": slack_voltage,\n    \"selected_line_ids\": selected_line_ids,\n    \"selected_line_metrics\": selected_line_metrics,\n}\n\n# Print the result JSON\nprint(f\"RESULT_JSON={RESULT_JSON}\")\n```",
+      "result_json_parse_error": "RESULT_JSON marker not found in stdout.",
+      "score_total": 45.38,
+      "semantic_passed": false,
+      "semantic_score": 0.0,
+      "turn_id": 2,
+      "turn_passed": false,
+      "used_template_fallback": false
+    },
+    {
+      "actual_result_json": null,
+      "artifact_passed": true,
+      "artifact_paths": [],
+      "artifact_score": 5.0,
+      "code": "# required_dependencies: andes\nimport andes\n\n# Load the built-in PJM 5-bus case\ncase = andes.load(andes.get_case(\"5bus/pjm5bus.json\"), setup=True, no_output=True, log=False)\n\n# Set the slack-bus voltage target\nslack_bus_idx = case.bus.idx.slack\ncase.slack.set_voltage_target(slack_bus_idx, 1.030)\n\n# Scale every PQ load by 1.060\nscaled_load = case.PQ.p * 1.060\ncase.PQ.set_p(scaled_load)\n\n# Rerun power flow\ncase.run_power_flow()\n\n# Extract line angles and determine selected lines\nline_angles = abs(case.Line.send_angle.v)\nangle_threshold = 0.150\nselected_line_ids = [i for i, angle in enumerate(line_angles) if angle > angle_threshold]\nselected_count = len(selected_line_ids)\n\n# Prepare the result JSON\nRESULT_JSON = {\n    \"slack_setpoint\": 1.030,\n    \"scale_factor\": 1.060,\n    \"angle_threshold\": angle_threshold,\n    \"selected_line_ids\": selected_line_ids,\n    \"selected_count\": selected_count,\n}\n\n# Print the result JSON\nprint(f\"RESULT_JSON={RESULT_JSON}\")",
+      "continuity_score": 6.0,
+      "execution_output": "STDERR:\nTraceback (most recent call last):\n  File \"/home/bshe/Documents/git-research/pfagent/verification/artifacts_recheck_20260403_parallel/base_openai/20260403_162925/raw/base_openai/scenario_092/turn_03/workspace/generated_code.py\", line 42, in <module>\n    slack_bus_idx = case.bus.idx.slack\n                    ^^^^^^^^\nAttributeError: 'System' object has no attribute 'bus'. Did you mean: 'Bus'?\n\n",
+      "execution_passed": false,
+      "execution_score": 0.0,
+      "expected_result_json": {
+        "angle_threshold": 0.15,
+        "scale_factor": 1.06,
+        "selected_count": 5,
+        "selected_line_ids": [
+          "0",
+          "1",
+          "2",
+          "5",
+          "6"
+        ],
+        "slack_setpoint": 1.03
+      },
+      "failure_categories": [
+        "grounding",
+        "continuity",
+        "execution",
+        "semantic"
+      ],
+      "format_score": 10.0,
+      "format_valid": true,
+      "grounding_score": 15.38,
+      "issues": [
+        "Missing code requirement: PQ scale call",
+        "Missing code requirement: line angle array",
+        "Missing code requirement: Slack set call",
+        "Code block 1: For line-angle analysis, use the ANDES line-angle result arrays such as `ssa.Line.a1.e`.",
+        "Execution failed. Return code: 1",
+        "RESULT_JSON was missing or could not be parsed."
+      ],
+      "prompt": "Please keep the conversation context and send one new complete script only.\nKeep the slack-bus adjustment from the previous turn.\nAlso scale every PQ load by 1.060, rerun power flow, and report all lines whose absolute sending-end phase angle is above 0.150 radians.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: slack_setpoint, scale_factor, angle_threshold, selected_line_ids, selected_count.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.",
+      "response": "```python\n# required_dependencies: andes\nimport andes\n\n# Load the built-in PJM 5-bus case\ncase = andes.load(andes.get_case(\"5bus/pjm5bus.json\"), setup=True, no_output=True, log=False)\n\n# Set the slack-bus voltage target\nslack_bus_idx = case.bus.idx.slack\ncase.slack.set_voltage_target(slack_bus_idx, 1.030)\n\n# Scale every PQ load by 1.060\nscaled_load = case.PQ.p * 1.060\ncase.PQ.set_p(scaled_load)\n\n# Rerun power flow\ncase.run_power_flow()\n\n# Extract line angles and determine selected lines\nline_angles = abs(case.Line.send_angle.v)\nangle_threshold = 0.150\nselected_line_ids = [i for i, angle in enumerate(line_angles) if angle > angle_threshold]\nselected_count = len(selected_line_ids)\n\n# Prepare the result JSON\nRESULT_JSON = {\n    \"slack_setpoint\": 1.030,\n    \"scale_factor\": 1.060,\n    \"angle_threshold\": angle_threshold,\n    \"selected_line_ids\": selected_line_ids,\n    \"selected_count\": selected_count,\n}\n\n# Print the result JSON\nprint(f\"RESULT_JSON={RESULT_JSON}\")\n```",
+      "result_json_parse_error": "RESULT_JSON marker not found in stdout.",
+      "score_total": 36.38,
+      "semantic_passed": false,
+      "semantic_score": 0.0,
+      "turn_id": 3,
+      "turn_passed": false,
+      "used_template_fallback": false
+    }
+  ],
+  "uploaded_filename": null
+}

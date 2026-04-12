@@ -1,0 +1,136 @@
+{
+  "blueprint": "threshold_slack_add_extremes",
+  "case_family": "kundur",
+  "case_source": "builtin",
+  "scenario_id": "scenario_064",
+  "source_case_path": "kundur/kundur_full.xlsx",
+  "turns": [
+    {
+      "actual_result_json": {
+        "lowest_bus_ids": [
+          8,
+          7
+        ],
+        "lowest_voltages": [
+          0.954,
+          0.956218
+        ],
+        "selected_bus_ids": [],
+        "selected_count": 0,
+        "threshold": 1.02
+      },
+      "artifact_passed": true,
+      "artifact_paths": [],
+      "artifact_score": 5.0,
+      "code": "# required_dependencies: andes,numpy\nimport json\nimport andes\nimport numpy as np\n\nssa = andes.load(\n    andes.get_case(\"kundur/kundur_full.xlsx\"),\n    setup=False,\n    no_output=True,\n    log=False,\n)\n\nssa.setup()\n\nssa.PFlow.run()\n\nbus_ids = np.asarray(ssa.Bus.idx.v, dtype=int)\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\n\nresult_json = {}\nthreshold = 1.02\nabove_mask = bus_v > threshold\nlowest_idx = np.argsort(bus_v)[:2]\nresult_json[\"threshold\"] = round(float(threshold), 6)\nresult_json[\"selected_bus_ids\"] = [int(item) for item in bus_ids[above_mask]]\nresult_json[\"selected_count\"] = int(np.sum(above_mask))\nresult_json[\"lowest_bus_ids\"] = [int(bus_ids[i]) for i in lowest_idx]\nresult_json[\"lowest_voltages\"] = [round(float(bus_v[i]), 6) for i in lowest_idx]\n\nprint(\"RESULT_JSON=\" + json.dumps(result_json, sort_keys=True))",
+      "continuity_score": 15.0,
+      "execution_output": "STDOUT:\nRESULT_JSON={\"lowest_bus_ids\": [8, 7], \"lowest_voltages\": [0.954, 0.956218], \"selected_bus_ids\": [], \"selected_count\": 0, \"threshold\": 1.02}\n\n",
+      "execution_passed": true,
+      "execution_score": 20.0,
+      "expected_result_json": {
+        "lowest_bus_ids": [
+          8,
+          7
+        ],
+        "lowest_voltages": [
+          0.954,
+          0.956218
+        ],
+        "selected_bus_ids": [],
+        "selected_count": 0,
+        "threshold": 1.02
+      },
+      "failure_categories": [],
+      "format_score": 10.0,
+      "format_valid": true,
+      "grounding_score": 25.0,
+      "issues": [],
+      "prompt": "Write one complete runnable Python script only, inside a single ```python block.\nUse the built-in Kundur full case.\nRun power flow, count all buses above 1.020 p.u., and also return the two lowest-voltage buses.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: threshold, selected_bus_ids, selected_count, lowest_bus_ids, lowest_voltages.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.\n- `selected_bus_ids` should list every bus above the threshold.\n- `lowest_bus_ids` should contain exactly two buses in ascending voltage order.",
+      "response": "```python\n# required_dependencies: andes,numpy\nimport json\nimport andes\nimport numpy as np\n\nssa = andes.load(\n    andes.get_case(\"kundur/kundur_full.xlsx\"),\n    setup=False,\n    no_output=True,\n    log=False,\n)\n\nssa.setup()\n\nssa.PFlow.run()\n\nbus_ids = np.asarray(ssa.Bus.idx.v, dtype=int)\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\n\nresult_json = {}\nthreshold = 1.02\nabove_mask = bus_v > threshold\nlowest_idx = np.argsort(bus_v)[:2]\nresult_json[\"threshold\"] = round(float(threshold), 6)\nresult_json[\"selected_bus_ids\"] = [int(item) for item in bus_ids[above_mask]]\nresult_json[\"selected_count\"] = int(np.sum(above_mask))\nresult_json[\"lowest_bus_ids\"] = [int(bus_ids[i]) for i in lowest_idx]\nresult_json[\"lowest_voltages\"] = [round(float(bus_v[i]), 6) for i in lowest_idx]\n\nprint(\"RESULT_JSON=\" + json.dumps(result_json, sort_keys=True))\n```",
+      "result_json_parse_error": null,
+      "score_total": 100.0,
+      "semantic_passed": true,
+      "semantic_score": 25.0,
+      "turn_id": 1,
+      "turn_passed": true,
+      "used_template_fallback": false
+    },
+    {
+      "actual_result_json": {
+        "selected_count": 3,
+        "slack_bus": 1,
+        "slack_setpoint": 1.02,
+        "slack_voltage": 1.02
+      },
+      "artifact_passed": true,
+      "artifact_paths": [],
+      "artifact_score": 5.0,
+      "code": "# required_dependencies: andes,numpy\nimport json\nimport andes\nimport numpy as np\n\nssa = andes.load(\n    andes.get_case(\"kundur/kundur_full.xlsx\"),\n    setup=False,\n    no_output=True,\n    log=False,\n)\n\nssa.setup()\n\nslack_setpoint = 1.02\nssa.Slack.set(src=\"v0\", idx=[ssa.Slack.idx.v[0]], attr=\"v\", value=[slack_setpoint])\n\nssa.PFlow.run()\n\nbus_ids = np.asarray(ssa.Bus.idx.v, dtype=int)\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nslack_bus = int(ssa.Slack.bus.v[0])\nslack_pos = int(np.where(bus_ids == slack_bus)[0][0])\nslack_voltage = round(float(bus_v[slack_pos]), 6)\n\nresult_json = {}\nthreshold = 0.97\nresult_json[\"slack_bus\"] = slack_bus\nresult_json[\"slack_setpoint\"] = round(float(slack_setpoint), 6)\nresult_json[\"slack_voltage\"] = slack_voltage\nresult_json[\"selected_count\"] = int(np.sum(bus_v < threshold))\n\nprint(\"RESULT_JSON=\" + json.dumps(result_json, sort_keys=True))",
+      "continuity_score": 15.0,
+      "execution_output": "STDOUT:\nRESULT_JSON={\"selected_count\": 3, \"slack_bus\": 1, \"slack_setpoint\": 1.02, \"slack_voltage\": 1.02}\n\n",
+      "execution_passed": true,
+      "execution_score": 20.0,
+      "expected_result_json": {
+        "selected_count": 3,
+        "slack_bus": 1,
+        "slack_setpoint": 1.02,
+        "slack_voltage": 1.02
+      },
+      "failure_categories": [],
+      "format_score": 10.0,
+      "format_valid": true,
+      "grounding_score": 25.0,
+      "issues": [],
+      "prompt": "Next follow-up: rebuild the script for the updated study, code only.\nKeep using the same built-in case from earlier in this conversation.\nKeep the same study, set the slack-bus voltage target to 1.020, rerun power flow, and report the slack bus voltage plus how many buses fall below 0.970 p.u.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: slack_bus, slack_setpoint, slack_voltage, selected_count.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.",
+      "response": "```python\n# required_dependencies: andes,numpy\nimport json\nimport andes\nimport numpy as np\n\nssa = andes.load(\n    andes.get_case(\"kundur/kundur_full.xlsx\"),\n    setup=False,\n    no_output=True,\n    log=False,\n)\n\nssa.setup()\n\nslack_setpoint = 1.02\nssa.Slack.set(src=\"v0\", idx=[ssa.Slack.idx.v[0]], attr=\"v\", value=[slack_setpoint])\n\nssa.PFlow.run()\n\nbus_ids = np.asarray(ssa.Bus.idx.v, dtype=int)\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nslack_bus = int(ssa.Slack.bus.v[0])\nslack_pos = int(np.where(bus_ids == slack_bus)[0][0])\nslack_voltage = round(float(bus_v[slack_pos]), 6)\n\nresult_json = {}\nthreshold = 0.97\nresult_json[\"slack_bus\"] = slack_bus\nresult_json[\"slack_setpoint\"] = round(float(slack_setpoint), 6)\nresult_json[\"slack_voltage\"] = slack_voltage\nresult_json[\"selected_count\"] = int(np.sum(bus_v < threshold))\n\nprint(\"RESULT_JSON=\" + json.dumps(result_json, sort_keys=True))\n```",
+      "result_json_parse_error": null,
+      "score_total": 100.0,
+      "semantic_passed": true,
+      "semantic_score": 25.0,
+      "turn_id": 2,
+      "turn_passed": true,
+      "used_template_fallback": false
+    },
+    {
+      "actual_result_json": {
+        "added_load_idx": "PQ_VERIFY_064_B",
+        "max_bus": 1,
+        "max_voltage": 1.02,
+        "min_bus": 8,
+        "min_voltage": 0.954982,
+        "total_pq_count": 3
+      },
+      "artifact_passed": true,
+      "artifact_paths": [],
+      "artifact_score": 5.0,
+      "code": "# required_dependencies: andes,numpy\nimport json\nimport andes\nimport numpy as np\n\nssa = andes.load(\n    andes.get_case(\"kundur/kundur_full.xlsx\"),\n    setup=False,\n    no_output=True,\n    log=False,\n)\n\nssa.add(\n    \"PQ\",\n    param_dict={\n        \"bus\": 9,\n        \"idx\": \"PQ_VERIFY_064_B\",\n        \"p0\": 0.018,\n        \"q0\": 0.013,\n    },\n)\n\nssa.setup()\n\nslack_setpoint = 1.02\nssa.Slack.set(src=\"v0\", idx=[ssa.Slack.idx.v[0]], attr=\"v\", value=[slack_setpoint])\n\nssa.PFlow.run()\n\nbus_ids = np.asarray(ssa.Bus.idx.v, dtype=int)\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nslack_bus = int(ssa.Slack.bus.v[0])\nslack_pos = int(np.where(bus_ids == slack_bus)[0][0])\nslack_voltage = round(float(bus_v[slack_pos]), 6)\n\nresult_json = {}\nresult_json[\"added_load_idx\"] = \"PQ_VERIFY_064_B\"\nresult_json[\"max_bus\"] = int(bus_ids[int(np.argmax(bus_v))])\nresult_json[\"max_voltage\"] = round(float(bus_v[int(np.argmax(bus_v))]), 6)\nresult_json[\"min_bus\"] = int(bus_ids[int(np.argmin(bus_v))])\nresult_json[\"min_voltage\"] = round(float(bus_v[int(np.argmin(bus_v))]), 6)\nresult_json[\"total_pq_count\"] = int(len(ssa.PQ.idx.v))\n\nprint(\"RESULT_JSON=\" + json.dumps(result_json, sort_keys=True))",
+      "continuity_score": 15.0,
+      "execution_output": "STDOUT:\nRESULT_JSON={\"added_load_idx\": \"PQ_VERIFY_064_B\", \"max_bus\": 1, \"max_voltage\": 1.02, \"min_bus\": 8, \"min_voltage\": 0.954982, \"total_pq_count\": 3}\n\n",
+      "execution_passed": true,
+      "execution_score": 20.0,
+      "expected_result_json": {
+        "added_load_idx": "PQ_VERIFY_064_B",
+        "max_bus": 1,
+        "max_voltage": 1.02,
+        "min_bus": 8,
+        "min_voltage": 0.954982,
+        "total_pq_count": 3
+      },
+      "failure_categories": [],
+      "format_score": 10.0,
+      "format_valid": true,
+      "grounding_score": 25.0,
+      "issues": [],
+      "prompt": "Please keep the conversation context and send one new complete script only.\nKeep the adjusted slack-bus setting from the last turn.\nAlso add a new PQ load before setup at bus 9 with idx 'PQ_VERIFY_064_B', p0=0.018, and q0=0.013.\nRerun power flow and report the maximum-voltage bus, minimum-voltage bus, and the total number of PQ loads now present.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: added_load_idx, max_bus, max_voltage, min_bus, min_voltage, total_pq_count.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.",
+      "response": "```python\n# required_dependencies: andes,numpy\nimport json\nimport andes\nimport numpy as np\n\nssa = andes.load(\n    andes.get_case(\"kundur/kundur_full.xlsx\"),\n    setup=False,\n    no_output=True,\n    log=False,\n)\n\nssa.add(\n    \"PQ\",\n    param_dict={\n        \"bus\": 9,\n        \"idx\": \"PQ_VERIFY_064_B\",\n        \"p0\": 0.018,\n        \"q0\": 0.013,\n    },\n)\n\nssa.setup()\n\nslack_setpoint = 1.02\nssa.Slack.set(src=\"v0\", idx=[ssa.Slack.idx.v[0]], attr=\"v\", value=[slack_setpoint])\n\nssa.PFlow.run()\n\nbus_ids = np.asarray(ssa.Bus.idx.v, dtype=int)\nbus_v = np.asarray(ssa.Bus.v.v, dtype=float)\nslack_bus = int(ssa.Slack.bus.v[0])\nslack_pos = int(np.where(bus_ids == slack_bus)[0][0])\nslack_voltage = round(float(bus_v[slack_pos]), 6)\n\nresult_json = {}\nresult_json[\"added_load_idx\"] = \"PQ_VERIFY_064_B\"\nresult_json[\"max_bus\"] = int(bus_ids[int(np.argmax(bus_v))])\nresult_json[\"max_voltage\"] = round(float(bus_v[int(np.argmax(bus_v))]), 6)\nresult_json[\"min_bus\"] = int(bus_ids[int(np.argmin(bus_v))])\nresult_json[\"min_voltage\"] = round(float(bus_v[int(np.argmin(bus_v))]), 6)\nresult_json[\"total_pq_count\"] = int(len(ssa.PQ.idx.v))\n\nprint(\"RESULT_JSON=\" + json.dumps(result_json, sort_keys=True))\n```",
+      "result_json_parse_error": null,
+      "score_total": 100.0,
+      "semantic_passed": true,
+      "semantic_score": 25.0,
+      "turn_id": 3,
+      "turn_passed": true,
+      "used_template_fallback": false
+    }
+  ],
+  "uploaded_filename": null
+}

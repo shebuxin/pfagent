@@ -1,0 +1,56 @@
+{
+  "actual_result_json": {
+    "selected_line_ids": [
+      "2",
+      "5",
+      "1",
+      "0",
+      "6"
+    ],
+    "selected_line_metrics": [
+      2.488387,
+      2.15862,
+      1.596229,
+      1.496079,
+      1.496079
+    ]
+  },
+  "artifact_passed": true,
+  "artifact_paths": [],
+  "artifact_score": 5.0,
+  "code": "# required_dependencies: andes,json\nimport andes\nimport json\nimport os\n\ndef _round_float(value):\n    return round(float(value), 6)\n\ncwd = os.getcwd()\ncase = os.path.join(cwd, \"verify_pjm5_096.json\")\nssa = andes.load(case, setup=True, no_output=True, log=False)\n\nssa.PFlow.run()\n\nline_ids = ssa.Line.idx.v\nabs_a1 = abs(ssa.Line.a1.e)\ntop_k = 5\nrank_indices = abs_a1.argsort()[-top_k:][::-1]\nresult = {\n    \"selected_line_ids\": [str(line_ids[i]) for i in rank_indices],\n    \"selected_line_metrics\": [_round_float(abs_a1[i]) for i in rank_indices],\n}\nprint(\"RESULT_JSON=\" + json.dumps(result, sort_keys=True))",
+  "continuity_score": 15.0,
+  "execution_output": "STDOUT:\nRESULT_JSON={\"selected_line_ids\": [\"2\", \"5\", \"1\", \"0\", \"6\"], \"selected_line_metrics\": [2.488387, 2.15862, 1.596229, 1.496079, 1.496079]}\n\n",
+  "execution_passed": true,
+  "execution_score": 20.0,
+  "expected_result_json": {
+    "selected_line_ids": [
+      "2",
+      "5",
+      "1",
+      "0",
+      "6"
+    ],
+    "selected_line_metrics": [
+      2.488387,
+      2.15862,
+      1.596229,
+      1.496079,
+      1.496079
+    ]
+  },
+  "failure_categories": [],
+  "format_score": 10.0,
+  "format_valid": true,
+  "grounding_score": 25.0,
+  "issues": [],
+  "prompt": "Return exactly one runnable Python code block and no prose.\nUse my uploaded file verify_pjm5_096.json from the current working directory.\nRun power flow and report the top-5 lines by absolute sending-end phase angle.\n- The script must end by printing exactly one line that starts with RESULT_JSON=\n- The JSON object must contain these keys: selected_line_ids, selected_line_metrics.\n- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.\n- Round float values in RESULT_JSON to 6 decimals.\n- `selected_line_metrics` should contain the absolute sending-end phase angles in descending order.\n\nRuntime file context:\n- Working directory for execution: verification/artifacts_recheck_20260403_parallel/fine_tuned/20260403_162926/raw/fine_tuned/scenario_096/turn_01/workspace\n- Uploaded files available during execution:\n- verify_pjm5_096.json\n- Use this exact filename directly in andes.load(...).\n- Do not wrap the uploaded filename with andes.get_case(...).\n",
+  "response": "```python\n# required_dependencies: andes,json\nimport andes\nimport json\nimport os\n\ndef _round_float(value):\n    return round(float(value), 6)\n\ncwd = os.getcwd()\ncase = os.path.join(cwd, \"verify_pjm5_096.json\")\nssa = andes.load(case, setup=True, no_output=True, log=False)\n\nssa.PFlow.run()\n\nline_ids = ssa.Line.idx.v\nabs_a1 = abs(ssa.Line.a1.e)\ntop_k = 5\nrank_indices = abs_a1.argsort()[-top_k:][::-1]\nresult = {\n    \"selected_line_ids\": [str(line_ids[i]) for i in rank_indices],\n    \"selected_line_metrics\": [_round_float(abs_a1[i]) for i in rank_indices],\n}\nprint(\"RESULT_JSON=\" + json.dumps(result, sort_keys=True))\n```",
+  "result_json_parse_error": null,
+  "score_total": 100.0,
+  "semantic_passed": true,
+  "semantic_score": 25.0,
+  "turn_id": 1,
+  "turn_passed": true,
+  "used_template_fallback": false
+}
