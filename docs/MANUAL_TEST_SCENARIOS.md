@@ -1,331 +1,485 @@
 # Manual Test Scenarios
 
-Use these multi-turn scripts to exercise the agent after a change.
-Each scenario has:
+This file records 10 randomly sampled scenarios from the 164 verified passing scenarios for manual regression testing.
 
-- a **goal** (what capability is being tested)
-- **expected behavior** (what "pass" means at each turn)
-- **watch for** (known pitfalls or regression risks)
+- Sampling source: `verification.suite.build_verification_suite(164)`
+- Sampling seed: `20260412`
+- Sampling result: 5 built-in cases and 5 uploaded cases
+- Execution order: Run Turn 1 -> Turn 2 -> Turn 3 for each scenario in the same conversation
+- Output check: Each response should provide a runnable Python script and print one final line starting with `RESULT_JSON=`
+- Uploaded case setup: Before testing, copy or upload the corresponding source case using the uploaded filename shown in the table
 
-Run them in order inside one chat session to exercise continuity.
-Use **RAG** or **Fine-tuned + RAG** as the agent type.
+## Sampled Scenarios
 
----
+| # | Scenario | Case source | Case family | Source case | Uploaded filename | Blueprint |
+|---|---|---|---|---|---|---|
+| 1 | `scenario_006` | built-in | IEEE 14 | `ieee14/ieee14_full.xlsx` | N/A | `threshold_slack_add_extremes` |
+| 2 | `scenario_025` | uploaded | IEEE 14 | `ieee14/ieee14_full.xlsx` | `verify_ieee14_025.xlsx` | `extremes_pv_scale_barplot` |
+| 3 | `scenario_028` | uploaded | IEEE 14 | `ieee14/ieee14_full.xlsx` | `verify_ieee14_028.xlsx` | `low_buses_add_slack_plot` |
+| 4 | `scenario_032` | built-in | IEEE 39 | `ieee39/ieee39.xlsx` | N/A | `voltage_rank_add_scale_plot` |
+| 5 | `scenario_035` | built-in | IEEE 39 | `ieee39/ieee39.xlsx` | N/A | `threshold_slack_add_extremes` |
+| 6 | `scenario_070` | built-in | Kundur | `kundur/kundur_full.xlsx` | N/A | `low_buses_add_slack_plot` |
+| 7 | `scenario_074` | uploaded | Kundur | `kundur/kundur_full.xlsx` | `verify_kundur_074.xlsx` | `voltage_rank_add_scale_plot` |
+| 8 | `scenario_079` | uploaded | Kundur | `kundur/kundur_full.xlsx` | `verify_kundur_079.xlsx` | `extremes_pv_scale_barplot` |
+| 9 | `scenario_101` | built-in | IEEE 14 | `ieee14/ieee14_full.xlsx` | N/A | `targeted_pq_edit_then_n1_screening` |
+| 10 | `scenario_152` | uploaded | IEEE 14 | `ieee14/ieee14_full.xlsx` | `verify_ieee14_152.xlsx` | `generalized_targeted_pv_then_branch_trip` |
 
-## Scenario A: Trip-line by position (the Stage 5 regression case)
+## 1. `scenario_006`
 
-**Goal:** verify the new case-idx inventory fixes the trip-line
-hardcoding bug from the 2026-04-05 user-feedback session.
+- Case source: built-in
+- Case family: IEEE 14
+- Source case: `ieee14/ieee14_full.xlsx`
+- Blueprint: `threshold_slack_add_extremes`
 
-**Case:** IEEE39 built-in
+Turn 1 prompt:
 
-```
-1.  Use ieee39 to run a power flow and report the bus voltage at bus 15
-    and whether there is a PQ load connected to that bus.
-
-2.  Trip line 18 and plot the change in active power flow through
-    each branch.
-
-3.  What is the idx of the 18th line?
-
-4.  Now trip the line between bus 16 and bus 17 instead. Show me
-    which branches see the biggest flow change.
-
-5.  Undo the trip and plot the baseline active power flow through
-    each branch.
-```
-
-**Expected behavior:**
-- Turn 1: identifies PQ at bus 15 (check against `ieee39.xlsx`: bus 15 has PQ_6)
-- Turn 2: **first attempt succeeds** — no error fix needed. The code
-  should resolve `"line 18"` as `Line.idx.v[17]` (= `"Line_18"`) via
-  the injected inventory, NOT compare `line_ids == "18"`.
-- Turn 3: returns the string `"Line_18"` using a `print()` (not a plot)
-- Turn 4: looks up the line by `bus1==16 and bus2==17` (symmetric pair)
-  instead of guessing
-- Turn 5: reuses the ieee39 active case via continuity context
-
-**Watch for:**
-- Any turn that invokes the Codex error-fixer ⇒ a regression
-- Any turn that hardcodes `"18"` as a literal idx string
-- Turn 3 emitting a `plt.*` call (query-vs-plot regression)
-
----
-
-## Scenario B: PQ load modification (idx resolution by bus)
-
-**Goal:** verify the agent resolves PQ devices by bus number, not
-by guessing an idx string.
-
-**Case:** IEEE14 built-in
-
-```
-1.  Run a power flow on the IEEE14 built-in case and report the
-    slack bus voltage and the three highest bus voltages.
-
-2.  Double the P and Q of the load at bus 6.
-
-3.  Re-run power flow and report the new voltage at bus 6.
-
-4.  Now increase by 20% the load at bus 9 as well.
-
-5.  Which two buses have the lowest voltage after both changes?
+```text
+Please answer with one runnable Python script only and nothing else.
+Use the built-in IEEE 14 full case.
+Run power flow, count all buses above 1.020 p.u., and also return the two lowest-voltage buses.
+- The script must end by printing exactly one line that starts with RESULT_JSON=
+- The JSON object must contain these keys: threshold, selected_bus_ids, selected_count, lowest_bus_ids, lowest_voltages.
+- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.
+- Round float values in RESULT_JSON to 6 decimals.
+- `selected_bus_ids` should list every bus above the threshold.
+- `lowest_bus_ids` should contain exactly two buses in ascending voltage order.
 ```
 
-**Expected behavior:**
-- Turn 1: slack bus = 1, V≈1.06 p.u.
-- Turn 2: code inspects `ssa.PQ.bus.v` + `ssa.PQ.idx.v` to find the
-  PQ entry at bus 6, then calls `ssa.PQ.set(src="p0", idx=[...],
-  attr="v", value=[...])` with the resolved idx
-- Turn 3: voltage at bus 6 should drop slightly
-- Turn 4: modifies PQ at bus 9 without touching bus-6 changes
-- Turn 5: uses argsort/sorted (validator pins this)
+Turn 2 prompt:
 
-**Watch for:**
-- Turn 2 using a literal like `idx=["PQ_5"]` without resolving from bus
-- Turn 4 losing the turn-2 state (should not reset the bus-6 change)
-- Turn 5 emitting a plot instead of printing the two bus IDs
-
----
-
-## Scenario C: Uploaded case + N-1 screening
-
-**Goal:** exercise the uploaded-case path (kundur, but re-uploaded as
-a user file) + the N-1 contingency workflow.
-
-**Setup:** before starting, upload `kundur_full.xlsx` via the sidebar
-(download from ANDES built-ins first, or use any `.xlsx` case you
-have locally).
-
-```
-1.  Load the uploaded case and plot the voltage profile across all
-    buses after running power flow.
-
-2.  Screen all single-line outages and report which line, when
-    tripped, causes the largest |ΔV| across buses.
-
-3.  Re-run power flow after tripping that worst line. Print the
-    five lowest voltages.
-
-4.  Is there any islanding after this trip?
-
-5.  Now explain in plain English why this particular line is the
-    most critical.
+```text
+Follow-up request: update the previous study and return a fresh complete script.
+Keep using the same built-in case from earlier in this conversation.
+Keep the same study, set the slack-bus voltage target to 1.025, rerun power flow, and report the slack bus voltage plus how many buses fall below 1.005 p.u.
+- The script must end by printing exactly one line that starts with RESULT_JSON=
+- The JSON object must contain these keys: slack_bus, slack_setpoint, slack_voltage, selected_count.
+- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.
+- Round float values in RESULT_JSON to 6 decimals.
 ```
 
-**Expected behavior:**
-- Turn 1: uses `andes.load("<filename>", ...)` directly (NOT
-  `andes.get_case(...)`), matches the uploaded-case template from
-  prompt_builder
-- Turn 2: iterates every line in `ssa.Line.idx.v`, tracks convergence
-  + islanding per the structured-codegen N-1 pattern
-- Turn 3: uses the trip identified in turn 2 (continuity check)
-- Turn 4: calls `ssa.Bus.island_sets` / `ssa.Bus.nosw_island` /
-  `ssa.Bus.n_islanded_buses`
-- Turn 5: **prose only**, no Python — the `is_explanatory_followup_request`
-  detector should short-circuit to the prose path
+Turn 3 prompt:
 
-**Watch for:**
-- Turn 1 wrapping the uploaded filename with `andes.get_case(...)`
-  (validator rule should reject this)
-- Turn 2 skipping the islanding guard (validator requires 2+ status markers)
-- Turn 5 emitting code (the prose-mode detector + retry nudge should
-  catch it)
-
----
-
-## Scenario D: Branch-flow analysis (active + reactive)
-
-**Goal:** stress the branch-flow API mapping (`p1/p2 → a1.e/a2.e`,
-`q1/q2 → v1.e/v2.e`) and the branch-flow validator rules.
-
-**Case:** IEEE39 built-in
-
-```
-1.  Run ieee39 power flow and plot the active power flow of every
-    branch as a bar chart, sorted by absolute magnitude.
-
-2.  Now plot the reactive power flow of every branch on the same
-    axes.
-
-3.  Which three lines carry the highest active power flow?
-
-4.  Is line 7 one of them?
-
-5.  Show the sending-end and receiving-end active power for line 7
-    side by side.
+```text
+Please revise the prior script for this next step and return one full script only.
+Keep the adjusted slack-bus setting from the last turn.
+Also add a new PQ load before setup at bus 5 with idx 'PQ_VERIFY_006_B', p0=0.014, and q0=0.009.
+Rerun power flow and report the maximum-voltage bus, minimum-voltage bus, and the total number of PQ loads now present.
+- The script must end by printing exactly one line that starts with RESULT_JSON=
+- The JSON object must contain these keys: added_load_idx, max_bus, max_voltage, min_bus, min_voltage, total_pq_count.
+- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.
+- Round float values in RESULT_JSON to 6 decimals.
 ```
 
-**Expected behavior:**
-- Turn 1: uses `ssa.Line.a1.e` or `ssa.Line.a2.e`, not `p1`/`p2`
-- Turn 2: uses `ssa.Line.v1.e` / `ssa.Line.v2.e`
-- Turn 3: argsort-based ranking, prints three idx values + metrics
-- Turn 4: answers "yes" or "no" using the ranking from turn 3 (the
-  inventory + continuity should make this trivial)
-- Turn 5: plots `a1.e` and `a2.e` for the specific line, resolving
-  `"line 7"` → `Line.idx.v[6]` via the inventory
+## 2. `scenario_025`
 
-**Watch for:**
-- Turn 1 using `Line.p1.v` (validator rejects)
-- Turn 3 skipping argsort/sorted (validator rejects)
-- Turn 4 re-running power flow instead of reusing turn-3 results
-  (no hard validator for this; it's a UX smell)
+- Case source: uploaded
+- Case family: IEEE 14
+- Source case: `ieee14/ieee14_full.xlsx`
+- Uploaded filename: `verify_ieee14_025.xlsx`
+- Blueprint: `extremes_pv_scale_barplot`
 
----
+Turn 1 prompt:
 
-## Scenario E: Voltage bound threshold + ranked reports
-
-**Goal:** the structured-codegen threshold reports (Stage 1 structured/scripts.py).
-
-**Case:** IEEE14 built-in
-
-```
-1.  Run ieee14 power flow. Report buses whose voltage is below
-    1.00 p.u. in a JSON object.  The JSON object must contain
-    these keys: threshold, selected_bus_ids, selected_count,
-    lowest_bus_ids, lowest_voltages.
-
-2.  Now scale every PQ load by 1.3 and rerun. Return the same JSON.
-
-3.  List the top-3 lowest-voltage buses.
-
-4.  What caused the voltage drop in turn 2?
+```text
+Please answer with one runnable Python script only and nothing else.
+Use my uploaded file verify_ieee14_025.xlsx from the current working directory.
+Run power flow and report the maximum-voltage bus and minimum-voltage bus.
+- The script must end by printing exactly one line that starts with RESULT_JSON=
+- The JSON object must contain these keys: max_bus, max_voltage, min_bus, min_voltage.
+- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.
+- Round float values in RESULT_JSON to 6 decimals.
 ```
 
-**Expected behavior:**
-- Turn 1: should route through the structured-codegen path
-  (`baseline_threshold_low_rank_report`); you'll see a
-  "Applied structured ANDES code generation" log line
-- Turn 2: structured codegen again, this time with a scale_factor
-- Turn 3: argsort-based ranking
-- Turn 4: **prose only**, explains PQ load increase → voltage dip
+Turn 2 prompt:
 
-**Watch for:**
-- Turn 1/2 going through the RAG path instead of structured codegen
-  (means `structured_codegen_is_applicable` missed the JSON contract)
-- JSON output not matching the exact key set
-
----
-
-## Scenario F: Continuity & reset
-
-**Goal:** verify that the `active_andes_case` continuity block survives
-a rerun and that users can explicitly switch cases.
-
-```
-1.  Run ieee14 and print the slack bus voltage.
-
-2.  Plot the voltage profile.            # implicit: reuse ieee14
-
-3.  Plot the voltage profile.            # explicit repeat, same case
-
-4.  Now switch to ieee39 and plot the
-    voltage profile on THAT case.
-
-5.  What was the slack bus voltage on
-    ieee14?                              # fallback: model memory only
+```text
+Please revise the prior script for this next step and return one full script only.
+Keep using the same uploaded study file from earlier in this conversation.
+Keep the same case, set the first PV voltage target to 1.020, rerun power flow, and report the affected PV bus voltage together with how many buses are above 1.025 p.u.
+- The script must end by printing exactly one line that starts with RESULT_JSON=
+- The JSON object must contain these keys: pv_bus, pv_setpoint, pv_voltage, selected_count.
+- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.
+- Round float values in RESULT_JSON to 6 decimals.
 ```
 
-**Expected behavior:**
-- Turn 2-3: `ANDES continuity context` pins ieee14; no case switch
-- Turn 4: explicit case switch, active_case updates to ieee39
-- Turn 5: answers from chat-history memory (not from case load);
-  should recall "≈1.06 p.u." from turn 1 without re-running PF
+Turn 3 prompt:
 
-**Watch for:**
-- Turn 2/3 regenerating a new `andes.load(...)` from scratch instead
-  of naming `andes.get_case("ieee14/ieee14_full.xlsx")`
-- Turn 4 not updating the active case (continuity stays on ieee14)
-- Turn 5 emitting code instead of answering in prose
-
----
-
-## Scenario G: Error recovery
-
-**Goal:** verify the Codex fixer path when first-attempt code has
-a genuine bug that the inventory cannot prevent.
-
-**Setup:** no special setup; just type a prompt that's likely to
-trip the model into generating bad code, like a partial request.
-
-```
-1.  Load ieee14. Sort lines by their active power flow from lowest
-    to highest.
-
-2.  [Click "Fix Error with AI" on any error that appears — or
-     continue if turn 1 succeeded.]
-
-3.  Can you also show me the top-5 lines by absolute magnitude,
-    regardless of direction?
-
-4.  Save that top-5 table to a file named 'top5_lines.csv' in the
-    output directory.
+```text
+Next follow-up: rebuild the script for the updated study, code only.
+Keep the PV setpoint adjustment from the previous turn.
+Also scale every PQ load by 1.050, rerun power flow, and save a bar chart of the bus voltages to 'scenario_025_turn3_bar.png'.
+- The script must end by printing exactly one line that starts with RESULT_JSON=
+- The JSON object must contain these keys: scale_factor, min_bus, min_voltage, max_bus, max_voltage, plot_file.
+- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.
+- Round float values in RESULT_JSON to 6 decimals.
+- Use a bar chart, not a line chart.
 ```
 
-**Expected behavior:**
-- Turn 1: may require the Codex fixer (the "sorted by flow" phrasing
-  is ambiguous — could mean ascending vs. descending, signed vs. abs)
-- Turn 2: if triggered, Codex fixer produces a fix that executes
-  cleanly in the local validation loop
-- Turn 3: argsort-based, handles abs() per validator rule
-- Turn 4: writes CSV to `code_executions/<session>/data/output/` —
-  exercise the file-listing widgets in the sidebar
+## 3. `scenario_028`
 
-**Watch for:**
-- Codex fixer loop exceeding retry budget (default 2 validation retries)
-- Turn 4 using a relative path that doesn't land in the right dir
-  (`files.py:extract_generated_image_paths` and friends handle
-  only `output/` — text files may just end up in session root)
+- Case source: uploaded
+- Case family: IEEE 14
+- Source case: `ieee14/ieee14_full.xlsx`
+- Uploaded filename: `verify_ieee14_028.xlsx`
+- Blueprint: `low_buses_add_slack_plot`
 
----
+Turn 1 prompt:
 
-## Scenario H: Query vs plot disambiguation
-
-**Goal:** verify the "give me X" style queries don't get accidentally
-turned into plots (the second regression from 2026-04-05).
-
-**Case:** IEEE39 built-in (or continuation)
-
-```
-1.  Give me the idx of each line.
-
-2.  Give me the idx of each PQ load.
-
-3.  List every bus that has both a PQ load and a PV device.
-
-4.  How many lines are in this case?
-
-5.  Which bus has the most lines connected to it?
+```text
+Please answer with one runnable Python script only and nothing else.
+Use my uploaded file verify_ieee14_028.xlsx from the current working directory.
+Run power flow and report the 4 lowest-voltage buses.
+- The script must end by printing exactly one line that starts with RESULT_JSON=
+- The JSON object must contain these keys: selected_bus_ids, selected_voltages.
+- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.
+- Round float values in RESULT_JSON to 6 decimals.
+- `selected_bus_ids` and `selected_voltages` should represent the lowest-voltage buses in ascending voltage order.
 ```
 
-**Expected behavior:**
-- **Every turn uses print() or prose, NOT plt.***
-- Turn 1: prints 46 line idx strings
-- Turn 3: set-intersects `ssa.PQ.bus.v` with `ssa.PV.bus.v`
-- Turn 4: prints `len(ssa.Line.idx.v)`
-- Turn 5: counts occurrences across `bus1.v + bus2.v`
+Turn 2 prompt:
 
-**Watch for:**
-- Any `plt.plot(...)` / `plt.bar(...)` call — this was the
-  Turn 10/11 regression pattern
+```text
+Please revise the prior script for this next step and return one full script only.
+Keep using the same uploaded study file from earlier in this conversation.
+Keep the same study and add a new PQ load before setup at bus 9 with idx 'PQ_VERIFY_028_D', p0=0.018, and q0=0.012.
+After rerunning, report the slack-bus voltage and every bus below 1.010 p.u.
+- The script must end by printing exactly one line that starts with RESULT_JSON=
+- The JSON object must contain these keys: added_load_idx, slack_bus, slack_voltage, threshold, selected_bus_ids, selected_count.
+- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.
+- Round float values in RESULT_JSON to 6 decimals.
+```
 
----
+Turn 3 prompt:
 
-## How to score a run
+```text
+Next follow-up: rebuild the script for the updated study, code only.
+Keep the added load from the previous turn.
+Also set the slack-bus voltage target to 1.035, rerun power flow, and save a line plot of bus voltages to 'scenario_028_turn3_line.png'.
+- The script must end by printing exactly one line that starts with RESULT_JSON=
+- The JSON object must contain these keys: slack_setpoint, slack_voltage, selected_bus_ids, selected_voltages, plot_file.
+- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.
+- Round float values in RESULT_JSON to 6 decimals.
+- `selected_bus_ids` and `selected_voltages` should again represent the lowest-voltage buses in ascending voltage order.
+```
 
-After each scenario, note:
+## 4. `scenario_032`
 
-1. **First-attempt success rate** — did the first generated code run?
-2. **Codex-fixer invocations** — how many turns triggered "Fix Error"?
-3. **Prose-mode accuracy** — did turn-5-style questions stay in prose?
-4. **Continuity** — did the agent remember the active case across turns?
-5. **User-visible errors** — any `st.error(...)` banner?
+- Case source: built-in
+- Case family: IEEE 39
+- Source case: `ieee39/ieee39.xlsx`
+- Blueprint: `voltage_rank_add_scale_plot`
 
-A good baseline (RAG + latest main) should produce:
-- ≥ 80% first-attempt success across all 8 scenarios
-- ≤ 2 Codex-fixer invocations in Scenario G (where error recovery
-  is the explicit test target)
-- Zero plots in Scenario H
+Turn 1 prompt:
 
-Record anomalies in `docs/MANUAL_TEST_RESULTS_<date>.md` so we can
-track regression velocity over time.
+```text
+Return exactly one runnable Python code block and no prose.
+Use the built-in IEEE 39 case.
+Run power flow and report the top-5 highest-voltage buses plus the slack-bus voltage.
+- The script must end by printing exactly one line that starts with RESULT_JSON=
+- The JSON object must contain these keys: slack_bus, slack_voltage, selected_bus_ids, selected_voltages.
+- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.
+- Round float values in RESULT_JSON to 6 decimals.
+- `selected_bus_ids` and `selected_voltages` should represent the top highest-voltage buses in descending order.
+```
+
+Turn 2 prompt:
+
+```text
+Please revise the prior script for this next step and return one full script only.
+Keep using the same built-in case from earlier in this conversation.
+Keep the same case, add one new PQ load before setup at bus 20 with idx 'PQ_VERIFY_032_A', p0=0.019, and q0=0.012.
+After rerunning power flow, report every bus below 0.980 p.u. together with the minimum-voltage bus.
+- The script must end by printing exactly one line that starts with RESULT_JSON=
+- The JSON object must contain these keys: added_load_idx, added_load_bus, threshold, selected_bus_ids, selected_count, min_bus, min_voltage.
+- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.
+- Round float values in RESULT_JSON to 6 decimals.
+- `selected_bus_ids` should list all buses below the threshold in ascending bus order.
+```
+
+Turn 3 prompt:
+
+```text
+Next follow-up: rebuild the script for the updated study, code only.
+Keep the added load from the previous step.
+Also scale every PQ load by a factor of 1.050 after setup, rerun power flow, and save a line plot of bus voltage magnitude to 'scenario_032_turn3_line.png'.
+- The script must end by printing exactly one line that starts with RESULT_JSON=
+- The JSON object must contain these keys: scale_factor, max_bus, max_voltage, min_bus, min_voltage, plot_file.
+- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.
+- Round float values in RESULT_JSON to 6 decimals.
+- `plot_file` must exactly match the saved filename.
+```
+
+## 5. `scenario_035`
+
+- Case source: built-in
+- Case family: IEEE 39
+- Source case: `ieee39/ieee39.xlsx`
+- Blueprint: `threshold_slack_add_extremes`
+
+Turn 1 prompt:
+
+```text
+Return exactly one runnable Python code block and no prose.
+Use the built-in IEEE 39 case.
+Run power flow, count all buses above 1.040 p.u., and also return the two lowest-voltage buses.
+- The script must end by printing exactly one line that starts with RESULT_JSON=
+- The JSON object must contain these keys: threshold, selected_bus_ids, selected_count, lowest_bus_ids, lowest_voltages.
+- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.
+- Round float values in RESULT_JSON to 6 decimals.
+- `selected_bus_ids` should list every bus above the threshold.
+- `lowest_bus_ids` should contain exactly two buses in ascending voltage order.
+```
+
+Turn 2 prompt:
+
+```text
+Please revise the prior script for this next step and return one full script only.
+Keep using the same built-in case from earlier in this conversation.
+Keep the same study, set the slack-bus voltage target to 1.030, rerun power flow, and report the slack bus voltage plus how many buses fall below 0.970 p.u.
+- The script must end by printing exactly one line that starts with RESULT_JSON=
+- The JSON object must contain these keys: slack_bus, slack_setpoint, slack_voltage, selected_count.
+- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.
+- Round float values in RESULT_JSON to 6 decimals.
+```
+
+Turn 3 prompt:
+
+```text
+Next follow-up: rebuild the script for the updated study, code only.
+Keep the adjusted slack-bus setting from the last turn.
+Also add a new PQ load before setup at bus 15 with idx 'PQ_VERIFY_035_B', p0=0.016, and q0=0.011.
+Rerun power flow and report the maximum-voltage bus, minimum-voltage bus, and the total number of PQ loads now present.
+- The script must end by printing exactly one line that starts with RESULT_JSON=
+- The JSON object must contain these keys: added_load_idx, max_bus, max_voltage, min_bus, min_voltage, total_pq_count.
+- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.
+- Round float values in RESULT_JSON to 6 decimals.
+```
+
+## 6. `scenario_070`
+
+- Case source: built-in
+- Case family: Kundur
+- Source case: `kundur/kundur_full.xlsx`
+- Blueprint: `low_buses_add_slack_plot`
+
+Turn 1 prompt:
+
+```text
+Write one complete runnable Python script only, inside a single ```python block.
+Use the built-in Kundur full case.
+Run power flow and report the 4 lowest-voltage buses.
+- The script must end by printing exactly one line that starts with RESULT_JSON=
+- The JSON object must contain these keys: selected_bus_ids, selected_voltages.
+- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.
+- Round float values in RESULT_JSON to 6 decimals.
+- `selected_bus_ids` and `selected_voltages` should represent the lowest-voltage buses in ascending voltage order.
+```
+
+Turn 2 prompt:
+
+```text
+Please keep the conversation context and send one new complete script only.
+Keep using the same built-in case from earlier in this conversation.
+Keep the same study and add a new PQ load before setup at bus 7 with idx 'PQ_VERIFY_070_D', p0=0.018, and q0=0.012.
+After rerunning, report the slack-bus voltage and every bus below 0.960 p.u.
+- The script must end by printing exactly one line that starts with RESULT_JSON=
+- The JSON object must contain these keys: added_load_idx, slack_bus, slack_voltage, threshold, selected_bus_ids, selected_count.
+- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.
+- Round float values in RESULT_JSON to 6 decimals.
+```
+
+Turn 3 prompt:
+
+```text
+Follow-up request: update the previous study and return a fresh complete script.
+Keep the added load from the previous turn.
+Also set the slack-bus voltage target to 1.010, rerun power flow, and save a line plot of bus voltages to 'scenario_070_turn3_line.png'.
+- The script must end by printing exactly one line that starts with RESULT_JSON=
+- The JSON object must contain these keys: slack_setpoint, slack_voltage, selected_bus_ids, selected_voltages, plot_file.
+- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.
+- Round float values in RESULT_JSON to 6 decimals.
+- `selected_bus_ids` and `selected_voltages` should again represent the lowest-voltage buses in ascending voltage order.
+```
+
+## 7. `scenario_074`
+
+- Case source: uploaded
+- Case family: Kundur
+- Source case: `kundur/kundur_full.xlsx`
+- Uploaded filename: `verify_kundur_074.xlsx`
+- Blueprint: `voltage_rank_add_scale_plot`
+
+Turn 1 prompt:
+
+```text
+Give me code only: one full Python script in one fenced block.
+Use my uploaded file verify_kundur_074.xlsx from the current working directory.
+Run power flow and report the top-5 highest-voltage buses plus the slack-bus voltage.
+- The script must end by printing exactly one line that starts with RESULT_JSON=
+- The JSON object must contain these keys: slack_bus, slack_voltage, selected_bus_ids, selected_voltages.
+- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.
+- Round float values in RESULT_JSON to 6 decimals.
+- `selected_bus_ids` and `selected_voltages` should represent the top highest-voltage buses in descending order.
+```
+
+Turn 2 prompt:
+
+```text
+Please keep the conversation context and send one new complete script only.
+Keep using the same uploaded study file from earlier in this conversation.
+Keep the same case, add one new PQ load before setup at bus 9 with idx 'PQ_VERIFY_074_A', p0=0.019, and q0=0.012.
+After rerunning power flow, report every bus below 0.970 p.u. together with the minimum-voltage bus.
+- The script must end by printing exactly one line that starts with RESULT_JSON=
+- The JSON object must contain these keys: added_load_idx, added_load_bus, threshold, selected_bus_ids, selected_count, min_bus, min_voltage.
+- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.
+- Round float values in RESULT_JSON to 6 decimals.
+- `selected_bus_ids` should list all buses below the threshold in ascending bus order.
+```
+
+Turn 3 prompt:
+
+```text
+Follow-up request: update the previous study and return a fresh complete script.
+Keep the added load from the previous step.
+Also scale every PQ load by a factor of 1.060 after setup, rerun power flow, and save a line plot of bus voltage magnitude to 'scenario_074_turn3_line.png'.
+- The script must end by printing exactly one line that starts with RESULT_JSON=
+- The JSON object must contain these keys: scale_factor, max_bus, max_voltage, min_bus, min_voltage, plot_file.
+- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.
+- Round float values in RESULT_JSON to 6 decimals.
+- `plot_file` must exactly match the saved filename.
+```
+
+## 8. `scenario_079`
+
+- Case source: uploaded
+- Case family: Kundur
+- Source case: `kundur/kundur_full.xlsx`
+- Uploaded filename: `verify_kundur_079.xlsx`
+- Blueprint: `extremes_pv_scale_barplot`
+
+Turn 1 prompt:
+
+```text
+Write one complete runnable Python script only, inside a single ```python block.
+Use my uploaded file verify_kundur_079.xlsx from the current working directory.
+Run power flow and report the maximum-voltage bus and minimum-voltage bus.
+- The script must end by printing exactly one line that starts with RESULT_JSON=
+- The JSON object must contain these keys: max_bus, max_voltage, min_bus, min_voltage.
+- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.
+- Round float values in RESULT_JSON to 6 decimals.
+```
+
+Turn 2 prompt:
+
+```text
+Please keep the conversation context and send one new complete script only.
+Keep using the same uploaded study file from earlier in this conversation.
+Keep the same case, set the first PV voltage target to 0.990, rerun power flow, and report the affected PV bus voltage together with how many buses are above 0.990 p.u.
+- The script must end by printing exactly one line that starts with RESULT_JSON=
+- The JSON object must contain these keys: pv_bus, pv_setpoint, pv_voltage, selected_count.
+- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.
+- Round float values in RESULT_JSON to 6 decimals.
+```
+
+Turn 3 prompt:
+
+```text
+Follow-up request: update the previous study and return a fresh complete script.
+Keep the PV setpoint adjustment from the previous turn.
+Also scale every PQ load by 1.030, rerun power flow, and save a bar chart of the bus voltages to 'scenario_079_turn3_bar.png'.
+- The script must end by printing exactly one line that starts with RESULT_JSON=
+- The JSON object must contain these keys: scale_factor, min_bus, min_voltage, max_bus, max_voltage, plot_file.
+- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.
+- Round float values in RESULT_JSON to 6 decimals.
+- Use a bar chart, not a line chart.
+```
+
+## 9. `scenario_101`
+
+- Case source: built-in
+- Case family: IEEE 14
+- Source case: `ieee14/ieee14_full.xlsx`
+- Blueprint: `targeted_pq_edit_then_n1_screening`
+
+Turn 1 prompt:
+
+```text
+Write one complete runnable Python script only, inside a single ```python block.
+Use the built-in IEEE 14 full case.
+Run power flow, locate the existing PQ load connected to bus 2, and report its device idx, its current p0 and q0, and the solved slack-bus voltage.
+- The script must end by printing exactly one line that starts with RESULT_JSON=
+- The JSON object must contain these keys: target_pq_bus, target_pq_idx, target_p0, target_q0, slack_bus, slack_voltage.
+- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.
+- Round float values in RESULT_JSON to 6 decimals.
+```
+
+Turn 2 prompt:
+
+```text
+Next follow-up: rebuild the script for the updated study, code only.
+Keep using the same built-in case from earlier in this conversation.
+Keep the same study, locate the existing PQ load at bus 2, scale both p0 and q0 of that load by 1.030, rerun power flow, and report the updated device idx, updated p0/q0, and the minimum-voltage bus.
+- The script must end by printing exactly one line that starts with RESULT_JSON=
+- The JSON object must contain these keys: target_pq_bus, target_pq_idx, scale_factor, target_p0, target_q0, min_bus, min_voltage.
+- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.
+- Round float values in RESULT_JSON to 6 decimals.
+```
+
+Turn 3 prompt:
+
+```text
+Please keep the conversation context and send one new complete script only.
+Keep the targeted PQ-load scaling from the previous turn.
+Now perform an N-1 screening over these candidate lines, one outage at a time, always starting from the same modified case: 1-2, 1-5, 2-3.
+For each contingency, open only that one line, rerun power flow, and identify which outage gives the lowest minimum bus voltage.
+- The script must end by printing exactly one line that starts with RESULT_JSON=
+- The JSON object must contain these keys: scale_factor, candidate_line_ids, worst_line_id, worst_line_bus_pair, worst_min_bus, worst_min_voltage.
+- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.
+- Round float values in RESULT_JSON to 6 decimals.
+- `candidate_line_ids` must list the screened line ids in the same order as the candidate bus-pair list.
+```
+
+## 10. `scenario_152`
+
+- Case source: uploaded
+- Case family: IEEE 14
+- Source case: `ieee14/ieee14_full.xlsx`
+- Uploaded filename: `verify_ieee14_152.xlsx`
+- Blueprint: `generalized_targeted_pv_then_branch_trip`
+
+Turn 1 prompt:
+
+```text
+Give me code only: one full Python script in one fenced block.
+Use my uploaded file verify_ieee14_152.xlsx from the current working directory.
+Inspect the generator voltage-control record tied to bus 3.
+After solving the case, return that record's idx, its present v0 target, and the solved voltage at that bus.
+- The script must end by printing exactly one line that starts with RESULT_JSON=
+- The JSON object must contain these keys: pv_bus, pv_idx, pv_setpoint, pv_voltage.
+- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.
+- Round float values in RESULT_JSON to 6 decimals.
+```
+
+Turn 2 prompt:
+
+```text
+Please revise the prior script for this next step and return one full script only.
+Keep working from the same study state.
+Move that same voltage-control record on bus 3 to a v0 target of 1.015, solve again, and report the updated idx, the applied setpoint, the solved PV-bus voltage, and how many buses are higher than 1.020 p.u.
+- The script must end by printing exactly one line that starts with RESULT_JSON=
+- The JSON object must contain these keys: pv_bus, pv_idx, pv_setpoint, pv_voltage, threshold, selected_count.
+- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.
+- Round float values in RESULT_JSON to 6 decimals.
+```
+
+Turn 3 prompt:
+
+```text
+Please keep the conversation context and send one new complete script only.
+Keep that generator voltage-target change in place.
+Now trip the branch joining buses 2 and 3, solve the modified network again, and report the opened branch id, the opened bus pair, the slack-bus voltage, and the minimum-voltage bus.
+- The script must end by printing exactly one line that starts with RESULT_JSON=
+- The JSON object must contain these keys: pv_setpoint, opened_line_id, opened_line_bus_pair, slack_bus, slack_voltage, min_bus, min_voltage.
+- Use plain Python ints/floats/lists in RESULT_JSON, not NumPy scalar types.
+- Round float values in RESULT_JSON to 6 decimals.
+```
